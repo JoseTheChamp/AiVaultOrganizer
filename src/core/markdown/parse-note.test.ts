@@ -34,8 +34,16 @@ describe('parseNote', () => {
     expect(note.tags).toEqual(['Project', 'reading', 'idea', 'project/web']);
   });
 
-  it('accepts a comma or space separated tags string and the singular key', () => {
-    expect(parseNote('---\ntag: a, b c\n---\n').tags).toEqual(['a', 'b', 'c']);
+  it('follows Obsidian: no splitting, no whitespace, no singular key, strings only', () => {
+    expect(parseNote('---\ntags: single\n---\n').tags).toEqual(['single']);
+    expect(parseNote('---\ntags: a, b\n---\n').tags).toEqual([]);
+    expect(parseNote('---\ntags: a,b\n---\n').tags).toEqual(['a,b']);
+    expect(parseNote('---\ntag: solo\n---\n').tags).toEqual([]);
+    expect(parseNote('---\nTags: [Up, "a b", 2024, "#x"]\n---\n').tags).toEqual(['Up', 'x']);
+  });
+
+  it('keeps a trailing slash on inline tags', () => {
+    expect(parseNote('Body #tag/ and #ok!').tags).toEqual(['tag/', 'ok']);
   });
 
   it('ignores headings, numbers, anchors and code as tags', () => {

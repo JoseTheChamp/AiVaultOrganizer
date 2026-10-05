@@ -82,8 +82,9 @@ export function maskCode(body: string): string {
   return result.join('\n');
 }
 
+/** Tag without its leading `#`. Trailing slashes are kept, as Obsidian reports them. */
 export function normalizeTag(tag: string): string {
-  return tag.trim().replace(/^#+/, '').replace(/\/+$/, '');
+  return tag.trim().replace(/^#+/, '');
 }
 
 function isValidTag(tag: string): boolean {
@@ -91,15 +92,20 @@ function isValidTag(tag: string): boolean {
   return tag.length > 0 && !/^[\d/]+$/.test(tag);
 }
 
+/**
+ * Frontmatter tags exactly as Obsidian 1.13 extracts them (verified against a recorded vault, see
+ * fixtures/vaults/tag-probes): only the `tags` key (any case; not `tag`), a string or a list of
+ * strings, never split on commas, and any value containing whitespace or not a string is dropped.
+ */
 function frontmatterTags(data: Record<string, unknown>): string[] {
   const result: string[] = [];
   for (const [key, value] of Object.entries(data)) {
-    if (!/^tags?$/i.test(key)) continue;
-    const values = Array.isArray(value) ? value : typeof value === 'string' ? value.split(/[,\s]+/) : [];
+    if (!/^tags$/i.test(key)) continue;
+    const values: unknown[] = Array.isArray(value) ? value : [value];
     for (const item of values) {
-      if (typeof item !== 'string' && typeof item !== 'number') continue;
-      const tag = normalizeTag(String(item));
-      if (isValidTag(tag)) result.push(tag);
+      if (typeof item !== 'string' || /\s/.test(item.trim())) continue;
+      const tag = normalizeTag(item);
+      if (tag.length > 0) result.push(tag);
     }
   }
   return result;

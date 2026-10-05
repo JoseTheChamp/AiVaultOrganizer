@@ -59,15 +59,19 @@ interface CachedMetadataLike {
   tags?: TagCacheLike[];
 }
 
-/** Same contract as Obsidian's getAllTags: frontmatter tags first, then inline tags, all with `#`. */
+/**
+ * Mirrors Obsidian 1.13's getAllTags as observed in fixtures/contract/tag-probes: frontmatter tags
+ * (key `tags` in any case, strings without whitespace, never split) first, then inline tags, all
+ * with `#`. The contract test checks this shim against what real Obsidian returned.
+ */
 export function getAllTags(cache: CachedMetadataLike): string[] | null {
   const result: string[] = [];
   for (const [key, value] of Object.entries(cache.frontmatter ?? {})) {
-    if (!/^tags?$/i.test(key)) continue;
-    const values = Array.isArray(value) ? value : typeof value === 'string' ? value.split(/[,\s]+/) : [];
+    if (!/^tags$/i.test(key)) continue;
+    const values: unknown[] = Array.isArray(value) ? value : [value];
     for (const item of values) {
-      if (typeof item !== 'string' || item.trim() === '') continue;
-      result.push(`#${item.trim().replace(/^#/, '')}`);
+      if (typeof item !== 'string' || item.trim() === '' || /\s/.test(item.trim())) continue;
+      result.push(`#${item.trim().replace(/^#+/, '')}`);
     }
   }
   for (const tag of cache.tags ?? []) result.push(tag.tag);
