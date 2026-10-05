@@ -68,13 +68,50 @@ backups uploaded.
 
 ## AI setup
 
-The plugin works without any AI. Optional tiers add local embeddings and a language model you choose
-(Ollama locally, or your own API key). _Details coming with milestone 4._
+The plugin works without any AI. Rules, drift checks, analysis and undo never call a model. AI is off
+until you turn it on in **Settings → AI Vault Organizer**, under **Language model** and **Embeddings**.
+Features that use the models (classification, link suggestions, charter drafting) arrive in later
+releases.
+
+**Local, free (recommended).** Install [Ollama](https://ollama.com) and pull a model, for example
+`ollama pull qwen3:8b` for chat and `ollama pull bge-m3` for embeddings. bge-m3 is multilingual, which
+matters for vaults that aren't English-only. Then:
+
+1. Turn on **Use a language model**.
+2. Keep the provider **Ollama (local)**.
+3. Enter the model name and click **Test connection**.
+
+LM Studio works the same way.
+
+**Your own API key.**
+
+1. Pick OpenAI, Anthropic, OpenRouter, Google Gemini, Mistral, Groq or a custom OpenAI-compatible
+   endpoint.
+2. Choose or add the key in Obsidian's keychain (the **API key** row).
+3. Turn off **Local-only mode**.
+
+Only the key's name is saved in the plugin settings. The key itself stays in Obsidian's keychain on this
+device.
+
+**Limits.** Set the number of parallel requests, requests per minute and a token budget per run. You can
+also enter prices per million tokens to see cost estimates; no prices are built in.
 
 ## Privacy and network use
 
-No telemetry, no accounts, no servers. Network requests go only to AI endpoints you configure yourself.
-_Full disclosure coming before the first release._
+- **No servers.** No telemetry, no accounts, no update checks, no servers of our own.
+- **Only your endpoints.** Network requests go only to the endpoints you configure, through Obsidian's
+  `requestUrl`.
+- **Local-only by default.** Local-only mode is on by default and blocks any request to a host other than
+  this computer (`localhost`, `127.x.x.x`, `::1`). This is enforced in one place for every provider.
+- **What is sent today.** Nothing, until you click **Test connection**. That lists the models and sends
+  a one-word prompt, or embeds the words "connection test".
+- **What later features send.** Features that send note content will show which notes go to which host
+  before anything is sent.
+- **Where data is stored.** Model responses are cached in `.ai-vault-organizer/cache/llm/` inside your
+  vault, so repeated runs are free. They may quote your notes. Clear them with **Clear cache** in
+  settings, and exclude the folder from sync if you prefer.
+- **Free tiers.** Cloud providers' free tiers may train on what you send. Use a local model or a paid key
+  for private notes.
 
 ## Evals
 
