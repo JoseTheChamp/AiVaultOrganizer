@@ -85,6 +85,18 @@ describe('UndoService', () => {
     expect(await vault.read('Home.md')).toBe('[[Other]] plus my edit');
   });
 
+  it('restores links that a move redirected to the moved note', async () => {
+    // Found by the round-trip property test: from C/Alpha.md, [[Alpha]] resolves to itself until a
+    // note named Alpha moves to the vault root and the same text starts resolving to that note.
+    const { vault, executor, undo, journal } = setup({ 'A/B/Alpha.md': '# Alpha\n', 'C/Alpha.md': 'See [[Alpha]].\n' });
+    const before = vault.contents();
+    const run = await executor.apply(planOf([acceptedOp({ kind: 'move', from: 'A/B/Alpha.md', to: 'Alpha.md' })]));
+    const moveBack = (await journal.read(run.runId)).ops[0]?.inverses.find((i) => i.type === 'moveBack');
+    expect(moveBack).toMatchObject({ redirected: [{ path: 'C/Alpha.md' }] });
+    await undo.undoLast();
+    expect(vault.contents()).toEqual(before);
+  });
+
   it('undoes partial runs and refuses to undo twice', async () => {
     const { vault, executor, undo, journal } = setup({ 'a.md': '', 'b.md': '' });
     vault.failNextWriteTo = 'b.md';

@@ -225,8 +225,13 @@ export class ApplyExecutor {
       const current = await reader.read(now);
       if (current !== previous) sideEffects.push({ path: now, beforeContent: previous, afterHash: await hasher.sha256(current) });
     }
+    const redirected = [];
+    for (const path of await links.backlinks(op.to)) {
+      if (candidates.includes(path) || path === op.to) continue;
+      redirected.push({ path, afterHash: await hasher.sha256(await reader.read(path)) });
+    }
     const afterHash = await hasher.sha256(await reader.read(op.to));
-    inverses.push({ type: 'moveBack', from: op.to, to: op.from, afterHash, sideEffects });
+    inverses.push({ type: 'moveBack', from: op.to, to: op.from, afterHash, sideEffects, redirected });
     return inverses;
   }
 

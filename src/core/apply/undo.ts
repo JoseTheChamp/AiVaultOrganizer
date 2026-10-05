@@ -102,11 +102,13 @@ export class UndoService {
     }
 
     // Only restore link rewrites in notes nobody edited since; others keep Obsidian's own update.
+    const unedited = async (path: string, hash: string) =>
+      (await reader.exists(path)) && (await hasher.sha256(await reader.read(path))) === hash;
     const untouched = new Set<string>();
-    for (const effect of inverse.sideEffects) {
-      if ((await reader.exists(effect.path)) && (await hasher.sha256(await reader.read(effect.path))) === effect.afterHash) {
-        untouched.add(effect.path);
-      }
+    for (const effect of inverse.sideEffects) if (await unedited(effect.path, effect.afterHash)) untouched.add(effect.path);
+    const redirected = new Map<string, string>();
+    for (const note of inverse.redirected) {
+      if (await unedited(note.path, note.afterHash)) redirected.set(note.path, await reader.read(note.path));
     }
 
     await writer.move(inverse.from, inverse.to);
@@ -116,6 +118,10 @@ export class UndoService {
       if (!untouched.has(effect.path)) continue;
       const path = effect.path === inverse.from ? inverse.to : effect.path;
       if ((await reader.read(path)) !== effect.beforeContent) await writer.processBody(path, () => effect.beforeContent);
+    }
+    // These links never pointed at the moved note before the run; undo their rewrite.
+    for (const [path, content] of redirected) {
+      if ((await reader.read(path)) !== content) await writer.processBody(path, () => content);
     }
     return null;
   }

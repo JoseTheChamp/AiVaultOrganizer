@@ -25,6 +25,12 @@ export const inverseSchema = z.discriminatedUnion('type', [
     afterHash: z.string(),
     /** Notes whose links Obsidian rewrote because of the move (and the moved note's own links). */
     sideEffects: z.array(z.object({ path, beforeContent: z.string(), afterHash: z.string() })),
+    /**
+     * Notes whose unchanged link text started resolving to the moved note (e.g. `[[Alpha]]` now
+     * matching a note moved to the root). Moving back makes Obsidian rewrite those links, so undo
+     * puts their text back.
+     */
+    redirected: z.array(z.object({ path, afterHash: z.string() })).default([]),
   }),
   z.object({ type: z.literal('removeFolder'), path }),
   z.object({ type: z.literal('trashCreated'), path, afterHash: z.string() }),
