@@ -105,7 +105,9 @@ export type ProviderErrorKind =
   | 'bad-request'
   | 'invalid-response'
   | 'blocked'
-  | 'budget';
+  | 'budget'
+  /** The model declined the request (e.g. a safety classifier); retrying the same input won't help. */
+  | 'refusal';
 
 /** An expected failure talking to a provider; `retryable` decides whether backoff may help. */
 export class ProviderError extends Error {

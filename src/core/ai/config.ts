@@ -46,7 +46,7 @@ export const ENDPOINT_PRESETS: EndpointPreset[] = [
   { id: 'ollama', label: 'Ollama (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:11434/v1', chatModel: 'qwen3:8b', embeddingModel: 'bge-m3', needsKey: false, local: true, maxContext: 8192 },
   { id: 'lm-studio', label: 'LM Studio (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:1234/v1', chatModel: '', embeddingModel: '', needsKey: false, local: true, maxContext: 8192 },
   { id: 'openai', label: 'OpenAI', kind: 'openai-compatible', baseUrl: 'https://api.openai.com/v1', chatModel: 'gpt-4.1-mini', embeddingModel: 'text-embedding-3-small', needsKey: true, local: false, maxContext: 128000 },
-  { id: 'anthropic', label: 'Anthropic', kind: 'anthropic', baseUrl: 'https://api.anthropic.com', chatModel: 'claude-haiku-4-5-20251001', embeddingModel: null, needsKey: true, local: false, maxContext: 200000 },
+  { id: 'anthropic', label: 'Anthropic', kind: 'anthropic', baseUrl: 'https://api.anthropic.com', chatModel: 'claude-opus-5-5', embeddingModel: null, needsKey: true, local: false, maxContext: 200000 },
   { id: 'openrouter', label: 'OpenRouter', kind: 'openai-compatible', baseUrl: 'https://openrouter.ai/api/v1', chatModel: '', embeddingModel: null, needsKey: true, local: false, maxContext: 32000 },
   { id: 'gemini', label: 'Google Gemini', kind: 'openai-compatible', baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai', chatModel: 'gemini-2.5-flash', embeddingModel: 'text-embedding-004', needsKey: true, local: false, maxContext: 128000 },
   { id: 'mistral', label: 'Mistral', kind: 'openai-compatible', baseUrl: 'https://api.mistral.ai/v1', chatModel: 'mistral-small-latest', embeddingModel: 'mistral-embed', needsKey: true, local: false, maxContext: 32000 },
