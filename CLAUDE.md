@@ -67,7 +67,7 @@ Refs: #<issue>
 Rules:
 
 1. **One logical change per commit.** Tests go in the same commit as the code they test. A commit must
-   build and pass `npm run check` on its own (husky pre-commit runs lint-staged; CI runs everything).
+   build and pass `npm run check` on its own (husky pre-commit runs nano-staged; CI runs everything).
 2. **Follow the planned commit list** in `docs/PLAN.md` §11 for the current milestone. If reality differs,
    adjust the plan in the milestone's PR description; don't silently drift.
 3. **Branch per milestone**: `m<NN>-<slug>` (e.g. `m02-safety-layer`). Never commit directly to `main`.
