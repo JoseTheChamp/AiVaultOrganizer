@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "name": "ollama-smoke",
+  "interactions": [
+    {
+      "key": "2df94d8fe7a0926c704317f248a178574baa6fec2005acff184752131421addb",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:11434/v1/models",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"object\":\"list\",\"data\":[{\"id\":\"qwen2.5:0.5b\",\"object\":\"model\",\"created\":1788282920,\"owned_by\":\"library\"}]}\n"
+      }
+    },
+    {
+      "key": "fe16a55cee0dc96bf824a3798601d672df51ea92380cff0a64a106e4839beb0a",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen2.5:0.5b",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Reply with exactly one word: OK"
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 20
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-737\",\"object\":\"chat.completion\",\"created\":1791229481,\"model\":\"qwen2.5:0.5b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"OK\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":36,\"prompt_tokens_details\":{\"cached_tokens\":35},\"completion_tokens\":2,\"total_tokens\":38}}\n"
+      }
+    },
+    {
+      "key": "224ec336c65eb7fdd85431f01116e9b39f34b34ff826d63e3bcbe2bcc84c82c4",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen2.5:0.5b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You file notes into PARA destinations. Answer with the destination id and your confidence between 0 and 1."
+            },
+            {
+              "role": "user",
+              "content": "Note \"Website relaunch\": goal is to ship the new company website by December. Tasks: design, hosting, launch."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 100,
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "classification",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "destinationId": {
+                    "type": "string",
+                    "enum": [
+                      "projects",
+                      "areas",
+                      "resources",
+                      "archive",
+                      "abstain"
+                    ]
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "destinationId",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-257\",\"object\":\"chat.completion\",\"created\":1791229481,\"model\":\"qwen2.5:0.5b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{ \\\"destinationId\\\": \\\"archive\\\", \\\"confidence\\\": 0.9 }\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":60,\"prompt_tokens_details\":{\"cached_tokens\":59},\"completion_tokens\":21,\"total_tokens\":81}}\n"
+      }
+    }
+  ],
+  "recordedAt": "2026-10-05T19:44:41.784Z"
+}
