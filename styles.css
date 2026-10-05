@@ -1,4 +1,85 @@
 /*
  * AI Vault Organizer styles.
  * Use Obsidian CSS variables only; no hard-coded colors (see CLAUDE.md).
+ * Every class is prefixed with `avo-` to avoid clashing with themes and other plugins.
  */
+
+.avo-muted {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+/* Diagnostics */
+
+.avo-score-header {
+  display: flex;
+  align-items: center;
+  gap: var(--size-4-4);
+  margin-bottom: var(--size-4-4);
+}
+
+.avo-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: var(--size-4-3);
+  border-radius: var(--radius-l);
+  background-color: var(--background-secondary);
+  border: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-score-value {
+  font-size: 2.2em;
+  font-weight: var(--font-bold);
+  line-height: 1;
+}
+
+.avo-score-label {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-top: var(--size-4-1);
+}
+
+.avo-score-good .avo-score-value {
+  color: var(--color-green);
+}
+
+.avo-score-fair .avo-score-value {
+  color: var(--color-yellow);
+}
+
+.avo-score-poor .avo-score-value {
+  color: var(--color-red);
+}
+
+.avo-score-summary p {
+  margin: 0 0 var(--size-4-1);
+}
+
+.avo-meter-row {
+  padding: var(--size-4-2) 0;
+  border-bottom: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-meter-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-ui-small);
+}
+
+.avo-meter {
+  width: 100%;
+  height: 8px;
+  margin: var(--size-4-1) 0;
+}
+
+.avo-meter-detail {
+  line-height: var(--line-height-tight);
+}
+
+.avo-issues {
+  margin-top: 0;
+  font-size: var(--font-ui-small);
+}

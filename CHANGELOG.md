@@ -9,3 +9,5 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ### Added
 
 - Plugin scaffold: build, lint, test and release tooling.
+- `Analyze vault` command: health score, detected organization method with evidence, link graph,
+  tag variants and empty folders, with a copyable Markdown report.
