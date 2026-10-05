@@ -1,0 +1,46 @@
+name: Bug report
+description: Something does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please never paste real personal notes. Describe the structure instead, or build a tiny synthetic example.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+    validations:
+      required: true
+  - type: input
+    id: obsidian-version
+    attributes:
+      label: Obsidian version and OS
+    validations:
+      required: true
+  - type: dropdown
+    id: ai-tier
+    attributes:
+      label: AI tier in use
+      options:
+        - No AI (tier 0)
+        - Embeddings (tier 1)
+        - Language model (tier 2)
+  - type: textarea
+    id: logs
+    attributes:
+      label: Debug log
+      description: Enable debug logging in settings and paste relevant lines (remove note contents).
