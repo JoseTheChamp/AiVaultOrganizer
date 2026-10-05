@@ -97,3 +97,72 @@
 .avo-warning {
   color: var(--text-warning);
 }
+
+/* Charter card (```charter blocks in reading view) */
+
+.avo-charter-card {
+  padding: var(--size-4-3);
+  border: var(--border-width) solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background-color: var(--background-secondary);
+  font-size: var(--font-ui-small);
+}
+
+.avo-charter-invalid {
+  border-color: var(--background-modifier-error);
+}
+
+.avo-charter-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-4-2);
+  margin-bottom: var(--size-4-2);
+}
+
+.avo-charter-title {
+  font-weight: var(--font-semibold);
+  font-size: var(--font-ui-medium);
+}
+
+.avo-charter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-4-1);
+}
+
+.avo-chip {
+  padding: 0 var(--size-4-2);
+  border-radius: var(--radius-s);
+  background-color: var(--background-modifier-hover);
+  color: var(--text-muted);
+}
+
+.avo-charter-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.avo-charter-table th,
+.avo-charter-table td {
+  padding: var(--size-4-1) var(--size-4-2);
+  border-bottom: var(--border-width) solid var(--background-modifier-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.avo-charter-system {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--size-4-1) var(--size-4-3);
+  margin: var(--size-4-3) 0 0;
+}
+
+.avo-charter-system dt {
+  color: var(--text-muted);
+}
+
+.avo-charter-system dd {
+  margin: 0;
+}

@@ -4,6 +4,7 @@ import { ConsoleLogger } from './logger';
 import { createServices, type PluginServices } from './services';
 import { parseSettings, type PluginSettings } from './settings/settings';
 import { SettingsTab } from './settings/settings-tab';
+import { renderCharterBlock } from './views/charter-card';
 
 /** Entry point loaded by Obsidian. Wires adapters, commands and views; contains no domain logic. */
 export default class AiVaultOrganizerPlugin extends Plugin {
@@ -17,6 +18,7 @@ export default class AiVaultOrganizerPlugin extends Plugin {
     await this.loadSettings();
     this.services = createServices(this.app, new ConsoleLogger(() => this.settings.debugLogging));
     registerCommands(this);
+    this.registerMarkdownCodeBlockProcessor('charter', (source, el) => renderCharterBlock(source, el));
     this.addSettingTab(new SettingsTab(this.app, this));
   }
 
