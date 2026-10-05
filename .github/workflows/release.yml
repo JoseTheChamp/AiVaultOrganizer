@@ -1,0 +1,43 @@
+name: Release
+
+# Tags are bare semver (1.2.3, no "v" prefix) and must equal manifest.json "version";
+# the community directory resolves releases by that exact tag name.
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify tag matches manifest version
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          manifest=$(node -p "require('./manifest.json').version")
+          pkg=$(node -p "require('./package.json').version")
+          if [ "$tag" != "$manifest" ] || [ "$tag" != "$pkg" ]; then
+            echo "Tag $tag does not match manifest.json ($manifest) / package.json ($pkg)"
+            exit 1
+          fi
+          node -e "const v=require('./versions.json'); if(!v['$tag']) { console.error('versions.json has no entry for $tag'); process.exit(1) }"
+      - run: npm run check
+      - run: npm run build
+      - name: Create draft release with plugin assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          case "$GITHUB_REF_NAME" in *-*) prerelease="--prerelease";; esac
+          gh release create "$GITHUB_REF_NAME" main.js manifest.json styles.css \
+            --title "$GITHUB_REF_NAME" --draft --generate-notes $prerelease
