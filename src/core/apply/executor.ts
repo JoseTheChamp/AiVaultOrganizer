@@ -38,7 +38,7 @@ export interface ApplyOptions {
   signal?: { readonly aborted: boolean };
   onProgress?: (progress: { done: number; total: number }) => void;
   /** Runs after each batch once the link index caught up (link verification, §5.7). */
-  afterBatch?: (batchIndex: number) => Promise<BatchCheck>;
+  afterBatch?: (context: { batchIndex: number; moves: ReadonlyMap<string, string> }) => Promise<BatchCheck>;
 }
 
 export interface RunReport {
@@ -70,6 +70,8 @@ export class ApplyExecutor {
     const ops = orderOperations(plan.operations.filter((op) => op.status === 'accepted' && isMutation(op)));
     const batchSize = Math.max(1, options.batchSize ?? 50);
     const results = new Map<string, OperationResult>();
+    /** Original path → new path of every note moved so far in this run. */
+    const moves = new Map<string, string>();
 
     await journal.append(runId, {
       type: 'run',
@@ -109,6 +111,7 @@ export class ApplyExecutor {
           } else {
             await journal.append(runId, { type: 'op', opId: op.id, kind: op.kind, appliedAt: journal.now(), inverses });
             results.set(op.id, { opId: op.id, status: 'applied' });
+            if (op.kind === 'move') moves.set(op.from, op.to);
           }
         } catch (error) {
           const text = error instanceof Error ? error.message : String(error);
@@ -120,7 +123,7 @@ export class ApplyExecutor {
         }
       }
       await this.deps.writer.waitForIndex();
-      const check = await options.afterBatch?.(start / batchSize);
+      const check = await options.afterBatch?.({ batchIndex: start / batchSize, moves });
       if (check && !check.ok) {
         status = 'verification-failed';
         message = check.message ?? 'Link verification failed.';

@@ -33,6 +33,8 @@ export class InMemoryVault implements VaultReader, VaultWriter, LinkIndex {
   readonly trash: { path: string; content: string }[] = [];
   /** When set, the next write to this path throws (to test failure handling). */
   failNextWriteTo: string | null = null;
+  /** Mirrors Obsidian's "Automatically update internal links"; off simulates a user who disabled it. */
+  updateLinksOnMove = true;
   private index: ComputedLinkIndex | null = null;
 
   constructor(options: InMemoryVaultOptions = {}) {
@@ -129,7 +131,7 @@ export class InMemoryVault implements VaultReader, VaultWriter, LinkIndex {
     const notes = [...this.files]
       .filter(([path]) => extension(path) === 'md')
       .map(([path, file]) => ({ path, content: file.content }));
-    const updates = linkUpdatesForMove(notes, [...this.files.keys()], from, to);
+    const updates = this.updateLinksOnMove ? linkUpdatesForMove(notes, [...this.files.keys()], from, to) : new Map<string, string>();
     this.files.delete(from);
     this.files.set(to, { ...source, mtime: this.clock.now() });
     for (const [path, content] of updates) {
