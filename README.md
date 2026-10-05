@@ -31,10 +31,24 @@ _Coming with milestone 3._
 
 ## Safety
 
-- No delete operation exists; "removing" means moving into an archive folder you approved.
-- A zip backup is created before every apply.
-- Every change is journaled with its inverse; `Undo last run` reverts it.
-- Link integrity is verified after every batch.
+- **Nothing is ever deleted.** There is no delete operation; "removing" a note means moving it into an archive
+  folder you approved. Undo may only trash files the plugin created itself.
+- **You review everything.** Changes are proposals until you apply them (`Review pending plan`).
+- **A backup comes first.** Every apply starts with a zip of all notes, canvases and bases in
+  `.ai-vault-organizer/backups/` (the last 10 are kept; configurable).
+- **Links are verified** after every batch: if any existing link would stop resolving, the run stops.
+- **Undo is exact.** `Undo last run` restores notes byte for byte. Notes you edited after the run are left as
+  they are and listed, never overwritten.
+
+### Restoring a backup by hand
+
+Each backup zip contains `vault/` (your files, with their folder structure) and `manifest.json` (every file's
+size and SHA-256). To restore, close Obsidian, extract the zip and copy the contents of `vault/` over your
+vault. Guided restore is on the roadmap.
+
+Tips: pause third-party sync (iCloud, Dropbox, OneDrive) while a large plan is applied, and if your vault is a
+git repository, commit before applying. Exclude `.ai-vault-organizer/backups/` from sync if you don't want
+backups uploaded.
 
 ## AI setup
 
