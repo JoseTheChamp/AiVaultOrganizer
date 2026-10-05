@@ -59,6 +59,7 @@ export function createFakeApp(recorded: RecordedVault, contents: Record<string, 
     },
     cachedRead: async (file: TFile) => contents[file.path] ?? '',
     read: async (file: TFile) => contents[file.path] ?? '',
+    readBinary: async (file: TFile) => new TextEncoder().encode(contents[file.path] ?? '').buffer,
   };
   const metadataCache = {
     getFileCache: (file: TFile) => caches.get(file.path) ?? null,

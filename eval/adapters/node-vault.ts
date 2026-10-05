@@ -44,6 +44,10 @@ export class NodeFsVault implements VaultReader {
     return readFile(this.absolute(vaultPath), 'utf8');
   }
 
+  async readBinary(vaultPath: string): Promise<Uint8Array> {
+    return new Uint8Array(await readFile(this.absolute(vaultPath)));
+  }
+
   async exists(vaultPath: string): Promise<boolean> {
     try {
       await stat(this.absolute(vaultPath));

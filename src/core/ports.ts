@@ -14,7 +14,27 @@ export interface VaultReader {
   snapshot(options?: SnapshotOptions): Promise<VaultSnapshot>;
   /** Raw content of a file, including frontmatter. */
   read(path: string): Promise<string>;
+  /** Raw bytes of any file (notes and attachments), for backups. */
+  readBinary(path: string): Promise<Uint8Array>;
   exists(path: string): Promise<boolean>;
+}
+
+export interface LinkGraph {
+  /** Every resolved link as [source, target] (targets include attachments), de-duplicated. */
+  edges: Array<[source: string, target: string]>;
+  /** Number of (note, link text) pairs that resolve to nothing. */
+  unresolvedCount: number;
+}
+
+/** The vault's resolved link index (Obsidian: metadataCache.resolvedLinks/unresolvedLinks). */
+export interface LinkIndex {
+  /** Notes linking to `path`, sorted. */
+  backlinks(path: string): Promise<string[]>;
+  /** Resolved files `path` links to, sorted. */
+  outgoing(path: string): Promise<string[]>;
+  /** Link text for a new link from `sourcePath` to `targetPath`, as the user's link settings write it. */
+  linkText(targetPath: string, sourcePath: string): Promise<string>;
+  graph(): Promise<LinkGraph>;
 }
 
 /**

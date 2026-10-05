@@ -83,6 +83,12 @@ export class ObsidianVaultReader implements VaultReader {
     return this.app.vault.cachedRead(file);
   }
 
+  async readBinary(path: string): Promise<Uint8Array> {
+    const file = this.app.vault.getFileByPath(normalizePath(path));
+    if (!file) throw new Error(`No such file: ${path}`);
+    return new Uint8Array(await this.app.vault.readBinary(file));
+  }
+
   async exists(path: string): Promise<boolean> {
     return this.app.vault.getAbstractFileByPath(normalizePath(path)) !== null;
   }
