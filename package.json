@@ -17,14 +17,15 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs production",
-    "typecheck": "tsc --noEmit",
+    "dev:vault": "npm run build && node scripts/dev-vault.mjs",
     "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "check": "npm run lint && npm run typecheck && npm test",
-    "prepare": "husky",
-    "analyze": "tsx eval/cli.ts analyze"
+    "analyze": "tsx eval/cli.ts analyze",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
