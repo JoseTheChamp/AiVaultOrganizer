@@ -1,2 +1,6 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize to LF everywhere so lint, hashes and fixtures are identical on every OS.
+* text=auto eol=lf
+*.png binary
+*.gif binary
+*.zip binary
+*.bin binary

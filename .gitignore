@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output (main.js is built by the release workflow, never committed)
+main.js
+*.js.map
+
+# Local development vault generated from fixtures
+dev-vault/
+
+# Test and eval output
+coverage/
+eval/out/
+
+# Environment and secrets
+.env
+.env.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json

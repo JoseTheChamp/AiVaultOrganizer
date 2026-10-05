@@ -1,0 +1,10 @@
+{
+  "id": "ai-vault-organizer",
+  "name": "AI Vault Organizer",
+  "version": "0.0.1",
+  "minAppVersion": "1.11.4",
+  "description": "Organize your vault with a written charter. Diagnose its structure, pick a method like PARA or Johnny.Decimal, review an AI-assisted migration plan, and keep notes aligned over time.",
+  "author": "Josef Knotek",
+  "authorUrl": "https://github.com/JoseTheChamp",
+  "isDesktopOnly": true
+}

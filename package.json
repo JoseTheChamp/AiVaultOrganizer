@@ -1,0 +1,28 @@
+{
+  "name": "ai-vault-organizer",
+  "version": "0.0.1",
+  "description": "Organize your Obsidian vault with a written charter: diagnose, plan, review, apply with backup and undo, and keep notes aligned over time.",
+  "private": true,
+  "type": "module",
+  "main": "main.js",
+  "license": "MIT",
+  "author": "Josef Knotek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoseTheChamp/AiVaultOrganizer.git"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.1",
+    "esbuild": "^0.28.2",
+    "obsidian": "^1.13.1",
+    "typescript": "~6.0.3"
+  }
+}
