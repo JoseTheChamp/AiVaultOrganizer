@@ -1,3 +1,4 @@
+import { replaceCharterBlock } from '../markdown/charter-block';
 import { insertRelatedLinks } from '../markdown/related-links';
 import { replaceGeneratedSection } from '../markdown/generated-sections';
 import { addTagsToFrontmatter, replaceInlineTag, replaceTagInFrontmatter } from '../markdown/tags-edit';
@@ -179,6 +180,14 @@ export class ApplyExecutor {
           this.deps.writer.processBody(op.path, (content) => {
             const result = replaceGeneratedSection(content, op.sectionId, op.content);
             if (!result.ok) throw new OperationError(`Generated section "${op.sectionId}" is ${result.error} in "${op.path}".`);
+            return result.value;
+          }),
+        );
+      case 'updateCharterRules':
+        return this.editContent(op.path, () =>
+          this.deps.writer.processBody(op.path, (content) => {
+            const result = replaceCharterBlock(content, op.yaml);
+            if (!result.ok) throw new OperationError(`"${op.path}" has no charter block.`);
             return result.value;
           }),
         );

@@ -196,6 +196,7 @@ function simulate(ordered: Operation[], snapshot: VaultSnapshot, add: Add): void
       case 'addTags':
       case 'replaceTag':
       case 'updateGeneratedSection':
+      case 'updateCharterRules':
       case 'addRelatedLinks':
         if (!exists(op.path)) {
           const moved = movedTo.get(op.path.toLowerCase());

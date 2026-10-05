@@ -19,6 +19,8 @@ export function describeOperation(op: Operation): string {
       return `Create ${op.role === 'moc' ? 'map of content' : op.role} note "${op.path}"`;
     case 'updateGeneratedSection':
       return `Update generated section "${op.sectionId}" in "${op.path}"`;
+    case 'updateCharterRules':
+      return `Update the rules block of "${op.path}"`;
     case 'flag':
       return `Flag "${op.path}" as ${op.issue.replace('-', ' ')}`;
   }
@@ -33,5 +35,6 @@ export const KIND_LABELS: Record<OperationKind, string> = {
   addRelatedLinks: 'Related links',
   createNote: 'New notes',
   updateGeneratedSection: 'Generated sections',
+  updateCharterRules: 'Charter rules',
   flag: 'Flags for you to look at',
 };

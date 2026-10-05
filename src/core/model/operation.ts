@@ -53,6 +53,13 @@ export const operationSchema = z.discriminatedUnion('kind', [
   }),
   z.object({
     ...base,
+    kind: z.literal('updateCharterRules'),
+    path: vaultPath,
+    /** New YAML for the note's charter block. */
+    yaml: z.string().min(1),
+  }),
+  z.object({
+    ...base,
     kind: z.literal('flag'),
     path: vaultPath,
     issue: z.enum(FLAG_ISSUES),
@@ -84,6 +91,7 @@ export const PHASE: Record<OperationKind, number> = {
   addRelatedLinks: 3,
   createNote: 4,
   updateGeneratedSection: 4,
+  updateCharterRules: 4,
   flag: 5,
 };
 
@@ -125,6 +133,7 @@ export function touchedPaths(op: Operation): string[] {
     case 'replaceTag':
     case 'createNote':
     case 'updateGeneratedSection':
+    case 'updateCharterRules':
       return [op.path];
   }
 }
