@@ -1,5 +1,6 @@
 import type { Heading } from '../model/note';
 import { parseFrontmatter, splitFrontmatter } from './frontmatter';
+import { FENCE } from './prose';
 
 /** A link as written in a note, before resolution. */
 export interface RawLink {
@@ -21,7 +22,6 @@ export interface ParsedNote {
   prose: string;
 }
 
-const FENCE = /^ {0,3}(`{3,}|~{3,})/;
 const HEADING = /^ {0,3}(#{1,6})[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$/;
 const INLINE_TAG = /(?:^|\s)#([\p{L}\p{N}_\-/]+)/gu;
 const WIKILINK = /(!?)\[\[([^\]\n]+?)\]\]/g;
