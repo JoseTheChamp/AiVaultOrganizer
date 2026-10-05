@@ -54,11 +54,13 @@ export default defineConfig([
   },
   {
     // Node-side tooling: the eval CLI and scripts may use fetch and Node built-ins.
-    files: ['eval/**/*.ts', 'scripts/**/*.ts', '*.mjs', '*.mts'],
+    files: ['eval/**/*.ts', 'scripts/**/*.{ts,mjs,js}', '*.mjs', '*.mts'],
     languageOptions: { globals: globals.node },
     rules: {
       'no-restricted-globals': 'off',
       'import/no-extraneous-dependencies': 'off',
+      // CLI tools report on stdout; the console rule targets plugin code.
+      'obsidianmd/rule-custom-message': 'off',
       // Build tooling targets the dev vault, whose config folder is always .obsidian.
       'obsidianmd/hardcoded-config-path': 'off',
     },
