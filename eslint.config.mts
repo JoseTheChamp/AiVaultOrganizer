@@ -63,6 +63,7 @@ export default defineConfig([
       'import/no-extraneous-dependencies': 'off',
       // CLI tools report on stdout; the console rule targets plugin code.
       'obsidianmd/rule-custom-message': 'off',
+      'obsidianmd/prefer-window-timers': 'off',
       // Build tooling targets the dev vault, whose config folder is always .obsidian.
       'obsidianmd/hardcoded-config-path': 'off',
     },
