@@ -41,6 +41,8 @@ export class PlanReviewModal extends Modal {
       text: `Plan ${plan.id}, created ${new Date(plan.createdAt).toLocaleString()}. Nothing changes until you apply. A backup is made first and every change can be undone.`,
     });
 
+    for (const warning of plan.warnings) contentEl.createEl('p', { cls: 'avo-muted', text: warning.message });
+
     const errors = validation.issues.filter((issue) => issue.severity === 'error');
     const warnings = validation.issues.filter((issue) => issue.severity === 'warning');
     if (errors.length > 0 || warnings.length > 0) {

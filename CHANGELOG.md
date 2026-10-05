@@ -16,3 +16,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - `Review pending plan` command: accept or reject each proposed change, then apply.
 - `Undo last run` command: restores notes byte for byte; notes edited after the run are left alone and listed.
 - `Create backup` command and backup settings (retention, attachments).
+- Vault charter: a note that explains your system and holds its rules, with presets for PARA, ACE,
+  Flat + categories, Johnny.Decimal, Zettelkasten and Topic folders (English and Czech), or a charter that
+  codifies your current folders. `Set up charter` previews what the rules would do before anything is written.
+- Charter rules render as a summary card in reading view, or as a list of problems with line numbers.
+- `Check drift` and `Plan re-alignment`: see where the vault departs from its charter and review the moves
+  its rules imply.
