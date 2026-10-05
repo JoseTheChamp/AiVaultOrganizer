@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod';
 
 /**
  * Persisted plugin settings (`data.json`). Never holds secrets: API keys live in Obsidian's
