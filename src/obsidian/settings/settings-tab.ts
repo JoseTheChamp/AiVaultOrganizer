@@ -305,7 +305,8 @@ export class SettingsTab extends PluginSettingTab {
         },
       },
     );
-    if (preset?.needsKey !== false || endpoint.secretName) {
+    // Local servers never need a key; custom endpoints may (self-hosted proxies often do).
+    if (preset?.local !== true || endpoint.secretName) {
       rows.push({
         name: 'API key',
         desc: "Choose or add a key in Obsidian's keychain. Only its name is saved in the plugin settings; the key never leaves this device except to this provider.",
