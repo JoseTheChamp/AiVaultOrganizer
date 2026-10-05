@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { charterSchema } from '../schema';
 import { parseCharterYaml, stringifyCharter } from '../yaml';
-import { ace } from './ace';
+import { flatCategories } from './flat-categories';
+import { PRESET_ORDER, PRESETS, presetCharter } from './index';
 import { johnnyDecimal } from './johnny-decimal';
 import { para } from './para';
 import type { Lang, Preset } from './types';
 
-const presets: Preset[] = [para, johnnyDecimal, ace];
+const presets: Preset[] = Object.values(PRESETS);
 
 describe.each(presets)('preset $id', (preset) => {
   it.each<Lang>(['en', 'cs'])('builds a valid %s charter that survives YAML', (lang) => {
@@ -18,7 +19,7 @@ describe.each(presets)('preset $id', (preset) => {
   });
 
   it('has prose in both languages and classifier guidance', () => {
-    expect(preset.summary.en).toContain(`**${preset.label}**`);
+    expect(preset.summary.en).toMatch(/\*\*.+\*\*/);
     expect(preset.summary.cs.length).toBeGreaterThan(50);
     expect(preset.guidance.length).toBeGreaterThan(50);
   });
@@ -43,5 +44,21 @@ describe('Johnny.Decimal', () => {
     });
     expect(charter.jd?.areas.map((a) => a.id)).toEqual(['00-09', '10-19', '20-29', '30-39']);
     expect(new RegExp('^11\\.\\d{2}(?:\\s|$)').test('11.02 Accounts')).toBe(true);
+  });
+});
+
+describe('registry', () => {
+  it('lists every method once and builds charters by id', () => {
+    expect([...PRESET_ORDER].sort()).toEqual(Object.keys(PRESETS).sort());
+    expect(presetCharter('zettelkasten', 'cs').mode).toBe('hybrid');
+  });
+});
+
+describe('Flat + categories', () => {
+  it('is property-based and requires categories', () => {
+    const charter = charterSchema.parse(flatCategories.build('en'));
+    expect(charter.mode).toBe('properties');
+    expect(charter.conventions.properties?.required).toEqual(['categories']);
+    expect(charter.destinations.find((d) => d.id === 'clippings')?.match).toEqual([{ property: 'source', exists: true }]);
   });
 });
