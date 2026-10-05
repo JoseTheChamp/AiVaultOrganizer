@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { aiSettingsSchema } from '../../core/ai/settings';
 
 /**
  * Persisted plugin settings (`data.json`). Never holds secrets: API keys live in Obsidian's
@@ -12,6 +13,7 @@ export const settingsSchema = z.object({
   /** Backups kept in .ai-vault-organizer/backups; older ones are pruned after each run. */
   backupRetention: z.number().int().min(1).max(100).default(10).catch(10),
   backupIncludeAttachments: z.boolean().default(false).catch(false),
+  ai: aiSettingsSchema.default(() => aiSettingsSchema.parse({})).catch(() => aiSettingsSchema.parse({})),
   debugLogging: z.boolean().default(false).catch(false),
 });
 

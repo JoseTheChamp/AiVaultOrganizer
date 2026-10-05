@@ -23,7 +23,14 @@ describe('parseSettings', () => {
     expect(parsed.debugLogging).toBe(true);
   });
 
-  it('drops unknown keys', () => {
+  it('drops unknown keys and never stores an API key, even inside AI settings', () => {
     expect(parseSettings({ apiKey: 'should-not-survive' })).not.toHaveProperty('apiKey');
+    const parsed = parseSettings({ ai: { chat: { enabled: true, apiKey: 'sk-secret', secretName: 'openai' } } });
+    expect(JSON.stringify(parsed)).not.toContain('sk-secret');
+    expect(parsed.ai.chat).toMatchObject({ enabled: true, secretName: 'openai' });
+  });
+
+  it('falls back to default AI settings when they are corrupt', () => {
+    expect(parseSettings({ ai: 'garbage' }).ai.localOnly).toBe(true);
   });
 });

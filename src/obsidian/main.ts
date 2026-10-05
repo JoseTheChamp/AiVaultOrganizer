@@ -16,7 +16,7 @@ export default class AiVaultOrganizerPlugin extends Plugin {
 
   override async onload(): Promise<void> {
     await this.loadSettings();
-    this.services = createServices(this.app, new ConsoleLogger(() => this.settings.debugLogging));
+    this.services = createServices(this.app, new ConsoleLogger(() => this.settings.debugLogging), () => this.settings);
     registerCommands(this);
     this.registerMarkdownCodeBlockProcessor('charter', (source, el) => renderCharterBlock(source, el));
     this.addSettingTab(new SettingsTab(this.app, this));
