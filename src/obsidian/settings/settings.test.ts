@@ -8,15 +8,18 @@ describe('parseSettings', () => {
   });
 
   it('keeps valid values', () => {
-    expect(parseSettings({ charterPath: 'Meta/Charter.md', debugLogging: true })).toEqual({
+    expect(parseSettings({ charterPath: 'Meta/Charter.md', debugLogging: true, backupRetention: 3 })).toEqual({
+      ...DEFAULT_SETTINGS,
       charterPath: 'Meta/Charter.md',
       debugLogging: true,
+      backupRetention: 3,
     });
   });
 
   it('falls back per field when a value is invalid', () => {
-    const parsed = parseSettings({ charterPath: '   ', debugLogging: true });
+    const parsed = parseSettings({ charterPath: '   ', debugLogging: true, backupRetention: 0 });
     expect(parsed.charterPath).toBe(DEFAULT_SETTINGS.charterPath);
+    expect(parsed.backupRetention).toBe(10);
     expect(parsed.debugLogging).toBe(true);
   });
 

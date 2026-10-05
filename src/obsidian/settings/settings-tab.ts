@@ -74,6 +74,38 @@ export class SettingsTab extends PluginSettingTab {
         ],
       },
       {
+        heading: 'Backups',
+        rows: [
+          {
+            name: 'Backups to keep',
+            desc: 'A backup is created before every change to your vault. Older backups beyond this number are removed.',
+            render: (setting) => {
+              setting.addSlider((slider) => {
+                slider
+                  .setLimits(1, 50, 1)
+                  .setValue(settings.backupRetention)
+                  .onChange(async (value) => {
+                    settings.backupRetention = value;
+                    await this.plugin.saveSettings();
+                  });
+              });
+            },
+          },
+          {
+            name: 'Include attachments',
+            desc: 'Also back up images, PDFs and other attachments. The plugin never changes them, so this is off by default to keep backups small.',
+            render: (setting) => {
+              setting.addToggle((toggle) => {
+                toggle.setValue(settings.backupIncludeAttachments).onChange(async (value) => {
+                  settings.backupIncludeAttachments = value;
+                  await this.plugin.saveSettings();
+                });
+              });
+            },
+          },
+        ],
+      },
+      {
         heading: 'Advanced',
         rows: [
           {

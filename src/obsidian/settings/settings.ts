@@ -9,6 +9,9 @@ import * as z from 'zod';
  */
 export const settingsSchema = z.object({
   charterPath: z.string().trim().min(1).default('Vault Charter.md').catch('Vault Charter.md'),
+  /** Backups kept in .ai-vault-organizer/backups; older ones are pruned after each run. */
+  backupRetention: z.number().int().min(1).max(100).default(10).catch(10),
+  backupIncludeAttachments: z.boolean().default(false).catch(false),
   debugLogging: z.boolean().default(false).catch(false),
 });
 

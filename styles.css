@@ -83,3 +83,17 @@
   margin-top: 0;
   font-size: var(--font-ui-small);
 }
+
+/* Plan review and reports */
+
+.avo-review .setting-item-name {
+  word-break: break-word;
+}
+
+.avo-error {
+  color: var(--text-error);
+}
+
+.avo-warning {
+  color: var(--text-warning);
+}

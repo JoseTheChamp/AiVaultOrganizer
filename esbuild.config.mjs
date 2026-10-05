@@ -12,7 +12,8 @@ const outDir = production ? '.' : devDir;
 
 // Raised deliberately when a dependency is added; catches accidental bloat such as
 // `import { z } from 'zod'`, which pulls every zod locale (~260 kB) into the bundle.
-const MAX_BUNDLE_BYTES = 200 * 1024;
+// 300 kB since the safety layer (fflate zip, yaml serialization).
+const MAX_BUNDLE_BYTES = 300 * 1024;
 
 const banner = `/*
 AI Vault Organizer — bundled by esbuild. Source: https://github.com/JoseTheChamp/AiVaultOrganizer
