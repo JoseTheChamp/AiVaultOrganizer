@@ -27,7 +27,23 @@ the two.
 
 ## Supported methods
 
-_Coming with milestone 3._
+| Method | How notes are organized | Rules out of the box |
+|---|---|---|
+| **PARA** | `Projects`, `Areas`, `Resources`, `Archive` (+ inbox) | `type: project/area/resource`, `status: done` → archive |
+| **ACE** | `Atlas` (maps, notes, sources, people), `Calendar`, `Efforts` (on, ongoing, simmering, sleeping) | `type`, `status`, dated meeting notes |
+| **Flat + categories** | Notes in the root, a `categories` property; folders only for references, clippings, daily | notes with a `source` URL → clippings |
+| **Johnny.Decimal** | `10-19 Area/11 Category` with IDs like `11.01` | IDs place notes in their category |
+| **Zettelkasten** | Fleeting, literature, permanent and hub notes | `type`, timestamp IDs |
+| **Topic folders** | One folder per subject | (your folders) |
+| **Keep my current structure** | Codifies the folders you already have | (your folders) |
+
+Run **Set up charter** (command palette). The plugin detects what you already use, recommends a method, and
+previews what its rules would do before writing anything. The charter becomes a note (`Vault Charter.md`)
+that explains your system in plain language (English or Czech) and ends with a ```charter YAML block holding
+the rules. Edit either part; the plugin only regenerates the marked sections and never touches your own text.
+
+**Check drift** shows where the vault departs from its charter; **Plan re-alignment** proposes the moves the
+rules imply for your review. Placing notes that no rule covers needs the AI tiers (coming next).
 
 ## Safety
 
