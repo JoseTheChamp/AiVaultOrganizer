@@ -47,5 +47,8 @@
   "nano-staged": {
     "*.{ts,mts,mjs}": "eslint --max-warnings=0",
     "package.json": "eslint --max-warnings=0"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
   }
 }
