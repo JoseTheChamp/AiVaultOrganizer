@@ -1,0 +1,1541 @@
+{
+  "obsidianVersion": "1.13.7",
+  "recordedAt": "2026-10-05T15:39:28.215Z",
+  "files": [
+    {
+      "path": "Areas/Zdraví/Spánek.md",
+      "stat": {
+        "ctime": 1791214017979,
+        "mtime": 1791213348864,
+        "size": 168
+      },
+      "cache": {
+        "links": [
+          {
+            "position": {
+              "start": {
+                "line": 9,
+                "col": 9,
+                "offset": 107
+              },
+              "end": {
+                "line": 9,
+                "col": 28,
+                "offset": 126
+              }
+            },
+            "link": "Pasta carbonara",
+            "original": "[[Pasta carbonara]]",
+            "displayText": "Pasta carbonara"
+          }
+        ],
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 29,
+                "offset": 89
+              },
+              "end": {
+                "line": 7,
+                "col": 36,
+                "offset": 96
+              }
+            },
+            "tag": "#Zdraví"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 4,
+                "col": 0,
+                "offset": 40
+              },
+              "end": {
+                "line": 4,
+                "col": 8,
+                "offset": 48
+              }
+            },
+            "heading": "Spánek",
+            "level": 1
+          },
+          {
+            "position": {
+              "start": {
+                "line": 6,
+                "col": 0,
+                "offset": 50
+              },
+              "end": {
+                "line": 6,
+                "col": 9,
+                "offset": 59
+              }
+            },
+            "heading": "Rutina",
+            "level": 2
+          }
+        ],
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 3,
+                "col": 3,
+                "offset": 39
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 4,
+                "col": 0,
+                "offset": 40
+              },
+              "end": {
+                "line": 4,
+                "col": 8,
+                "offset": 48
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 6,
+                "col": 0,
+                "offset": 50
+              },
+              "end": {
+                "line": 6,
+                "col": 9,
+                "offset": 59
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 0,
+                "offset": 60
+              },
+              "end": {
+                "line": 7,
+                "col": 36,
+                "offset": 96
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 9,
+                "col": 0,
+                "offset": 98
+              },
+              "end": {
+                "line": 9,
+                "col": 54,
+                "offset": 152
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "type": "area",
+          "tags": "zdraví, spánek"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 3,
+            "col": 3,
+            "offset": 39
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Attachments/pixel.png",
+      "stat": {
+        "ctime": 1791214017981,
+        "mtime": 1791213348742,
+        "size": 70
+      },
+      "cache": {}
+    },
+    {
+      "path": "Broken frontmatter.md",
+      "stat": {
+        "ctime": 1791214017982,
+        "mtime": 1791213348985,
+        "size": 55
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 24
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 25
+              },
+              "end": {
+                "line": 3,
+                "col": 29,
+                "offset": 54
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Canvas board.canvas",
+      "stat": {
+        "ctime": 1791214017983,
+        "mtime": 1791213349015,
+        "size": 24
+      },
+      "cache": {}
+    },
+    {
+      "path": "Daily/2026-10-01.md",
+      "stat": {
+        "ctime": 1791214017984,
+        "mtime": 1791213348928,
+        "size": 71
+      },
+      "cache": {
+        "links": [
+          {
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 10,
+                "offset": 24
+              },
+              "end": {
+                "line": 2,
+                "col": 26,
+                "offset": 40
+              }
+            },
+            "link": "Website plan",
+            "original": "[[Website plan]]",
+            "displayText": "Website plan"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 44,
+                "offset": 58
+              },
+              "end": {
+                "line": 2,
+                "col": 54,
+                "offset": 68
+              }
+            },
+            "link": "Spánek",
+            "original": "[[Spánek]]",
+            "displayText": "Spánek"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 12,
+                "offset": 12
+              }
+            },
+            "heading": "2026-10-01",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 12,
+                "offset": 12
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 0,
+                "offset": 14
+              },
+              "end": {
+                "line": 2,
+                "col": 55,
+                "offset": 69
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Home.md",
+      "stat": {
+        "ctime": 1791214017985,
+        "mtime": 1791213348780,
+        "size": 369
+      },
+      "cache": {
+        "links": [
+          {
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 20,
+                "offset": 95
+              },
+              "end": {
+                "line": 7,
+                "col": 48,
+                "offset": 123
+              }
+            },
+            "link": "Website plan",
+            "original": "[[Website plan|the website]]",
+            "displayText": "the website"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 53,
+                "offset": 128
+              },
+              "end": {
+                "line": 7,
+                "col": 70,
+                "offset": 145
+              }
+            },
+            "link": "Spánek#Rutina",
+            "original": "[[Spánek#Rutina]]",
+            "displayText": "Spánek > Rutina"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 8,
+                "col": 16,
+                "offset": 163
+              },
+              "end": {
+                "line": 8,
+                "col": 39,
+                "offset": 186
+              }
+            },
+            "link": "Areas/Zdraví/Spánek",
+            "original": "[[Areas/Zdraví/Spánek]]",
+            "displayText": "Areas/Zdraví/Spánek"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 8,
+                "col": 55,
+                "offset": 202
+              },
+              "end": {
+                "line": 8,
+                "col": 94,
+                "offset": 241
+              }
+            },
+            "link": "Resources/Pasta carbonara.md",
+            "original": "[Pasta](Resources/Pasta%20carbonara.md)",
+            "displayText": "Pasta"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 12,
+                "col": 17,
+                "offset": 277
+              },
+              "end": {
+                "line": 12,
+                "col": 33,
+                "offset": 293
+              }
+            },
+            "link": "Someday note",
+            "original": "[[Someday note]]",
+            "displayText": "Someday note"
+          }
+        ],
+        "embeds": [
+          {
+            "position": {
+              "start": {
+                "line": 10,
+                "col": 0,
+                "offset": 244
+              },
+              "end": {
+                "line": 10,
+                "col": 14,
+                "offset": 258
+              }
+            },
+            "link": "pixel.png",
+            "original": "![[pixel.png]]",
+            "displayText": "pixel.png"
+          }
+        ],
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 18,
+                "col": 0,
+                "offset": 349
+              },
+              "end": {
+                "line": 18,
+                "col": 4,
+                "offset": 353
+              }
+            },
+            "tag": "#hub"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 18,
+                "col": 5,
+                "offset": 354
+              },
+              "end": {
+                "line": 18,
+                "col": 16,
+                "offset": 365
+              }
+            },
+            "tag": "#inline-tag"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 67
+              },
+              "end": {
+                "line": 5,
+                "col": 6,
+                "offset": 73
+              }
+            },
+            "heading": "Home",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 4,
+                "col": 3,
+                "offset": 66
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 67
+              },
+              "end": {
+                "line": 5,
+                "col": 6,
+                "offset": 73
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 0,
+                "offset": 75
+              },
+              "end": {
+                "line": 8,
+                "col": 95,
+                "offset": 242
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 10,
+                "col": 0,
+                "offset": 244
+              },
+              "end": {
+                "line": 10,
+                "col": 14,
+                "offset": 258
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 12,
+                "col": 0,
+                "offset": 260
+              },
+              "end": {
+                "line": 12,
+                "col": 34,
+                "offset": 294
+              }
+            }
+          },
+          {
+            "type": "code",
+            "position": {
+              "start": {
+                "line": 14,
+                "col": 0,
+                "offset": 296
+              },
+              "end": {
+                "line": 16,
+                "col": 3,
+                "offset": 347
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 18,
+                "col": 0,
+                "offset": 349
+              },
+              "end": {
+                "line": 18,
+                "col": 16,
+                "offset": 365
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": [
+            "hub",
+            "Overview"
+          ],
+          "aliases": [
+            "Start"
+          ],
+          "created": "2026-01-15"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 4,
+            "col": 3,
+            "offset": 66
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Orphan stub.md",
+      "stat": {
+        "ctime": 1791214017985,
+        "mtime": 1791213348956,
+        "size": 16
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 15,
+                "offset": 15
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Projects/Website/Hosting options.md",
+      "stat": {
+        "ctime": 1791214017988,
+        "mtime": 1791213348833,
+        "size": 80
+      },
+      "cache": {
+        "links": [
+          {
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 32,
+                "offset": 51
+              },
+              "end": {
+                "line": 2,
+                "col": 59,
+                "offset": 78
+              }
+            },
+            "link": "./Website plan.md",
+            "original": "[plan](./Website%20plan.md)",
+            "displayText": "plan"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 17,
+                "offset": 17
+              }
+            },
+            "heading": "Hosting options",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 17,
+                "offset": 17
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 0,
+                "offset": 19
+              },
+              "end": {
+                "line": 2,
+                "col": 60,
+                "offset": 79
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Projects/Website/Website plan.md",
+      "stat": {
+        "ctime": 1791214017989,
+        "mtime": 1791213348806,
+        "size": 284
+      },
+      "cache": {
+        "links": [
+          {
+            "position": {
+              "start": {
+                "line": 8,
+                "col": 30,
+                "offset": 121
+              },
+              "end": {
+                "line": 8,
+                "col": 44,
+                "offset": 135
+              }
+            },
+            "link": "2026-10-01",
+            "original": "[[2026-10-01]]",
+            "displayText": "2026-10-01"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 12,
+                "col": 24,
+                "offset": 206
+              },
+              "end": {
+                "line": 12,
+                "col": 43,
+                "offset": 225
+              }
+            },
+            "link": "Hosting options",
+            "original": "[[Hosting options]]",
+            "displayText": "Hosting options"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 16,
+                "col": 2,
+                "offset": 256
+              },
+              "end": {
+                "line": 16,
+                "col": 22,
+                "offset": 276
+              }
+            },
+            "link": "Home",
+            "original": "[[Home\\|Start page]]",
+            "displayText": "Start page"
+          }
+        ],
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 11,
+                "col": 29,
+                "offset": 176
+              },
+              "end": {
+                "line": 11,
+                "col": 34,
+                "offset": 181
+              }
+            },
+            "tag": "#todo"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 66
+              },
+              "end": {
+                "line": 5,
+                "col": 14,
+                "offset": 80
+              }
+            },
+            "heading": "Website plan",
+            "level": 1
+          },
+          {
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 0,
+                "offset": 82
+              },
+              "end": {
+                "line": 7,
+                "col": 8,
+                "offset": 90
+              }
+            },
+            "heading": "Goals",
+            "level": 2
+          },
+          {
+            "position": {
+              "start": {
+                "line": 10,
+                "col": 0,
+                "offset": 138
+              },
+              "end": {
+                "line": 10,
+                "col": 8,
+                "offset": 146
+              }
+            },
+            "heading": "Tasks",
+            "level": 2
+          }
+        ],
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 4,
+                "col": 3,
+                "offset": 65
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 66
+              },
+              "end": {
+                "line": 5,
+                "col": 14,
+                "offset": 80
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 7,
+                "col": 0,
+                "offset": 82
+              },
+              "end": {
+                "line": 7,
+                "col": 8,
+                "offset": 90
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 8,
+                "col": 0,
+                "offset": 91
+              },
+              "end": {
+                "line": 8,
+                "col": 45,
+                "offset": 136
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 10,
+                "col": 0,
+                "offset": 138
+              },
+              "end": {
+                "line": 10,
+                "col": 8,
+                "offset": 146
+              }
+            }
+          },
+          {
+            "type": "list",
+            "position": {
+              "start": {
+                "line": 11,
+                "col": 0,
+                "offset": 147
+              },
+              "end": {
+                "line": 12,
+                "col": 43,
+                "offset": 225
+              }
+            }
+          },
+          {
+            "type": "table",
+            "position": {
+              "start": {
+                "line": 14,
+                "col": 0,
+                "offset": 227
+              },
+              "end": {
+                "line": 16,
+                "col": 29,
+                "offset": 283
+              }
+            }
+          }
+        ],
+        "listItems": [
+          {
+            "position": {
+              "start": {
+                "line": 11,
+                "col": 0,
+                "offset": 147
+              },
+              "end": {
+                "line": 11,
+                "col": 34,
+                "offset": 181
+              }
+            },
+            "parent": -11,
+            "task": " "
+          },
+          {
+            "position": {
+              "start": {
+                "line": 12,
+                "col": 0,
+                "offset": 182
+              },
+              "end": {
+                "line": 12,
+                "col": 43,
+                "offset": 225
+              }
+            },
+            "parent": -11,
+            "task": " "
+          }
+        ],
+        "frontmatter": {
+          "type": "project",
+          "status": "active",
+          "categories": [
+            "[[Projects]]"
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 4,
+            "col": 3,
+            "offset": 65
+          }
+        },
+        "frontmatterLinks": [
+          {
+            "key": "categories.0",
+            "link": "Projects",
+            "original": "[[Projects]]",
+            "displayText": "Projects"
+          }
+        ]
+      }
+    },
+    {
+      "path": "README.md",
+      "stat": {
+        "ctime": 1791214017990,
+        "mtime": 1791213349042,
+        "size": 200
+      },
+      "cache": {
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 23,
+                "offset": 23
+              }
+            },
+            "heading": "Tiny contract fixture",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 23,
+                "offset": 23
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 0,
+                "offset": 25
+              },
+              "end": {
+                "line": 3,
+                "col": 86,
+                "offset": 199
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Resources/Pasta carbonara.md",
+      "stat": {
+        "ctime": 1791214017991,
+        "mtime": 1791213348897,
+        "size": 95
+      },
+      "cache": {
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 37,
+                "offset": 79
+              },
+              "end": {
+                "line": 5,
+                "col": 52,
+                "offset": 94
+              }
+            },
+            "tag": "#recipe/italian"
+          }
+        ],
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 23
+              },
+              "end": {
+                "line": 3,
+                "col": 17,
+                "offset": 40
+              }
+            },
+            "heading": "Pasta carbonara",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 22
+              }
+            }
+          },
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 23
+              },
+              "end": {
+                "line": 3,
+                "col": 17,
+                "offset": 40
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 42
+              },
+              "end": {
+                "line": 5,
+                "col": 52,
+                "offset": 94
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "type": "resource"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 22
+          }
+        },
+        "frontmatterLinks": []
+      }
+    }
+  ],
+  "folders": [
+    "Areas",
+    "Areas/Zdraví",
+    "Attachments",
+    "Daily",
+    "Empty folder",
+    "Projects",
+    "Projects/Website",
+    "Resources"
+  ],
+  "resolvedLinks": {
+    "Canvas board.canvas": {},
+    "Broken frontmatter.md": {},
+    "Home.md": {
+      "Projects/Website/Website plan.md": 1,
+      "Areas/Zdraví/Spánek.md": 2,
+      "Resources/Pasta carbonara.md": 1,
+      "Attachments/pixel.png": 1
+    },
+    "Orphan stub.md": {},
+    "README.md": {},
+    "Daily/2026-10-01.md": {
+      "Projects/Website/Website plan.md": 1,
+      "Areas/Zdraví/Spánek.md": 1
+    },
+    "Resources/Pasta carbonara.md": {},
+    "Areas/Zdraví/Spánek.md": {
+      "Resources/Pasta carbonara.md": 1
+    },
+    "Projects/Website/Hosting options.md": {
+      "Projects/Website/Website plan.md": 1
+    },
+    "Projects/Website/Website plan.md": {
+      "Daily/2026-10-01.md": 1,
+      "Projects/Website/Hosting options.md": 1,
+      "Home.md": 1
+    }
+  },
+  "unresolvedLinks": {
+    "Canvas board.canvas": {},
+    "Broken frontmatter.md": {},
+    "Home.md": {
+      "Someday note": 1
+    },
+    "Orphan stub.md": {},
+    "README.md": {},
+    "Daily/2026-10-01.md": {},
+    "Resources/Pasta carbonara.md": {},
+    "Areas/Zdraví/Spánek.md": {},
+    "Projects/Website/Hosting options.md": {},
+    "Projects/Website/Website plan.md": {
+      "Projects": 1
+    }
+  },
+  "observedSnapshot": {
+    "notes": [
+      {
+        "path": "Areas/Zdraví/Spánek.md",
+        "basename": "Spánek",
+        "folder": "Areas/Zdraví",
+        "mtime": 1791213348864,
+        "ctime": 1791214017979,
+        "size": 168,
+        "contentHash": "ede91acb7ea74ff52272b673aad1960e21d28c6971fc277146f937f1407c8ce4",
+        "frontmatter": {
+          "type": "area",
+          "tags": "zdraví, spánek"
+        },
+        "tags": [
+          "Zdraví"
+        ],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Spánek"
+          },
+          {
+            "level": 2,
+            "text": "Rutina"
+          }
+        ],
+        "outLinks": [
+          "Resources/Pasta carbonara.md"
+        ],
+        "unresolvedLinks": [],
+        "inLinks": [
+          "Daily/2026-10-01.md",
+          "Home.md"
+        ],
+        "wordCount": 15
+      },
+      {
+        "path": "Broken frontmatter.md",
+        "basename": "Broken frontmatter",
+        "folder": "",
+        "mtime": 1791213348985,
+        "ctime": 1791214017982,
+        "size": 55,
+        "contentHash": "ffd7d05b0b385fffc0edc9470d8844742c5c064ea07e9664f82b922bc396af75",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 5
+      },
+      {
+        "path": "Daily/2026-10-01.md",
+        "basename": "2026-10-01",
+        "folder": "Daily",
+        "mtime": 1791213348928,
+        "ctime": 1791214017984,
+        "size": 71,
+        "contentHash": "054b8cf4ea9af473aead1fae5017823e934b75d46ffb139b623f05787d32e4eb",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [
+          {
+            "level": 1,
+            "text": "2026-10-01"
+          }
+        ],
+        "outLinks": [
+          "Areas/Zdraví/Spánek.md",
+          "Projects/Website/Website plan.md"
+        ],
+        "unresolvedLinks": [],
+        "inLinks": [
+          "Projects/Website/Website plan.md"
+        ],
+        "wordCount": 9
+      },
+      {
+        "path": "Home.md",
+        "basename": "Home",
+        "folder": "",
+        "mtime": 1791213348780,
+        "ctime": 1791214017985,
+        "size": 369,
+        "contentHash": "7056db66e1cc9ac488b5adc5a2e3d2af047ee73b90cc40a8f534a8afa8fbe098",
+        "frontmatter": {
+          "tags": [
+            "hub",
+            "Overview"
+          ],
+          "aliases": [
+            "Start"
+          ],
+          "created": "2026-01-15"
+        },
+        "tags": [
+          "hub",
+          "Overview",
+          "inline-tag"
+        ],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Home"
+          }
+        ],
+        "outLinks": [
+          "Areas/Zdraví/Spánek.md",
+          "Projects/Website/Website plan.md",
+          "Resources/Pasta carbonara.md"
+        ],
+        "unresolvedLinks": [
+          "Someday note"
+        ],
+        "inLinks": [
+          "Projects/Website/Website plan.md"
+        ],
+        "wordCount": 34
+      },
+      {
+        "path": "Orphan stub.md",
+        "basename": "Orphan stub",
+        "folder": "",
+        "mtime": 1791213348956,
+        "ctime": 1791214017985,
+        "size": 16,
+        "contentHash": "79c22b918d3183811aa2df9f0a5560cd36701bc25ab74f26b8c9c6aae0f89a89",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 3
+      },
+      {
+        "path": "Projects/Website/Hosting options.md",
+        "basename": "Hosting options",
+        "folder": "Projects/Website",
+        "mtime": 1791213348833,
+        "ctime": 1791214017988,
+        "size": 80,
+        "contentHash": "db061b973e28114aae9583b60f3376af2aaf5fdbb8bdef85d0567b2be838d4c0",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Hosting options"
+          }
+        ],
+        "outLinks": [
+          "Projects/Website/Website plan.md"
+        ],
+        "unresolvedLinks": [],
+        "inLinks": [
+          "Projects/Website/Website plan.md"
+        ],
+        "wordCount": 12
+      },
+      {
+        "path": "Projects/Website/Website plan.md",
+        "basename": "Website plan",
+        "folder": "Projects/Website",
+        "mtime": 1791213348806,
+        "ctime": 1791214017989,
+        "size": 284,
+        "contentHash": "2b841317b52b1705e8bbda75418298ac2bc6cab0adebc807fc42a6c56a9e0683",
+        "frontmatter": {
+          "type": "project",
+          "status": "active",
+          "categories": [
+            "[[Projects]]"
+          ]
+        },
+        "tags": [
+          "todo"
+        ],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Website plan"
+          },
+          {
+            "level": 2,
+            "text": "Goals"
+          },
+          {
+            "level": 2,
+            "text": "Tasks"
+          }
+        ],
+        "outLinks": [
+          "Daily/2026-10-01.md",
+          "Home.md",
+          "Projects/Website/Hosting options.md"
+        ],
+        "unresolvedLinks": [
+          "Projects"
+        ],
+        "inLinks": [
+          "Daily/2026-10-01.md",
+          "Home.md",
+          "Projects/Website/Hosting options.md"
+        ],
+        "wordCount": 27
+      },
+      {
+        "path": "README.md",
+        "basename": "README",
+        "folder": "",
+        "mtime": 1791213349042,
+        "ctime": 1791214017990,
+        "size": 200,
+        "contentHash": "2e137b8a31140561592262b6dbd3ff96b42bad8f667d402fdcc887ca80780151",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Tiny contract fixture"
+          }
+        ],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 33
+      },
+      {
+        "path": "Resources/Pasta carbonara.md",
+        "basename": "Pasta carbonara",
+        "folder": "Resources",
+        "mtime": 1791213348897,
+        "ctime": 1791214017991,
+        "size": 95,
+        "contentHash": "f6a93491b2a0f91bf9b27934a0a68448c3db8d115b15a15fcf1ecc706ea8cbd8",
+        "frontmatter": {
+          "type": "resource"
+        },
+        "tags": [
+          "recipe/italian"
+        ],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Pasta carbonara"
+          }
+        ],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [
+          "Areas/Zdraví/Spánek.md",
+          "Home.md"
+        ],
+        "wordCount": 9
+      }
+    ],
+    "folders": [
+      "Areas",
+      "Areas/Zdraví",
+      "Attachments",
+      "Daily",
+      "Empty folder",
+      "Projects",
+      "Projects/Website",
+      "Resources"
+    ],
+    "otherFiles": [
+      {
+        "path": "Attachments/pixel.png",
+        "extension": "png",
+        "size": 70
+      },
+      {
+        "path": "Canvas board.canvas",
+        "extension": "canvas",
+        "size": 24
+      }
+    ],
+    "takenAt": 1791214768215
+  }
+}

@@ -1,4 +1,5 @@
 import type { App, CachedMetadata } from 'obsidian';
+import type { VaultSnapshot } from '../../core/model/note';
 // Construct the shim classes directly: at test runtime 'obsidian' resolves to the same module.
 import { type TAbstractFile, TFile, TFolder } from './obsidian-shim';
 
@@ -9,10 +10,13 @@ import { type TAbstractFile, TFile, TFolder } from './obsidian-shim';
  */
 export interface RecordedVault {
   obsidianVersion?: string;
+  recordedAt?: string;
   files: { path: string; stat: { ctime: number; mtime: number; size: number }; cache: CachedMetadata | null }[];
   folders: string[];
   resolvedLinks: Record<string, Record<string, number>>;
   unresolvedLinks: Record<string, Record<string, number>>;
+  /** Snapshot the plugin's Obsidian adapter produced inside real Obsidian, if it was loaded. */
+  observedSnapshot?: VaultSnapshot | null;
 }
 
 /** A fake App backed by a recorded vault and file contents. Only the APIs adapters use exist. */

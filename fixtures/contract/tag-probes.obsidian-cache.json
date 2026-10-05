@@ -1,0 +1,1226 @@
+{
+  "obsidianVersion": "1.13.7",
+  "recordedAt": "2026-10-05T15:39:44.723Z",
+  "files": [
+    {
+      "path": "Block list.md",
+      "stat": {
+        "ctime": 1791214774772,
+        "mtime": 1791214670531,
+        "size": 41
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 4,
+                "col": 3,
+                "offset": 28
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 5,
+                "col": 0,
+                "offset": 29
+              },
+              "end": {
+                "line": 5,
+                "col": 11,
+                "offset": 40
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": [
+            "x",
+            "#y"
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 4,
+            "col": 3,
+            "offset": 28
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Capitalized key.md",
+      "stat": {
+        "ctime": 1791214774774,
+        "mtime": 1791214670532,
+        "size": 36
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 18
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 19
+              },
+              "end": {
+                "line": 3,
+                "col": 16,
+                "offset": 35
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "Tags": [
+            "Up"
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 18
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Case variants.md",
+      "stat": {
+        "ctime": 1791214774775,
+        "mtime": 1791214670537,
+        "size": 39
+      },
+      "cache": {
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 27
+              },
+              "end": {
+                "line": 3,
+                "col": 5,
+                "offset": 32
+              }
+            },
+            "tag": "#book"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 6,
+                "offset": 33
+              },
+              "end": {
+                "line": 3,
+                "col": 11,
+                "offset": 38
+              }
+            },
+            "tag": "#Book"
+          }
+        ],
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 26
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 27
+              },
+              "end": {
+                "line": 3,
+                "col": 11,
+                "offset": 38
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": [
+            "Book",
+            "book"
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 26
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Inline edge cases.md",
+      "stat": {
+        "ctime": 1791214774776,
+        "mtime": 1791214670536,
+        "size": 76
+      },
+      "cache": {
+        "tags": [
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 5,
+                "offset": 5
+              },
+              "end": {
+                "line": 0,
+                "col": 10,
+                "offset": 10
+              }
+            },
+            "tag": "#tag/"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 25,
+                "offset": 25
+              },
+              "end": {
+                "line": 0,
+                "col": 31,
+                "offset": 31
+              }
+            },
+            "tag": "#a-b_c"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 36,
+                "offset": 36
+              },
+              "end": {
+                "line": 0,
+                "col": 40,
+                "offset": 40
+              }
+            },
+            "tag": "#Tag"
+          },
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 71,
+                "offset": 71
+              },
+              "end": {
+                "line": 0,
+                "col": 74,
+                "offset": 74
+              }
+            },
+            "tag": "#ok"
+          }
+        ],
+        "sections": [
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 75,
+                "offset": 75
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "List item with space.md",
+      "stat": {
+        "ctime": 1791214774777,
+        "mtime": 1791214670534,
+        "size": 44
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 19
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 20
+              },
+              "end": {
+                "line": 3,
+                "col": 23,
+                "offset": 43
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": [
+            "a b"
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 19
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Mixed list.md",
+      "stat": {
+        "ctime": 1791214774779,
+        "mtime": 1791214670535,
+        "size": 73
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 40
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 41
+              },
+              "end": {
+                "line": 3,
+                "col": 31,
+                "offset": 72
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": [
+            "nested/one",
+            "two/",
+            2025
+          ]
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 40
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "Number value.md",
+      "stat": {
+        "ctime": 1791214774780,
+        "mtime": 1791214670534,
+        "size": 33
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 18
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 19
+              },
+              "end": {
+                "line": 3,
+                "col": 13,
+                "offset": 32
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": 2024
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 18
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "README.md",
+      "stat": {
+        "ctime": 1791214774781,
+        "mtime": 1791214670540,
+        "size": 167
+      },
+      "cache": {
+        "headings": [
+          {
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 12,
+                "offset": 12
+              }
+            },
+            "heading": "Tag probes",
+            "level": 1
+          }
+        ],
+        "sections": [
+          {
+            "type": "heading",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 0,
+                "col": 12,
+                "offset": 12
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 2,
+                "col": 0,
+                "offset": 14
+              },
+              "end": {
+                "line": 3,
+                "col": 74,
+                "offset": 166
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "Singular key.md",
+      "stat": {
+        "ctime": 1791214774782,
+        "mtime": 1791214670531,
+        "size": 32
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 17
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 18
+              },
+              "end": {
+                "line": 3,
+                "col": 13,
+                "offset": 31
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tag": "solo"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 17
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "String comma no space.md",
+      "stat": {
+        "ctime": 1791214774783,
+        "mtime": 1791214670530,
+        "size": 39
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 17
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 18
+              },
+              "end": {
+                "line": 3,
+                "col": 20,
+                "offset": 38
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": "a,b"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 17
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "String comma space.md",
+      "stat": {
+        "ctime": 1791214774784,
+        "mtime": 1791214670530,
+        "size": 36
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 18
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 19
+              },
+              "end": {
+                "line": 3,
+                "col": 16,
+                "offset": 35
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": "a, b"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 18
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "String single word.md",
+      "stat": {
+        "ctime": 1791214774786,
+        "mtime": 1791214670529,
+        "size": 43
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 20
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 21
+              },
+              "end": {
+                "line": 3,
+                "col": 21,
+                "offset": 42
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": "single"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 20
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "String with hash.md",
+      "stat": {
+        "ctime": 1791214774787,
+        "mtime": 1791214670531,
+        "size": 36
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 21
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 22
+              },
+              "end": {
+                "line": 3,
+                "col": 13,
+                "offset": 35
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": "#hash"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 21
+          }
+        },
+        "frontmatterLinks": []
+      }
+    },
+    {
+      "path": "String with space.md",
+      "stat": {
+        "ctime": 1791214774787,
+        "mtime": 1791214670529,
+        "size": 41
+      },
+      "cache": {
+        "sections": [
+          {
+            "type": "yaml",
+            "position": {
+              "start": {
+                "line": 0,
+                "col": 0,
+                "offset": 0
+              },
+              "end": {
+                "line": 2,
+                "col": 3,
+                "offset": 17
+              }
+            }
+          },
+          {
+            "type": "paragraph",
+            "position": {
+              "start": {
+                "line": 3,
+                "col": 0,
+                "offset": 18
+              },
+              "end": {
+                "line": 3,
+                "col": 22,
+                "offset": 40
+              }
+            }
+          }
+        ],
+        "frontmatter": {
+          "tags": "a b"
+        },
+        "frontmatterPosition": {
+          "start": {
+            "line": 0,
+            "col": 0,
+            "offset": 0
+          },
+          "end": {
+            "line": 2,
+            "col": 3,
+            "offset": 17
+          }
+        },
+        "frontmatterLinks": []
+      }
+    }
+  ],
+  "folders": [],
+  "resolvedLinks": {
+    "README.md": {},
+    "Block list.md": {},
+    "Capitalized key.md": {},
+    "Case variants.md": {},
+    "Inline edge cases.md": {},
+    "List item with space.md": {},
+    "Mixed list.md": {},
+    "Number value.md": {},
+    "Singular key.md": {},
+    "String comma no space.md": {},
+    "String comma space.md": {},
+    "String single word.md": {},
+    "String with hash.md": {},
+    "String with space.md": {}
+  },
+  "unresolvedLinks": {
+    "README.md": {},
+    "Block list.md": {},
+    "Capitalized key.md": {},
+    "Case variants.md": {},
+    "Inline edge cases.md": {},
+    "List item with space.md": {},
+    "Mixed list.md": {},
+    "Number value.md": {},
+    "Singular key.md": {},
+    "String comma no space.md": {},
+    "String comma space.md": {},
+    "String single word.md": {},
+    "String with hash.md": {},
+    "String with space.md": {}
+  },
+  "observedSnapshot": {
+    "notes": [
+      {
+        "path": "Block list.md",
+        "basename": "Block list",
+        "folder": "",
+        "mtime": 1791214670531,
+        "ctime": 1791214774772,
+        "size": 41,
+        "contentHash": "ab6c63f3f27f97cc9b0a840d5386e412e7d50aaf83529dd847874332c39c535f",
+        "frontmatter": {
+          "tags": [
+            "x",
+            "#y"
+          ]
+        },
+        "tags": [
+          "x",
+          "y"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "Capitalized key.md",
+        "basename": "Capitalized key",
+        "folder": "",
+        "mtime": 1791214670532,
+        "ctime": 1791214774774,
+        "size": 36,
+        "contentHash": "8fefbbcc69676cb3f2a7c98deb457becce4bfadcded685f9a7c2e7c3c52cf824",
+        "frontmatter": {
+          "Tags": [
+            "Up"
+          ]
+        },
+        "tags": [
+          "Up"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "Case variants.md",
+        "basename": "Case variants",
+        "folder": "",
+        "mtime": 1791214670537,
+        "ctime": 1791214774775,
+        "size": 39,
+        "contentHash": "a40496738a318fbcdbda6b58d9e8f033f084efa6f7d553a909e45638cfb13c57",
+        "frontmatter": {
+          "tags": [
+            "Book",
+            "book"
+          ]
+        },
+        "tags": [
+          "Book",
+          "book"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "Inline edge cases.md",
+        "basename": "Inline edge cases",
+        "folder": "",
+        "mtime": 1791214670536,
+        "ctime": 1791214774776,
+        "size": 76,
+        "contentHash": "6121fa38ca2c234dd08bedf7b1c5859f2df83b8b0fc97979ed25795939ec0484",
+        "frontmatter": {},
+        "tags": [
+          "tag/",
+          "a-b_c",
+          "Tag",
+          "ok"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 17
+      },
+      {
+        "path": "List item with space.md",
+        "basename": "List item with space",
+        "folder": "",
+        "mtime": 1791214670534,
+        "ctime": 1791214774777,
+        "size": 44,
+        "contentHash": "9028e1bc5f4a11ad04a452568e73a08094afa40e2bb0702f1a1e023097107e60",
+        "frontmatter": {
+          "tags": [
+            "a b"
+          ]
+        },
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 5
+      },
+      {
+        "path": "Mixed list.md",
+        "basename": "Mixed list",
+        "folder": "",
+        "mtime": 1791214670535,
+        "ctime": 1791214774779,
+        "size": 73,
+        "contentHash": "b19e09c3e2d2e8750a7426e789e6f64f4e18d5dd45f47b63bac2d0b921b5e0d3",
+        "frontmatter": {
+          "tags": [
+            "nested/one",
+            "two/",
+            2025
+          ]
+        },
+        "tags": [
+          "nested/one",
+          "two/"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 4
+      },
+      {
+        "path": "Number value.md",
+        "basename": "Number value",
+        "folder": "",
+        "mtime": 1791214670534,
+        "ctime": 1791214774780,
+        "size": 33,
+        "contentHash": "38863323cb921ca8248bdf385db4e317b29abb748dc1e634c545178ed7cedc24",
+        "frontmatter": {
+          "tags": 2024
+        },
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "README.md",
+        "basename": "README",
+        "folder": "",
+        "mtime": 1791214670540,
+        "ctime": 1791214774781,
+        "size": 167,
+        "contentHash": "647c5aa8f343a04057df848a4c4bbf9fabeac707cb042f638461e892b73da418",
+        "frontmatter": {},
+        "tags": [],
+        "headings": [
+          {
+            "level": 1,
+            "text": "Tag probes"
+          }
+        ],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 22
+      },
+      {
+        "path": "Singular key.md",
+        "basename": "Singular key",
+        "folder": "",
+        "mtime": 1791214670531,
+        "ctime": 1791214774782,
+        "size": 32,
+        "contentHash": "ccf3626e82a053a9b315b712456661ffdd8d7cdb37e3e596fac931dbcad7cff8",
+        "frontmatter": {
+          "tag": "solo"
+        },
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "String comma no space.md",
+        "basename": "String comma no space",
+        "folder": "",
+        "mtime": 1791214670530,
+        "ctime": 1791214774783,
+        "size": 39,
+        "contentHash": "cc4adf44cb1fab24b7b5d7ad24f09ceab35c0e8ff97c361978b1cf2bb48b3016",
+        "frontmatter": {
+          "tags": "a,b"
+        },
+        "tags": [
+          "a,b"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 3
+      },
+      {
+        "path": "String comma space.md",
+        "basename": "String comma space",
+        "folder": "",
+        "mtime": 1791214670530,
+        "ctime": 1791214774784,
+        "size": 36,
+        "contentHash": "c864b62e78499ff9fb42ee1735e236efeb9e415ff65658720dd429cd1d3437e3",
+        "frontmatter": {
+          "tags": "a, b"
+        },
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 3
+      },
+      {
+        "path": "String single word.md",
+        "basename": "String single word",
+        "folder": "",
+        "mtime": 1791214670529,
+        "ctime": 1791214774786,
+        "size": 43,
+        "contentHash": "341db068610639de6aaa7683e965380301e0d9ad17644ac711d5000865d54dd8",
+        "frontmatter": {
+          "tags": "single"
+        },
+        "tags": [
+          "single"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 4
+      },
+      {
+        "path": "String with hash.md",
+        "basename": "String with hash",
+        "folder": "",
+        "mtime": 1791214670531,
+        "ctime": 1791214774787,
+        "size": 36,
+        "contentHash": "2587ff1cfc11c72eef33ba9ce66ed3df97137f01b63f1a1e988648114879466e",
+        "frontmatter": {
+          "tags": "#hash"
+        },
+        "tags": [
+          "hash"
+        ],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 2
+      },
+      {
+        "path": "String with space.md",
+        "basename": "String with space",
+        "folder": "",
+        "mtime": 1791214670529,
+        "ctime": 1791214774787,
+        "size": 41,
+        "contentHash": "a0a194422c892a564d06ceab010afa50bb55b6656df740c08c655a593556977e",
+        "frontmatter": {
+          "tags": "a b"
+        },
+        "tags": [],
+        "headings": [],
+        "outLinks": [],
+        "unresolvedLinks": [],
+        "inLinks": [],
+        "wordCount": 5
+      }
+    ],
+    "folders": [],
+    "otherFiles": [],
+    "takenAt": 1791214784723
+  }
+}
