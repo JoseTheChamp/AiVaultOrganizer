@@ -9,6 +9,8 @@ import { defaultIgnore } from './presets/types';
 import { type Charter, charterSchema, type Destination } from './schema';
 
 const JD_RANGE = /^(\d{2})-(\d{2})\s+(.+)$/;
+/** A leading PARA-style number such as "1 " or "01 - " (not Johnny.Decimal ranges). */
+const NUMBERED = /^\d{1,2}(?:[ ._-]+)(?=\D)/;
 const JD_CATEGORY = /^(\d{2})\s+(.+)$/;
 
 /**
@@ -22,7 +24,19 @@ export function adaptPresetToVault(charter: Charter, snapshot: VaultSnapshot): C
     if (derived) return derived;
   }
   const folders = new Set(snapshot.folders);
-  const remap = (path: string | undefined) => (path === undefined ? undefined : mapFolder(path, folders, snapshot.folders));
+  // Match the vault's naming style: if the role folders it already has are unnumbered
+  // ("Projects", "Areas"), folders still to be created drop the preset's numbering too ("Archive").
+  const mappedTopLevel = charter.destinations
+    .map((destination) => destination.path)
+    .filter((path): path is string => path !== undefined)
+    .map((path) => mapFolder(path, folders, snapshot.folders))
+    .filter((path) => folders.has(path) && parentFolder(path) === '');
+  const unnumbered = mappedTopLevel.length > 0 && mappedTopLevel.every((path) => !NUMBERED.test(path));
+  const remap = (path: string | undefined) => {
+    if (path === undefined) return undefined;
+    const mapped = mapFolder(path, folders, snapshot.folders);
+    return unnumbered && !folders.has(mapped) ? mapped.replace(NUMBERED, '') : mapped;
+  };
   const templates = remap(charter.system.templates);
   const adapted = {
     ...charter,

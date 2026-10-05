@@ -24,9 +24,17 @@ describe('adaptPresetToVault', () => {
       folders: [],
     });
     const charter = adaptPresetToVault(presetCharter('para', 'en'), snapshot);
-    expect(charter.destinations.map((d) => d.path)).toEqual(['Projects', 'Areas', 'Resources', '4 Archive']);
+    // The vault's PARA folders are unnumbered, so the missing archive is too.
+    expect(charter.destinations.map((d) => d.path)).toEqual(['Projects', 'Areas', 'Resources', 'Archive']);
+    expect(charter.inbox).toBe('Inbox');
     expect(charter.system).toMatchObject({ templates: 'Templates', daily: { path: 'Journal' } });
     expect(charter.ignore).toContain('Templates/**');
+  });
+
+  it('keeps the preset numbering when the vault numbers its folders', async () => {
+    const { snapshot } = await load({ files: { '1 Projects/a.md': '', '2 Areas/b.md': '' }, folders: [] });
+    const charter = adaptPresetToVault(presetCharter('para', 'en'), snapshot);
+    expect(charter.destinations.map((d) => d.path)).toEqual(['1 Projects', '2 Areas', '3 Resources', '4 Archive']);
   });
 
   it('maps nested preset folders under their mapped parent', async () => {
