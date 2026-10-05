@@ -63,6 +63,8 @@ export function createFakeApp(recorded: RecordedVault, contents: Record<string, 
   };
   const metadataCache = {
     getFileCache: (file: TFile) => caches.get(file.path) ?? null,
+    // Simplified: always the shortest form (name without .md), like a vault with unique names.
+    fileToLinktext: (file: TFile) => (file.extension === 'md' ? file.basename : file.name),
     resolvedLinks: recorded.resolvedLinks,
     unresolvedLinks: recorded.unresolvedLinks,
   };
