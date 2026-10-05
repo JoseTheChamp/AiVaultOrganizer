@@ -1,5 +1,5 @@
 import type { Heading } from '../model/note';
-import { parseFrontmatter } from './frontmatter';
+import { parseFrontmatter, splitFrontmatter } from './frontmatter';
 
 /** A link as written in a note, before resolution. */
 export interface RawLink {
@@ -51,6 +51,11 @@ export function parseNote(content: string): ParsedNote {
   const wordCount = prose.match(WORD)?.length ?? 0;
 
   return { frontmatter: data, frontmatterValid: valid, tags, headings, links, wordCount, prose };
+}
+
+/** Words in the body of a note (frontmatter and code excluded), without parsing YAML. */
+export function countWords(content: string): number {
+  return maskCode(splitFrontmatter(content).body).match(WORD)?.length ?? 0;
 }
 
 /** Replaces fenced code blocks and inline code spans with blanks, keeping line structure. */
