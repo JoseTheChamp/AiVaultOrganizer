@@ -46,6 +46,13 @@ export default defineConfig([
     },
   },
   {
+    // Tests build synthetic vaults that legitimately contain a `.obsidian` folder.
+    files: ['**/*.test.ts'],
+    rules: {
+      'obsidianmd/hardcoded-config-path': 'off',
+    },
+  },
+  {
     // Node-side tooling: the eval CLI and scripts may use fetch and Node built-ins.
     files: ['eval/**/*.ts', 'scripts/**/*.ts', '*.mjs', '*.mts'],
     languageOptions: { globals: globals.node },
