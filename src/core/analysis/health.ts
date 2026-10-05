@@ -1,6 +1,7 @@
 import type { VaultSnapshot } from '../model/note';
 import { depth, isInFolder, parentFolder } from '../model/paths';
 import type { MethodDetection } from './method-detect';
+import { plural, verb } from '../model/text';
 import { DATED_NAME, share, type VaultStats } from './stats';
 import { folderRole } from './vocabulary';
 
@@ -55,13 +56,14 @@ export function computeHealth(
   const components: HealthComponent[] = [];
 
   const datedOrphans = snapshot.notes.filter((note) => note.inLinks.length === 0 && DATED_NAME.test(note.basename));
-  const orphanShare = share(stats.graph.orphans.length - datedOrphans.length, n);
+  const orphanCount = stats.graph.orphans.length - datedOrphans.length;
+  const orphanShare = share(orphanCount, n);
   components.push({
     id: 'orphans',
     label: 'Linked notes',
     value: penalty(orphanShare, 0.6),
     weight: n > 0 ? 0.2 : 0,
-    detail: `${stats.graph.orphans.length - datedOrphans.length} notes have no incoming links (dated notes excluded).`,
+    detail: `${plural(orphanCount, 'note')} ${verb(orphanCount, 'has', 'have')} no incoming links (dated notes excluded).`,
   });
 
   const flat = detection.dominant === 'flat-categories';
@@ -72,7 +74,7 @@ export function computeHealth(
     weight: n > 0 && !flat ? 0.15 : 0,
     detail: flat
       ? 'Root notes are intended in a flat vault.'
-      : `${stats.rootNoteCount} notes sit in the vault root.`,
+      : `${plural(stats.rootNoteCount, 'note')} ${verb(stats.rootNoteCount, 'sits', 'sit')} in the vault root.`,
   });
 
   const inbox = options.inboxFolder ?? snapshot.folders.find((f) => parentFolder(f) === '' && folderRole(f) === 'inbox');
@@ -86,7 +88,7 @@ export function computeHealth(
     value: penalty(stale, Math.max(10, n * 0.1)),
     weight: inbox ? 0.1 : 0,
     detail: inbox
-      ? `${stale} notes in "${inbox}" are older than ${options.inboxMaxAgeDays ?? 14} days.`
+      ? `${plural(stale, 'note')} in "${inbox}" ${verb(stale, 'is', 'are')} older than ${plural(options.inboxMaxAgeDays ?? 14, 'day')}.`
       : 'No inbox folder.',
   });
 
@@ -95,7 +97,7 @@ export function computeHealth(
     label: 'Working links',
     value: penalty(share(stats.notesWithUnresolvedLinks, n), 0.3),
     weight: n > 0 ? 0.15 : 0,
-    detail: `${stats.notesWithUnresolvedLinks} notes contain links to notes that don't exist.`,
+    detail: `${plural(stats.notesWithUnresolvedLinks, 'note')} ${verb(stats.notesWithUnresolvedLinks, 'contains', 'contain')} links to notes that don't exist.`,
   });
 
   const tagUses = stats.tags.usage.reduce((total, tag) => total + tag.count, 0);
@@ -108,7 +110,7 @@ export function computeHealth(
     label: 'Consistent tags',
     value: penalty(share(variantUses, tagUses), 0.2),
     weight: tagUses > 0 ? 0.1 : 0,
-    detail: `${stats.tags.variantGroups.length} tags are spelled in more than one way.`,
+    detail: `${plural(stats.tags.variantGroups.length, 'tag')} ${verb(stats.tags.variantGroups.length, 'is', 'are')} spelled in more than one way.`,
   });
 
   components.push({
@@ -124,7 +126,7 @@ export function computeHealth(
     label: 'No empty folders',
     value: penalty(share(stats.emptyFolders.length, stats.folderCount), 0.3),
     weight: stats.folderCount > 0 ? 0.1 : 0,
-    detail: `${stats.emptyFolders.length} folders are empty.`,
+    detail: `${plural(stats.emptyFolders.length, 'folder')} ${verb(stats.emptyFolders.length, 'is', 'are')} empty.`,
   });
 
   const depthSpread = standardDeviation(snapshot.notes.map((note) => depth(note.path)));

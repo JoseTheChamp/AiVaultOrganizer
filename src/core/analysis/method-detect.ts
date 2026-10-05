@@ -2,6 +2,7 @@ import type { MethodId } from '../model/methods';
 import { METHOD_LABELS } from '../model/methods';
 import type { VaultSnapshot } from '../model/note';
 import { fileName, parentFolder } from '../model/paths';
+import { plural } from '../model/text';
 import type { VaultStats } from './stats';
 import { share } from './stats';
 import { type FolderRole, folderRole } from './vocabulary';
@@ -75,9 +76,9 @@ function scoreJohnnyDecimal(snapshot: VaultSnapshot, topLevel: string[]): Method
   const categories = second.filter((folder) => JD_CATEGORY.test(fileName(folder)));
   const ids = snapshot.notes.filter((note) => JD_ID.test(note.basename)).length;
   const reasons: string[] = [];
-  if (ranges.length > 0) reasons.push(`${ranges.length} area folders numbered like "10-19".`);
-  if (categories.length > 0) reasons.push(`${categories.length} category folders numbered like "11".`);
-  if (ids > 0) reasons.push(`${ids} notes with IDs like "11.01".`);
+  if (ranges.length > 0) reasons.push(`${plural(ranges.length, 'area folder')} numbered like "10-19".`);
+  if (categories.length > 0) reasons.push(`${plural(categories.length, 'category folder')} numbered like "11".`);
+  if (ids > 0) reasons.push(`${plural(ids, 'note')} with IDs like "11.01".`);
   const score =
     ranges.length < 2
       ? 0
@@ -123,7 +124,7 @@ function scoreFlat(snapshot: VaultSnapshot, stats: VaultStats, topRoles: Map<Fol
   const reasons: string[] = [];
   if (stats.rootShare >= 0.3) reasons.push(`${Math.round(stats.rootShare * 100)} % of notes live in the vault root.`);
   if (categoriesShare > 0) reasons.push(`${Math.round(categoriesShare * 100)} % of notes have a "categories" property.`);
-  if (stats.baseFileCount > 0) reasons.push(`${stats.baseFileCount} Bases files.`);
+  if (stats.baseFileCount > 0) reasons.push(`${plural(stats.baseFileCount, 'Bases file')}.`);
   if (flatFolders.length > 0) reasons.push(`Folders for ${flatFolders.join(', ')}.`);
   const score =
     0.35 * Math.min(1, stats.rootShare / 0.6) +
@@ -143,7 +144,7 @@ function scoreTopics(snapshot: VaultSnapshot, topLevel: string[], bestOther: num
   const noteShare = share(inTopics.length, snapshot.notes.length);
   const reasons: string[] = [];
   if (topicFolders.length > 0) {
-    reasons.push(`${topicFolders.length} subject folders such as ${topicFolders.slice(0, 3).map((f) => `"${f}"`).join(', ')}.`);
+    reasons.push(`${plural(topicFolders.length, 'subject folder')} such as ${topicFolders.slice(0, 3).map((f) => `"${f}"`).join(', ')}.`);
   }
   const breadth = Math.min(1, topicFolders.length / 3);
   return { method: 'topics', score: noteShare * breadth * (1 - 0.6 * bestOther), reasons };
