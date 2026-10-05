@@ -62,6 +62,8 @@ export interface HttpRequest {
   method: 'GET' | 'POST';
   headers?: Record<string, string>;
   body?: string;
+  /** Adapters abort and throw after this long; local models can be slow, so callers choose. */
+  timeoutMs?: number;
 }
 
 export interface HttpResponse {
