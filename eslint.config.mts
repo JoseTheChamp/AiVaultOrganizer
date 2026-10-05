@@ -50,6 +50,8 @@ export default defineConfig([
     files: ['**/*.test.ts'],
     rules: {
       'obsidianmd/hardcoded-config-path': 'off',
+      // Tests run in Node, where there is no window object.
+      'obsidianmd/prefer-window-timers': 'off',
     },
   },
   {
