@@ -7,5 +7,6 @@ Add one whenever a decision is non-trivial, affects user data, the invariants or
 |---|---|---|
 | [0001](0001-hexagonal-core.md) | Hexagonal core with Obsidian adapters | Accepted |
 | [0002](0002-no-delete-and-plan-apply.md) | No-delete invariant and the plan/apply transaction | Accepted |
+| [0003](0003-charter-format.md) | Charter format | Accepted |
 
 Copy [`template.md`](template.md) to `NNNN-short-title.md` to start a new record.
