@@ -59,10 +59,19 @@ Hexagonal: a pure TypeScript core (`src/core`) with Obsidian adapters (`src/obsi
 
 ```bash
 npm install
+npm run dev:vault  # build and copy a fixture vault into dev-vault/ with the plugin enabled
 npm run dev        # watch build into dev-vault/.obsidian/plugins/ai-vault-organizer
 npm run check      # lint + typecheck + test (required before every commit)
 npm run build      # production bundle
+npm run analyze -- <vault-folder>   # the "Analyze vault" diagnostics from the command line
 ```
+
+Open `dev-vault/` in Obsidian ("Open folder as vault") for manual testing. All fixture vaults under
+`fixtures/` are synthetic.
+
+The Node CLI and the plugin must see a vault identically. `fixtures/contract/` holds metadata caches recorded
+in real Obsidian with `scripts/record-obsidian-cache.js`; the contract test fails when our parser and
+Obsidian disagree. Re-record after upgrading Obsidian or adding a fixture.
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/); see [`CLAUDE.md`](CLAUDE.md).
 
