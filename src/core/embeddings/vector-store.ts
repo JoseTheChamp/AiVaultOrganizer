@@ -1,11 +1,6 @@
 import * as z from 'zod';
 import type { Hasher, StoragePort } from '../ports';
-
-/**
- * Bump when note preparation or chunking changes in a way that changes vectors; stored indexes with
- * another version are discarded instead of mixing old and new vectors.
- */
-export const TEXT_VERSION = 1;
+import { TEXT_VERSION } from './prepare';
 
 export interface StoredVector {
   contentHash: string;

@@ -1,6 +1,12 @@
 import { splitFrontmatter } from '../markdown/frontmatter';
 import { maskCode } from '../markdown/parse-note';
 
+/**
+ * Bump when preparation, term extraction or chunking changes what an index would contain; stored
+ * indexes with another version are rebuilt instead of mixing old and new entries.
+ */
+export const TEXT_VERSION = 1;
+
 /** A run of plain text under one heading. */
 export interface Section {
   /** Headings from the outermost down to this section's own; empty before the first heading. */
