@@ -1,4 +1,5 @@
 import { type App, Modal } from 'obsidian';
+import type { Lang } from '../../core/charter/presets';
 import type { Charter } from '../../core/charter/schema';
 import { type MountedComponent, mountComponent } from '../../ui/mount';
 import SetupWizard from '../../ui/wizard/SetupWizard.svelte';
@@ -6,6 +7,8 @@ import type { WizardInput } from '../../ui/wizard/wizard-state';
 
 export interface SetupWizardOptions extends WizardInput {
   onSubmit: (charter: Charter, planNow: boolean) => void;
+  /** Present when a language model is set up. */
+  requestDraft?: (lang: Lang, wish: string) => Promise<Charter | null>;
 }
 
 /**
@@ -24,7 +27,7 @@ export class SetupWizardModal extends Modal {
   }
 
   override onOpen(): void {
-    const { onSubmit, ...input } = this.options;
+    const { onSubmit, requestDraft, ...input } = this.options;
     this.setTitle(input.existing ? 'Edit your vault charter' : 'Set up your vault charter');
     this.modalEl.addClass('avo-wizard-modal');
     this.component = mountComponent(SetupWizard, this.contentEl, {
@@ -34,6 +37,7 @@ export class SetupWizardModal extends Modal {
         onSubmit(charter, planNow);
       },
       cancel: () => this.close(),
+      ...(requestDraft ? { requestDraft } : {}),
     });
   }
 

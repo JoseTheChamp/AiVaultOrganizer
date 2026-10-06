@@ -2,11 +2,13 @@ import { Notice } from 'obsidian';
 import { analyzeVault } from '../../core/analysis/analyze';
 import { charterPlan } from '../../core/charter/charter-note';
 import { type CharterLoad, loadCharter } from '../../core/charter/load';
+import type { Lang } from '../../core/charter/presets';
 import type { Charter } from '../../core/charter/schema';
 import { computeDrift } from '../../core/drift/drift';
 import type AiVaultOrganizerPlugin from '../main';
 import { SetupWizardModal } from '../views/setup-wizard-modal';
 import { DriftModal } from '../views/drift-modal';
+import { draftCharterWithAI } from './draft';
 import { exclusive } from './exclusive';
 import { planRealignment } from './plan';
 import { requireCharter } from './require-charter';
@@ -27,12 +29,10 @@ export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void
     const snapshot = await reader.snapshot();
     const analysis = analyzeVault(snapshot, { now: Date.now() });
     const current = load;
+    const input = { snapshot, analysis, existing: current.status === 'ok' ? current.charter : null, replacesInvalid: current.status === 'invalid', charterPath: path };
     new SetupWizardModal(plugin.app, {
-      snapshot,
-      analysis,
-      existing: current.status === 'ok' ? current.charter : null,
-      replacesInvalid: current.status === 'invalid',
-      charterPath: path,
+      ...input,
+      ...(plugin.services.ai.chat() ? { requestDraft: (lang: Lang, wish: string) => draftCharterWithAI(plugin, input, lang, wish) } : {}),
       onSubmit: (charter, planNow) =>
         void (async () => {
           let saved = false;

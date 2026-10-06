@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import type { Lang } from '../../core/charter/presets/index';
   import { percent } from '../format';
   import type { Choice, ChoiceOption } from './wizard-state';
@@ -11,10 +12,14 @@
     langLocked: boolean;
     choose: (choice: Choice) => void;
     setLang: (lang: Lang) => void;
+    /** The AI draft controls, when a language model is set up. */
+    children?: Snippet;
   }
 
-  let { options, choice, lang, langLocked, choose, setLang }: Props = $props();
+  let { options, choice, lang, langLocked, choose, setLang, children }: Props = $props();
 </script>
+
+{@render children?.()}
 
 <fieldset class="avo-choices">
   <legend>How should this vault be organized?</legend>

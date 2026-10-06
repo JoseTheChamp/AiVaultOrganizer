@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/svelte';
 import { describe, expect, it, vi } from 'vitest';
 import { analyzeVault } from '../../core/analysis/analyze';
 import type { Charter } from '../../core/charter/schema';
+import { presetCharter } from '../../core/charter/presets/index';
 import { InMemoryVault } from '../../core/testing/in-memory-vault';
 import SetupWizard from './SetupWizard.svelte';
 import type { WizardInput } from './wizard-state';
@@ -54,5 +55,26 @@ describe('SetupWizard', () => {
     await fireEvent.input(screen.getByRole('textbox', { name: 'Folder for areas' }), { target: { value: '1 Projects' } });
     expect(screen.getByRole('alert').textContent).toContain('"1 Projects" is used by two destinations');
     expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Next' }).disabled).toBe(true);
+  });
+
+  it('offers a draft from the language model and starts from it', async () => {
+    const wizard = await input();
+    const draft: Charter = { ...presetCharter('para', 'en'), destinations: presetCharter('para', 'en').destinations.slice(0, 2) };
+    const requestDraft = vi.fn<(lang: 'en' | 'cs', wish: string) => Promise<Charter | null>>().mockResolvedValue(draft);
+    render(SetupWizard, { input: wizard, submit: vi.fn(), cancel: vi.fn(), requestDraft });
+    await next();
+    await fireEvent.input(screen.getByRole('textbox', { name: /Anything it should know/ }), { target: { value: ' keep it small ' } });
+    await fireEvent.click(screen.getByRole('button', { name: 'Ask for a draft' }));
+    await vi.waitFor(() => expect(screen.getByRole<HTMLInputElement>('radio', { name: /^AI draft/ }).checked).toBe(true));
+    expect(requestDraft).toHaveBeenCalledWith('en', 'keep it small');
+    expect(screen.getByText(/Based on PARA, with 1 Projects, 2 Areas/)).toBeTruthy();
+    await next();
+    expect(screen.queryByRole('textbox', { name: 'Folder for resources' })).toBeNull();
+  });
+
+  it('has no draft button without a language model', async () => {
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
+    await next();
+    expect(screen.queryByRole('button', { name: 'Ask for a draft' })).toBeNull();
   });
 });

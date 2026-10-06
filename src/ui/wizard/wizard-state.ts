@@ -16,8 +16,8 @@ export const STEPS = [
 ] as const;
 export type WizardStep = (typeof STEPS)[number]['id'];
 
-/** The charter there is (to edit it), a known method, or one that describes the vault's own folders. */
-export type Choice = 'existing' | MethodId | 'codify';
+/** The charter there is (to edit it), the AI's draft, a known method, or the vault's own folders. */
+export type Choice = 'existing' | 'draft' | MethodId | 'codify';
 
 export interface WizardInput {
   snapshot: VaultSnapshot;
@@ -45,20 +45,22 @@ export function recommendedChoice(input: Pick<WizardInput, 'analysis' | 'existin
   return dominant === 'none' || dominant === 'mixed' || dominant === 'topics' ? 'codify' : dominant;
 }
 
-export function choiceOptions(input: Pick<WizardInput, 'analysis' | 'existing'>, lang: Lang): ChoiceOption[] {
+export function choiceOptions(input: Pick<WizardInput, 'analysis' | 'existing'>, lang: Lang, draft: Charter | null = null): ChoiceOption[] {
   const recommended = recommendedChoice(input);
   const fit = new Map(input.analysis.methods.scores.map((score) => [score.method, score.score]));
   const existing: ChoiceOption[] = input.existing
-    ? [{ choice: 'existing', label: 'Keep my charter', summary: 'Edit the charter you have: folder names, conventions and ignored notes.', recommended: true, fit: null }]
+    ? [{ choice: 'existing', label: 'Keep my charter', summary: 'Edit the charter you have: folder names, conventions and ignored notes.', recommended: !draft, fit: null }]
     : [];
   const codify: ChoiceOption = {
     choice: 'codify',
     label: 'Keep my current structure',
     summary: 'Describes the folders you already have as a charter, so new notes follow the same system. Nothing has to move.',
-    recommended: recommended === 'codify',
+    recommended: !draft && recommended === 'codify',
     fit: null,
   };
+  const drafted: ChoiceOption[] = draft ? [{ choice: 'draft', label: 'AI draft', summary: describeDraft(draft), recommended: true, fit: null }] : [];
   return [
+    ...drafted,
     ...existing,
     codify,
     ...PRESET_ORDER.map((method) => ({
@@ -66,17 +68,25 @@ export function choiceOptions(input: Pick<WizardInput, 'analysis' | 'existing'>,
       label: METHOD_LABELS[method],
       // Summaries carry Markdown emphasis for the charter note; the wizard shows plain text.
       summary: PRESETS[method].summary[lang].replace(/\*\*/g, ''),
-      recommended: recommended === method,
+      recommended: !draft && recommended === method,
       fit: fit.get(method) ?? 0,
     })),
   ];
 }
 
 /** The charter a choice starts from, fitted to the vault (existing folder names are reused). */
-export function baseCharter(input: WizardInput, choice: Choice, lang: Lang): Charter {
+export function baseCharter(input: WizardInput, choice: Choice, lang: Lang, draft: Charter | null = null): Charter {
+  if (choice === 'draft' && draft) return draft;
   if (choice === 'existing' && input.existing) return input.existing;
-  if (choice === 'existing') return inferCharter(input.snapshot, input.analysis, lang);
-  return choice === 'codify' ? inferCharter(input.snapshot, input.analysis, lang) : adaptPresetToVault(presetCharter(choice, lang), input.snapshot);
+  // Without the charter or draft they refer to, these fall back to the vault's own structure.
+  if (choice === 'codify' || choice === 'existing' || choice === 'draft') return inferCharter(input.snapshot, input.analysis, lang);
+  return adaptPresetToVault(presetCharter(choice, lang), input.snapshot);
+}
+
+/** One line about a draft: its method and destinations. */
+function describeDraft(draft: Charter): string {
+  const method = draft.preset === 'custom' ? 'A charter of its own' : `Based on ${METHOD_LABELS[draft.preset]}`;
+  return `${method}, with ${draft.destinations.map((d) => d.path ?? d.category ?? d.id).join(', ')}. Review and adjust it in the next step.`;
 }
 
 /** The Customize step's form: every change the wizard offers, always filled in. */

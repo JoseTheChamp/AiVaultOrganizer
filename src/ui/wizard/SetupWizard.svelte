@@ -14,9 +14,11 @@
     /** Writes the charter (through a reviewed plan) and, when asked, plans the vault against it. */
     submit: (charter: Charter, planNow: boolean) => void;
     cancel: () => void;
+    /** Asks the drafting agent for a charter (after consent); absent without a language model. */
+    requestDraft?: (lang: Lang, wish: string) => Promise<Charter | null>;
   }
 
-  let { input, submit, cancel }: Props = $props();
+  let { input, submit, cancel, requestDraft }: Props = $props();
 
   // The wizard owns its working copy of the choices; the input it was opened with does not change.
   const start = (() => {
@@ -30,9 +32,12 @@
   let choice = $state<Choice>(start.choice);
   let changes = $state(start.changes);
   let planNow = $state(true);
+  let draft = $state<Charter | null>(null);
+  let drafting = $state(false);
+  let wish = $state('');
 
-  const options = $derived(choiceOptions(input, lang));
-  const base = $derived(baseCharter(input, choice, lang));
+  const options = $derived(choiceOptions(input, lang, draft));
+  const base = $derived(baseCharter(input, choice, lang, draft));
   const result = $derived(customizeCharter(base, changes));
   const charter = $derived(result.ok ? result.value : null);
   const problems = $derived(result.ok ? [] : result.error);
@@ -42,11 +47,25 @@
   // A new method or language starts the form over from that charter.
   function choose(next: Choice): void {
     choice = next;
-    changes = initialChanges(baseCharter(input, next, lang));
+    changes = initialChanges(baseCharter(input, next, lang, draft));
   }
   function setLang(next: Lang): void {
     lang = next;
-    changes = initialChanges(baseCharter(input, choice, next));
+    changes = initialChanges(baseCharter(input, choice, next, draft));
+  }
+  async function askForDraft(): Promise<void> {
+    if (!requestDraft || drafting) return;
+    drafting = true;
+    try {
+      const proposed = await requestDraft(lang, wish.trim());
+      if (proposed) {
+        draft = proposed;
+        lang = toLang(proposed.language);
+        choose('draft');
+      }
+    } finally {
+      drafting = false;
+    }
   }
   function go(offset: number): void {
     const next = STEPS[index + offset];
@@ -67,7 +86,17 @@
     {#if step === 'diagnose'}
       <DiagnoseStep analysis={input.analysis} />
     {:else if step === 'method'}
-      <MethodStep {options} {choice} {lang} langLocked={choice === 'existing'} {choose} {setLang} />
+      <MethodStep {options} {choice} {lang} langLocked={choice === 'existing' || choice === 'draft'} {choose} {setLang}>
+        {#if requestDraft}
+          <div class="avo-draft">
+            <label class="avo-field">
+              <span>Let the language model propose a charter from samples of your notes. Anything it should know? (optional)</span>
+              <input type="text" bind:value={wish} placeholder="For example: I am a student and want courses kept apart" disabled={drafting} />
+            </label>
+            <button type="button" disabled={drafting} onclick={() => void askForDraft()}>{drafting ? 'Drafting…' : 'Ask for a draft'}</button>
+          </div>
+        {/if}
+      </MethodStep>
     {:else if step === 'customize'}
       <CustomizeStep {base} {changes} {problems} {preview} />
     {:else if charter}

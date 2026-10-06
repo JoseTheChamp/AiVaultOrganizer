@@ -7,6 +7,7 @@ import { type IndexReport, planIndexUpdate } from './indexing';
 import type { DenseIndex } from './search';
 import type { Neighbor } from './top-k';
 import { embeddingModelId, VectorStore } from './vector-store';
+import type { TfidfModel } from './tfidf';
 import { WordIndex } from './word-index';
 
 /** Where similarity searches run (a worker inside Obsidian, in-process in tests and the CLI). */
@@ -113,6 +114,19 @@ export class SimilarityEngine {
     const snapshot = await this.deps.reader.snapshot({ ignore: query.ignore ?? [] });
     const { has: _, ...source } = await this.source(snapshot, query);
     return source;
+  }
+
+  /**
+   * Word statistics over the vault (the word index, brought up to date): enough to group notes for
+   * the drafting agent without any model.
+   */
+  async wordModel(query: Pick<NeighborSourceQuery, 'ignore' | 'isCancelled' | 'onProgress'>): Promise<TfidfModel> {
+    const snapshot = await this.deps.reader.snapshot({ ignore: query.ignore ?? [] });
+    await this.words.update(snapshot.notes, (path) => this.deps.reader.read(path), {
+      isCancelled: query.isCancelled,
+      onProgress: ({ done, total }) => query.onProgress?.({ done, total, method: 'words' }),
+    });
+    return this.words.model(new Set(snapshot.notes.map((note) => note.path)));
   }
 
   /** Forgets every index; the next search rebuilds what it needs. */
