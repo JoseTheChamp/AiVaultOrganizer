@@ -71,6 +71,26 @@ describe('OpenAICompatibleClient.chat', () => {
     });
   });
 
+  it('sends a reasoning level only when one is chosen', async () => {
+    const http = new FakeHttp().json('POST', /\/chat\/completions$/, completion({ content: 'OK' }));
+    await new OpenAICompatibleClient({ ...local, reasoning: 'none' }, { http, secrets: new FakeSecrets() }).chat({ messages: [{ role: 'user', content: 'Hi' }] });
+    expect(http.body()).toMatchObject({ reasoning_effort: 'none' });
+    await new OpenAICompatibleClient(local, { http, secrets: new FakeSecrets() }).chat({ messages: [{ role: 'user', content: 'Hi' }] });
+    expect(http.body(1)).not.toHaveProperty('reasoning_effort');
+  });
+
+  it('explains an answer that ran out of output tokens while reasoning', async () => {
+    const http = new FakeHttp().json('POST', /\/chat\/completions$/, {
+      ...completion({ content: '', reasoning: 'Okay, the user wants…' }),
+      choices: [{ message: { content: '', reasoning: 'Okay, the user wants…' }, finish_reason: 'length' }],
+    });
+    const client = new OpenAICompatibleClient(local, { http, secrets: new FakeSecrets() });
+    await expect(client.chat({ messages: [{ role: 'user', content: 'Hi' }], maxTokens: 20 })).rejects.toMatchObject({
+      kind: 'invalid-response',
+      message: expect.stringContaining('Turn thinking off') as string,
+    });
+  });
+
   it('sends the key from secret storage only to configured endpoints', async () => {
     const http = new FakeHttp().json('POST', /chat/, completion({ content: 'hi' }));
     const client = new OpenAICompatibleClient(cloud, { http, secrets: new FakeSecrets({ openai: 'sk-test' }) });

@@ -82,6 +82,8 @@ export class OpenAICompatibleClient implements ChatProvider, EmbeddingProvider, 
     };
     if (request.temperature !== undefined) body.temperature = request.temperature;
     if (request.maxTokens !== undefined) body.max_tokens = request.maxTokens;
+    // Only sent when chosen: OpenAI rejects the parameter for models that do not reason.
+    if (this.config.reasoning !== 'default') body.reasoning_effort = this.config.reasoning;
     if (request.schema) {
       body.response_format = {
         type: 'json_schema',
@@ -107,8 +109,16 @@ export class OpenAICompatibleClient implements ChatProvider, EmbeddingProvider, 
     if (!parsed.success) throw new ProviderError('invalid-response', 'The chat response did not have the expected shape.');
     const choice = parsed.data.choices[0];
     const toolCalls: ToolCall[] = (choice?.message.tool_calls ?? []).map((call, index) => toToolCall(call, index));
+    const text = stripThinking(choice?.message.content ?? '');
+    if (text.trim() === '' && toolCalls.length === 0 && choice?.finish_reason === 'length') {
+      // Typical for thinking models: the whole output limit went into reasoning, none into the answer.
+      throw new ProviderError(
+        'invalid-response',
+        `${this.model} used its whole output limit before answering, probably on reasoning. Turn thinking off for this model in the settings, or allow longer answers.`,
+      );
+    }
     return {
-      text: stripThinking(choice?.message.content ?? ''),
+      text,
       toolCalls,
       usage: { inputTokens: parsed.data.usage?.prompt_tokens ?? 0, outputTokens: parsed.data.usage?.completion_tokens ?? 0 },
       model: parsed.data.model ?? this.model,

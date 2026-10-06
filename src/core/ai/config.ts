@@ -4,6 +4,9 @@ import * as z from 'zod';
 export const PROVIDER_KINDS = ['openai-compatible', 'anthropic'] as const;
 export type ProviderKind = (typeof PROVIDER_KINDS)[number];
 
+export const REASONING_LEVELS = ['default', 'none', 'low', 'medium', 'high'] as const;
+export type ReasoningLevel = (typeof REASONING_LEVELS)[number];
+
 /**
  * Where and how to reach a model. Holds the *name* of a secret in Obsidian's SecretStorage, never
  * the key itself (invariant 6), so this object can live in data.json.
@@ -20,6 +23,11 @@ export const endpointConfigSchema = z.object({
   jsonSchema: z.boolean().default(true),
   toolCalling: z.boolean().default(true),
   maxContext: z.number().int().positive().default(8192),
+  /**
+   * Reasoning ("thinking") for models that support it, sent as `reasoning_effort`. `default` sends
+   * nothing and leaves it to the model; `none` makes thinking models answer directly.
+   */
+  reasoning: z.enum(REASONING_LEVELS).default('default'),
 });
 
 export type EndpointConfig = z.infer<typeof endpointConfigSchema>;
@@ -36,6 +44,8 @@ export interface EndpointPreset {
   /** Whether the endpoint is on this machine by default. */
   local: boolean;
   maxContext: number;
+  /** Reasoning level for chat; thinking local models answer far faster with it off. */
+  reasoning?: ReasoningLevel;
 }
 
 /**
@@ -43,7 +53,7 @@ export interface EndpointPreset {
  * free tiers may use inputs for training; the consent step warns before private notes go there.
  */
 export const ENDPOINT_PRESETS: EndpointPreset[] = [
-  { id: 'ollama', label: 'Ollama (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:11434/v1', chatModel: 'qwen3:8b', embeddingModel: 'bge-m3', needsKey: false, local: true, maxContext: 8192 },
+  { id: 'ollama', label: 'Ollama (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:11434/v1', chatModel: 'qwen3:8b', embeddingModel: 'bge-m3', needsKey: false, local: true, maxContext: 8192, reasoning: 'none' },
   { id: 'lm-studio', label: 'LM Studio (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:1234/v1', chatModel: '', embeddingModel: '', needsKey: false, local: true, maxContext: 8192 },
   { id: 'openai', label: 'OpenAI', kind: 'openai-compatible', baseUrl: 'https://api.openai.com/v1', chatModel: 'gpt-4.1-mini', embeddingModel: 'text-embedding-3-small', needsKey: true, local: false, maxContext: 128000 },
   { id: 'anthropic', label: 'Anthropic', kind: 'anthropic', baseUrl: 'https://api.anthropic.com', chatModel: 'claude-opus-5-5', embeddingModel: null, needsKey: true, local: false, maxContext: 200000 },
@@ -67,6 +77,7 @@ export function configFromPreset(preset: EndpointPreset, purpose: 'chat' | 'embe
     model: purpose === 'chat' ? preset.chatModel : (preset.embeddingModel ?? ''),
     secretName: preset.needsKey ? secretName : '',
     maxContext: preset.maxContext,
+    reasoning: purpose === 'chat' ? (preset.reasoning ?? 'default') : 'default',
   });
 }
 

@@ -91,7 +91,9 @@ multilingual, which matters for vaults that aren't English-only. Then:
 2. Keep the provider **Ollama (local)**.
 3. Enter the model name and click **Test connection**.
 
-LM Studio works the same way.
+LM Studio works the same way. For models that reason before answering, such as Qwen 3, the **Thinking**
+setting is off by default with Ollama. Sorting notes doesn't need long deliberation, and answers come
+many times faster.
 
 **Your own API key.**
 

@@ -28,6 +28,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   when that provider has one, and a local Ollama model otherwise. API keys are kept in Obsidian's
   keychain, never in the plugin settings.
 - Local-only mode, on by default: requests to anything other than this computer are blocked.
+- A "Thinking" setting for models that reason before answering (Qwen 3, DeepSeek R1, OpenAI o-series).
+  It is off by default for Ollama, so local thinking models answer quickly instead of running out of
+  tokens mid-thought.
 - Limits for model use: parallel requests, requests per minute, a token budget per run and optional
   prices for cost estimates. Responses are cached so repeated runs are free; the cache can be cleared
   in settings.

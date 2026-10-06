@@ -3,7 +3,7 @@
  *
  *   npx vitest run eval/providers.smoke.test.ts                 replay (CI, offline)
  *   RECORD=1 npx vitest run eval/providers.smoke.test.ts        re-record against http://localhost:11434
- *   RECORD=1 OLLAMA_MODEL=qwen3:8b npx vitest run eval/...      with another model
+ *   RECORD=1 OLLAMA_MODEL=llama3.1:8b npx vitest run eval/...   with another model (default: the preset's, qwen3:8b)
  *   RECORD=1 OLLAMA_EMBED_MODEL=bge-m3 npx vitest run eval/...   also record embeddings
  *   (current Ollama only embeds with embedding models, so that case needs one installed)
  *
@@ -21,18 +21,20 @@ import { loadCassette, saveCassette } from './adapters/cassette-files';
 import { FetchHttp } from './adapters/fetch-http';
 
 const record = process.env.RECORD === '1';
-const model = process.env.OLLAMA_MODEL ?? 'qwen2.5:0.5b';
 const preset = findPreset('ollama');
 if (!preset) throw new Error('ollama preset missing');
 
 const cassette = await loadCassette('ollama-smoke');
+const recordedModel = (url: string): string | undefined =>
+  cassette.interactions
+    .filter((interaction) => interaction.request.url.endsWith(url))
+    .map((interaction) => (interaction.request.body as { model?: string } | null)?.model)
+    .find((name): name is string => typeof name === 'string');
+// Replay uses whatever was recorded; recording defaults to the Ollama preset's chat model.
+const model = record ? (process.env.OLLAMA_MODEL ?? preset.chatModel) : (recordedModel('/chat/completions') ?? preset.chatModel);
 const http = new CassetteHttp(cassette, record ? 'record' : 'replay', webCryptoHasher, record ? new FetchHttp() : undefined);
 const client = new OpenAICompatibleClient({ ...configFromPreset(preset, 'chat'), model }, { http, secrets: new FakeSecrets() });
-const recordedEmbedModel = cassette.interactions
-  .filter((interaction) => interaction.request.url.endsWith('/embeddings'))
-  .map((interaction) => (interaction.request.body as { model?: string } | null)?.model)
-  .find((name): name is string => typeof name === 'string');
-const embedModel = record ? process.env.OLLAMA_EMBED_MODEL : recordedEmbedModel;
+const embedModel = record ? process.env.OLLAMA_EMBED_MODEL : recordedModel('/embeddings');
 
 afterAll(async () => {
   if (record && http.dirty) await saveCassette(cassette);

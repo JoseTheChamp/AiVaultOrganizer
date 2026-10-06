@@ -5,6 +5,8 @@ import {
   type EndpointPreset,
   findPreset,
   followsLanguageModel,
+  REASONING_LEVELS,
+  type ReasoningLevel,
   suggestEmbeddingEndpoint,
   trimBaseUrl,
 } from '../../core/ai/config';
@@ -268,6 +270,7 @@ export class SettingsTab extends PluginSettingTab {
       this.endpointRow('chat', (value) => this.changeChat((chat) => (chat.baseUrl = value))),
       this.modelRow('chat', 'Model', 'A model that follows instructions and supports structured output.', 'qwen3:8b'),
     );
+    if (ai.chat.kind === 'openai-compatible') rows.push(this.thinkingRow());
     if (needsKeyRow(ai.chat)) rows.push(this.keyRow('chat', (value) => this.changeChat((chat) => (chat.secretName = value))));
     return rows;
   }
@@ -407,6 +410,28 @@ export class SettingsTab extends PluginSettingTab {
               }
             }),
           );
+      },
+    };
+  }
+
+  /** Reasoning level for thinking models (Qwen 3, DeepSeek R1, OpenAI o-series). */
+  private thinkingRow(): RowSpec {
+    const chat = this.plugin.settings.ai.chat;
+    const labels: Record<ReasoningLevel, string> = { default: 'Model default', none: 'Off', low: 'Low', medium: 'Medium', high: 'High' };
+    return {
+      name: 'Thinking',
+      desc: 'For models that reason before answering. Off answers much faster and is enough for sorting notes. Choose model default if your provider rejects the setting.',
+      child: true,
+      render: (setting) => {
+        setting.addDropdown((dropdown) => {
+          for (const level of REASONING_LEVELS) dropdown.addOption(level, labels[level]);
+          dropdown.setValue(chat.reasoning).onChange(async (value) => {
+            const level = REASONING_LEVELS.find((candidate) => candidate === value);
+            if (!level) return;
+            chat.reasoning = level;
+            await this.save();
+          });
+        });
       },
     };
   }
