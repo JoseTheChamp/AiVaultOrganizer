@@ -10,7 +10,7 @@ import { applyHarness } from '../testing/apply-harness';
 import { ScriptedChatProvider } from '../testing/fake-chat';
 import { DEFAULT_KNN } from './classify';
 import { buildPlan, followMoves, type PlannerInput } from './plan';
-import { charterRoots } from './rule-plan';
+import { charterRoots } from './charter-roots';
 
 const charter: Charter = {
   ...presetCharter('para', 'en'),
@@ -116,6 +116,41 @@ describe('buildPlan', () => {
     await plan(withoutAges, { knn: { ...DEFAULT_KNN, minSimilarity: 0.95 }, cardAges: false });
     expect(JSON.stringify(withAges.requests[0])).toContain('Last changed');
     expect(JSON.stringify(withoutAges.requests[0])).not.toContain('Last changed');
+  });
+});
+
+describe('buildPlan without neighbours or a model', () => {
+  const now = new Date(Date.UTC(2026, 9, 7));
+  const rulesOnly = async (charter: Charter, files: Record<string, string>, folders: string[] = [], createDestinationFolders = false) => {
+    const { vault } = applyHarness(files, folders);
+    return (await buildPlan({ snapshot: await vault.snapshot(), charter, charterPath: null, read: (path) => vault.read(path), now, createDestinationFolders })).plan;
+  };
+
+  it('is empty for a vault that already follows its charter', async () => {
+    const plan = await rulesOnly(presetCharter('para', 'en'), { '1 Projects/A/A.md': '---\ntype: project\n---\n', 'Daily/2026-10-01.md': '' }, ['0 Inbox', '2 Areas', '3 Resources', '4 Archive']);
+    expect(plan.operations).toEqual([]);
+    expect(plan.warnings).toEqual([]);
+  });
+
+  it("creates the charter's missing folders, with their parents, when asked", async () => {
+    const plan = await rulesOnly(presetCharter('johnny-decimal', 'en'), {}, [], true);
+    const folders = plan.operations.map((op) => (op.kind === 'createFolder' ? op.path : null));
+    expect(folders).toContain('10-19 Life admin');
+    expect(folders.indexOf('10-19 Life admin')).toBeLessThan(folders.indexOf('10-19 Life admin/11 Finance'));
+    expect(folders).toContain('00-09 System/02 Daily');
+  });
+
+  it('adds the category link of a category destination, after the move when there is one', async () => {
+    const flat = presetCharter('flat-categories', 'en');
+    const recipes = { id: 'recipes', category: '[[Recipes]]', description: '', layout: 'flat' as const, priority: 0, match: [{ property: 'type', equals: 'recipe' }], examples: [] };
+    const plan = await rulesOnly({ ...flat, destinations: [...flat.destinations, recipes] }, { 'Soup.md': '---\ntype: recipe\ncategories: "[[Food]]"\n---\n' });
+    // (The preset's category notes are planned too; this test is about the note's own property.)
+    expect(plan.operations.filter((op) => op.kind === 'setProperty')).toMatchObject([{ path: 'Soup.md', key: 'categories', value: ['[[Food]]', '[[Recipes]]'], source: 'rule' }]);
+
+    const filed = { ...recipes, path: 'Recipes' };
+    const moved = await rulesOnly({ ...flat, mode: 'hybrid', destinations: [filed] }, { 'Soup.md': '---\ntype: recipe\n---\n' });
+    const move = moved.operations.find((op) => op.kind === 'move');
+    expect(moved.operations.find((op) => op.kind === 'setProperty')).toMatchObject({ path: 'Recipes/Soup.md', value: ['[[Recipes]]'], dependsOn: [move?.id], precondition: { path: 'Soup.md' } });
   });
 });
 

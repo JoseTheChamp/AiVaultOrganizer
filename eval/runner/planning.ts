@@ -10,7 +10,7 @@ import { buildCard, type NoteCard } from '../../src/core/planner/cards';
 import { classifyNotes, DEFAULT_KNN, type KnnOptions, WORD_KNN } from '../../src/core/planner/classify';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from '../../src/core/planner/llm-stage';
 import { buildPlan } from '../../src/core/planner/plan';
-import { charterRoots } from '../../src/core/planner/rule-plan';
+import { charterRoots } from '../../src/core/planner/charter-roots';
 import { folderKey, reconcileSubfolders } from '../../src/core/planner/subfolders';
 import { applyHarness } from '../../src/core/testing/apply-harness';
 import { FIXTURE_METHOD_KEYS, FIXTURE_METHODS, type FixtureMethod, type GroundTruth } from '../fixture/ground-truth';

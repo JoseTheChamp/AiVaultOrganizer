@@ -7,8 +7,10 @@ import type { Charter } from '../charter/schema';
 import type { Neighbor } from '../embeddings/top-k';
 import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
+import { ancestorFolders, joinPath } from '../model/paths';
 import { createPlan, type Plan } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
+import { charterRoots } from './charter-roots';
 import { type Classification, classifyNotes, type KnnOptions } from './classify';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from './llm-stage';
 import { mocOperations } from './mocs';
@@ -35,6 +37,8 @@ export interface PlannerInput {
   links?: readonly LinkSuggestion[];
   /** Show the model how recently notes changed (off for replayed evals, where file times vary). */
   cardAges?: boolean;
+  /** Also create the charter's folders that do not exist yet, even with no note to move there. */
+  createDestinationFolders?: boolean;
 }
 
 export interface PlannerResult {
@@ -80,6 +84,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
   const classification = await classifyNotes({ snapshot, charter, charterPath: input.charterPath, neighbors: input.neighbors, llm: llmStage }, input.knn);
   const subfolders = await reconcileSubfolders(classification, charter, snapshot.folders, namer);
   const placed = placementOperations(classification, snapshot, charter);
+  const skeleton = input.createDestinationFolders ? destinationFolders(charter, snapshot, placed.operations) : [];
   const moves = placed.operations.filter((op): op is Extract<Operation, { kind: 'move' }> => op.kind === 'move');
 
   const skipped = new Set(classification.skipped);
@@ -88,7 +93,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     [...propertyOperations(notes, charter), ...tagOperations(notes, charter), ...(input.links ? relatedLinkOperations(input.links, snapshot, charter) : [])],
     moves,
   );
-  const sofar = [...placed.operations, ...edits];
+  const sofar = [...skeleton, ...placed.operations, ...edits];
   const mocs = await mocOperations({ snapshot, charter, operations: sofar, read });
   const queries = await queryBreakageOperations(snapshot, sofar, read);
 
@@ -104,6 +109,17 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
   });
   const summary = await summarizePlan(plan, charter, input.model?.provider);
   return { plan, classification, summary, subfolders, ...(model ? { model } : {}) };
+}
+
+/** The charter's folders (with their parents) that neither exist nor are created by the moves. */
+function destinationFolders(charter: Charter, snapshot: VaultSnapshot, operations: readonly Operation[]): Operation[] {
+  const known = new Set([...snapshot.folders, ...operations.flatMap((op) => (op.kind === 'createFolder' ? [op.path] : []))].map((folder) => folder.toLowerCase()));
+  const missing = new Set<string>();
+  for (const root of charterRoots(charter)) {
+    if (root === '') continue;
+    for (const folder of [...ancestorFolders(joinPath(root, 'x')), root]) if (!known.has(folder.toLowerCase())) missing.add(folder);
+  }
+  return [...missing].sort().map((path) => createOperation({ kind: 'createFolder', path }, { source: 'rule', confidence: 1, rationale: 'The charter defines this folder.' }));
 }
 
 /**

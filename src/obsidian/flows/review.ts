@@ -7,7 +7,7 @@ import { loadCharter } from '../../core/charter/load';
 import { describeOperation } from '../../core/model/operation-text';
 import type { Plan } from '../../core/model/plan';
 import { plural } from '../../core/model/text';
-import { charterRoots } from '../../core/planner/rule-plan';
+import { charterRoots } from '../../core/planner/charter-roots';
 import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import type AiVaultOrganizerPlugin from '../main';
 import { MessageModal } from '../views/message-modal';

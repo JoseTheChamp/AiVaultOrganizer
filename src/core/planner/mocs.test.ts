@@ -6,7 +6,7 @@ import { createOperation, type Operation } from '../model/operation';
 import { createPlan } from '../model/plan';
 import { applyHarness } from '../testing/apply-harness';
 import { mocOperations, pathsAfter } from './mocs';
-import { charterRoots } from './rule-plan';
+import { charterRoots } from './charter-roots';
 
 const topics = presetCharter('topics', 'en');
 

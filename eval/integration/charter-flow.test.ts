@@ -14,7 +14,8 @@ import { loadCharter } from '../../src/core/charter/load';
 import { presetCharter } from '../../src/core/charter/presets/index';
 import { computeDrift } from '../../src/core/drift/drift';
 import type { Plan } from '../../src/core/model/plan';
-import { buildRulePlan, charterRoots } from '../../src/core/planner/rule-plan';
+import { charterRoots } from '../../src/core/planner/charter-roots';
+import { buildPlan } from '../../src/core/planner/plan';
 import { applyHarness } from '../../src/core/testing/apply-harness';
 import { NodeFsVault } from '../adapters/node-vault';
 
@@ -54,14 +55,30 @@ describe('charter flow on the messy PARA fixture', () => {
     expect(before.counts.unplaced).toBe(4);
     expect(before.missingFolders).toEqual(['Archive']);
 
-    // 3. Plan re-alignment and apply it with the charter's constraints.
-    const plan = buildRulePlan(await vault.snapshot(), charter, { charterPath: CHARTER, now: new Date(clock.now()), createMissingFolders: true });
+    // 3. Plan re-alignment without AI (rules only) and apply it with the charter's constraints.
+    const { plan } = await buildPlan({
+      snapshot: await vault.snapshot(),
+      charter,
+      charterPath: CHARTER,
+      read: (file) => vault.read(file),
+      now: new Date(clock.now()),
+      createDestinationFolders: true,
+    });
+    // Without AI, notes no rule places (the inbox note too) are flagged for the user, not guessed.
+    expect(plan.operations.flatMap((op) => (op.kind === 'flag' && op.issue === 'ambiguous' ? [op.path] : []))).toEqual([
+      'Home.md',
+      'Inbox/Quick thought.md',
+      'Meeting with Anna.md',
+      'README.md',
+      'Random note.md',
+    ]);
     const moved = await runs.run(accept(plan), {
       pluginVersion: 'test',
       ignore: charter.ignore,
       allowedRoots: [...charterRoots(charter), CHARTER],
     });
-    expect(moved.kind === 'ran' && moved.report).toMatchObject({ status: 'completed', applied: 6, skipped: 0, failed: 0 });
+    // Three folders and five moves; flags change nothing.
+    expect(moved.kind === 'ran' && moved.report).toMatchObject({ status: 'completed', applied: 8, skipped: 0, failed: 0 });
     expect(await vault.exists('Archive/Kitchen renovation.md')).toBe(true);
     expect(await vault.exists('Projects/Website relaunch/Website relaunch.md')).toBe(true);
     expect(await vault.read('Templates/Project template.md')).toBe(files['Templates/Project template.md']);

@@ -6,7 +6,7 @@ import { createPlan } from '../model/plan';
 import { applyHarness } from '../testing/apply-harness';
 import { classifyNotes, DAILY, isKindDestination, type LlmStage, ROOT } from './classify';
 import { placementOperations, safeFolderName } from './placement-plan';
-import { charterRoots } from './rule-plan';
+import { charterRoots } from './charter-roots';
 
 const files = {
   'Vault Charter.md': '---\ncharter: true\n---\nCharter.',

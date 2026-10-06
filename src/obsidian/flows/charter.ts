@@ -6,7 +6,7 @@ import type { Charter } from '../../core/charter/schema';
 import { formatCharterIssues } from '../../core/charter/summary';
 import { computeDrift } from '../../core/drift/drift';
 import { plural } from '../../core/model/text';
-import { buildRulePlan } from '../../core/planner/rule-plan';
+import { buildPlan } from '../../core/planner/plan';
 import type AiVaultOrganizerPlugin from '../main';
 import { CharterSetupModal } from '../views/charter-setup-modal';
 import { DriftModal } from '../views/drift-modal';
@@ -87,14 +87,21 @@ export async function checkDrift(plugin: AiVaultOrganizerPlugin): Promise<void> 
   new DriftModal(plugin.app, { report, onPlan: () => void planRealignment(plugin) }).open();
 }
 
-/** `Plan re-alignment`: everything the rules imply, saved as the pending plan and opened for review. */
+/** `Plan re-alignment`: the planner's proposal for the whole vault, saved as the pending plan and opened for review. */
 export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<void> {
   const loaded = await requireCharter(plugin);
   if (!loaded) return;
-  const snapshot = await plugin.services.reader.snapshot();
-  const plan = buildRulePlan(snapshot, loaded.charter, { charterPath: loaded.path, now: new Date(), createMissingFolders: true });
+  const { reader } = plugin.services;
+  const { plan } = await buildPlan({
+    snapshot: await reader.snapshot(),
+    charter: loaded.charter,
+    charterPath: loaded.path,
+    read: (path) => reader.read(path),
+    now: new Date(),
+    createDestinationFolders: true,
+  });
   if (plan.operations.length === 0) {
-    new Notice(`Nothing to re-align: every rule is satisfied.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
+    new Notice(`Nothing to re-align: every note is where the charter puts it.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
     return;
   }
   await plugin.services.plans.save(plan);
