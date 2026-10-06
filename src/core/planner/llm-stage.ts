@@ -28,7 +28,12 @@ export interface LlmStageOptions {
   /** Every folder in the vault, to offer existing subfolders for reuse. */
   folders: readonly string[];
   batchSize?: number;
+  /** Ask again about answers whose self-reported confidence falls in this range. */
+  secondSample?: { low: number; high: number } | false;
 }
+
+/** Self-reports in this range are borderline; above it the model is sure, below it a second ask rarely helps. */
+export const SECOND_SAMPLE = { low: 0.4, high: 0.85 };
 
 /** A model stage for the cascade, and counters for its cost and failures. */
 export interface ModelStage {
@@ -49,11 +54,34 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
   const batchSize = options.batchSize ?? 10;
 
   const stage: LlmStage = async (notes, context) => {
-    const decisions = new Map<string, LlmDecision>();
     const sendable = notes.filter((note) => options.cards.has(note.path));
     stats.withheld += notes.length - sendable.length;
     const base = promptBase(context, options.folders);
-    for (const batch of batches(sendable, base, options.cards, batchSize, options.provider.capabilities.maxContext)) {
+    const decisions = await ask(sendable, base);
+
+    // A second opinion for borderline answers (PLAN §7.6): the same notes in reverse order land
+    // in different batches, so the model sees them in a different context. Agreement is evidence.
+    const range = options.secondSample;
+    const borderline = range
+      ? sendable.filter((note) => {
+          const decision = decisions.get(note.path);
+          return Boolean(decision?.destination) && (decision?.confidence ?? 0) >= range.low && (decision?.confidence ?? 1) <= range.high;
+        })
+      : [];
+    if (borderline.length > 0) {
+      const second = await ask([...borderline].reverse(), base);
+      for (const note of borderline) {
+        const first = decisions.get(note.path) as LlmDecision;
+        const other = second.get(note.path);
+        if (other) decisions.set(note.path, { ...first, agreement: other.destination === first.destination });
+      }
+    }
+    return decisions;
+  };
+
+  const ask = async (notes: readonly NoteRecord[], base: Omit<ClassifyNotesInput, 'notes'>): Promise<Map<string, LlmDecision>> => {
+    const decisions = new Map<string, LlmDecision>();
+    for (const batch of batches(notes, base, options.cards, batchSize, options.provider.capabilities.maxContext)) {
       const input: ClassifyNotesInput = { ...base, notes: batch.map((note, i) => ({ id: `n${i + 1}`, card: options.cards.get(note.path) as NoteCard })) };
       const result = await runPrompt(options.provider, classifyNotesV1, input);
       stats.calls += result.ok ? result.value.attempts : result.error.attempts;

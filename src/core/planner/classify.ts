@@ -3,6 +3,7 @@ import { RuleEngine } from '../drift/rules';
 import type { Neighbor } from '../embeddings/top-k';
 import type { NoteRecord, VaultSnapshot } from '../model/note';
 import { isInFolder } from '../model/paths';
+import { type CalibrationOptions, calibrateAll, DEFAULT_CALIBRATION } from './calibrate';
 
 /** Pseudo-destination of properties mode: the note stays in the vault root (PLAN §4, Flat + categories). */
 export const ROOT = 'root';
@@ -80,6 +81,8 @@ export interface CascadeInput {
   /** Similarity search over all notes; enables the kNN stage. */
   neighbors?: (path: string, k: number) => readonly Neighbor[];
   llm?: LlmStage;
+  /** How confidences are combined at the end; false keeps each stage's raw confidence. */
+  calibration?: CalibrationOptions | false;
 }
 
 export interface KnnOptions {
@@ -195,6 +198,7 @@ export async function classifyNotes(input: CascadeInput, knn: KnnOptions = DEFAU
     }
   }
   for (const note of stillOpen) if (!placements.has(note.path)) placements.set(note.path, undecided(note, {}));
+  if (input.calibration !== false) calibrateAll(placements, input.calibration ?? DEFAULT_CALIBRATION);
   return { placements, skipped, targets };
 }
 

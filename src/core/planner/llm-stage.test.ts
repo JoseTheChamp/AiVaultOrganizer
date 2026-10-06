@@ -58,7 +58,8 @@ describe('createLlmStage', () => {
       answer(['n1', 'projects', 'Website', 0.9], ['n2', 'areas', 'Finances', 0.7]),
       answer(['n1', 'abstain', null, 0.2]),
     ]);
-    expect(classification.placements.get('a.md')).toMatchObject({ destination: 'projects', subfolder: 'Website', source: 'llm', confidence: 0.9 });
+    expect(classification.placements.get('a.md')).toMatchObject({ destination: 'projects', subfolder: 'Website', source: 'llm', signals: { llm: { confidence: 0.9 } } });
+    expect(classification.placements.get('a.md')?.confidence).toBeCloseTo(0.74, 10);
     expect(classification.placements.get('b.md')).toMatchObject({ destination: 'areas', subfolder: 'Finances', source: 'llm' });
     expect(classification.placements.get('c.md')).toMatchObject({ destination: null, source: null });
     expect(classification.placements.get('secret.md')).toMatchObject({ destination: null });

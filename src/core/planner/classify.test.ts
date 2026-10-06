@@ -83,7 +83,10 @@ describe('classifyNotes', () => {
     };
     const { classification } = await setup(llm);
     expect(asked.sort()).toEqual(['CMS notes.md', 'Inbox/Mystery.md', 'Inbox/Random thought.md']);
-    expect(classification.placements.get('CMS notes.md')).toMatchObject({ destination: 'resources', subfolder: 'Web', source: 'llm', confidence: 0.8 });
+    const cms = classification.placements.get('CMS notes.md');
+    expect(cms).toMatchObject({ destination: 'resources', subfolder: 'Web', source: 'llm', signals: { llm: { confidence: 0.8 } } });
+    // Calibrated: the self-report shrunk towards 0.5, minus the disagreeing kNN vote (share 0.7 / 1.3).
+    expect(cms?.confidence).toBeCloseTo(0.5 + 0.3 * 0.6 - 0.2 * (0.7 / 1.3), 10);
     // The kNN evidence is kept next to the model's answer for calibration.
     expect(classification.placements.get('CMS notes.md')?.signals.knn?.destination).toBe('projects');
     expect(classification.placements.get('Inbox/Mystery.md')).toMatchObject({ destination: null, rationale: 'Too little to go on.' });
