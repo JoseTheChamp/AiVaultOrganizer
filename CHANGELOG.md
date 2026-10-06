@@ -31,3 +31,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Limits for model use: parallel requests, requests per minute, a token budget per run and optional
   prices for cost estimates. Responses are cached so repeated runs are free; the cache can be cleared
   in settings.
+- `Find similar notes` command: the closest notes to the active one, by shared words (no AI needed) or
+  by meaning with an embedding model. Indexing is incremental and can be stopped from its progress
+  notice. Notes are sent to a cloud embedding provider only after you agree, and notes marked
+  `ai-vault-organizer: private` are never sent.

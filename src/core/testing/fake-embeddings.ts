@@ -1,4 +1,5 @@
 import { estimateTokens } from '../ai/budget';
+import { isLoopbackUrl } from '../ai/endpoint-url';
 import { type EmbeddingProvider, type EmbeddingResponse, type ProviderCapabilities, ProviderError } from '../ai/types';
 import { terms } from '../embeddings/tfidf';
 
@@ -8,7 +9,7 @@ import { terms } from '../embeddings/tfidf';
  */
 export class FakeEmbeddingProvider implements EmbeddingProvider {
   readonly id: string;
-  readonly capabilities: ProviderCapabilities = { jsonSchema: false, toolCalling: false, embeddings: true, maxContext: 8192, local: true };
+  readonly capabilities: ProviderCapabilities;
   readonly calls: string[][] = [];
   /** 1-based call number that throws a server error, or null. */
   failOnCall: number | null = null;
@@ -19,6 +20,7 @@ export class FakeEmbeddingProvider implements EmbeddingProvider {
     endpoint = 'http://localhost:11434/v1',
   ) {
     this.id = `fake:${endpoint}`;
+    this.capabilities = { jsonSchema: false, toolCalling: false, embeddings: true, maxContext: 8192, local: isLoopbackUrl(endpoint) };
   }
 
   async embed(texts: string[]): Promise<EmbeddingResponse> {

@@ -225,6 +225,18 @@ export class SettingsTab extends PluginSettingTab {
               );
             },
           },
+          {
+            name: 'Similarity index',
+            desc: 'Updated automatically as notes change. Reset it if similar notes look wrong; the next search rebuilds it.',
+            render: (setting) => {
+              setting.addButton((button) =>
+                button.setButtonText('Reset index').onClick(async () => {
+                  await this.plugin.services.similarity.clear();
+                  new Notice('The similarity index will be rebuilt on the next search.');
+                }),
+              );
+            },
+          },
         ],
       },
     ];

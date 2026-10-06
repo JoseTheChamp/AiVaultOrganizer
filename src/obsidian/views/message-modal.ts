@@ -5,11 +5,13 @@ export interface MessageContent {
   paragraphs: string[];
   items?: string[];
   /** Primary action; when absent the modal only has a close button. */
-  confirm?: { label: string; warning?: boolean; onConfirm: () => void };
+  confirm?: { label: string; warning?: boolean; onConfirm: () => void; onCancel?: () => void };
 }
 
 /** Small modal for confirmations and run reports: a title, a few sentences, an optional list. */
 export class MessageModal extends Modal {
+  private confirmed = false;
+
   constructor(
     app: App,
     private readonly content: MessageContent,
@@ -31,6 +33,7 @@ export class MessageModal extends Modal {
       const { label, warning, onConfirm } = content.confirm;
       buttons.addButton((button) => {
         button.setButtonText(label).onClick(() => {
+          this.confirmed = true;
           this.close();
           onConfirm();
         });
@@ -44,5 +47,7 @@ export class MessageModal extends Modal {
 
   override onClose(): void {
     this.contentEl.empty();
+    // Cancel, Escape and clicking outside all count as declining.
+    if (!this.confirmed) this.content.confirm?.onCancel?.();
   }
 }

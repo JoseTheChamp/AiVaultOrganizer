@@ -3,6 +3,7 @@ import { ResponseCache } from '../core/ai/cache';
 import { type AiDeps, type ConnectionReport, createChatProvider, createEmbeddingProvider, testConnection } from '../core/ai/factory';
 import type { RunBudget } from '../core/ai/budget';
 import type { ChatProvider, EmbeddingProvider } from '../core/ai/types';
+import { type SearchBackend, SimilarityEngine } from '../core/embeddings/similarity';
 import { BackupService } from '../core/apply/backup';
 import { Journal } from '../core/apply/journal';
 import { PlanStore } from '../core/apply/plan-store';
@@ -16,6 +17,8 @@ import { ObsidianVaultReader } from './adapters/obsidian-vault-reader';
 import { ObsidianVaultWriter } from './adapters/obsidian-vault-writer';
 import { ObsidianSecrets, RequestUrlHttp, windowSleep } from './adapters/request-url-http';
 import type { PluginSettings } from './settings/settings';
+import { createSearchWorker } from './workers/create-search-worker';
+import { SearchClient } from './workers/search-client';
 
 /** Adapters and core services wired once per plugin load; commands and views use these. */
 export interface PluginServices {
@@ -31,6 +34,9 @@ export interface PluginServices {
   runs: ApplyRunService;
   undo: UndoService;
   ai: AiServices;
+  similarity: SimilarityEngine;
+  /** Stops background resources (the search worker); called when the plugin unloads. */
+  dispose(): void;
 }
 
 /** AI providers built from the settings at call time, so changes apply without a reload. */
@@ -54,6 +60,13 @@ export function createServices(app: App, logger: Logger, settings: () => PluginS
   const storage = new ObsidianStorage(app.vault.adapter);
   const journal = new Journal(storage, clock);
   const base = { reader, writer, links, journal, hasher, logger, storage, clock };
+  // The search worker starts on first use, so users who never search never pay for it.
+  let searchClient: SearchClient | null = null;
+  const client = (): SearchClient => (searchClient ??= new SearchClient(createSearchWorker, logger));
+  const search: SearchBackend = {
+    load: (index) => client().load(index),
+    similar: (path, k, exclude) => client().similar(path, k, exclude),
+  };
   const aiDeps: AiDeps = { http: new RequestUrlHttp(), secrets: new ObsidianSecrets(app), storage, hasher, clock, sleep: windowSleep };
   return {
     reader,
@@ -73,5 +86,7 @@ export function createServices(app: App, logger: Logger, settings: () => PluginS
       testConnection: (purpose) => testConnection(purpose, settings().ai, aiDeps),
       clearCache: () => new ResponseCache(storage, hasher).clear(),
     },
+    similarity: new SimilarityEngine({ reader, storage, hasher, clock, search, logger }),
+    dispose: () => searchClient?.dispose(),
   };
 }

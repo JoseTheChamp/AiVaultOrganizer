@@ -25,6 +25,11 @@ the two.
 5. **Apply** after an automatic backup; links are verified after every batch; undo is one command.
 6. **Check drift** later and re-align only what changed.
 
+**Find similar notes** shows the notes closest to the one you are reading. Without any AI it compares
+the words notes share. With **Better similarity** on, it compares meaning, which also finds related
+notes written in another language. The first search indexes the vault; later searches only index notes
+that changed. Click the progress notice to stop indexing at any time.
+
 ## Supported methods
 
 | Method | How notes are organized | Rules out of the box |
