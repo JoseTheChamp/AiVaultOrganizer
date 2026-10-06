@@ -10,7 +10,7 @@ const percent = (value: number): string => `${Math.round(value * 100)} %`;
  * folder names and a few examples, so it is safe to paste into an issue.
  */
 export function formatAnalysisMarkdown(analysis: VaultAnalysis): string {
-  const { stats, methods, health } = analysis;
+  const { stats, methods, health, triage } = analysis;
   const lines: string[] = [
     '# Vault diagnostics',
     '',
@@ -26,6 +26,8 @@ export function formatAnalysisMarkdown(analysis: VaultAnalysis): string {
     `| Attachments | ${stats.attachmentCount} |`,
     `| Links between notes | ${stats.graph.edgeCount} |`,
     `| Orphans | ${stats.graph.orphans.length} |`,
+    `| Isolated notes (no links at all) | ${triage.isolated.length} |`,
+    `| Stubs (a few words, no links out) | ${triage.stubs.length} |`,
     `| Notes in root | ${stats.rootNoteCount} (${percent(stats.rootShare)}) |`,
     `| Maximum depth | ${stats.maxDepth} |`,
     `| Unique tags | ${stats.tags.uniqueTags} (${stats.tags.variantGroups.length} with variants) |`,

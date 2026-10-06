@@ -1,6 +1,7 @@
 import { type App, Modal, Notice, Setting } from 'obsidian';
 import type { VaultAnalysis } from '../../core/analysis/analyze';
 import { describeDetection } from '../../core/analysis/method-detect';
+import { plural } from '../../core/model/text';
 import { formatAnalysisMarkdown } from '../../core/analysis/report';
 import { METHOD_LABELS } from '../../core/model/methods';
 
@@ -17,7 +18,7 @@ export class DiagnosticsModal extends Modal {
 
   override onOpen(): void {
     const { contentEl } = this;
-    const { stats, methods, health } = this.analysis;
+    const { stats, methods, health, triage } = this.analysis;
     this.setTitle('Vault diagnostics');
     contentEl.addClass('avo-diagnostics');
 
@@ -42,7 +43,7 @@ export class DiagnosticsModal extends Modal {
       this.meterRow(contentEl, component.label, component.value, component.detail);
     }
 
-    if (stats.tags.variantGroups.length > 0 || stats.emptyFolders.length > 0) {
+    if (stats.tags.variantGroups.length > 0 || stats.emptyFolders.length > 0 || triage.stubs.length > 0) {
       new Setting(contentEl).setName('Things to look at').setHeading();
       const list = contentEl.createEl('ul', { cls: 'avo-issues' });
       for (const group of stats.tags.variantGroups.slice(0, 5)) {
@@ -53,6 +54,10 @@ export class DiagnosticsModal extends Modal {
       for (const folder of stats.emptyFolders.slice(0, 5)) {
         list.createEl('li', { text: `Empty folder: ${folder}` });
       }
+      for (const stub of triage.stubs.slice(0, 5)) {
+        list.createEl('li', { text: `Stub with ${plural(stub.words, 'word')}: ${stub.path}` });
+      }
+      if (triage.stubs.length > 5) list.createEl('li', { cls: 'avo-muted', text: `…and ${plural(triage.stubs.length - 5, 'more stub')}.` });
     }
 
     new Setting(contentEl)
