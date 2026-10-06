@@ -55,3 +55,12 @@ describe('createSearchHandler', () => {
     expect(handle({ id: 4, type: 'load', paths: ['x.md'], dims: 3, matrix: new Float32Array(1) })).toMatchObject({ id: 4, type: 'error' });
   });
 });
+
+describe('DenseSearch.similarity', () => {
+  it('is the cosine of two indexed notes', () => {
+    const search = new DenseSearch(index);
+    expect(search.similarity('a.md', 'a.md')).toBeCloseTo(1, 6);
+    expect(search.similarity('a.md', 'c.md')).toBeCloseTo(0, 6);
+    expect(search.similarity('a.md', 'missing.md')).toBe(0);
+  });
+});

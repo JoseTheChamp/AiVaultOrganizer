@@ -75,3 +75,12 @@ describe('topK', () => {
     expect(topK(scores, 25)).toEqual(expected);
   });
 });
+
+describe('TfidfModel.similarity', () => {
+  it('matches the scores of similar()', () => {
+    const model = TfidfModel.build(new Map<string, TermCounts>([['x.md', { garden: 2, soil: 1 }], ['y.md', { garden: 1, run: 1 }], ['z.md', { run: 2 }]]));
+    expect(model.similarity('x.md', 'y.md')).toBeCloseTo(model.similar('x.md', 1)[0]?.score ?? 0, 12);
+    expect(model.similarity('x.md', 'z.md')).toBe(0);
+    expect(model.similarity('x.md', 'nope.md')).toBe(0);
+  });
+});

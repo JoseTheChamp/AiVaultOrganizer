@@ -106,6 +106,17 @@ export class TfidfModel {
     return this.index.has(path);
   }
 
+  /** Cosine similarity of two indexed notes (0 when either is unknown). */
+  similarity(a: string, b: string): number {
+    const left = this.vector(a);
+    const right = this.vector(b);
+    if (!left || !right) return 0;
+    const [small, large] = left.size <= right.size ? [left, right] : [right, left];
+    let sum = 0;
+    for (const [term, weight] of small) sum += weight * (large.get(term) ?? 0);
+    return sum;
+  }
+
   /** A note's unit-length TF-IDF vector as term → weight. */
   vector(path: string): ReadonlyMap<string, number> | undefined {
     const doc = this.index.get(path);

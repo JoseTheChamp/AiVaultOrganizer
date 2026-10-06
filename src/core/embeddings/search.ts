@@ -28,6 +28,17 @@ export class DenseSearch {
     return this.rowOf.has(path);
   }
 
+  /** Cosine similarity of two indexed notes (0 when either is unknown). */
+  similarity(a: string, b: string): number {
+    const left = this.rowOf.get(a);
+    const right = this.rowOf.get(b);
+    if (left === undefined || right === undefined) return 0;
+    const { dims, matrix } = this.index;
+    let sum = 0;
+    for (let d = 0; d < dims; d++) sum += (matrix[left * dims + d] ?? 0) * (matrix[right * dims + d] ?? 0);
+    return sum;
+  }
+
   /** Notes most similar to an indexed note, best first, excluding itself and `exclude`. */
   similar(path: string, k: number, exclude: ReadonlySet<string> = new Set()): Neighbor[] {
     const row = this.rowOf.get(path);
