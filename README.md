@@ -113,13 +113,24 @@ also enter prices per million tokens to see cost estimates; no prices are built 
   `requestUrl`.
 - **Local-only by default.** Local-only mode is on by default and blocks any request to a host other than
   this computer (`localhost`, `127.x.x.x`, `::1`). This is enforced in one place for every provider.
-- **What is sent today.** Nothing, until you click **Test connection**. That lists the models and sends
-  a one-word prompt, or embeds the words "connection test".
+- **What is sent today.**
+  - **Test connection** lists the models and sends a one-word prompt, or embeds the words "connection
+    test".
+  - **Find similar notes** with **Better similarity** on sends the text of your notes (without
+    frontmatter or code) to the embedding endpoint, once per note and again only after a note changes.
+    For a provider that is not on this computer, it first asks, showing how many notes would go to
+    which host.
+  - Nothing else is sent.
+- **Private notes.** Add `ai-vault-organizer: private` to a note's properties to keep it away from every
+  AI feature. Notes your charter ignores are never sent either.
 - **What later features send.** Features that send note content will show which notes go to which host
   before anything is sent.
-- **Where data is stored.** Model responses are cached in `.ai-vault-organizer/cache/llm/` inside your
-  vault, so repeated runs are free. They may quote your notes. Clear them with **Clear cache** in
-  settings, and exclude the folder from sync if you prefer.
+- **Where data is stored.** All of it stays inside your vault, under `.ai-vault-organizer/cache/`.
+  Exclude that folder from sync if you prefer.
+  - **Model responses** (`cache/llm/`), so repeated runs are free. They may quote your notes. Clear
+    them with **Clear cache** in settings.
+  - **The similarity index** (`cache/index/`): word counts and embedding vectors, about 4 KB per note
+    for a typical model. Reset it in settings.
 - **Free tiers.** Cloud providers' free tiers may train on what you send. Use a local model or a paid key
   for private notes.
 

@@ -9,5 +9,6 @@ Add one whenever a decision is non-trivial, affects user data, the invariants or
 | [0002](0002-no-delete-and-plan-apply.md) | No-delete invariant and the plan/apply transaction | Accepted |
 | [0003](0003-charter-format.md) | Charter format | Accepted |
 | [0004](0004-bring-your-own-model.md) | Bring-your-own-model provider layer | Accepted |
+| [0005](0005-similarity-index.md) | Similarity index | Accepted |
 
 Copy [`template.md`](template.md) to `NNNN-short-title.md` to start a new record.
