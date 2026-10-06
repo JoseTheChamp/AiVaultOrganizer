@@ -101,6 +101,12 @@ export class TfidfModel {
     return this.index.has(path);
   }
 
+  /** A note's unit-length TF-IDF vector as term → weight. */
+  vector(path: string): ReadonlyMap<string, number> | undefined {
+    const doc = this.index.get(path);
+    return doc === undefined ? undefined : this.vectors[doc];
+  }
+
   /** The `k` notes most similar to `path`, best first, excluding itself and anything in `exclude`. */
   similar(path: string, k: number, exclude: ReadonlySet<string> = new Set()): Neighbor[] {
     const doc = this.index.get(path);
