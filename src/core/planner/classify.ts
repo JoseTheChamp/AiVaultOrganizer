@@ -74,12 +74,15 @@ export interface LlmContext {
 /** The language-model stage: decides the notes the cheaper stages could not. */
 export type LlmStage = (notes: readonly NoteRecord[], context: LlmContext) => Promise<Map<string, LlmDecision>>;
 
+/** The `k` notes most similar to a note, best first: synchronous in evals, a worker query in Obsidian. */
+export type NeighborLookup = (path: string, k: number) => readonly Neighbor[] | Promise<readonly Neighbor[]>;
+
 export interface CascadeInput {
   snapshot: VaultSnapshot;
   charter: Charter;
   charterPath: string | null;
-  /** Similarity search over all notes; enables the kNN stage. */
-  neighbors?: (path: string, k: number) => readonly Neighbor[];
+  /** Similarity search over all notes; enables the kNN stage. In Obsidian it answers from a worker. */
+  neighbors?: NeighborLookup;
   llm?: LlmStage;
   /** How confidences are combined at the end; false keeps each stage's raw confidence. */
   calibration?: CalibrationOptions | false;
@@ -170,7 +173,7 @@ export async function classifyNotes(input: CascadeInput, knn: KnnOptions = DEFAU
   const kinds = new Set(charter.destinations.filter(isKindDestination).map((d) => d.id));
   const stillOpen: NoteRecord[] = [];
   for (const note of pending) {
-    const signal = input.neighbors ? vote(note, input.neighbors, anchors, knn, kinds) : null;
+    const signal = input.neighbors ? await vote(note, input.neighbors, anchors, knn, kinds) : null;
     if (signal && signal.share >= knn.minShare && signal.supporters >= knn.minSupporters && signal.similarity >= knn.minSimilarity) {
       const destination = byId.get(signal.destination);
       const subfolder = destination && destination.layout !== 'flat' ? signal.subfolder : null;
@@ -240,10 +243,10 @@ export function isKindDestination(destination: Destination): boolean {
   );
 }
 
-function vote(note: NoteRecord, neighbors: NonNullable<CascadeInput['neighbors']>, anchors: ReadonlyMap<string, Placement>, options: KnnOptions, kinds: ReadonlySet<string>): KnnSignal | null {
+async function vote(note: NoteRecord, neighbors: NeighborLookup, anchors: ReadonlyMap<string, Placement>, options: KnnOptions, kinds: ReadonlySet<string>): Promise<KnnSignal | null> {
   // Ask for extra neighbours: unplaced ones don't vote, and neither do daily notes, which are
   // placed by their file name and mention every subject in passing, or notes in kind destinations.
-  const placed = neighbors(note.path, options.k * 4)
+  const placed = (await neighbors(note.path, options.k * 4))
     .filter((n) => {
       const destination = anchors.get(n.path)?.destination;
       return n.score > 0 && destination !== undefined && destination !== null && destination !== DAILY && !kinds.has(destination);

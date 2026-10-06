@@ -130,4 +130,29 @@ describe('SimilarityEngine', () => {
     await engine.clear();
     expect(await storage.list('cache/index/')).toEqual([]);
   });
+
+  it('serves neighbours for every note from one index update, for the planner', async () => {
+    const { engine, query, search } = setup();
+    const provider = new FakeEmbeddingProvider();
+    const { path: _, k: __, ...rest } = query({ provider });
+    const source = await engine.neighborSource(rest);
+    expect(source.method).toBe('embeddings');
+    expect(source.report?.indexed).toBe(5);
+    expect((await source.neighbors('Sport/Marathon.md', 1))[0]?.path).toBe('Sport/Recovery.md');
+    expect((await source.neighbors('Garden/Tomatoes.md', 5)).map((n) => n.path)).not.toContain('Vault Charter.md');
+    // Lookups after the update cost no further embedding calls or index loads.
+    expect(provider.calls).toHaveLength(1);
+    expect(search.loads).toBe(1);
+
+    const words = await engine.neighborSource({ ...rest, provider: null });
+    expect(words.method).toBe('words');
+    expect((await words.neighbors('Garden/Tomatoes.md', 1))[0]?.path).toBe('Garden/Beds.md');
+  });
+
+  it('falls back to words for the planner exactly as for a search', async () => {
+    const { engine, query } = setup();
+    const cloud = new FakeEmbeddingProvider('cloud-embed', 32, 'https://api.example.com/v1');
+    const { path: _, k: __, ...rest } = query({ provider: cloud, confirmSend: () => Promise.resolve(false) });
+    expect(await engine.neighborSource(rest)).toMatchObject({ method: 'words', fallback: 'declined' });
+  });
 });

@@ -6,11 +6,14 @@ import type { Charter } from '../../core/charter/schema';
 import { formatCharterIssues } from '../../core/charter/summary';
 import { computeDrift } from '../../core/drift/drift';
 import { plural } from '../../core/model/text';
+import { hostOf } from '../../core/ai/endpoint-url';
+import { DEFAULT_KNN, WORD_KNN } from '../../core/planner/classify';
 import { buildPlan } from '../../core/planner/plan';
 import type AiVaultOrganizerPlugin from '../main';
 import { CharterSetupModal } from '../views/charter-setup-modal';
 import { DriftModal } from '../views/drift-modal';
 import { exclusive } from './exclusive';
+import { fallbackMessage, indexingProgress } from './indexing';
 import { openReview, runPlan, showRunReport } from './review';
 
 /** `Set up charter`: analyze, let the user choose, write the charter, optionally propose moves. */
@@ -87,23 +90,42 @@ export async function checkDrift(plugin: AiVaultOrganizerPlugin): Promise<void> 
   new DriftModal(plugin.app, { report, onPlan: () => void planRealignment(plugin) }).open();
 }
 
-/** `Plan re-alignment`: the planner's proposal for the whole vault, saved as the pending plan and opened for review. */
+/**
+ * `Plan re-alignment`: the planner's proposal for the whole vault, saved as the pending plan and
+ * opened for review. Notes no rule places are compared with placed notes (kNN) by meaning when an
+ * embedding model is set up, by shared words otherwise.
+ */
 export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<void> {
   const loaded = await requireCharter(plugin);
   if (!loaded) return;
-  const { reader } = plugin.services;
-  const { plan } = await buildPlan({
-    snapshot: await reader.snapshot(),
-    charter: loaded.charter,
-    charterPath: loaded.path,
-    read: (path) => reader.read(path),
-    now: new Date(),
-    createDestinationFolders: true,
-  });
-  if (plan.operations.length === 0) {
-    new Notice(`Nothing to re-align: every note is where the charter puts it.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
-    return;
+  const { reader, similarity, ai, logger } = plugin.services;
+  const progress = indexingProgress(plugin);
+  try {
+    const source = await similarity.neighborSource({ provider: ai.embeddings(), ignore: loaded.charter.ignore, exclude: [loaded.path], ...progress.options });
+    const fallback = fallbackMessage(source, hostOf(plugin.settings.ai.embeddings.baseUrl), 'Comparing notes by shared words instead.');
+    if (fallback) new Notice(fallback, 10_000);
+    progress.say('Planning…');
+    const { plan } = await buildPlan({
+      snapshot: await reader.snapshot(),
+      charter: loaded.charter,
+      charterPath: loaded.path,
+      read: (path) => reader.read(path),
+      now: new Date(),
+      neighbors: source.neighbors,
+      knn: source.method === 'embeddings' ? DEFAULT_KNN : WORD_KNN,
+      createDestinationFolders: true,
+    });
+    progress.hide();
+    if (plan.operations.length === 0) {
+      new Notice(`Nothing to re-align: every note is where the charter puts it.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
+      return;
+    }
+    await plugin.services.plans.save(plan);
+    await openReview(plugin, plan);
+  } catch (error) {
+    logger.error('Planning failed', error);
+    new Notice('Planning failed. Enable debug logging and check the developer console for details.');
+  } finally {
+    progress.hide();
   }
-  await plugin.services.plans.save(plan);
-  await openReview(plugin, plan);
 }

@@ -4,14 +4,13 @@ import { subfolderNamingV1 } from '../ai/prompts/subfolder-naming.v1';
 import type { ChatProvider } from '../ai/types';
 import { toLang } from '../charter/presets';
 import type { Charter } from '../charter/schema';
-import type { Neighbor } from '../embeddings/top-k';
 import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
 import { ancestorFolders, joinPath } from '../model/paths';
 import { createPlan, type Plan } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
 import { charterRoots } from './charter-roots';
-import { type Classification, classifyNotes, type KnnOptions } from './classify';
+import { type Classification, classifyNotes, type KnnOptions, type NeighborLookup } from './classify';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from './llm-stage';
 import { mocOperations } from './mocs';
 import { tagOperations, propertyOperations } from './normalize';
@@ -28,7 +27,7 @@ export interface PlannerInput {
   read: (path: string) => Promise<string>;
   now: Date;
   /** Similarity search over the notes (words or embeddings): enables kNN. */
-  neighbors?: (path: string, k: number) => readonly Neighbor[];
+  neighbors?: NeighborLookup;
   /** kNN thresholds for the similarity behind `neighbors`: DEFAULT_KNN (embeddings) or WORD_KNN. */
   knn?: KnnOptions;
   /** A language model: classifies what cheaper stages could not, names subfolders, summarizes. */
