@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { classifyNotesV1 } from '../ai/prompts/classify-notes.v1';
+import * as z from 'zod';
+import { classifyNotesV2 } from '../ai/prompts/classify-notes.v2';
 import { presetCharter } from '../charter/presets';
 import { testCard } from '../testing/cards';
 import { ScriptedChatProvider } from '../testing/fake-chat';
@@ -8,26 +9,33 @@ import { classifyNotes } from './classify';
 import { createLlmStage } from './llm-stage';
 
 const answer = (...notes: [string, string, string | null, number][]) =>
-  JSON.stringify({ notes: notes.map(([noteId, destinationId, subfolder, confidence]) => ({ noteId, destinationId, subfolder, confidence, rationale: 'Because.' })) });
+  JSON.stringify({ notes: notes.map(([noteId, destinationId, subfolder, confidence]) => ({ noteId, rationale: 'Because.', destinationId, subfolder, confidence })) });
 
-describe('classify-notes v1', () => {
+describe('classify-notes v2', () => {
   const input = {
     language: 'cs' as const,
     method: 'PARA',
     guidance: 'Projects have a goal and an end.',
     targets: [
-      { id: 'projects', description: 'Aktivní projekty.', layout: 'subfolder-per-item' as const, subfolders: ['Diplomová práce'], examples: ['Diplomová práce'] },
-      { id: 'archive', description: 'Neaktivní věci.', layout: 'flat' as const, subfolders: [], examples: [] },
+      { id: 'projects', description: 'Aktivní projekty.', layout: 'subfolder-per-item' as const, onlyFor: null, subfolders: ['Diplomová práce'], examples: ['Diplomová práce'] },
+      { id: 'meetings', description: 'Schůzky.', layout: 'flat' as const, onlyFor: 'notes whose type is meeting.', subfolders: [], examples: [] },
+      { id: 'archive', description: 'Neaktivní věci.', layout: 'flat' as const, onlyFor: null, subfolders: [], examples: [] },
     ],
     notes: [{ id: 'n1', card: testCard('Koncept.md', 'Koncept komunitního centra v textilce.', { properties: { type: 'note' } }) }],
   };
 
   it('renders a stable prompt', () => {
-    expect(classifyNotesV1.build(input)).toMatchSnapshot();
+    expect(classifyNotesV2.build(input)).toMatchSnapshot();
+  });
+
+  it('asks for every field, the rationale before the decision', () => {
+    const json = JSON.stringify(z.toJSONSchema(classifyNotesV2.schema(input)));
+    expect(json).toContain('"required":["noteId","rationale","destinationId","subfolder","confidence"]');
+    expect(classifyNotesV2.schema(input).safeParse({ notes: [{ noteId: 'n1', rationale: 'Proč.', destinationId: 'archive', confidence: 0.6 }] }).success).toBe(false);
   });
 
   it('accepts only shown destinations or abstain, each note exactly once', () => {
-    const schema = classifyNotesV1.schema(input);
+    const schema = classifyNotesV2.schema(input);
     expect(schema.safeParse(JSON.parse(answer(['n1', 'projects', 'Diplomová práce', 0.9]))).success).toBe(true);
     expect(schema.safeParse(JSON.parse(answer(['n1', 'abstain', null, 0.3]))).success).toBe(true);
     expect(schema.safeParse(JSON.parse(answer(['n1', 'Projects/Thesis', null, 0.9]))).success).toBe(false);
@@ -67,9 +75,12 @@ describe('createLlmStage', () => {
     const prompt = JSON.stringify(provider.requests);
     expect(prompt).not.toContain('secret');
     // The rule-placed hub shows the model what belongs in projects, and its folder is offered for reuse.
-    expect(prompt).toContain('Existing subfolders: Website');
+    expect(prompt).toContain('Subfolders in use: Website');
     expect(prompt).toContain('Example notes: Website');
-    expect(provider.requests[0]?.prompt).toEqual({ id: 'classify-notes', version: 1 });
+    expect(provider.requests[0]?.prompt).toEqual({ id: 'classify-notes', version: 2 });
+    // A subfolder proposed in one batch is offered to the next.
+    expect(provider.requests[1]?.messages[1]?.content).toContain('Subfolders in use: Website');
+    expect(provider.requests[1]?.messages[1]?.content).toMatch(/- areas: .*\n {2}Subfolders in use: Finances/);
   });
 
   it("makes batches small enough for the model's context window", async () => {

@@ -1,14 +1,16 @@
-import { ABSTAIN, type ClassifyNotesInput, classifyNotesV1, type ClassifyTarget } from '../ai/prompts/classify-notes.v1';
+import { type ClassifyNotesInput, classifyNotesV2, type ClassifyTarget } from '../ai/prompts/classify-notes.v2';
 import { estimateRequest, estimateTokens } from '../ai/budget';
 import { runPrompt } from '../ai/prompts/types';
 import type { ChatProvider } from '../ai/types';
 import { PRESETS, toLang } from '../charter/presets';
 import { METHOD_LABELS } from '../model/methods';
+import type { Destination } from '../charter/schema';
 import type { NoteRecord } from '../model/note';
 import { isInFolder } from '../model/paths';
 import { type NoteCard, renderCard } from './cards';
-import type { LlmContext, LlmDecision, LlmStage, Placement } from './classify';
+import { isKindDestination, type LlmContext, type LlmDecision, type LlmStage, type Placement } from './classify';
 import { safeFolderName } from './placement-plan';
+import { folderKey } from './subfolders';
 
 export interface LlmStageStats {
   calls: number;
@@ -83,7 +85,7 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
     const decisions = new Map<string, LlmDecision>();
     for (const batch of batches(notes, base, options.cards, batchSize, options.provider.capabilities.maxContext)) {
       const input: ClassifyNotesInput = { ...base, notes: batch.map((note, i) => ({ id: `n${i + 1}`, card: options.cards.get(note.path) as NoteCard })) };
-      const result = await runPrompt(options.provider, classifyNotesV1, input);
+      const result = await runPrompt(options.provider, classifyNotesV2, input);
       stats.calls += result.ok ? result.value.attempts : result.error.attempts;
       if (!result.ok) {
         stats.failures++;
@@ -96,14 +98,17 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
       batch.forEach((note: NoteRecord, i) => {
         const answer = byId.get(`n${i + 1}`);
         if (!answer) return;
+        // "abstain" is no target, so the note stays undecided.
         const target = base.targets.find((t) => t.id === answer.destinationId);
         const subfolder = target && target.layout !== 'flat' && answer.subfolder ? safeFolderName(answer.subfolder) || null : null;
         decisions.set(note.path, {
-          destination: answer.destinationId === ABSTAIN ? null : answer.destinationId,
+          destination: target ? target.id : null,
           subfolder,
           confidence: answer.confidence,
           rationale: answer.rationale || 'Suggested by the language model.',
         });
+        // Later batches see the subfolders proposed so far, so one project keeps one name.
+        if (target && subfolder) offerSubfolder(target, subfolder);
       });
     }
     return decisions;
@@ -118,7 +123,8 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
  * way. The estimate is pessimistic, so a batch stays inside the window.
  */
 function batches(notes: readonly NoteRecord[], base: Omit<ClassifyNotesInput, 'notes'>, cards: ReadonlyMap<string, NoteCard>, maxNotes: number, contextTokens: number): NoteRecord[][] {
-  const fixed = estimateRequest({ messages: classifyNotesV1.build({ ...base, notes: [] }) }).input;
+  // Room for the subfolders that earlier batches add to the destinations.
+  const fixed = estimateRequest({ messages: classifyNotesV2.build({ ...base, notes: [] }) }).input + SUBFOLDER_RESERVE;
   const budget = Math.max(512, Math.floor(contextTokens * 0.9) - fixed);
   const result: NoteRecord[][] = [];
   let current: NoteRecord[] = [];
@@ -147,14 +153,47 @@ function promptBase(context: LlmContext, folders: readonly string[]): Omit<Class
     language: toLang(charter.language),
     method: preset ? METHOD_LABELS[charter.preset as keyof typeof METHOD_LABELS] : 'its own system',
     guidance: preset?.guidance ?? GENERIC_GUIDANCE,
-    targets: context.targets.map((target): ClassifyTarget => ({
-      id: target.id,
-      description: target.description,
-      layout: target.layout,
-      subfolders: target.path && target.layout !== 'flat' ? childFolders(folders, target.path).slice(0, 15) : [],
-      examples: examples(context.placed, target.id),
-    })),
+    targets: context.targets.map((target): ClassifyTarget => {
+      const destination = charter.destinations.find((d) => d.id === target.id);
+      const result: ClassifyTarget = {
+        id: target.id,
+        description: target.description,
+        layout: target.layout,
+        onlyFor: destination && isKindDestination(destination) ? kindText(destination) : null,
+        subfolders: [],
+        examples: examples(context.placed, target.id),
+      };
+      if (target.path && target.layout !== 'flat') {
+        // Subfolders in use: existing folders, then those given to notes placed so far (a project's
+        // hub note names its project before the project's folder exists).
+        const given = [...context.placed.values()].filter((p) => p.destination === target.id && p.subfolder).map((p) => p.subfolder as string);
+        for (const name of [...childFolders(folders, target.path), ...given.sort()]) offerSubfolder(result, name);
+      }
+      return result;
+    }),
   };
+}
+
+/** Subfolders listed per destination: enough to reuse, bounded so the prompt stays small. */
+const MAX_SUBFOLDERS = 20;
+/** Tokens kept free for subfolder names added between batches (about four tokens each). */
+const SUBFOLDER_RESERVE = 100;
+
+function offerSubfolder(target: ClassifyTarget, name: string): void {
+  if (target.subfolders.length >= MAX_SUBFOLDERS || target.subfolders.some((existing) => folderKey(existing) === folderKey(name))) return;
+  target.subfolders.push(name);
+}
+
+/** Which notes a kind destination takes, in words: its rules test a note type or a dated file name. */
+function kindText(destination: Destination): string {
+  const types = new Set<string>();
+  let dated = false;
+  for (const rule of destination.match) {
+    if ('equals' in rule) for (const value of Array.isArray(rule.equals) ? rule.equals : [rule.equals]) types.add(String(value));
+    else if ('filename' in rule) dated = true;
+  }
+  const parts = [types.size > 0 ? `notes whose type is ${[...types].join(' or ')}` : '', dated ? `notes with a date in the file name` : ''].filter((part) => part !== '');
+  return `${parts.join(', or ')}.`;
 }
 
 function childFolders(folders: readonly string[], parent: string): string[] {

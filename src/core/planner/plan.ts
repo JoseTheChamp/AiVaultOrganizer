@@ -1,3 +1,6 @@
+import { classifyNotesV2 } from '../ai/prompts/classify-notes.v2';
+import { planSummaryV1 } from '../ai/prompts/plan-summary.v1';
+import { subfolderNamingV1 } from '../ai/prompts/subfolder-naming.v1';
 import type { ChatProvider } from '../ai/types';
 import { toLang } from '../charter/presets';
 import type { Charter } from '../charter/schema';
@@ -96,7 +99,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     charterRevision: charter.revision,
     operations: [...sofar, ...mocs, ...queries],
     warnings: placed.warnings,
-    promptVersions: input.model ? { 'classify-notes': 1, 'subfolder-naming': 1, 'plan-summary': 1 } : {},
+    promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV1].map((prompt) => [prompt.id, prompt.version])) : {},
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},
   });
   const summary = await summarizePlan(plan, charter, input.model?.provider);

@@ -97,7 +97,7 @@ describe('buildPlan', () => {
     const reply = JSON.stringify({ notes: [{ noteId: 'n1', destinationId: 'abstain', subfolder: null, confidence: 0.2, rationale: 'A dashboard.' }] });
     const { result } = await plan(new ScriptedChatProvider([reply, JSON.stringify({ summary: 'Two notes move.', highlights: [] })]));
     expect(result.plan.models).toEqual({ chat: 'scripted' });
-    expect(result.plan.promptVersions).toEqual({ 'classify-notes': 1, 'subfolder-naming': 1, 'plan-summary': 1 });
+    expect(result.plan.promptVersions).toEqual({ 'classify-notes': 2, 'subfolder-naming': 1, 'plan-summary': 1 });
     expect(result.model?.classification.calls).toBe(1);
     expect(result.summary).toEqual({ summary: 'Two notes move.', highlights: [], source: 'model' });
   });

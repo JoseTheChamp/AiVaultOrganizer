@@ -9,7 +9,9 @@ export interface ClassifyTarget {
   id: string;
   description: string;
   layout: 'flat' | 'subfolder-per-item' | 'subfolder-per-topic';
-  /** Subfolders that exist already, to reuse. */
+  /** For destinations defined by a kind of note (meetings, daily logs): which notes they take. */
+  onlyFor: string | null;
+  /** Subfolders in use: existing folders and those already given to notes, to reuse. */
   subfolders: string[];
   /** Titles of notes already placed there. */
   examples: string[];
@@ -26,7 +28,7 @@ export interface ClassifyNotesInput {
 }
 
 export interface ClassifyNotesOutput {
-  notes: { noteId: string; destinationId: string; subfolder?: string | null; confidence: number; rationale: string }[];
+  notes: { noteId: string; rationale: string; destinationId: string; subfolder: string | null; confidence: number }[];
 }
 
 const LAYOUT: Record<ClassifyTarget['layout'], string> = {
@@ -39,20 +41,26 @@ const LAYOUT: Record<ClassifyTarget['layout'], string> = {
 const NOTE_CHARS = 400;
 
 /**
- * `classify-notes` v1 (PLAN §7.6, §7.8): files a batch of notes into the charter's destinations.
+ * `classify-notes` v2 (PLAN §7.6, §7.8): files a batch of notes into the charter's destinations.
  * The answer's destination must be one of the ids shown or "abstain", so the model can never
  * invent a folder; abstaining is encouraged over guessing, and the user reviews whatever it
- * proposes. Subfolders reuse an existing one when possible.
+ * proposes. Subfolders reuse one in use when possible.
+ *
+ * Changes from v1, after the M8 evals: every field is required and the rationale comes first.
+ * Under schema-constrained decoding (Ollama), v1's optional subfolder was simply never written,
+ * and a rationale written before the decision lets the model reason before it commits. Kind
+ * destinations say which notes they take, and confidence gets anchors.
  */
-export const classifyNotesV1: Prompt<ClassifyNotesInput, ClassifyNotesOutput> = {
+export const classifyNotesV2: Prompt<ClassifyNotesInput, ClassifyNotesOutput> = {
   id: 'classify-notes',
-  version: 1,
+  version: 2,
 
   build(input): ChatMessage[] {
     const language = languageName(input.language);
     const targets = input.targets.map((target) => {
       const lines = [`- ${target.id}: ${target.description} (${LAYOUT[target.layout]})`];
-      if (target.subfolders.length > 0) lines.push(`  Existing subfolders: ${target.subfolders.join(', ')}`);
+      if (target.onlyFor) lines.push(`  Only for: ${target.onlyFor}`);
+      if (target.subfolders.length > 0) lines.push(`  Subfolders in use: ${target.subfolders.join(', ')}`);
       if (target.examples.length > 0) lines.push(`  Example notes: ${target.examples.join('; ')}`);
       return lines.join('\n');
     });
@@ -63,10 +71,11 @@ export const classifyNotesV1: Prompt<ClassifyNotesInput, ClassifyNotesOutput> = 
         content: [
           `You file notes into the destinations of a personal knowledge base organized with ${input.method}.`,
           input.guidance,
-          'For each note choose the one destination it belongs to, from the list.',
-          'For destinations with subfolders, also give the subfolder: reuse an existing one when it fits, otherwise propose a short name of one to four words in the language of the notes; use null for flat destinations.',
+          'For each note, first write a short rationale, then choose the one destination it belongs to, from the list.',
+          'For a destination with subfolders, also give the subfolder: reuse one in use when it fits, otherwise propose a short name of one to four words in the language of the notes. Notes about the same project, area or topic share one subfolder. Use null for flat destinations.',
+          'A destination marked "Only for" takes only notes of that kind.',
           `If no destination clearly fits, answer "${ABSTAIN}" instead of guessing.`,
-          'Confidence is your probability from 0 to 1 that the destination is right.',
+          'Confidence is your probability from 0 to 1 that the destination is right: about 0.6 when two destinations could fit, 0.9 or more only when no other destination could.',
           `Write the rationale in ${language}, in at most 15 words.`,
         ].join(' '),
       },
@@ -79,7 +88,7 @@ export const classifyNotesV1: Prompt<ClassifyNotesInput, ClassifyNotesOutput> = 
           '## Notes',
           ...notes,
           '',
-          `Answer with JSON: {"notes": [{"noteId": "...", "destinationId": "...", "subfolder": "..." or null, "confidence": 0.8, "rationale": "..."}]}, one entry for each note.`,
+          `Answer with JSON: {"notes": [{"noteId": "...", "rationale": "...", "destinationId": "...", "subfolder": "..." or null, "confidence": 0.8}]}, one entry for each note.`,
         ].join('\n'),
       },
     ];
@@ -92,11 +101,12 @@ export const classifyNotesV1: Prompt<ClassifyNotesInput, ClassifyNotesOutput> = 
       .object({
         notes: z.array(
           z.object({
+            // Field order is the order a constrained decoder writes them: reasons before the decision.
             noteId: z.enum(noteIds as [string, ...string[]]),
-            destinationId: z.enum(destinations as [string, ...string[]]),
-            subfolder: z.string().trim().max(80).nullable().optional(),
-            confidence: z.number().min(0).max(1),
             rationale: z.string().trim().max(300),
+            destinationId: z.enum(destinations as [string, ...string[]]),
+            subfolder: z.string().trim().max(80).nullable(),
+            confidence: z.number().min(0).max(1),
           }),
         ),
       })

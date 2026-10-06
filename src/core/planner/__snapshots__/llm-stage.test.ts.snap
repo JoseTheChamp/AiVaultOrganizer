@@ -1,16 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`classify-notes v1 > renders a stable prompt 1`] = `
+exports[`classify-notes v2 > renders a stable prompt 1`] = `
 [
   {
-    "content": "You file notes into the destinations of a personal knowledge base organized with PARA. Projects have a goal and an end. For each note choose the one destination it belongs to, from the list. For destinations with subfolders, also give the subfolder: reuse an existing one when it fits, otherwise propose a short name of one to four words in the language of the notes; use null for flat destinations. If no destination clearly fits, answer "abstain" instead of guessing. Confidence is your probability from 0 to 1 that the destination is right. Write the rationale in Czech, in at most 15 words.",
+    "content": "You file notes into the destinations of a personal knowledge base organized with PARA. Projects have a goal and an end. For each note, first write a short rationale, then choose the one destination it belongs to, from the list. For a destination with subfolders, also give the subfolder: reuse one in use when it fits, otherwise propose a short name of one to four words in the language of the notes. Notes about the same project, area or topic share one subfolder. Use null for flat destinations. A destination marked "Only for" takes only notes of that kind. If no destination clearly fits, answer "abstain" instead of guessing. Confidence is your probability from 0 to 1 that the destination is right: about 0.6 when two destinations could fit, 0.9 or more only when no other destination could. Write the rationale in Czech, in at most 15 words.",
     "role": "system",
   },
   {
     "content": "## Destinations
 - projects: Aktivní projekty. (one subfolder per project or item)
-  Existing subfolders: Diplomová práce
+  Subfolders in use: Diplomová práce
   Example notes: Diplomová práce
+- meetings: Schůzky. (flat, no subfolders)
+  Only for: notes whose type is meeting.
 - archive: Neaktivní věci. (flat, no subfolders)
 
 ## Notes
@@ -19,7 +21,7 @@ Title: Koncept
 Properties: type: note
 Text: Koncept komunitního centra v textilce.
 
-Answer with JSON: {"notes": [{"noteId": "...", "destinationId": "...", "subfolder": "..." or null, "confidence": 0.8, "rationale": "..."}]}, one entry for each note.",
+Answer with JSON: {"notes": [{"noteId": "...", "rationale": "...", "destinationId": "...", "subfolder": "..." or null, "confidence": 0.8}]}, one entry for each note.",
     "role": "user",
   },
 ]
