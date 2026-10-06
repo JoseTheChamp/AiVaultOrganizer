@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`verify-links v1 > renders a stable prompt 1`] = `
+[
+  {
+    "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in English.",
+    "role": "system",
+  },
+  {
+    "content": "## Pair p1
+Note A:
+  Title: Tomatoes
+  Text: Seedlings need light.
+Note B:
+  Title: Compost
+  Text: Turn it every two weeks.
+
+Answer with JSON: {"pairs": [{"pairId": "...", "relevant": true, "strength": 2, "reason": "..."}]}, one entry for each pair.",
+    "role": "user",
+  },
+]
+`;
