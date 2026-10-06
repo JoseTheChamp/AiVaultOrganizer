@@ -3,19 +3,25 @@ import type { Placement } from './classify';
 export interface CalibrationOptions {
   /** How far a model's self-reported confidence is trusted (0 = not at all, 1 = fully). */
   llmTrust: number;
-  /** Added when two independent signals (model and kNN, or two model samples) agree… */
+  /** Added when the model and kNN agree (scaled by kNN's vote share)… */
   agreementBonus: number;
   /** …and subtracted when they disagree. */
   disagreementPenalty: number;
+  /** Added when a second sample of the model gives the same answer… */
+  sampleBonus: number;
+  /** …and subtracted when it gives another. */
+  samplePenalty: number;
   /** No learned decision is ever presented as certain; only rules are. */
   ceiling: number;
 }
 
 /**
  * Hand-set from the eval fixtures and checked with ECE (docs/EVALS.md). Deliberately not fitted on
- * them: with 82 notes per fixture, a fitted curve would describe the fixtures, not vaults.
+ * them: with 82 notes per fixture, a fitted curve would describe the fixtures, not vaults. The
+ * second-sample weights follow one measurement: on en-small, answers the second sample confirmed
+ * were right 92 % of the time, and those it contradicted 34 %; qwen3:8b reported 0.9 for both.
  */
-export const DEFAULT_CALIBRATION: CalibrationOptions = { llmTrust: 0.6, agreementBonus: 0.1, disagreementPenalty: 0.2, ceiling: 0.95 };
+export const DEFAULT_CALIBRATION: CalibrationOptions = { llmTrust: 0.6, agreementBonus: 0.1, disagreementPenalty: 0.2, sampleBonus: 0.15, samplePenalty: 0.35, ceiling: 0.95 };
 
 /**
  * One confidence per placement from all the evidence behind it (PLAN §7.6 "Calibration"):
@@ -43,8 +49,8 @@ export function calibrate(placement: Placement, options: CalibrationOptions = DE
   if (knn) {
     confidence += knn.destination === placement.destination ? options.agreementBonus * knn.share : -options.disagreementPenalty * knn.share;
   }
-  if (llm?.agreement === true) confidence += options.agreementBonus;
-  if (llm?.agreement === false) confidence -= options.disagreementPenalty;
+  if (llm?.agreement === true) confidence += options.sampleBonus;
+  if (llm?.agreement === false) confidence -= options.samplePenalty;
   return clamp(confidence, options.ceiling);
 }
 

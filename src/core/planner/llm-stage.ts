@@ -34,8 +34,12 @@ export interface LlmStageOptions {
   secondSample?: { low: number; high: number } | false;
 }
 
-/** Self-reports in this range are borderline; above it the model is sure, below it a second ask rarely helps. */
-export const SECOND_SAMPLE = { low: 0.4, high: 0.85 };
+/**
+ * Answers whose self-reported confidence falls in this range are asked again. Self-reports barely
+ * vary (qwen3:8b said 0.9 for right and wrong answers alike), while agreement between two samples
+ * separates them well, so only answers the model calls certain, or hopeless, are asked once.
+ */
+export const SECOND_SAMPLE = { low: 0.4, high: 0.95 };
 
 /** A model stage for the cascade, and counters for its cost and failures. */
 export interface ModelStage {

@@ -26,8 +26,9 @@ describe('calibrate', () => {
     expect(calibrate(placement({ signals: { llm } }))).toBeCloseTo(0.74, 10);
     expect(calibrate(placement({ signals: { llm, knn: knn('projects', 0.6, 2) } }))).toBeCloseTo(0.74 + 0.1 * 0.6, 10);
     expect(calibrate(placement({ signals: { llm, knn: knn('areas', 0.6, 2) } }))).toBeCloseTo(0.74 - 0.2 * 0.6, 10);
-    expect(calibrate(placement({ signals: { llm: { ...llm, agreement: true } } }))).toBeCloseTo(0.84, 10);
-    expect(calibrate(placement({ signals: { llm: { ...llm, agreement: false } } }))).toBeCloseTo(0.54, 10);
+    // A second sample weighs more than kNN: it separated right from wrong answers on the evals.
+    expect(calibrate(placement({ signals: { llm: { ...llm, agreement: true } } }))).toBeCloseTo(0.89, 10);
+    expect(calibrate(placement({ signals: { llm: { ...llm, agreement: false } } }))).toBeCloseTo(0.39, 10);
   });
 
   it('never presents a learned decision as certain', () => {
@@ -43,7 +44,7 @@ describe('second sample', () => {
     const cards = new Map(['a.md', 'b.md', 'c.md'].map((path) => [path, testCard(path)]));
     const reply = (...notes: [string, string, number][]) => JSON.stringify({ notes: notes.map(([noteId, destinationId, confidence]) => ({ noteId, destinationId, subfolder: null, confidence, rationale: 'r' })) });
     const provider = new ScriptedChatProvider([
-      reply(['n1', 'projects', 0.6], ['n2', 'areas', 0.95], ['n3', 'resources', 0.5]),
+      reply(['n1', 'projects', 0.6], ['n2', 'areas', 0.97], ['n3', 'resources', 0.5]),
       // Second ask, borderline notes reversed: c first, then a.
       reply(['n1', 'archive', 0.5], ['n2', 'projects', 0.7]),
     ]);
