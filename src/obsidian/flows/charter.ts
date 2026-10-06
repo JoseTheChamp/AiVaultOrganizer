@@ -10,13 +10,13 @@ import { hostOf } from '../../core/ai/endpoint-url';
 import { DEFAULT_KNN, WORD_KNN } from '../../core/planner/classify';
 import { buildPlan } from '../../core/planner/plan';
 import type AiVaultOrganizerPlugin from '../main';
-import { CharterSetupModal } from '../views/charter-setup-modal';
+import { SetupWizardModal } from '../views/setup-wizard-modal';
 import { DriftModal } from '../views/drift-modal';
 import { exclusive } from './exclusive';
 import { fallbackMessage, indexingProgress } from './indexing';
 import { openReview, runPlan, showRunReport } from './review';
 
-/** `Set up charter`: analyze, let the user choose, write the charter, optionally propose moves. */
+/** `Set up charter`: the setup wizard, then the charter written through the apply path, then (optionally) a plan for the vault. */
 export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void> {
   const { reader, hasher } = plugin.services;
   const path = plugin.settings.charterPath;
@@ -31,17 +31,21 @@ export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void
     const snapshot = await reader.snapshot();
     const analysis = analyzeVault(snapshot, { now: Date.now() });
     const current = load;
-    new CharterSetupModal(plugin.app, {
+    new SetupWizardModal(plugin.app, {
       snapshot,
       analysis,
       existing: current.status === 'ok' ? current.charter : null,
       replacesInvalid: current.status === 'invalid',
       charterPath: path,
-      onSubmit: (charter, planMoves) =>
-        void exclusive(plugin, async () => {
-          const saved = await saveCharter(plugin, charter, current);
-          if (saved && planMoves) await planRealignment(plugin);
-        }),
+      onSubmit: (charter, planNow) =>
+        void (async () => {
+          let saved = false;
+          await exclusive(plugin, async () => {
+            saved = await saveCharter(plugin, charter, current);
+          });
+          // Planning reads the vault and may index it; it changes nothing, so it runs outside the lock.
+          if (saved && planNow) await planRealignment(plugin);
+        })(),
     }).open();
   } finally {
     notice.hide();

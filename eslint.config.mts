@@ -21,6 +21,7 @@ export default defineConfig([
   {
     // Svelte components (src/ui): TypeScript in <script lang="ts">, checked against the same project.
     files: ['**/*.svelte', '**/*.svelte.ts'],
+    plugins: { '@typescript-eslint': tseslint.plugin },
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
@@ -37,6 +38,9 @@ export default defineConfig([
       'svelte/no-inline-styles': 'error',
       'svelte/require-each-key': 'error',
       'svelte/button-has-type': 'error',
+      // The base rule reads parameter names in TypeScript function types as unused variables.
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'error',
     },
   },
   {
