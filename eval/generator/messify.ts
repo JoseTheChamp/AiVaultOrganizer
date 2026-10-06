@@ -138,18 +138,24 @@ function makeDuplicates(random: Random, notes: Working[], share: number, suffixe
   });
 }
 
-/** Removes a share of links (the visible text stays) and returns them as [from, to] titles. */
+/**
+ * Disconnects a share of linked note pairs: every link between the two notes, in either direction,
+ * is removed (the visible text stays), so the connection is truly missing. Returns them as titles.
+ */
 function holdOutLinks(random: Random, notes: Working[], share: number): [string, string][] {
-  const removed: [string, string][] = [];
+  const pairs = new Map<string, [string, string]>();
+  for (const note of notes) for (const target of note.links) pairs.set(pairKey(note.title, target), [note.title, target]);
+  const chosen = new Set(
+    sample(random, [...pairs.keys()].sort(), Math.round(pairs.size * share)),
+  );
   for (const note of notes) {
     note.links = note.links.filter((target) => {
-      if (!chance(random, share)) return true;
+      if (!chosen.has(pairKey(note.title, target))) return true;
       note.body = note.body.replace(`[[${target}]]`, target);
-      removed.push([note.title, target]);
       return false;
     });
   }
-  return removed;
+  return [...chosen].map((key) => pairs.get(key) as [string, string]);
 }
 
 /** Real vaults drift: properties get dropped or renamed, tag casing varies, tags move inline. */

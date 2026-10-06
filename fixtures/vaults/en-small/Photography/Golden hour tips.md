@@ -1,0 +1,1 @@
+The rule of thirds is a starting point, not a law. A wide aperture blurs the background and isolates the subject. I edit in batches: cull first, then exposure, then colour. A polarising filter removes reflections from water. Raw files keep more detail in the highlights and the shadows.

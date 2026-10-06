@@ -1,0 +1,1 @@
+Soubory RAW zachovají víc kresby ve stínech. Svislé linie srovnám posunem objektivu nebo v úpravách. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Širokoúhlý objektiv zkresluje okraje snímku.

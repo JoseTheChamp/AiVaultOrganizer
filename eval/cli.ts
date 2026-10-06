@@ -2,22 +2,54 @@
  * Node CLI over the same core the plugin runs. Commands:
  *
  *   npm run analyze -- <vault-folder> [--json]   tier 0 diagnostics, identical to "Analyze vault"
+ *   tsx eval/cli.ts build-fixtures [name …]        rebuilds the committed eval fixtures (or the named ones)
  *   tsx eval/cli.ts generate-topics <folder> [--notes=600] [--seed=1]
  *                                                writes the synthetic topic vault and its ground truth
  */
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { analyzeVault } from '../src/core/analysis/analyze';
 import { formatAnalysisMarkdown } from '../src/core/analysis/report';
 import { NodeFsVault } from './adapters/node-vault';
+import { GROUND_TRUTH_FILE } from './fixture/ground-truth';
+import { buildFixture, FIXTURES, FIXTURES_DIR, writeFixture } from './fixture/specs';
 import { generateTopicVault } from './generator/topic-vault';
 
 async function main(argv: string[]): Promise<number> {
   const [command, ...rest] = argv;
   if (command === 'analyze') return analyzeCommand(rest);
   if (command === 'generate-topics') return generateTopicsCommand(rest);
-  process.stderr.write('Usage: tsx eval/cli.ts analyze <vault-folder> [--json] | generate-topics <folder> [--notes=N] [--seed=N]\n');
+  if (command === 'build-fixtures') return buildFixturesCommand(rest);
+  process.stderr.write('Usage: tsx eval/cli.ts analyze <vault-folder> [--json] | build-fixtures [name …] | generate-topics <folder> [--notes=N] [--seed=N]\n');
   return 2;
+}
+
+/** Rebuilds the committed fixtures, or writes the named ones (any spec) to fixtures/vaults. */
+async function buildFixturesCommand(args: string[]): Promise<number> {
+  const names = args.filter((arg) => !arg.startsWith('--'));
+  const selected = names.length > 0 ? names : Object.entries(FIXTURES).filter(([, spec]) => spec.committed).map(([name]) => name);
+  for (const name of selected) {
+    const root = path.join(FIXTURES_DIR, name);
+    // Only ever replaces a folder that is a generated fixture (it has a ground truth file).
+    if (await exists(root)) {
+      if (!(await exists(path.join(root, GROUND_TRUTH_FILE)))) {
+        process.stderr.write(`${root} exists but is not a generated fixture; not touching it.\n`);
+        return 1;
+      }
+      await rm(root, { recursive: true });
+    }
+    const fixture = buildFixture(name);
+    await writeFixture(root, fixture);
+    process.stdout.write(`Wrote ${name}: ${Object.keys(fixture.files).length} notes, ${fixture.truth.heldOutLinks.length} held-out links\n`);
+  }
+  return 0;
+}
+
+async function exists(file: string): Promise<boolean> {
+  return stat(file).then(
+    () => true,
+    () => false,
+  );
 }
 
 async function generateTopicsCommand(args: string[]): Promise<number> {

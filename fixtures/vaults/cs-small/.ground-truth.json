@@ -1,0 +1,2486 @@
+{
+  "version": 1,
+  "fixture": "cs-small",
+  "language": "cs",
+  "seed": 202,
+  "notes": {
+    "1 Projekty/Diplomová práce/Diplomová práce.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "hub",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Stěhování do Brna/Stěhování do Brna.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "hub",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "hub",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Ateliér zimní semestr/Ateliér zimní semestr.md": {
+      "persona": "cs-student",
+      "entity": "atelier",
+      "kind": "hub",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Zdraví.md": {
+      "persona": "cs-student",
+      "entity": "zdravi",
+      "kind": "hub",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Zdraví"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Zdraví"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "2 Oblasti/Finance/Finance.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "hub",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Domácnost.md": {
+      "persona": "cs-student",
+      "entity": "domacnost",
+      "kind": "hub",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Domácnost"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Domácnost"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Staré poznámky/Dějiny architektury.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "hub",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Dějiny architektury"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Fotografie.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "hub",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Fotografie"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Vaření/Vaření.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "hub",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Vaření"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Kurz parametrického navrhování.md": {
+      "persona": "cs-student",
+      "entity": "kurz",
+      "kind": "hub",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Rešerše textilních továren.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Koncept diplomky.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Diplomová práce/Konzultace s vedoucím.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Harmonogram odevzdání.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "1 Projekty/Diplomová práce/Model v měřítku 1 ku 200.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Diplomová práce"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Staré poznámky/2026-01-25 Konzultace diplomky.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "meeting",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-22"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-28 Prezentace konceptu v ateliéru.md": {
+      "persona": "cs-student",
+      "entity": "diplomka",
+      "kind": "meeting",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Diplomová práce"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-22"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Prohlídky bytů.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Stěhování do Brna/Rozpočet na stěhování.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": true
+    },
+    "1 Projekty/Stěhování do Brna/Seznam věcí ke zabalení.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "1 Projekty/Stěhování do Brna/Přepis energií.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Nábytek do nového bytu.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Stěhování do Brna"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/2026-01-31 Prohlídka bytu s majitelem.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "meeting",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Zadání soutěže.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Skici pavilonu.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Dřevěná konstrukce.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Vizualizace pavilonu.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Soutěž na pavilon/Text k soutěžnímu návrhu.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Soutěž na pavilon/2026-02-03 Konzultace soutěže s týmem.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "meeting",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-22"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Ateliér zimní semestr/Bytový dům v proluce.md": {
+      "persona": "cs-student",
+      "entity": "atelier",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Ateliér zimní semestr/Dispozice bytů.md": {
+      "persona": "cs-student",
+      "entity": "atelier",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Hodnocení ateliéru.md": {
+      "persona": "cs-student",
+      "entity": "atelier",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Ateliér zimní semestr/Portfolio z ateliéru.md": {
+      "persona": "cs-student",
+      "entity": "atelier",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "Ateliér zimní semestr"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Preventivní prohlídka.md": {
+      "persona": "cs-student",
+      "entity": "zdravi",
+      "kind": "note",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Zdraví"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Zdraví"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Spánkový režim.md": {
+      "persona": "cs-student",
+      "entity": "zdravi",
+      "kind": "note",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Zdraví"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Zdraví"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "Zdraví/Cviky na záda.md": {
+      "persona": "cs-student",
+      "entity": "zdravi",
+      "kind": "note",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Zdraví"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Zdraví"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "Očkování.md": {
+      "persona": "cs-student",
+      "entity": "zdravi",
+      "kind": "note",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Zdraví"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Zdraví"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Měsíční rozpočet.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Stipendium.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Finance/Brigáda v kavárně.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Spořicí účet.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Rozpis úklidu.md": {
+      "persona": "cs-student",
+      "entity": "domacnost",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Domácnost"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Domácnost"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Společné nákupy.md": {
+      "persona": "cs-student",
+      "entity": "domacnost",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Domácnost"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Domácnost"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Opravy v bytě.md": {
+      "persona": "cs-student",
+      "entity": "domacnost",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Domácnost"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Domácnost"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Pravidla spolubydlení.md": {
+      "persona": "cs-student",
+      "entity": "domacnost",
+      "kind": "note",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Domácnost"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Domácnost"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Funkcionalismus v Brně.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Dějiny architektury"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Dějiny architektury/Gotické klenby.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Dějiny architektury"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Baroko a světlo.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Dějiny architektury"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Industriální stavby.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Dějiny architektury"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Fotografování interiérů.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "note",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Fotografie"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Svislé linie.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "note",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Fotografie"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Úprava fotek.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "note",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Fotografie"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Modrá hodinka.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "note",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Fotografie"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Čočková polévka.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "note",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Vaření"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "Vaření na týden.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "note",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Vaření"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "Domácí chleba.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "note",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Vaření"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "3 Zdroje/Vaření/Rychlé večeře.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "note",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Vaření"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "Úvod do vizuálního programování.md": {
+      "persona": "cs-student",
+      "entity": "kurz",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Různé/Parametrická fasáda.md": {
+      "persona": "cs-student",
+      "entity": "kurz",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Optimalizace tvaru.md": {
+      "persona": "cs-student",
+      "entity": "kurz",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": true
+    },
+    "Kurz parametrického navrhování/Zápočtový úkol.md": {
+      "persona": "cs-student",
+      "entity": "kurz",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Kurz parametrického navrhování"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Kniha - Město pro chodce.md": {
+      "persona": "cs-student",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Knihy"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Kniha - Světlo v architektuře.md": {
+      "persona": "cs-student",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Knihy"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "Kniha - Návyky, které vydrží.md": {
+      "persona": "cs-student",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Zdraví",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Knihy"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Zdraví"
+        }
+      },
+      "isStub": false
+    },
+    "Různé/Kniha - Peníze bez stresu.md": {
+      "persona": "cs-student",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Knihy"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Dějiny architektury/Článek - Přestavby továren na kulturní centra.md": {
+      "persona": "cs-student",
+      "entity": "dejiny",
+      "kind": "clipping",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Dějiny architektury"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false
+    },
+    "3 Zdroje/Fotografie/Článek - Jak fotit interiéry mobilem.md": {
+      "persona": "cs-student",
+      "entity": "fotografie",
+      "kind": "clipping",
+      "topic": "Fotografie",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Fotografie"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Fotografie"
+        }
+      },
+      "isStub": false
+    },
+    "Doručené/Článek - Levné vaření pro studenty.md": {
+      "persona": "cs-student",
+      "entity": "vareni",
+      "kind": "clipping",
+      "topic": "Vaření",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Vaření"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Vaření"
+        }
+      },
+      "isStub": false
+    },
+    "1 Projekty/Stěhování do Brna/Článek - Jak vyjednat nájem.md": {
+      "persona": "cs-student",
+      "entity": "stehovani",
+      "kind": "clipping",
+      "topic": "Domov",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Stěhování do Brna"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Domov"
+        }
+      },
+      "isStub": false
+    },
+    "Škola/Petr Dvořák.md": {
+      "persona": "cs-student",
+      "entity": "people",
+      "kind": "person",
+      "topic": "Lidé",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Lidé"
+        },
+        "ace": {
+          "id": "atlas-people"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Lidé"
+        }
+      },
+      "isStub": false
+    },
+    "Lucie Malá.md": {
+      "persona": "cs-student",
+      "entity": "people",
+      "kind": "person",
+      "topic": "Lidé",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Lidé"
+        },
+        "ace": {
+          "id": "atlas-people"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Lidé"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-05.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Deník/2026-01-07.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-09.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Deník/2026-01-11.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-13.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Deník/2026-01-15.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Deník/2026-01-17.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-19.md": {
+      "persona": "cs-student",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Deník",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Roztřídit/Zadání soutěže koncept.md": {
+      "persona": "cs-student",
+      "entity": "pavilon",
+      "kind": "note",
+      "topic": "Architektura",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Soutěž na pavilon"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Architektura"
+        }
+      },
+      "isStub": false,
+      "duplicateOf": "Zadání soutěže.md"
+    },
+    "Různé/Měsíční rozpočet v2.md": {
+      "persona": "cs-student",
+      "entity": "finance",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finance"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false,
+      "duplicateOf": "Doručené/Měsíční rozpočet.md"
+    }
+  },
+  "trueLinks": [
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "1 Projekty/Diplomová práce/Model v měřítku 1 ku 200.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "2026-01-28 Prezentace konceptu v ateliéru.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Diplomová práce/Konzultace s vedoucím.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Harmonogram odevzdání.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Rešerše textilních továren.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Škola/Petr Dvořák.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Dřevěná konstrukce.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Soutěž na pavilon/2026-02-03 Konzultace soutěže s týmem.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Vizualizace pavilonu.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Zadání soutěže.md"
+    ],
+    [
+      "1 Projekty/Stěhování do Brna/Přepis energií.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "1 Projekty/Stěhování do Brna/Seznam věcí ke zabalení.md",
+      "Doručené/Domácnost.md"
+    ],
+    [
+      "1 Projekty/Stěhování do Brna/Seznam věcí ke zabalení.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "2 Oblasti/Finance/Finance.md",
+      "Doručené/Měsíční rozpočet.md"
+    ],
+    [
+      "2 Oblasti/Finance/Finance.md",
+      "Doručené/Spořicí účet.md"
+    ],
+    [
+      "2 Oblasti/Finance/Finance.md",
+      "Finance/Brigáda v kavárně.md"
+    ],
+    [
+      "2026-01-05.md",
+      "Různé/Parametrická fasáda.md"
+    ],
+    [
+      "2026-01-05.md",
+      "Škola/Pravidla spolubydlení.md"
+    ],
+    [
+      "2026-01-09.md",
+      "Ateliér zimní semestr/Portfolio z ateliéru.md"
+    ],
+    [
+      "2026-01-09.md",
+      "Doručené/Spořicí účet.md"
+    ],
+    [
+      "2026-01-13.md",
+      "Doručené/Spořicí účet.md"
+    ],
+    [
+      "2026-01-19.md",
+      "Domácí chleba.md"
+    ],
+    [
+      "3 Zdroje/Fotografie/Článek - Jak fotit interiéry mobilem.md",
+      "Škola/Fotografie.md"
+    ],
+    [
+      "3 Zdroje/Vaření/Rychlé večeře.md",
+      "Deník/2026-01-07.md"
+    ],
+    [
+      "3 Zdroje/Vaření/Rychlé večeře.md",
+      "Vaření/Vaření.md"
+    ],
+    [
+      "Ateliér zimní semestr/Ateliér zimní semestr.md",
+      "Ateliér zimní semestr/Bytový dům v proluce.md"
+    ],
+    [
+      "Ateliér zimní semestr/Ateliér zimní semestr.md",
+      "Ateliér zimní semestr/Dispozice bytů.md"
+    ],
+    [
+      "Ateliér zimní semestr/Ateliér zimní semestr.md",
+      "Ateliér zimní semestr/Portfolio z ateliéru.md"
+    ],
+    [
+      "Ateliér zimní semestr/Bytový dům v proluce.md",
+      "Deník/2026-01-15.md"
+    ],
+    [
+      "Deník/2026-01-07.md",
+      "Funkcionalismus v Brně.md"
+    ],
+    [
+      "Diplomová práce/Konzultace s vedoucím.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Doručené/2026-01-31 Prohlídka bytu s majitelem.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Doručené/Domácnost.md",
+      "Doručené/Opravy v bytě.md"
+    ],
+    [
+      "Doručené/Domácnost.md",
+      "Lucie Malá.md"
+    ],
+    [
+      "Doručené/Domácnost.md",
+      "Škola/Pravidla spolubydlení.md"
+    ],
+    [
+      "Doručené/Kurz parametrického navrhování.md",
+      "Různé/Parametrická fasáda.md"
+    ],
+    [
+      "Doručené/Kurz parametrického navrhování.md",
+      "Zadání soutěže.md"
+    ],
+    [
+      "Doručené/Kurz parametrického navrhování.md",
+      "Úvod do vizuálního programování.md"
+    ],
+    [
+      "Doručené/Společné nákupy.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Dějiny architektury/Gotické klenby.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Funkcionalismus v Brně.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Industriální stavby.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Nábytek do nového bytu.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Preventivní prohlídka.md",
+      "Zdraví.md"
+    ],
+    [
+      "Prohlídky bytů.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Stěhování do Brna/Rozpočet na stěhování.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Svislé linie.md",
+      "Škola/Fotografie.md"
+    ],
+    [
+      "Vaření na týden.md",
+      "Vaření/Vaření.md"
+    ],
+    [
+      "Vaření/Vaření.md",
+      "Čočková polévka.md"
+    ],
+    [
+      "Zdraví.md",
+      "Zdraví/Cviky na záda.md"
+    ],
+    [
+      "Úprava fotek.md",
+      "Škola/Fotografie.md"
+    ],
+    [
+      "Škola/Fotografie.md",
+      "Škola/Fotografování interiérů.md"
+    ]
+  ],
+  "heldOutLinks": [
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Koncept diplomky.md"
+    ],
+    [
+      "1 Projekty/Diplomová práce/Diplomová práce.md",
+      "Staré poznámky/2026-01-25 Konzultace diplomky.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Skici pavilonu.md"
+    ],
+    [
+      "1 Projekty/Soutěž na pavilon/Soutěž na pavilon.md",
+      "Soutěž na pavilon/Text k soutěžnímu návrhu.md"
+    ],
+    [
+      "2 Oblasti/Finance/Finance.md",
+      "Stipendium.md"
+    ],
+    [
+      "2026-01-13.md",
+      "Finance/Brigáda v kavárně.md"
+    ],
+    [
+      "Ateliér zimní semestr/Ateliér zimní semestr.md",
+      "Hodnocení ateliéru.md"
+    ],
+    [
+      "Baroko a světlo.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Deník/2026-01-11.md",
+      "Doručené/Opravy v bytě.md"
+    ],
+    [
+      "Deník/2026-01-11.md",
+      "Vaření na týden.md"
+    ],
+    [
+      "Deník/2026-01-17.md",
+      "Úvod do vizuálního programování.md"
+    ],
+    [
+      "Domácí chleba.md",
+      "Vaření/Vaření.md"
+    ],
+    [
+      "Doručené/Domácnost.md",
+      "Doručené/Společné nákupy.md"
+    ],
+    [
+      "Doručené/Domácnost.md",
+      "Rozpis úklidu.md"
+    ],
+    [
+      "Doručené/Kurz parametrického navrhování.md",
+      "Kurz parametrického navrhování/Zápočtový úkol.md"
+    ],
+    [
+      "Doručené/Kurz parametrického navrhování.md",
+      "Optimalizace tvaru.md"
+    ],
+    [
+      "Doručené/Článek - Levné vaření pro studenty.md",
+      "Vaření/Vaření.md"
+    ],
+    [
+      "Koncept diplomky.md",
+      "Staré poznámky/Dějiny architektury.md"
+    ],
+    [
+      "Modrá hodinka.md",
+      "Škola/Fotografie.md"
+    ],
+    [
+      "Očkování.md",
+      "Zdraví.md"
+    ],
+    [
+      "Rozpis úklidu.md",
+      "Stěhování do Brna/Stěhování do Brna.md"
+    ],
+    [
+      "Zdraví.md",
+      "Škola/Spánkový režim.md"
+    ]
+  ]
+}

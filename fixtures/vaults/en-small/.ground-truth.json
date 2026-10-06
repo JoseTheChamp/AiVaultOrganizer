@@ -1,0 +1,2486 @@
+{
+  "version": 1,
+  "fixture": "en-small",
+  "language": "en",
+  "seed": 101,
+  "notes": {
+    "Inbox/Website relaunch.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "hub",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Home office setup.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "hub",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Half marathon in October.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "hub",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/API migration.md": {
+      "persona": "en-developer",
+      "entity": "api-migration",
+      "kind": "hub",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "API migration"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "API migration"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "2 Areas/Health/Health.md": {
+      "persona": "en-developer",
+      "entity": "health",
+      "kind": "hub",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Health"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Health"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "Finances.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "hub",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Home maintenance.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "hub",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/TypeScript.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "hub",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "TypeScript"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Photography.md": {
+      "persona": "en-developer",
+      "entity": "photography",
+      "kind": "hub",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Photography"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Photography"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Cooking.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "hub",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Cooking"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Machine learning course.md": {
+      "persona": "en-developer",
+      "entity": "ml-course",
+      "kind": "hub",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Machine learning course"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Machine learning course"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Misc/Website sitemap draft.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Work stuff/CMS comparison.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Homepage wireframe feedback.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Launch checklist.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Page speed baseline.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Website relaunch"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-25 Website kickoff with the agency.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "meeting",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-22"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/2026-01-28 Website design review.md": {
+      "persona": "en-developer",
+      "entity": "website",
+      "kind": "meeting",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Website relaunch"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-22"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Home office setup/Standing desk options.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Office lighting plan.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": true
+    },
+    "Misc/Cable management ideas.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Office furniture budget.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Old notes/Acoustic panels.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Home office setup"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "To sort/2026-01-31 Home office electrician visit.md": {
+      "persona": "en-developer",
+      "entity": "home-office",
+      "kind": "meeting",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Home office setup"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Half marathon in October/Half marathon training plan.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "note",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Half marathon in October/Long run log.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "note",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Race pace strategy.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "note",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Running shoe choice.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "note",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Race week checklist.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "note",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "efforts-on",
+          "subfolder": "Half marathon in October"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/2026-02-03 Running coach check-in.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "meeting",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "calendar-meetings"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Old notes/API v2 rollout plan.md": {
+      "persona": "en-developer",
+      "entity": "api-migration",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "API migration"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "API migration"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Deprecation notices.md": {
+      "persona": "en-developer",
+      "entity": "api-migration",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "API migration"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "API migration"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "API migration/Migration retrospective.md": {
+      "persona": "en-developer",
+      "entity": "api-migration",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "API migration"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "API migration"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Client usage report.md": {
+      "persona": "en-developer",
+      "entity": "api-migration",
+      "kind": "note",
+      "topic": "Web development",
+      "destinations": {
+        "para": {
+          "id": "archive",
+          "subfolder": "API migration"
+        },
+        "ace": {
+          "id": "efforts-sleeping",
+          "subfolder": "API migration"
+        },
+        "jd": {
+          "id": "jd-21"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Web development"
+        }
+      },
+      "isStub": false
+    },
+    "Annual check-up results.md": {
+      "persona": "en-developer",
+      "entity": "health",
+      "kind": "note",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Health"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Health"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "Sleep routine.md": {
+      "persona": "en-developer",
+      "entity": "health",
+      "kind": "note",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Health"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Health"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "2 Areas/Health/Back pain exercises.md": {
+      "persona": "en-developer",
+      "entity": "health",
+      "kind": "note",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Health"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Health"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "Vaccination record.md": {
+      "persona": "en-developer",
+      "entity": "health",
+      "kind": "note",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Health"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Health"
+        },
+        "jd": {
+          "id": "jd-12"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Monthly budget.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Emergency fund.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Index fund portfolio.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Tax return checklist.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Leaking kitchen tap.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Old notes/Boiler service.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Old notes/Window seals.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Work stuff/Appliance warranties.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false
+    },
+    "Generic constraints.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "TypeScript"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "TypeScript/Strict compiler options.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "TypeScript"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Discriminated unions.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "TypeScript"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Zod schemas.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "TypeScript"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Photography/Golden hour tips.md": {
+      "persona": "en-developer",
+      "entity": "photography",
+      "kind": "note",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Photography"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Photography"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": false
+    },
+    "To sort/Aperture and depth of field.md": {
+      "persona": "en-developer",
+      "entity": "photography",
+      "kind": "note",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Photography"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Photography"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": true
+    },
+    "Work stuff/Editing workflow.md": {
+      "persona": "en-developer",
+      "entity": "photography",
+      "kind": "note",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Photography"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Photography"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": false
+    },
+    "Street photography.md": {
+      "persona": "en-developer",
+      "entity": "photography",
+      "kind": "note",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Photography"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Photography"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Sourdough basics.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "note",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Cooking"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Weeknight curry.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "note",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Cooking"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Misc/Knife skills.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "note",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Cooking"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Cooking/Meal prep ideas.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "note",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Cooking"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Linear regression.md": {
+      "persona": "en-developer",
+      "entity": "ml-course",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Machine learning course"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Machine learning course"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "3 Resources/Machine learning course/Gradient descent.md": {
+      "persona": "en-developer",
+      "entity": "ml-course",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Machine learning course"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Machine learning course"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "To sort/Overfitting and regularization.md": {
+      "persona": "en-developer",
+      "entity": "ml-course",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Machine learning course"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Machine learning course"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "3 Resources/Machine learning course/Evaluating classifiers.md": {
+      "persona": "en-developer",
+      "entity": "ml-course",
+      "kind": "note",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Machine learning course"
+        },
+        "ace": {
+          "id": "atlas-notes",
+          "subfolder": "Machine learning course"
+        },
+        "jd": {
+          "id": "jd-31"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Books/Book - The Calm Programmer.md": {
+      "persona": "en-developer",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Books"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "3 Resources/Books/Book - Habits That Stick.md": {
+      "persona": "en-developer",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Health",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Books"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Health"
+        }
+      },
+      "isStub": false
+    },
+    "Books/Book - Light and Shadow.md": {
+      "persona": "en-developer",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Photography",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Books"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Photography"
+        }
+      },
+      "isStub": false
+    },
+    "Book - Money Without Stress.md": {
+      "persona": "en-developer",
+      "entity": "books",
+      "kind": "source",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Books"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-32"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Article - Understanding TypeScript variance.md": {
+      "persona": "en-developer",
+      "entity": "typescript",
+      "kind": "clipping",
+      "topic": "Programming",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "TypeScript"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Programming"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Article - How to taper before a race.md": {
+      "persona": "en-developer",
+      "entity": "half-marathon",
+      "kind": "clipping",
+      "topic": "Running",
+      "destinations": {
+        "para": {
+          "id": "projects",
+          "subfolder": "Half marathon in October"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Running"
+        }
+      },
+      "isStub": false
+    },
+    "Article - One pot dinners.md": {
+      "persona": "en-developer",
+      "entity": "cooking",
+      "kind": "clipping",
+      "topic": "Cooking",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "Cooking"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Cooking"
+        }
+      },
+      "isStub": false
+    },
+    "Article - Choosing a broker.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "clipping",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "atlas-sources"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "clippings"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false
+    },
+    "Inbox/Mia Chen.md": {
+      "persona": "en-developer",
+      "entity": "people",
+      "kind": "person",
+      "topic": "People",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "People"
+        },
+        "ace": {
+          "id": "atlas-people"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "People"
+        }
+      },
+      "isStub": false
+    },
+    "3 Resources/People/Tom Berg.md": {
+      "persona": "en-developer",
+      "entity": "people",
+      "kind": "person",
+      "topic": "People",
+      "destinations": {
+        "para": {
+          "id": "resources",
+          "subfolder": "People"
+        },
+        "ace": {
+          "id": "atlas-people"
+        },
+        "jd": {
+          "id": "jd-23"
+        },
+        "flat": {
+          "id": "references"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "People"
+        }
+      },
+      "isStub": false
+    },
+    "Daily/2026-01-05.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-07.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-09.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Daily/2026-01-11.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Daily/2026-01-13.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "2026-01-15.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Daily/2026-01-17.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Daily/2026-01-19.md": {
+      "persona": "en-developer",
+      "entity": "daily",
+      "kind": "daily",
+      "topic": "Daily",
+      "destinations": {
+        "para": {
+          "id": "daily"
+        },
+        "ace": {
+          "id": "daily"
+        },
+        "jd": {
+          "id": "daily"
+        },
+        "flat": {
+          "id": "daily"
+        },
+        "topics": {
+          "id": "daily"
+        }
+      },
+      "isStub": false
+    },
+    "Work stuff/Index fund portfolio v2.md": {
+      "persona": "en-developer",
+      "entity": "finances",
+      "kind": "note",
+      "topic": "Finance",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Finances"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Finances"
+        },
+        "jd": {
+          "id": "jd-11"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Finance"
+        }
+      },
+      "isStub": false,
+      "duplicateOf": "Index fund portfolio.md"
+    },
+    "Appliance warranties v2.md": {
+      "persona": "en-developer",
+      "entity": "home",
+      "kind": "note",
+      "topic": "Home",
+      "destinations": {
+        "para": {
+          "id": "areas",
+          "subfolder": "Home maintenance"
+        },
+        "ace": {
+          "id": "efforts-ongoing",
+          "subfolder": "Home maintenance"
+        },
+        "jd": {
+          "id": "jd-13"
+        },
+        "flat": {
+          "id": "root"
+        },
+        "topics": {
+          "id": "notes",
+          "subfolder": "Home"
+        }
+      },
+      "isStub": false,
+      "duplicateOf": "Work stuff/Appliance warranties.md"
+    }
+  },
+  "trueLinks": [
+    [
+      "2 Areas/Health/Back pain exercises.md",
+      "2 Areas/Health/Health.md"
+    ],
+    [
+      "2 Areas/Health/Health.md",
+      "Annual check-up results.md"
+    ],
+    [
+      "2 Areas/Health/Health.md",
+      "Sleep routine.md"
+    ],
+    [
+      "2026-01-09.md",
+      "Old notes/Acoustic panels.md"
+    ],
+    [
+      "2026-01-15.md",
+      "Misc/Cable management ideas.md"
+    ],
+    [
+      "2026-01-25 Website kickoff with the agency.md",
+      "Inbox/Website relaunch.md"
+    ],
+    [
+      "3 Resources/Machine learning course/Evaluating classifiers.md",
+      "Machine learning course.md"
+    ],
+    [
+      "3 Resources/People/Tom Berg.md",
+      "Half marathon in October.md"
+    ],
+    [
+      "API migration/Migration retrospective.md",
+      "Inbox/API migration.md"
+    ],
+    [
+      "Article - Choosing a broker.md",
+      "Finances.md"
+    ],
+    [
+      "Article - One pot dinners.md",
+      "Inbox/Cooking.md"
+    ],
+    [
+      "Article - Understanding TypeScript variance.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Client usage report.md",
+      "Inbox/API migration.md"
+    ],
+    [
+      "Cooking/Meal prep ideas.md",
+      "Daily/2026-01-05.md"
+    ],
+    [
+      "Daily/2026-01-19.md",
+      "Race week checklist.md"
+    ],
+    [
+      "Daily/2026-01-19.md",
+      "Work stuff/Appliance warranties.md"
+    ],
+    [
+      "Deprecation notices.md",
+      "Inbox/API migration.md"
+    ],
+    [
+      "Deprecation notices.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Discriminated unions.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Finances.md",
+      "Inbox/Emergency fund.md"
+    ],
+    [
+      "Finances.md",
+      "Inbox/Monthly budget.md"
+    ],
+    [
+      "Finances.md",
+      "Index fund portfolio.md"
+    ],
+    [
+      "Finances.md",
+      "Tax return checklist.md"
+    ],
+    [
+      "Generic constraints.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Half marathon in October/Half marathon training plan.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Inbox/2026-02-03 Running coach check-in.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Race pace strategy.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Race week checklist.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Running shoe choice.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Vaccination record.md"
+    ],
+    [
+      "Home maintenance.md",
+      "Old notes/Boiler service.md"
+    ],
+    [
+      "Home maintenance.md",
+      "Old notes/Window seals.md"
+    ],
+    [
+      "Home maintenance.md",
+      "Work stuff/Appliance warranties.md"
+    ],
+    [
+      "Home office setup.md",
+      "Home office setup/Standing desk options.md"
+    ],
+    [
+      "Home office setup.md",
+      "Inbox/Office furniture budget.md"
+    ],
+    [
+      "Home office setup.md",
+      "Inbox/Office lighting plan.md"
+    ],
+    [
+      "Home office setup.md",
+      "Misc/Cable management ideas.md"
+    ],
+    [
+      "Home office setup.md",
+      "To sort/2026-01-31 Home office electrician visit.md"
+    ],
+    [
+      "Homepage wireframe feedback.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Homepage wireframe feedback.md",
+      "Inbox/Website relaunch.md"
+    ],
+    [
+      "Inbox/2026-01-28 Website design review.md",
+      "Inbox/Website relaunch.md"
+    ],
+    [
+      "Inbox/Cooking.md",
+      "Misc/Knife skills.md"
+    ],
+    [
+      "Inbox/Mia Chen.md",
+      "Inbox/Website relaunch.md"
+    ],
+    [
+      "Inbox/Page speed baseline.md",
+      "Inbox/TypeScript.md"
+    ],
+    [
+      "Inbox/TypeScript.md",
+      "Inbox/Zod schemas.md"
+    ],
+    [
+      "Inbox/TypeScript.md",
+      "Old notes/API v2 rollout plan.md"
+    ],
+    [
+      "Inbox/TypeScript.md",
+      "TypeScript/Strict compiler options.md"
+    ],
+    [
+      "Inbox/Website relaunch.md",
+      "Misc/Website sitemap draft.md"
+    ],
+    [
+      "Machine learning course.md",
+      "To sort/Overfitting and regularization.md"
+    ],
+    [
+      "Photography.md",
+      "Street photography.md"
+    ],
+    [
+      "Photography.md",
+      "To sort/Aperture and depth of field.md"
+    ],
+    [
+      "Photography.md",
+      "Work stuff/Editing workflow.md"
+    ]
+  ],
+  "heldOutLinks": [
+    [
+      "2 Areas/Health/Back pain exercises.md",
+      "Half marathon in October.md"
+    ],
+    [
+      "2 Areas/Health/Health.md",
+      "Vaccination record.md"
+    ],
+    [
+      "2026-01-07.md",
+      "Index fund portfolio.md"
+    ],
+    [
+      "2026-01-15.md",
+      "Running shoe choice.md"
+    ],
+    [
+      "3 Resources/Machine learning course/Gradient descent.md",
+      "Machine learning course.md"
+    ],
+    [
+      "Cooking/Meal prep ideas.md",
+      "Inbox/Cooking.md"
+    ],
+    [
+      "Daily/2026-01-11.md",
+      "Homepage wireframe feedback.md"
+    ],
+    [
+      "Daily/2026-01-13.md",
+      "Inbox/Office furniture budget.md"
+    ],
+    [
+      "Daily/2026-01-13.md",
+      "TypeScript/Strict compiler options.md"
+    ],
+    [
+      "Daily/2026-01-17.md",
+      "Misc/Website sitemap draft.md"
+    ],
+    [
+      "Daily/2026-01-17.md",
+      "Tax return checklist.md"
+    ],
+    [
+      "Half marathon in October.md",
+      "Half marathon in October/Long run log.md"
+    ],
+    [
+      "Home maintenance.md",
+      "Inbox/Leaking kitchen tap.md"
+    ],
+    [
+      "Home office setup.md",
+      "Old notes/Acoustic panels.md"
+    ],
+    [
+      "Inbox/API migration.md",
+      "Old notes/API v2 rollout plan.md"
+    ],
+    [
+      "Inbox/Cooking.md",
+      "Inbox/Sourdough basics.md"
+    ],
+    [
+      "Inbox/Cooking.md",
+      "Inbox/Weeknight curry.md"
+    ],
+    [
+      "Inbox/Page speed baseline.md",
+      "Inbox/Website relaunch.md"
+    ],
+    [
+      "Inbox/Website relaunch.md",
+      "Launch checklist.md"
+    ],
+    [
+      "Inbox/Website relaunch.md",
+      "Work stuff/CMS comparison.md"
+    ],
+    [
+      "Linear regression.md",
+      "Machine learning course.md"
+    ],
+    [
+      "Photography.md",
+      "Photography/Golden hour tips.md"
+    ]
+  ]
+}
