@@ -6,7 +6,8 @@ import { type MountedComponent, mountComponent } from '../../ui/mount';
 import { reactive } from '../../ui/reactive.svelte';
 import { analyze } from '../flows/analyze';
 import { confirmUndo } from '../flows/backup-undo';
-import { planRealignment, setUpCharter } from '../flows/charter';
+import { setUpCharter } from '../flows/charter';
+import { planRealignment } from '../flows/plan';
 import { reviewPendingPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
 

@@ -3,18 +3,14 @@ import { analyzeVault } from '../../core/analysis/analyze';
 import { charterPlan } from '../../core/charter/charter-note';
 import { type CharterLoad, loadCharter } from '../../core/charter/load';
 import type { Charter } from '../../core/charter/schema';
-import { formatCharterIssues } from '../../core/charter/summary';
 import { computeDrift } from '../../core/drift/drift';
-import { plural } from '../../core/model/text';
-import { hostOf } from '../../core/ai/endpoint-url';
-import { DEFAULT_KNN, WORD_KNN } from '../../core/planner/classify';
-import { buildPlan } from '../../core/planner/plan';
 import type AiVaultOrganizerPlugin from '../main';
 import { SetupWizardModal } from '../views/setup-wizard-modal';
 import { DriftModal } from '../views/drift-modal';
 import { exclusive } from './exclusive';
-import { fallbackMessage, indexingProgress } from './indexing';
-import { openReview, runPlan, showRunReport } from './review';
+import { planRealignment } from './plan';
+import { requireCharter } from './require-charter';
+import { runPlan, showRunReport } from './review';
 
 /** `Set up charter`: the setup wizard, then the charter written through the apply path, then (optionally) a plan for the vault. */
 export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void> {
@@ -72,65 +68,10 @@ async function saveCharter(plugin: AiVaultOrganizerPlugin, charter: Charter, loa
   return true;
 }
 
-/** Loads a valid charter or tells the user why there is none. */
-async function requireCharter(plugin: AiVaultOrganizerPlugin): Promise<{ charter: Charter; path: string } | null> {
-  const load = await loadCharter(plugin.services.reader, plugin.services.hasher, plugin.settings.charterPath);
-  if (load.status === 'ok') return { charter: load.charter, path: load.path };
-  if (load.status === 'missing' || load.status === 'no-block') {
-    new Notice('There is no charter yet. Create one with the set up charter command first.');
-  } else {
-    const [first] = formatCharterIssues(load.issues);
-    new Notice(`The charter rules have ${plural(load.issues.length, 'problem')} (${first ?? ''}). Fix them in "${load.path}" first.`);
-    await plugin.app.workspace.openLinkText(load.path, '', false);
-  }
-  return null;
-}
-
 /** `Check drift`: rule-based drift report with a path to re-alignment. */
 export async function checkDrift(plugin: AiVaultOrganizerPlugin): Promise<void> {
   const loaded = await requireCharter(plugin);
   if (!loaded) return;
   const report = computeDrift(await plugin.services.reader.snapshot(), loaded.charter, { charterPath: loaded.path, now: Date.now() });
   new DriftModal(plugin.app, { report, onPlan: () => void planRealignment(plugin) }).open();
-}
-
-/**
- * `Plan re-alignment`: the planner's proposal for the whole vault, saved as the pending plan and
- * opened for review. Notes no rule places are compared with placed notes (kNN) by meaning when an
- * embedding model is set up, by shared words otherwise.
- */
-export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<void> {
-  const loaded = await requireCharter(plugin);
-  if (!loaded) return;
-  const { reader, similarity, ai, logger } = plugin.services;
-  const progress = indexingProgress(plugin);
-  try {
-    const source = await similarity.neighborSource({ provider: ai.embeddings(), ignore: loaded.charter.ignore, exclude: [loaded.path], ...progress.options });
-    const fallback = fallbackMessage(source, hostOf(plugin.settings.ai.embeddings.baseUrl), 'Comparing notes by shared words instead.');
-    if (fallback) new Notice(fallback, 10_000);
-    progress.say('Planning…');
-    const { plan } = await buildPlan({
-      snapshot: await reader.snapshot(),
-      charter: loaded.charter,
-      charterPath: loaded.path,
-      read: (path) => reader.read(path),
-      now: new Date(),
-      neighbors: source.neighbors,
-      knn: source.method === 'embeddings' ? DEFAULT_KNN : WORD_KNN,
-      createDestinationFolders: true,
-    });
-    progress.hide();
-    if (plan.operations.length === 0) {
-      new Notice(`Nothing to re-align: every note is where the charter puts it.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
-      return;
-    }
-    await plugin.services.plans.save(plan);
-    plugin.changed();
-    await openReview(plugin, plan);
-  } catch (error) {
-    logger.error('Planning failed', error);
-    new Notice('Planning failed. Enable debug logging and check the developer console for details.');
-  } finally {
-    progress.hide();
-  }
 }

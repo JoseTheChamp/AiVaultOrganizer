@@ -1,5 +1,6 @@
-import type * as z from 'zod';
+import * as z from 'zod';
 import type { Result } from '../../model/result';
+import { estimateRequest, type TokenEstimate } from '../budget';
 import { generateStructured, type StructuredError, type StructuredSuccess } from '../structured';
 import type { ChatMessage, ChatProvider } from '../types';
 
@@ -32,6 +33,15 @@ export function runPrompt<Input, Output>(
     temperature: 0,
     prompt: { id: prompt.id, version: prompt.version },
   });
+}
+
+/**
+ * Tokens one `runPrompt` call would use, schema included (it is sent with the request or written
+ * into it): the basis of every estimate shown before a run. A repair round is not counted.
+ */
+export function estimatePrompt<Input, Output>(prompt: Prompt<Input, Output>, input: Input): TokenEstimate {
+  const schema = z.toJSONSchema(prompt.schema(input)) as Record<string, unknown>;
+  return estimateRequest({ messages: prompt.build(input), schema: { name: prompt.id, schema }, maxTokens: prompt.maxTokens(input) });
 }
 
 /** "English" or "Czech": the language the model should answer in. */

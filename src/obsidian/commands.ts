@@ -1,6 +1,7 @@
 import { analyze } from './flows/analyze';
 import { confirmUndo, createBackup } from './flows/backup-undo';
-import { checkDrift, planRealignment, setUpCharter } from './flows/charter';
+import { checkDrift, setUpCharter } from './flows/charter';
+import { planRealignment } from './flows/plan';
 import { exclusive } from './flows/exclusive';
 import { reviewPendingPlan } from './flows/review';
 import { findSimilarNotes } from './flows/similar';

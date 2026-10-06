@@ -1,6 +1,6 @@
 import { type ClassifyNotesInput, classifyNotesV2, type ClassifyTarget } from '../ai/prompts/classify-notes.v2';
 import { estimateRequest, estimateTokens } from '../ai/budget';
-import { runPrompt } from '../ai/prompts/types';
+import { estimatePrompt, runPrompt } from '../ai/prompts/types';
 import type { ChatProvider } from '../ai/types';
 import { PRESETS, toLang } from '../charter/presets';
 import { METHOD_LABELS } from '../model/methods';
@@ -119,6 +119,46 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
     return decisions;
   };
   return { stage, stats };
+}
+
+/** Calls and tokens a model stage would use, before anything is sent (the consent step, PLAN §7.10). */
+export interface StageEstimate {
+  /** Notes whose cards would be sent. */
+  notes: number;
+  /** Private notes, never sent. */
+  withheld: number;
+  /** Without second samples, and with every answer asked twice. */
+  calls: { min: number; max: number };
+  /** Pessimistic upper bounds for the same two cases. */
+  inputTokens: { min: number; max: number };
+  outputTokens: { min: number; max: number };
+}
+
+/**
+ * Estimates what the model stage would cost for these notes, with the same prompts and batches the
+ * stage would send. How many answers get a second sample is only known afterwards, so the upper
+ * bound assumes all of them.
+ */
+export function estimateLlmStage(options: Pick<LlmStageOptions, 'cards' | 'folders' | 'batchSize' | 'secondSample'> & { maxContext: number }, notes: readonly NoteRecord[], context: LlmContext): StageEstimate {
+  const sendable = notes.filter((note) => options.cards.has(note.path));
+  const base = promptBase(context, options.folders);
+  let calls = 0;
+  let input = 0;
+  let output = 0;
+  for (const batch of batches(sendable, base, options.cards, options.batchSize ?? 10, options.maxContext)) {
+    const tokens = estimatePrompt(classifyNotesV2, { ...base, notes: batch.map((note, i) => ({ id: `n${i + 1}`, card: options.cards.get(note.path) as NoteCard })) });
+    calls++;
+    input += tokens.input + SUBFOLDER_RESERVE;
+    output += tokens.output;
+  }
+  const twice = options.secondSample ? 2 : 1;
+  return {
+    notes: sendable.length,
+    withheld: notes.length - sendable.length,
+    calls: { min: calls, max: calls * twice },
+    inputTokens: { min: input, max: input * twice },
+    outputTokens: { min: output, max: output * twice },
+  };
 }
 
 /**
