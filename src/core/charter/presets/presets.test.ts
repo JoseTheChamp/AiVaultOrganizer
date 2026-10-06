@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { RuleEngine } from '../../drift/rules';
+import { InMemoryVault } from '../../testing/in-memory-vault';
 import { charterSchema } from '../schema';
 import { parseCharterYaml, stringifyCharter } from '../yaml';
 import { flatCategories } from './flat-categories';
@@ -60,5 +62,18 @@ describe('Flat + categories', () => {
     expect(charter.mode).toBe('properties');
     expect(charter.conventions.properties?.required).toEqual(['categories']);
     expect(charter.destinations.find((d) => d.id === 'clippings')?.match).toEqual([{ property: 'source', exists: true }]);
+  });
+
+  it('recognizes Czech category names, and the English ones Czech vaults often keep', async () => {
+    const engine = new RuleEngine(charterSchema.parse(flatCategories.build('cs')));
+    const { notes } = await InMemoryVault.from({
+      'Kniha.md': '---\ncategories: ["[[Knihy]]"]\n---\n',
+      'Člověk.md': '---\ncategories: ["[[People]]"]\n---\n',
+      'Nápad.md': '---\ncategories: ["[[Nápady]]"]\n---\n',
+    }).snapshot();
+    const status = Object.fromEntries(notes.map((note) => [note.path, engine.evaluate(note)]));
+    expect(status['Kniha.md']).toMatchObject({ status: 'ruled', destination: { id: 'references' } });
+    expect(status['Člověk.md']).toMatchObject({ status: 'ruled', destination: { id: 'references' } });
+    expect(status['Nápad.md']?.status).not.toBe('ruled');
   });
 });

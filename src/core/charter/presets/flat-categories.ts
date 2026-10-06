@@ -1,5 +1,16 @@
 import { COMMON, defaultIgnore, type Lang, type Preset } from './types';
 
+const ENGLISH_CATEGORIES = ['[[Books]]', '[[Movies]]', '[[People]]', '[[Places]]'];
+
+/**
+ * Category notes that mark a reference. Czech vaults often keep the English names of Steph Ango's
+ * templates, so both spellings count there.
+ */
+const REFERENCE_CATEGORIES: Record<Lang, string[]> = {
+  en: ENGLISH_CATEGORIES,
+  cs: ['[[Knihy]]', '[[Filmy]]', '[[Lidé]]', '[[Místa]]', ...ENGLISH_CATEGORIES],
+};
+
 const TEXT: Record<Lang, Record<string, string>> = {
   en: {
     references: 'References',
@@ -47,7 +58,7 @@ export const flatCategories: Preset = {
           id: 'references',
           path: t.references,
           description: t.referencesDescription,
-          match: [{ property: 'categories', equals: ['[[Books]]', '[[Movies]]', '[[People]]', '[[Places]]'] }],
+          match: [{ property: 'categories', equals: REFERENCE_CATEGORIES[lang] }],
         },
         { id: 'clippings', path: t.clippings, description: t.clippingsDescription, match: [{ property: 'source', exists: true }] },
         { id: 'categories', path: t.categories, description: t.categoriesDescription, match: [{ property: 'type', equals: 'category' }] },
