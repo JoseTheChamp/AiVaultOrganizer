@@ -12,11 +12,15 @@ export function summarize(result: EvalResult): string {
   });
   lines.push(`  rules: ${rules.join(' · ')}`);
   for (const [method, links] of Object.entries(result.links)) {
-    const similarity = result.similarity[method as keyof EvalResult['similarity']];
-    lines.push(`  ${method}: links P@5 ${pct(links.precision)}, held-out recall ${pct(links.heldOutRecall)}, topic P@5 ${pct(similarity?.precision ?? 0)}`);
+    lines.push(`  links (${method}): P@3 ${pct(links.precision)}, relevant ${pct(links.relevance)}, held-out recall ${pct(links.heldOutRecall)}`);
   }
-  const folders = result.clusters.folders;
-  if (folders) lines.push(`  folders as clusters: ARI ${folders.ari.toFixed(3)}, NMI ${folders.nmi.toFixed(3)}`);
+  for (const [method, quality] of Object.entries(result.clusters)) {
+    lines.push(`  clusters (${method}): ${quality.topic.clusters}, ARI ${quality.topic.ari.toFixed(3)} by topic, ${quality.project.ari.toFixed(3)} by project`);
+  }
+  for (const [method, duplicates] of Object.entries(result.duplicates)) {
+    lines.push(`  duplicates (${method}): ${duplicates.predicted} found of ${duplicates.actual}, precision ${pct(duplicates.precision)}, recall ${pct(duplicates.recall)}`);
+  }
+  if (result.labels) lines.push(`  labels: ${result.labels.clusters} clusters, ${result.labels.failures} failed batches, e.g. ${result.labels.examples.slice(0, 3).map((e) => `"${e.label}"`).join(', ')}`);
   const { safety } = result;
   lines.push(`  safety: ${safety.applied}/${safety.operations} applied, ${safety.brokenLinks} broken links, undo ${safety.undoExact ? 'exact' : 'NOT exact'}`);
   for (const notice of result.notices) lines.push(`  note: ${notice}`);

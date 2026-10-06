@@ -1,55 +1,60 @@
-import { configFromPreset, findPreset } from '../../src/core/ai/config';
-import { OpenAICompatibleClient } from '../../src/core/ai/openai-compatible';
-import { type EmbeddingProvider, type EmbeddingResponse, ProviderError } from '../../src/core/ai/types';
-import { ApplyRunService } from '../../src/core/apply/run';
-import { UndoService } from '../../src/core/apply/undo';
-import { presetCharter } from '../../src/core/charter/presets';
-import { RuleEngine } from '../../src/core/drift/rules';
+import { labelClusters } from '../../src/core/analysis/cluster-labels';
+import { type Clustering, clusterEmbeddings, clusterWords } from '../../src/core/analysis/clusters';
+import { findDuplicates } from '../../src/core/analysis/duplicates';
+import { clusterKeywords } from '../../src/core/analysis/keywords';
+import { DEFAULT_CANDIDATES, type LinkCandidate, linkCandidates } from '../../src/core/analysis/link-candidates';
+import { verifyLinks } from '../../src/core/analysis/link-verify';
+import { triageNotes } from '../../src/core/analysis/triage';
+import { ProviderError } from '../../src/core/ai/types';
 import { EmbeddingIndex } from '../../src/core/embeddings/embedding-index';
-import { prepareNote } from '../../src/core/embeddings/prepare';
+import { prepareNote, preparedText } from '../../src/core/embeddings/prepare';
 import { DenseSearch } from '../../src/core/embeddings/search';
 import { countTerms, type TermCounts, TfidfModel } from '../../src/core/embeddings/tfidf';
 import type { Neighbor } from '../../src/core/embeddings/top-k';
 import { VectorStore } from '../../src/core/embeddings/vector-store';
 import { webCryptoHasher } from '../../src/core/hash';
-import type { NoteRecord, VaultSnapshot } from '../../src/core/model/note';
-import { createOperation, type Operation } from '../../src/core/model/operation';
-import { ancestorFolders, parentFolder } from '../../src/core/model/paths';
-import { createPlan } from '../../src/core/model/plan';
+import type { VaultSnapshot } from '../../src/core/model/note';
+import { parentFolder } from '../../src/core/model/paths';
+import { buildCard, type NoteCard } from '../../src/core/planner/cards';
 import { systemClock } from '../../src/core/ports';
-import { applyHarness } from '../../src/core/testing/apply-harness';
-import { FakeSecrets } from '../../src/core/testing/fake-http';
-import { FetchHttp } from '../adapters/fetch-http';
 import { NodeStorage } from '../adapters/node-storage';
-import { DAILY, FIXTURE_METHOD_KEYS, FIXTURE_METHODS, type FixtureMethod, type GroundTruth, type LoadedFixture, pairKey } from '../fixture/ground-truth';
-import { type ClassificationMetrics, classificationMetrics, type Prediction } from '../metrics/classification';
+import type { FixtureMethod, GroundTruth, LoadedFixture } from '../fixture/ground-truth';
+import { type ClassificationMetrics, ratio } from '../metrics/classification';
 import { type ClusterMetrics, clusterMetrics } from '../metrics/clusters';
 import { type Cost, NO_COST } from '../metrics/cost';
 import { type DuplicateMetrics, duplicateMetrics } from '../metrics/duplicates';
 import { type LinkMetrics, linkMetrics } from '../metrics/links';
 import { type NeighborQuality, neighborQuality } from '../metrics/neighbors';
+import { evalChat, evalEmbeddings, isMissingRecording, Meter } from './providers';
+import { applyAndUndo, classifyByRules, type SafetyMetrics } from './rules-and-safety';
 
+export type { SafetyMetrics } from './rules-and-safety';
 export type Tier = 0 | 1 | 2;
 export type SimilarityMethod = 'words' | 'embeddings';
 
 export interface EvalOptions {
   tier: Tier;
-  /** Embed with a live model and store the vectors; otherwise only stored vectors are used. */
+  /** Call live models and store what they return; otherwise only stored vectors and cassettes are used. */
   record: boolean;
   embedModel: string;
+  chatModel: string;
   /** Where the fixture's embedding index lives (committed for CI fixtures). */
   indexDir: string;
 }
 
-export interface SafetyMetrics {
-  /** Moves in the plan that files every note where PARA says it belongs. */
-  operations: number;
-  applied: number;
-  failed: number;
-  /** Links that no longer resolve after applying (must be 0). */
-  brokenLinks: number;
-  /** Whether undo restored every byte and folder (must be true). */
-  undoExact: boolean;
+/** Clusters against two ground truths: the topic and the project, area or topic entity. */
+export interface ClusterQuality {
+  topic: ClusterMetrics;
+  project: ClusterMetrics;
+}
+
+export interface LabelQuality {
+  clusters: number;
+  calls: number;
+  failures: number;
+  repaired: number;
+  /** Each label with the most common topic among its cluster's notes, for reading the report. */
+  examples: { label: string; topic: string; share: number }[];
 }
 
 export interface EvalResult {
@@ -58,30 +63,42 @@ export interface EvalResult {
   notes: number;
   tier: Tier;
   embedModel: string | null;
+  chatModel: string | null;
   classification: Record<FixtureMethod, ClassificationMetrics>;
-  links: Partial<Record<SimilarityMethod, LinkMetrics>>;
+  /** Link suggestions: word statistics (Tier 0), embeddings (Tier 1), verified by a model (Tier 2). */
+  links: Partial<Record<SimilarityMethod | 'verified', LinkMetrics>>;
   similarity: Partial<Record<SimilarityMethod, NeighborQuality>>;
-  clusters: Record<string, ClusterMetrics>;
-  duplicates: Partial<Record<SimilarityMethod, DuplicateMetrics & { threshold: number }>>;
+  clusters: Partial<Record<'folders' | SimilarityMethod, ClusterQuality>>;
+  duplicates: Partial<Record<SimilarityMethod, DuplicateMetrics>>;
+  stubs: { found: number; actual: number; precision: number; recall: number };
+  labels?: LabelQuality;
   safety: SafetyMetrics;
   cost: Record<string, Cost>;
   /** What was skipped and why. */
   notices: string[];
 }
 
-const K = 5;
-/**
- * Baseline duplicate detectors until M7 adds MinHash and title checks: a nearest neighbour at least
- * this similar is called a duplicate (0.92 for embeddings is the PLAN §7.4 value).
- */
-const DUPLICATE_THRESHOLD: Record<SimilarityMethod, number> = { words: 0.8, embeddings: 0.92 };
+/** Suggestions per note that are measured: the number verified at Tier 2, so tiers compare. */
+const LINK_K = 3;
+const TOPIC_K = 5;
+/** Similarity floors for link candidates: word and embedding similarities live on different scales. */
+const FLOOR: Record<SimilarityMethod, number> = { words: 0.1, embeddings: 0.5 };
 
 type Search = (path: string, k: number, exclude: ReadonlySet<string>) => Neighbor[];
 
+/** What a similarity method offers the analysis tasks. */
+interface Method {
+  name: SimilarityMethod;
+  similarity: (a: string, b: string) => number;
+  search: Search;
+  clustering: Clustering;
+}
+
 /**
- * Runs every eval task that exists at the requested tier over one fixture (PLAN §8): Tier 0 is
- * rules and word statistics, Tier 1 adds embeddings, Tier 2 adds language-model tasks (none yet).
- * Each task is measured against the fixture's ground truth with the metrics of §8.2.
+ * Runs every eval task that exists at the requested tier over one fixture (PLAN §8): Tier 0 is rules,
+ * word statistics, MinHash and LSA clustering; Tier 1 adds embeddings; Tier 2 adds a language model
+ * that labels clusters and verifies links. Each task is measured against the fixture's ground
+ * truth with the metrics of §8.2, and its cost is recorded.
  */
 export async function runEval(fixture: LoadedFixture, options: EvalOptions): Promise<EvalResult> {
   const { truth } = fixture;
@@ -96,188 +113,169 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
     cost[task] = { ...(cost[task] ?? NO_COST), ms: Math.round(performance.now() - started) };
     return result;
   };
+  const isDaily = (path: string): boolean => truth.notes[path]?.kind === 'daily';
+  const topics = new Map(Object.entries(truth.notes).map(([path, note]) => [path, note.topic]));
+  const projects = new Map(Object.entries(truth.notes).map(([path, note]) => [path, note.entity]));
+  const clusterQuality = (assignments: ReadonlyMap<string, string>): ClusterQuality => ({ topic: clusterMetrics(assignments, topics), project: clusterMetrics(assignments, projects) });
 
   const classification = await time('classification', () => classifyByRules(snapshot, truth));
-  const searches: Partial<Record<SimilarityMethod, Search>> = {};
-  searches.words = await time('words', () => wordSearch(snapshot, contents));
+  const triage = triageNotes(snapshot.notes);
+  const actualStubs = new Set(Object.entries(truth.notes).filter(([, note]) => note.isStub).map(([path]) => path));
+  const foundStubs = triage.stubs.filter((stub) => actualStubs.has(stub.path)).length;
+  const stubs = { found: triage.stubs.length, actual: actualStubs.size, precision: ratio(foundStubs, triage.stubs.length), recall: ratio(foundStubs, actualStubs.size) };
+
+  const methods: Method[] = [await time('words', () => wordMethod(snapshot, contents))];
   if (options.tier >= 1) {
-    const embedded = await time('embeddings', () => embeddingSearch(snapshot, fixture, options));
-    if (embedded.search) searches.embeddings = embedded.search;
-    else notices.push(embedded.notice);
-    cost.embeddings = { ...(cost.embeddings ?? NO_COST), calls: embedded.calls, inputTokens: embedded.tokens };
+    const meter = new Meter();
+    const embedded = await time('embeddings', () => embeddingMethod(snapshot, fixture, options, meter));
+    cost.embeddings = { ...(cost.embeddings ?? NO_COST), calls: meter.calls, inputTokens: meter.inputTokens };
+    if (typeof embedded === 'string') notices.push(embedded);
+    else methods.push(embedded);
   }
-  if (options.tier >= 2) notices.push('Tier 2 has no tasks yet: cluster labels and link verification arrive in M7, classification in M8.');
 
   const links: EvalResult['links'] = {};
   const similarity: EvalResult['similarity'] = {};
   const duplicates: EvalResult['duplicates'] = {};
-  const topics = Object.fromEntries(Object.entries(truth.notes).map(([path, note]) => [path, note.topic]));
-  const languages = Object.fromEntries(Object.keys(truth.notes).map((path) => [path, truth.language]));
-  for (const [method, search] of Object.entries(searches) as [SimilarityMethod, Search][]) {
-    links[method] = linkMetrics(suggestLinks(snapshot, search), truth, K);
-    similarity[method] = neighborQuality(new Map(snapshot.notes.map((note) => [note.path, search(note.path, K, new Set()).map((n) => n.path)])), topics, languages, K);
-    const threshold = DUPLICATE_THRESHOLD[method];
-    duplicates[method] = { ...duplicateMetrics(duplicatePairs(snapshot, search, threshold), truth), threshold };
+  const clusters: EvalResult['clusters'] = {
+    // Baseline: the vault's current folders as clusters.
+    folders: clusterQuality(new Map(snapshot.notes.map((note) => [note.path, parentFolder(note.path) || '/']))),
+  };
+  const duplicateInput = snapshot.notes.map((note) => ({ path: note.path, title: note.basename, text: bodyText(contents.get(note.path) ?? '', note.basename) }));
+  const candidatesBy = new Map<SimilarityMethod, Map<string, LinkCandidate[]>>();
+  const topicLabels = Object.fromEntries(topics);
+  const languages = Object.fromEntries([...topics.keys()].map((path) => [path, truth.language]));
+  for (const method of methods) {
+    const candidates = await time(`${method.name} links`, () =>
+      linkCandidates({ notes: snapshot.notes, similarity: method.similarity, clustering: method.clustering }, { ...DEFAULT_CANDIDATES, floor: FLOOR[method.name] }),
+    );
+    candidatesBy.set(method.name, candidates);
+    links[method.name] = linkMetrics(new Map([...candidates].map(([path, list]) => [path, list.map((c) => c.target)])), truth, LINK_K, isDaily);
+    similarity[method.name] = neighborQuality(new Map(snapshot.notes.map((note) => [note.path, method.search(note.path, TOPIC_K, new Set()).map((n) => n.path)])), topicLabels, languages, TOPIC_K);
+    clusters[method.name] = clusterQuality(new Map([...method.clustering.assignments].map(([path, id]) => [path, String(id)])));
+    const neighbors = method.name === 'embeddings' ? (path: string) => method.search(path, 3, new Set()) : undefined;
+    duplicates[method.name] = duplicateMetrics(findDuplicates(duplicateInput, neighbors).map((pair) => [pair.a, pair.b] as [string, string]), truth);
   }
 
-  const clusters = {
-    // Baseline until clustering exists (M7): the vault's current folders as clusters.
-    folders: clusterMetrics(new Map(snapshot.notes.map((note) => [note.path, parentFolder(note.path) || '/'])), new Map(Object.entries(topics))),
-  };
-  const safety = await time('safety', () => applyAndUndo(snapshot, contents, truth));
+  let labels: LabelQuality | undefined;
+  if (options.tier >= 2) {
+    const best = methods.at(-1) as Method;
+    const meter = new Meter();
+    const chat = await evalChat(truth.fixture, options.chatModel, options.record, meter);
+    const cards = new Map<string, NoteCard>();
+    for (const note of snapshot.notes) {
+      const card = buildCard(note, contents.get(note.path) ?? '');
+      if (card) cards.set(note.path, card);
+    }
+    try {
+      labels = await time('cluster labels', () => labelQuality(chat.provider, truth, best.clustering, contents, cards, topics));
+      const verified = await time('verified links', () => verifyLinks(chat.provider, truth.language, candidatesBy.get(best.name) ?? new Map(), cards));
+      const kept = new Map<string, string[]>();
+      for (const candidate of verified.kept) kept.set(candidate.source, [...(kept.get(candidate.source) ?? []), candidate.target]);
+      links.verified = linkMetrics(kept, truth, LINK_K, isDaily);
+    } catch (error) {
+      if (!isMissingRecording(error) && !(error instanceof ProviderError)) throw error;
+      notices.push(`Tier 2 skipped for ${truth.fixture}: no recorded ${options.chatModel} answers for these prompts; run with --record against a local Ollama.`);
+    }
+    await chat.finish();
+    cost.chat = { calls: meter.calls, inputTokens: meter.inputTokens, outputTokens: meter.outputTokens, ms: (cost['cluster labels']?.ms ?? 0) + (cost['verified links']?.ms ?? 0) };
+  }
 
+  const safety = await time('safety', () => applyAndUndo(snapshot, contents, truth));
   return {
     fixture: truth.fixture,
     language: truth.language,
     notes: snapshot.notes.length,
     tier: options.tier,
     embedModel: options.tier >= 1 ? options.embedModel : null,
+    chatModel: options.tier >= 2 ? options.chatModel : null,
     classification,
     links,
     similarity,
     clusters,
     duplicates,
+    stubs,
+    ...(labels ? { labels } : {}),
     safety,
     cost,
     notices,
   };
 }
 
-/** Tier 0 classification: what the preset charters' rules alone decide; everything else abstains. */
-function classifyByRules(snapshot: VaultSnapshot, truth: GroundTruth): Record<FixtureMethod, ClassificationMetrics> {
-  const result = {} as Record<FixtureMethod, ClassificationMetrics>;
-  for (const method of FIXTURE_METHOD_KEYS) {
-    const engine = new RuleEngine(presetCharter(FIXTURE_METHODS[method], truth.language));
-    const predictions: Prediction[] = snapshot.notes.map((note) => {
-      const placement = engine.evaluate(note);
-      if (placement.status === 'ruled') return { path: note.path, destination: placement.destination.id, confidence: 1, decidedBy: 'rules' };
-      if (placement.status === 'system' && placement.role === 'daily') return { path: note.path, destination: DAILY, confidence: 1, decidedBy: 'rules' };
-      return { path: note.path, destination: null, confidence: 0, decidedBy: null };
-    });
-    const expected = new Map(Object.entries(truth.notes).map(([path, note]) => [path, note.destinations[method].id]));
-    result[method] = classificationMetrics(predictions, expected);
-  }
-  return result;
+function bodyText(content: string, title: string): string {
+  return prepareNote(content, title)
+    .sections.flatMap((section) => section.paragraphs)
+    .join('\n');
 }
 
-function wordSearch(snapshot: VaultSnapshot, contents: ReadonlyMap<string, string>): Search {
+function wordMethod(snapshot: VaultSnapshot, contents: ReadonlyMap<string, string>): Method {
   const documents = new Map<string, TermCounts>();
   for (const note of snapshot.notes) documents.set(note.path, countTerms(prepareNote(contents.get(note.path) ?? '', note.basename), note.tags));
   const model = TfidfModel.build(documents);
-  return (path, k, exclude) => model.similar(path, k, exclude);
-}
-
-/** Counts calls on the way to the provider. */
-class CountingProvider implements EmbeddingProvider {
-  calls = 0;
-  constructor(private readonly inner: EmbeddingProvider) {}
-  get id(): string {
-    return this.inner.id;
-  }
-  get model(): string {
-    return this.inner.model;
-  }
-  get capabilities() {
-    return this.inner.capabilities;
-  }
-  embed(texts: string[]): Promise<EmbeddingResponse> {
-    this.calls++;
-    return this.inner.embed(texts);
-  }
+  return {
+    name: 'words',
+    similarity: (a, b) => model.similarity(a, b),
+    search: (path, k, exclude) => model.similar(path, k, exclude),
+    clustering: clusterWords(model),
+  };
 }
 
 /**
- * Tier 1 search over the fixture's embedding index. Replay (the default) only reads stored vectors:
- * the HTTP port refuses every request, so evals stay offline and free. `record` embeds whatever is
- * missing with a live Ollama model and stores it.
+ * Tier 1 over the fixture's embedding index. Replay (the default) only reads stored vectors, so
+ * evals stay offline and free; `record` embeds whatever is missing with a live Ollama model.
+ * Returns a notice instead when vectors are missing.
  */
-async function embeddingSearch(
-  snapshot: VaultSnapshot,
-  fixture: LoadedFixture,
-  options: EvalOptions,
-): Promise<{ search: Search | null; notice: string; calls: number; tokens: number }> {
-  const preset = findPreset('ollama');
-  if (!preset) throw new Error('ollama preset missing');
-  const http = options.record
-    ? new FetchHttp()
-    : {
-        request: () => Promise.reject(new ProviderError('network', 'no stored vectors')),
-      };
-  const provider = new CountingProvider(new OpenAICompatibleClient({ ...configFromPreset(preset, 'embeddings'), model: options.embedModel }, { http, secrets: new FakeSecrets() }));
-  const index = new EmbeddingIndex(provider, new VectorStore(new NodeStorage(options.indexDir), webCryptoHasher), systemClock);
+async function embeddingMethod(snapshot: VaultSnapshot, fixture: LoadedFixture, options: EvalOptions, meter: Meter): Promise<Method | string> {
+  const index = new EmbeddingIndex(evalEmbeddings(options.embedModel, options.record, meter), new VectorStore(new NodeStorage(options.indexDir), webCryptoHasher), systemClock);
   try {
-    const report = await index.update(snapshot.notes, (path) => fixture.vault.read(path));
-    const set = await index.vectors();
-    if (!set) throw new ProviderError('invalid-response', 'no vectors');
-    const { paths, matrix } = set.toMatrix();
-    const search = new DenseSearch({ paths, dims: set.dims, matrix });
-    return { search: (path, k, exclude) => search.similar(path, k, exclude), notice: '', calls: provider.calls, tokens: report.tokens };
+    await index.update(snapshot.notes, (path) => fixture.vault.read(path));
   } catch (error) {
     if (!(error instanceof ProviderError)) throw error;
     const hint = options.record ? `embedding failed: ${error.message}` : `no stored ${options.embedModel} vectors for every note; run with --record against a local Ollama`;
-    return { search: null, notice: `Tier 1 skipped for ${fixture.name}: ${hint}.`, calls: provider.calls, tokens: 0 };
+    return `Tier 1 skipped for ${fixture.name}: ${hint}.`;
   }
-}
-
-/** The top-k notes a note is not linked with yet: the link suggestion baseline (PLAN §7.5 step 1). */
-function suggestLinks(snapshot: VaultSnapshot, search: Search): Map<string, string[]> {
-  return new Map(
-    snapshot.notes.map((note) => {
-      const linked = new Set([...note.outLinks, ...note.inLinks]);
-      return [note.path, search(note.path, K, linked).map((n) => n.path)];
-    }),
-  );
-}
-
-/** Baseline duplicate detector: a note and its nearest neighbour when they are nearly identical. */
-function duplicatePairs(snapshot: VaultSnapshot, search: Search, threshold: number): [string, string][] {
-  const pairs = new Map<string, [string, string]>();
-  for (const note of snapshot.notes) {
-    const [nearest] = search(note.path, 1, new Set());
-    if (nearest && nearest.score >= threshold) pairs.set(pairKey(note.path, nearest.path), [note.path, nearest.path]);
-  }
-  return [...pairs.values()];
-}
-
-/**
- * Safety (PLAN §8.2): files every note where PARA says it belongs through the real apply path,
- * counts links that stopped resolving, then undoes the run and checks the vault is byte-identical.
- */
-async function applyAndUndo(snapshot: VaultSnapshot, contents: ReadonlyMap<string, string>, truth: GroundTruth): Promise<SafetyMetrics> {
-  const harness = applyHarness(Object.fromEntries(contents), snapshot.folders);
-  const { vault, deps, storage, clock } = harness;
-  const original = { contents: vault.contents(), folders: vault.folderPaths() };
-  const before = await vault.graph();
-
-  const para = presetCharter('para', truth.language);
-  const folderOf = (note: NoteRecord): string | null => {
-    const destination = truth.notes[note.path]?.destinations.para;
-    if (!destination) return null;
-    if (destination.id === DAILY) return para.system.daily?.path ?? null;
-    const root = para.destinations.find((d) => d.id === destination.id)?.path;
-    if (!root) return null;
-    return destination.subfolder ? `${root}/${destination.subfolder}` : root;
-  };
-  const moves: Operation[] = [];
-  const folders = new Set<string>();
-  for (const note of snapshot.notes) {
-    const folder = folderOf(note);
-    if (folder === null || folder === parentFolder(note.path)) continue;
-    for (const ancestor of [...ancestorFolders(folder), folder]) if (!snapshot.folders.includes(ancestor)) folders.add(ancestor);
-    moves.push(createOperation({ kind: 'move', from: note.path, to: `${folder}/${note.path.split('/').at(-1) ?? ''}` }, { status: 'accepted', precondition: { path: note.path, contentHash: note.contentHash } }));
-  }
-  const operations = [...[...folders].sort().map((path) => createOperation({ kind: 'createFolder', path }, { status: 'accepted' })), ...moves];
-  const plan = createPlan({ id: 'eval-safety', createdAt: new Date(clock.now()).toISOString(), operations });
-  const outcome = await new ApplyRunService({ ...deps, storage, clock }).run(plan, { pluginVersion: 'eval' });
-  const after = await vault.graph();
-  const report = outcome.kind === 'ran' ? outcome.report : null;
-  await new UndoService(deps).undoLast();
-  const undoExact = JSON.stringify(vault.contents()) === JSON.stringify(original.contents) && JSON.stringify(vault.folderPaths()) === JSON.stringify(original.folders);
+  const set = await index.vectors();
+  if (!set) return `Tier 1 skipped for ${fixture.name}: no vectors.`;
+  const { paths, matrix } = set.toMatrix();
+  const search = new DenseSearch({ paths, dims: set.dims, matrix });
   return {
-    operations: operations.length,
-    applied: report?.applied ?? 0,
-    failed: report?.failed ?? operations.length,
-    brokenLinks: Math.max(0, after.unresolvedCount - before.unresolvedCount) + Math.max(0, before.edges.length - after.edges.length),
-    undoExact,
+    name: 'embeddings',
+    similarity: (a, b) => search.similarity(a, b),
+    search: (path, k, exclude) => search.similar(path, k, exclude),
+    clustering: clusterEmbeddings(paths, matrix, set.dims),
+  };
+}
+
+async function labelQuality(
+  provider: Parameters<typeof labelClusters>[0],
+  truth: GroundTruth,
+  clustering: Clustering,
+  contents: ReadonlyMap<string, string>,
+  cards: ReadonlyMap<string, NoteCard>,
+  topics: ReadonlyMap<string, string>,
+): Promise<LabelQuality> {
+  const texts = new Map([...contents].map(([path, content]) => [path, preparedText(prepareNote(content, path.slice(path.lastIndexOf('/') + 1, -3)))]));
+  const keywords = new Map(clusterKeywords(clustering.clusters, texts).map((k) => [k.id, k.keywords]));
+  const report = await labelClusters(
+    provider,
+    truth.language,
+    clustering.clusters.map((cluster) => ({
+      id: cluster.id,
+      keywords: keywords.get(cluster.id) ?? [],
+      samples: cluster.members.flatMap((path) => cards.get(path) ?? []).slice(0, 5),
+    })),
+  );
+  if (report.failures > 0 && report.labels.every((label) => label.source === 'keywords')) throw new ProviderError('invalid-response', 'every label batch failed');
+  return {
+    clusters: clustering.clusters.length,
+    calls: report.calls,
+    failures: report.failures,
+    repaired: report.repaired,
+    examples: report.labels.map((label) => {
+      const members = clustering.clusters.find((cluster) => cluster.id === label.id)?.members ?? [];
+      const counts = new Map<string, number>();
+      for (const path of members) counts.set(topics.get(path) ?? '?', (counts.get(topics.get(path) ?? '?') ?? 0) + 1);
+      const [topic, count] = [...counts].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))[0] ?? ['?', 0];
+      return { label: label.label, topic, share: ratio(count, members.length) };
+    }),
   };
 }

@@ -27,7 +27,7 @@
     "analyze": "tsx eval/cli.ts analyze",
     "prepare": "husky",
     "eval": "tsx eval/cli.ts eval",
-    "eval:ci": "tsx eval/cli.ts eval --tier=1 --check"
+    "eval:ci": "tsx eval/cli.ts eval --tier=2 --check"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",

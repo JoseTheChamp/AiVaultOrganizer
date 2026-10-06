@@ -18,10 +18,22 @@ export const THRESHOLDS_FILE = 'eval/thresholds.json';
 /** Metrics pinned in CI. Floors unless listed as ceilings. */
 const PINNED = [
   ...['para', 'ace', 'jd', 'flat', 'topics'].flatMap((method) => [`classification.${method}.coverage`, `classification.${method}.precision`]),
-  ...['words', 'embeddings'].flatMap((method) => [`links.${method}.precision`, `links.${method}.heldOutRecall`, `similarity.${method}.precision`]),
+  ...['words', 'embeddings'].flatMap((method) => [
+    `links.${method}.precision`,
+    `links.${method}.heldOutRecall`,
+    `similarity.${method}.precision`,
+    `clusters.${method}.topic.ari`,
+    `duplicates.${method}.precision`,
+    `duplicates.${method}.recall`,
+  ]),
+  'links.verified.precision',
+  'links.verified.relevance',
+  'links.verified.heldOutRecall',
+  'stubs.precision',
+  'stubs.recall',
   'safety.undoExact',
 ];
-const CEILINGS = ['safety.brokenLinks', 'safety.failed'];
+const CEILINGS = ['safety.brokenLinks', 'safety.failed', 'labels.failures'];
 
 /** A metric by its dotted path; booleans count as 1 and 0. Undefined when the task did not run. */
 export function metricAt(result: EvalResult, path: string): number | undefined {

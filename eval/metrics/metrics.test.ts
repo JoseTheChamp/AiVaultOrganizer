@@ -101,8 +101,14 @@ describe('linkMetrics', () => {
       ['b', []],
     ]);
     const metrics = linkMetrics(suggestions, truth, 2);
-    expect(metrics).toMatchObject({ notes: 3, k: 2, heldOutRecall: 1, suggestions: 4 });
+    expect(metrics).toMatchObject({ notes: 3, k: 2, heldOutRecall: 1, suggestions: 4, relevance: 0.5 });
     expect(metrics.precision).toBeCloseTo((1 / 2 + 1 / 2 + 0 + 0) / 4, 10);
+  });
+
+  it('leaves excluded notes out as sources and from held-out recall', () => {
+    const daily = (path: string): boolean => truth.notes[path]?.entity === 'daily';
+    const metrics = linkMetrics(new Map([['a', ['b']], ['e', ['f']]]), { ...truth, heldOutLinks: [['a', 'c'], ['a', 'e']] }, 1, daily);
+    expect(metrics).toMatchObject({ notes: 1, precision: 1, relevance: 1, heldOutRecall: 0, suggestions: 1 });
   });
 });
 

@@ -6,9 +6,10 @@ import { runEval } from './run-eval';
 import { baselineThresholds, checkThresholds, metricAt, readThresholds } from './thresholds';
 
 const result = await runEval(await loadFixture(path.join(FIXTURES_DIR, 'en-small')), {
-  tier: 1,
+  tier: 2,
   record: false,
   embedModel: 'bge-m3',
+  chatModel: 'qwen3:8b',
   indexDir: path.join('eval', 'cassettes', 'index', 'en-small'),
 });
 

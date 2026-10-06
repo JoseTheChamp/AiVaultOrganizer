@@ -1,0 +1,1679 @@
+{
+  "version": 1,
+  "name": "llm-cs-small-qwen3-8b",
+  "interactions": [
+    {
+      "key": "d8891e3cd62f10014384205740cbb2198f614a5b754d16313472b7f01ffa845a",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You name groups of notes from a personal knowledge base. For each group, give a label of one to four words that its owner could use as a topic or folder name, and one sentence describing what the notes are about. Write both in Czech. Use sentence case and no emoji. Base them only on the keywords and sample notes. If a group mixes subjects, name what most notes share."
+            },
+            {
+              "role": "user",
+              "content": "## Group g1\nKeywords: prostoru, světlo, kniha, autor, budov, chodce, chůze, dávají\nSample notes:\n  Title: Kniha - Světlo v architektuře\n  Text: Denní světlo je nejlevnější stavební materiál. Severní světlo je rovnoměrné a hodí se do ateliérů. Stíny dávají prostoru hloubku.\n  Title: Kniha - Město pro chodce\n  Text: Autor tvrdí, že města mají být navržena v rychlosti chůze. Parter budov rozhoduje o tom, zda je ulice živá. Lavičky a stín udrží lidi ve veřejném prostoru.\n\n## Group g2\nKeywords: halu, novou, potvrdil, statik, stropy, unesou, vstupní, zátěž\nSample notes:\n  Title: Koncept diplomky\n  Tags: #Architektura\n  Text: Bývalá textilka má cenné litinové sloupy, které chci zachovat. Vedoucí doporučil zjednodušit vstupní halu. Statik potvrdil, že stropy unesou novou zátěž. Viz také Dějiny architektury.\n\n## Group g3\nKeywords: stěhování, bytu, elektřinu, energií, firma, hned, plyn, podpisu\nSample notes:\n  Title: Nábytek do nového bytu\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno.\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n  Title: Seznam věcí ke zabalení\n  Links to: Domácnost\n  Text: Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Kauce jsou dva měsíční nájmy. Musím nahlásit změnu adresy na úřadě a ve škole. Viz také Domácnost.\n  Title: 2026-01-31 Prohlídka bytu s majitelem\n  Links to: Stěhování do Brna\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Projekt: Stěhování do Brna\n\n## Group g4\nKeywords: hodinu, preventivní, ráno, prohlídce, bolavým, déle, deset, ložnici\nSample notes:\n  Title: Očkování\n  Tags: #zdravi\n  Text: Bez telefonu v ložnici spím o hodinu déle. Když jdu spát před jedenáctou, ráno je mnohem snazší. Deset minut protahování ráno pomáhá bolavým zádům. Přeočkování proti tetanu je za dva roky. Při preventivní prohlídce byly krevní testy v pořádku.\n  Title: Preventivní prohlídka\n  Tags: #zdravi\n  Text: Přeočkování proti tetanu je za dva roky. Fyzioterapeutka doporučila posílit střed těla. Deset minut protahování ráno pomáhá bolavým zádům. Když jdu spát před jedenáctou, ráno je mnohem snazší. Při preventivní prohlídce byly krevní testy v pořádku.\n  Title: Spánkový režim\n  Text: Fyzioterapeutka doporučila posílit střed těla. Přeočkování proti tetanu je za dva roky. Bez telefonu v ložnici spím o hodinu déle. Při dlouhém kreslení si každou hodinu udělám přestávku.\n  Title: Cviky na záda\n  Text: Při dlouhém kreslení si každou hodinu udělám přestávku. Deset minut protahování ráno pomáhá bolavým zádům. Bez telefonu v ložnici spím o hodinu déle.\n  Title: Zdraví\n  Tags: #zdravi\n  Headings: Poznámky\n  Links to: Preventivní prohlídka, Cviky na záda\n  Text: Péče o zdraví: spánek, prohlídky, pohyb a jídlo. Preventivní prohlídka Spánkový režim Cviky na záda Očkování\n\n## Group g5\nKeywords: pavilon, soutěže, miliony, omezen, dva, stavby, června, koncerty\nSample notes:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Patří k Soutěž na pavilon.\n  Title: Vizualizace pavilonu\n  Headings: Otevřené otázky\n  Text: Pavilon má sloužit jako stín a místo pro koncerty. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony. Porota ocení využití místních materiálů.\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n  Title: Dřevěná konstrukce\n  Text: Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Spoje budou ocelové a přiznané. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony.\n\n## Group g6\nKeywords: ateliéru, dispozice, hodnocení, portfolia, fasádě, osvětlené, schodiště, směřovaly\nSample notes:\n  Title: Hodnocení ateliéru\n  Text: Schodiště je uprostřed dispozice a osvětlené světlíkem. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Byty jsou orientované do klidného dvora. Proluka je široká jen jedenáct metrů. Patří k Ateliér zimní semestr.\n  Title: Bytový dům v proluce\n  Tags: #Architektura\n  Links to: Ateliér zimní semestr\n  Text: Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. Byty jsou orientované do klidného dvora. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Patří k Ateliér zimní semestr.\n  Title: Portfolio z ateliéru\n  Tags: #architektura\n  Text: Hodnocení bylo za B, výtky směřovaly k fasádě. Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. architektura\n  Title: Dispozice bytů\n  Tags: #architektura\n  Headings: Rozhodnutí\n  Links to: Ateliér zimní semestr\n  Text: Byty jsou orientované do klidného dvora. Hodnocení bylo za B, výtky směřovaly k fasádě. Projekt je uzavřený a odevzdaný. Výkresy z ateliéru jsem dala do portfolia. Schodiště je uprostřed dispozice a osvětlené světlíkem. Patří k Ateliér zimní semestr. architektura\n  Title: Ateliér zimní semestr\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Bytový dům v proluce, Dispozice bytů, Portfolio z ateliéru\n  Text: Ateliérový projekt bytového domu v proluce, uzavřený v lednu. Bytový dům v proluce Dispozice bytů Hodnocení ateliéru Portfolio z ateliéru architektura\n\nAnswer with JSON: {\"labels\": [{\"groupId\": \"...\", \"label\": \"...\", \"description\": \"...\"}]}, one entry for each group."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 660,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "cluster_label",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "groupId": {
+                          "type": "string",
+                          "enum": [
+                            "g1",
+                            "g2",
+                            "g3",
+                            "g4",
+                            "g5",
+                            "g6"
+                          ]
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 60
+                        },
+                        "description": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 300
+                        }
+                      },
+                      "required": [
+                        "groupId",
+                        "label",
+                        "description"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "labels"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-150\",\"object\":\"chat.completion\",\"created\":1791289738,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"labels\\\": [\\n    {\\n      \\\"groupId\\\": \\\"g1\\\",\\n      \\\"label\\\": \\\"Prostor a světlo\\\",\\n      \\\"description\\\": \\\"Poznámky o využití světla v architektuře a návrhu veřejných prostorů pro chodce.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g2\\\",\\n      \\\"label\\\": \\\"Stavba a zátěž\\\",\\n      \\\"description\\\": \\\"Záznamy o projektu nového prostoru, včetně zátěžových požadavků a architektonických doporučení.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g3\\\",\\n      \\\"label\\\": \\\"Stěhování do bytu\\\",\\n      \\\"description\\\": \\\"Poznámky o přípravě na stěhování, včetně energií, nákupu a organizace.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g4\\\",\\n      \\\"label\\\": \\\"Zdraví a spánok\\\",\\n      \\\"description\\\": \\\"Záznamy o zdravotních rutinách, spánkovém režimu a cvičeních pro záda.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g5\\\",\\n      \\\"label\\\": \\\"Pavilon a soutěž\\\",\\n      \\\"description\\\": \\\"Poznámky k návrhu pavilonu pro soutěž, včetně rozpočtu a konstrukce.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g6\\\",\\n      \\\"label\\\": \\\"Ateliér a portfolia\\\",\\n      \\\"description\\\": \\\"Záznamy o projektu ateliéru, hodnocení a výkresovém portfoliu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":3053,\"prompt_tokens_details\":{\"cached_tokens\":4},\"completion_tokens\":400,\"total_tokens\":3453}}\n"
+      }
+    },
+    {
+      "key": "739a8433b299b7d000cb360469dfcb0c6e187f5f372678870423b762ea63c221",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You name groups of notes from a personal knowledge base. For each group, give a label of one to four words that its owner could use as a topic or folder name, and one sentence describing what the notes are about. Write both in Czech. Use sentence case and no emoji. Base them only on the keywords and sample notes. If a group mixes subjects, name what most notes share."
+            },
+            {
+              "role": "user",
+              "content": "## Group g1\nKeywords: měsíčně, brigáda, stipendium, chodí, finance, jízdné, prospěchové, sleva\nSample notes:\n  Title: Spořicí účet\n  Links to: Finance\n  Text: Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Prospěchové stipendium chodí dvakrát za semestr. Patří k Finance.\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\n  Title: Měsíční rozpočet v2\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně.\n  Title: Brigáda v kavárně\n  Tags: #finance\n  Links to: Finance\n  Text: Měsíční rozpočet dělím na nájem, jídlo, školu a radosti. Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Největší výdaj jsou materiály na modely. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\n\n## Group g2\nKeywords: vaření, chleba, čočková, polévka, zeleniny, týden, vydrží, vývaru\nSample notes:\n  Title: Vaření na týden\n  Tags: #vareni\n  Links to: Vaření\n  Text: Čočková polévka vydrží v lednici tři dny. Těstoviny s rajčaty jsou hotové za patnáct minut. Zbytky zeleniny se hodí do vývaru. Patří k Vaření. vareni\n  Title: Čočková polévka\n  Tags: #vareni\n  Links to: Vaření\n  Text: Chleba peču s párou, aby měl křupavou kůrku. Zbytky zeleniny se hodí do vývaru. Čočková polévka vydrží v lednici tři dny. Patří k Vaření.\n  Title: Rychlé večeře\n  Tags: #vareni\n  Links to: Vaření\n  Text: Těstoviny s rajčaty jsou hotové za patnáct minut. Čočková polévka vydrží v lednici tři dny. Zbytky zeleniny se hodí do vývaru. Patří k Vaření.\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\n  Title: Domácí chleba\n  Headings: Podrobnosti\n  Text: Kvásek krmím dvakrát denně moukou a vodou. Zbytky zeleniny se hodí do vývaru. Chleba peču s párou, aby měl křupavou kůrku. Koření nejdřív opražím na oleji a pak přidám cibuli. V neděli uvařím rýži, fazole a pečenou zeleninu na celý týden. Patří k Vaření.\n\n## Group g3\nKeywords: diplomová, centrum, komunitní, dílny, přízemí, sál, potřebuje, práce\nSample notes:\n  Title: 2026-01-25 Konzultace diplomky\n  Text: Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Projekt: Diplomová práce\n  Title: Model v měřítku 1 ku 200\n  Headings: Podrobnosti\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Rešerše ukázala tři podobné přestavby v Evropě. Statik potvrdil, že stropy unesou novou zátěž. Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Patří k…\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše ukázala tři podobné přestavby v Evropě.…\n  Title: Rešerše textilních továren\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Potřebuji dodělat řezy a situaci do konce března. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Patří k Diplomová práce.\n\n## Group g4\nKeywords: bývá, divadla, haly, nejdražší, oken, oprava, trhy, velké\nSample notes:\n  Title: Článek - Přestavby továren na kulturní centra\n  Text: Velké haly se hodí pro divadla a trhy. Nejdražší bývá oprava střech a oken.\n\n## Group g5\nKeywords: gotické, klenby, funkcionalismus, architektury, barokní, brněnský, industriální, jednoduchých\nSample notes:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\n  Title: Industriální stavby\n  Links to: Dějiny architektury\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n  Title: Gotické klenby\n  Headings: Souvislosti\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Gotické klenby přenášejí zatížení do žeber a pilířů. Cihlové továrny se dnes často přestavují na kulturní centra.\n  Title: Funkcionalismus v Brně\n  Tags: #architektura\n  Links to: Dějiny architektury\n  Text: Pásová okna jsou typická pro meziválečnou architekturu. Industriální stavby devatenáctého století používaly litinu. Gotické klenby přenášejí zatížení do žeber a pilířů. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n  Title: Dějiny architektury\n  Tags: #Architektura\n  Headings: Poznámky\n  Links to: Gotické klenby, Funkcionalismus v Brně, Industriální stavby\n  Text: Výpisky z dějin architektury a inspirace pro projekty. Funkcionalismus v Brně Gotické klenby Baroko a světlo Industriální stavby\n\n## Group g6\nKeywords: krátký, spala, špatně, den, dopoledne, pracovala, zítra, navázat\nSample notes:\n  Title: 2026-01-09\n  Links to: Portfolio z ateliéru, Spořicí účet\n  Text: Špatně jsem spala, krátký den. Dopoledne jsem pracovala na Portfolio z ateliéru. Krátká poznámka k Spořicí účet.\n  Title: 2026-01-13\n  Links to: Spořicí účet\n  Text: Špatně jsem spala, krátký den. Zítra navázat na Spořicí účet. Dopoledne jsem pracovala na Brigáda v kavárně.\n  Title: 2026-01-17\n  Text: Krátká poznámka k Úvod do vizuálního programování. Špatně jsem spala, krátký den.\n  Title: 2026-01-15\n  Links to: Bytový dům v proluce\n  Text: Špatně jsem spala, krátký den. Celý den ve škole. Večer jsem si četla o Bytový dům v proluce.\n  Title: 2026-01-07\n  Links to: Rychlé večeře, Funkcionalismus v Brně\n  Text: Dopoledne jsem pracovala na Funkcionalismus v Brně. Zítra navázat na Rychlé večeře.\n\nAnswer with JSON: {\"labels\": [{\"groupId\": \"...\", \"label\": \"...\", \"description\": \"...\"}]}, one entry for each group."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 660,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "cluster_label",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "groupId": {
+                          "type": "string",
+                          "enum": [
+                            "g1",
+                            "g2",
+                            "g3",
+                            "g4",
+                            "g5",
+                            "g6"
+                          ]
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 60
+                        },
+                        "description": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 300
+                        }
+                      },
+                      "required": [
+                        "groupId",
+                        "label",
+                        "description"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "labels"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-650\",\"object\":\"chat.completion\",\"created\":1791289749,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"labels\\\": [\\n    {\\n      \\\"groupId\\\": \\\"g1\\\",\\n      \\\"label\\\": \\\"Finanční plán\\\",\\n      \\\"description\\\": \\\"Zaznamenávám výdaje a příjmy spojené s stipendiem, brigádou a denním rozpočtem.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g2\\\",\\n      \\\"label\\\": \\\"Recepty a vaření\\\",\\n      \\\"description\\\": \\\"Zaznamenávám recepty, návody na vaření a tipy na ušetření jídel.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g3\\\",\\n      \\\"label\\\": \\\"Diplomová práce\\\",\\n      \\\"description\\\": \\\"Zaznamenávám poznámky, plány a konzultace spojené s diplomovou prací.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g4\\\",\\n      \\\"label\\\": \\\"Přestavby a stavební práce\\\",\\n      \\\"description\\\": \\\"Zaznamenávám informace o přestavbách a stavebních pracích na kulturní centra.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g5\\\",\\n      \\\"label\\\": \\\"Dějiny architektury\\\",\\n      \\\"description\\\": \\\"Zaznamenávám poznámky o různých architektonických stylích a stavbách.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g6\\\",\\n      \\\"label\\\": \\\"Deník a poznámky\\\",\\n      \\\"description\\\": \\\"Zaznamenávám denní poznámky, plány a aktivity z různých oblastí života.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":3197,\"prompt_tokens_details\":{\"cached_tokens\":94},\"completion_tokens\":381,\"total_tokens\":3578}}\n"
+      }
+    },
+    {
+      "key": "559777c9715a60121ff0ac65af684f8d9047a29d8e8c9342c24e08a884db47c5",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You name groups of notes from a personal knowledge base. For each group, give a label of one to four words that its owner could use as a topic or folder name, and one sentence describing what the notes are about. Write both in Czech. Use sentence case and no emoji. Base them only on the keywords and sample notes. If a group mixes subjects, name what most notes share."
+            },
+            {
+              "role": "user",
+              "content": "## Group g1\nKeywords: nákupy, domácnost, společné, spolubydlení, aplikaci, kape, kohoutek, kuchyni\nSample notes:\n  Title: Pravidla spolubydlení\n  Links to: Domácnost\n  Text: Návštěvy přes noc hlásíme předem. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Kohoutek v kuchyni kape, napíšu majiteli. Společné nákupy platíme přes sdílenou aplikaci. Patří k Domácnost.\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n  Title: Společné nákupy\n  Links to: Stěhování do Brna\n  Text: Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Návštěvy přes noc hlásíme předem. Viz také Stěhování do Brna.\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\n  Title: Opravy v bytě\n  Links to: Domácnost\n  Text: Odpadky se třídí na plast, papír a sklo. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Úklid koupelny se střídá po týdnu. Patří k Domácnost.\n\n## Group g2\nKeywords: parametrická, úkol, zápočtový, programování, fasáda, vizuální, algoritmus, cvičení\nSample notes:\n  Title: Zápočtový úkol\n  Headings: Souvislosti\n  Text: Vizuální programování skládá algoritmus z propojených bloků. Výstup se dá poslat rovnou do laserové řezačky. Parametrická fasáda mění velikost otvorů podle oslunění. Cvičení jsou každou středu odpoledne. Zápočtový úkol je generovaný pavilon z lamel.\n  Title: Parametrická fasáda\n  Tags: #architektura\n  Text: Cvičení jsou každou středu odpoledne. Parametrická fasáda mění velikost otvorů podle oslunění. Zápočtový úkol je generovaný pavilon z lamel. Vizuální programování skládá algoritmus z propojených bloků.\n  Title: Úvod do vizuálního programování\n  Tags: #Architektura\n  Headings: Podrobnosti\n  Links to: Kurz parametrického navrhování\n  Text: Atraktory ovlivňují parametry podle vzdálenosti od bodu. Výstup se dá poslat rovnou do laserové řezačky. Cvičení jsou každou středu odpoledne. Optimalizace tvaru hledá nejlehčí konstrukci pro dané zatížení. Zápočtový úkol je generovaný pavilon z lamel. Patří k Kurz…\n  Title: Kurz parametrického navrhování\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Parametrická fasáda, Úvod do vizuálního programování\n  Text: Výpisky z volitelného kurzu parametrického navrhování. Úvod do vizuálního programování Parametrická fasáda Optimalizace tvaru Zápočtový úkol\n  Title: Optimalizace tvaru\n  Text: Vizuální programování skládá algoritmus z…\n\n## Group g3\nKeywords: soutěže, pavilon, týmem, zadání, konzultace, vizualizace\nSample notes:\n  Title: 2026-02-03 Konzultace soutěže s týmem\n  Links to: Soutěž na pavilon\n  Text: Spoje budou ocelové a přiznané. Porota ocení využití místních materiálů. Projekt: Soutěž na pavilon\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\n  Title: Zadání soutěže koncept\n  Text: Střecha ve tvaru vlny propouští rozptýlené světlo. Vizualizace udělám ve večerním světle s lidmi.\n\n## Group g4\nKeywords: petr, práce, diplomová, bývají, čtvrtek, dvořák, obědě, března\nSample notes:\n  Title: 2026-01-28 Prezentace konceptu v ateliéru\n  Links to: Diplomová práce\n  Text: Bývalá textilka má cenné litinové sloupy, které chci zachovat. Potřebuji dodělat řezy a situaci do konce března. Projekt: Diplomová práce\n  Title: Petr Dvořák\n  Links to: Diplomová práce\n  Text: Petr je vedoucí mé diplomové práce. Konzultace bývají ve čtvrtek po obědě. Viz také Diplomová práce.\n\n## Group g5\nKeywords: fotografie, expozice, interiéry, svislé, fotky, kresby, linie, modrá\nSample notes:\n  Title: Úprava fotek\n  Tags: #fotografie\n  Links to: Fotografie\n  Text: Fotky upravuji v dávkách: výběr, expozice a pak barvy. Interiéry fotím ze stativu a s delší expozicí. Svislé linie srovnám posunem objektivu nebo v úpravách. Soubory RAW zachovají víc kresby ve stínech. V modré hodince svítí okna a obloha je ještě modrá. Patří k Fotografie.…\n  Title: Svislé linie\n  Text: Soubory RAW zachovají víc kresby ve stínech. Svislé linie srovnám posunem objektivu nebo v úpravách. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Širokoúhlý objektiv zkresluje okraje snímku.\n  Title: Modrá hodinka\n  Text: V modré hodince svítí okna a obloha je ještě modrá. Polarizační filtr potlačí odlesky na skle. Interiéry fotím ze stativu a s delší expozicí. Soubory RAW zachovají víc kresby ve stínech. Širokoúhlý objektiv zkresluje okraje snímku.\n  Title: Fotografování interiérů\n  Links to: Fotografie\n  Text: Polarizační filtr potlačí odlesky na skle. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Soubory RAW zachovají víc kresby ve stínech. Patří k Fotografie.\n  Title: Fotografie\n  Tags: #fotografie\n  Headings: Poznámky\n  Links to: Svislé linie, Úprava fotek, Fotografování interiérů\n  Text: Jak fotit architekturu a upravovat fotky. Fotografování interiérů Svislé linie Úprava fotek Modrá hodinka\n\nAnswer with JSON: {\"labels\": [{\"groupId\": \"...\", \"label\": \"...\", \"description\": \"...\"}]}, one entry for each group."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 570,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "cluster_label",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "groupId": {
+                          "type": "string",
+                          "enum": [
+                            "g1",
+                            "g2",
+                            "g3",
+                            "g4",
+                            "g5"
+                          ]
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 60
+                        },
+                        "description": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 300
+                        }
+                      },
+                      "required": [
+                        "groupId",
+                        "label",
+                        "description"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "labels"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-164\",\"object\":\"chat.completion\",\"created\":1791289758,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"labels\\\": [\\n    {\\n      \\\"groupId\\\": \\\"g1\\\",\\n      \\\"label\\\": \\\"Domácnost a spolubydlení\\\",\\n      \\\"description\\\": \\\"Poznámky o správě domácnosti, společných nákupech a pravidlech spolubydlení.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g2\\\",\\n      \\\"label\\\": \\\"Parametrické navrhování\\\",\\n      \\\"description\\\": \\\"Zápisy o kurzu parametrického navrhování, vizuálním programování a zápočtových úkolech.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g3\\\",\\n      \\\"label\\\": \\\"Soutěž na pavilon\\\",\\n      \\\"description\\\": \\\"Zadání a poznámky k soutěži na dřevěný pavilon, včetně vizualizací a konzultací.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g4\\\",\\n      \\\"label\\\": \\\"Diplomová práce\\\",\\n      \\\"description\\\": \\\"Poznámky k diplomové práci, včetně konzultací s vedoucím a plánování.\\\"\\n    },\\n    {\\n      \\\"groupId\\\": \\\"g5\\\",\\n      \\\"label\\\": \\\"Fotografie a úpravy\\\",\\n      \\\"description\\\": \\\"Zápisky o fotografování interiérů, úpravách fotek a technikách výběru expozice.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2451,\"prompt_tokens_details\":{\"cached_tokens\":94},\"completion_tokens\":343,\"total_tokens\":2794}}\n"
+      }
+    },
+    {
+      "key": "a2a06d294693f81ea9ff1e7e96a8f4c883505d7d17f12069cc22cc8a167a4dc3",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Diplomová práce\n  Tags: #Architektura\n  Headings: Poznámky\n  Links to: Model v měřítku 1 ku 200, 2026-01-28 Prezentace konceptu v ateliéru, Konzultace s vedoucím, Harmonogram odevzdání, Rešerše textilních továren\n  Text: Diplomová práce o přestavbě bývalé textilky na komunitní centrum, odevzdání v květnu. Rešerše textilních továren Koncept diplomky Konzultace s vedoucím Harmonogram odevzdání Model v měřítku 1 ku 200 2026-01-25 Konzultace diplomky…\nNote B:\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\n\n## Pair p2\nNote A:\n  Title: Model v měřítku 1 ku 200\n  Headings: Podrobnosti\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Rešerše ukázala tři podobné přestavby v Evropě. Statik potvrdil, že stropy unesou novou zátěž. Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny,…\nNote B:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n\n## Pair p3\nNote A:\n  Title: Model v měřítku 1 ku 200\n  Headings: Podrobnosti\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Rešerše ukázala tři podobné přestavby v Evropě. Statik potvrdil, že stropy unesou novou zátěž. Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny,…\nNote B:\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše…\n\n## Pair p4\nNote A:\n  Title: Model v měřítku 1 ku 200\n  Headings: Podrobnosti\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Rešerše ukázala tři podobné přestavby v Evropě. Statik potvrdil, že stropy unesou novou zátěž. Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny,…\nNote B:\n  Title: Rešerše textilních továren\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Potřebuji dodělat řezy a situaci do konce března. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Patří k Diplomová práce.\n\n## Pair p5\nNote A:\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\nNote B:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\n\n## Pair p6\nNote A:\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\nNote B:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\n\n## Pair p7\nNote A:\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\nNote B:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n\n## Pair p8\nNote A:\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\nNote B:\n  Title: Seznam věcí ke zabalení\n  Links to: Domácnost\n  Text: Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Kauce jsou dva měsíční nájmy. Musím nahlásit změnu adresy na úřadě a ve škole. Viz…\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-69\",\"object\":\"chat.completion\",\"created\":1791289773,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají diplomové práce a soutěže, jsou součástí stejného projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty jsou součástí diplomové práce a popisují konkrétní aspekty projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají diplomové práce a obsahují podobné informace o projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty jsou součástí diplomové práce a popisují konkrétní aspekty projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty jsou součástí soutěže na pavilon a popisují konkrétní aspekty návrhu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty jsou součástí soutěže na pavilon a popisují konkrétní aspekty návrhu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Texty se týkají různých projektů, nejsou spojeny konkrétním tématem.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají přestavby bytu a obsahují podobné informace o nákupu a prodeji.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2713,\"prompt_tokens_details\":{\"cached_tokens\":4},\"completion_tokens\":516,\"total_tokens\":3229}}\n"
+      }
+    },
+    {
+      "key": "38c8ed830227c4f6005165dc272f2fb416301642afcea6fbd26ecc6cd729dd76",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\nNote B:\n  Title: Nábytek do nového bytu\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno.\n\n## Pair p2\nNote A:\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\nNote B:\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n\n## Pair p3\nNote A:\n  Title: Seznam věcí ke zabalení\n  Links to: Domácnost\n  Text: Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Kauce jsou dva měsíční nájmy. Musím nahlásit změnu adresy na úřadě a ve škole. Viz…\nNote B:\n  Title: Nábytek do nového bytu\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno.\n\n## Pair p4\nNote A:\n  Title: Seznam věcí ke zabalení\n  Links to: Domácnost\n  Text: Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Kauce jsou dva měsíční nájmy. Musím nahlásit změnu adresy na úřadě a ve škole. Viz…\nNote B:\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n\n## Pair p5\nNote A:\n  Title: Článek - Jak vyjednat nájem\n  Text: Ptejte se na výši záloh za energie. Domluvte si předávací protokol s fotkami.\nNote B:\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n\n## Pair p6\nNote A:\n  Title: Článek - Jak vyjednat nájem\n  Text: Ptejte se na výši záloh za energie. Domluvte si předávací protokol s fotkami.\nNote B:\n  Title: Seznam věcí ke zabalení\n  Links to: Domácnost\n  Text: Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Kauce jsou dva měsíční nájmy. Musím nahlásit změnu adresy na úřadě a ve škole. Viz…\n\n## Pair p7\nNote A:\n  Title: Článek - Jak vyjednat nájem\n  Text: Ptejte se na výši záloh za energie. Domluvte si předávací protokol s fotkami.\nNote B:\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\n\n## Pair p8\nNote A:\n  Title: Finance\n  Tags: #finance\n  Headings: Poznámky\n  Links to: Měsíční rozpočet, Spořicí účet, Brigáda v kavárně\n  Text: Peníze: rozpočet, stipendium, brigády a spoření. Měsíční rozpočet Stipendium Brigáda v kavárně Spořicí účet\nNote B:\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-217\",\"object\":\"chat.completion\",\"created\":1791289788,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a energie, sdílejí podrobnosti o bytu a stěhovací firmě.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování, sdílejí podrobnosti o stěhovací firmě a změně adresy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají přepisu energií a stěhování, sdílejí podrobnosti o bytu a změně adresy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a přepisu energií, sdílejí podrobnosti o změně adresy a stěhovací firmě.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají nájmu a energie, sdílejí informace o přepisu energií a předávacím protokolu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a přepisu energií, sdílejí podrobnosti o bytu a změně adresy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají přepisu energií a nájmu, sdílejí podrobnosti o bytu a nájmu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají financí, sdílejí informace o stipendiu, brigádě a rozpočtu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2048,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":593,\"total_tokens\":2641}}\n"
+      }
+    },
+    {
+      "key": "4a6f8c338815dfa3f69f6bb1c52b6cd2c3791d27328e80281b4ca7ad8a11fed1",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Finance\n  Tags: #finance\n  Headings: Poznámky\n  Links to: Měsíční rozpočet, Spořicí účet, Brigáda v kavárně\n  Text: Peníze: rozpočet, stipendium, brigády a spoření. Měsíční rozpočet Stipendium Brigáda v kavárně Spořicí účet\nNote B:\n  Title: Měsíční rozpočet v2\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně.\n\n## Pair p2\nNote A:\n  Title: Finance\n  Tags: #finance\n  Headings: Poznámky\n  Links to: Měsíční rozpočet, Spořicí účet, Brigáda v kavárně\n  Text: Peníze: rozpočet, stipendium, brigády a spoření. Měsíční rozpočet Stipendium Brigáda v kavárně Spořicí účet\nNote B:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\n\n## Pair p3\nNote A:\n  Title: Článek - Jak fotit interiéry mobilem\n  Links to: Fotografie\n  Text: Telefon držte ve výšce hrudníku a rovně. Zapněte mřížku, aby svislice zůstaly svislé. Viz také Fotografie.\nNote B:\n  Title: Úprava fotek\n  Tags: #fotografie\n  Links to: Fotografie\n  Text: Fotky upravuji v dávkách: výběr, expozice a pak barvy. Interiéry fotím ze stativu a s delší expozicí. Svislé linie srovnám posunem objektivu nebo v úpravách. Soubory RAW zachovají víc kresby ve stínech. V modré hodince svítí okna a obloha…\n\n## Pair p4\nNote A:\n  Title: Článek - Jak fotit interiéry mobilem\n  Links to: Fotografie\n  Text: Telefon držte ve výšce hrudníku a rovně. Zapněte mřížku, aby svislice zůstaly svislé. Viz také Fotografie.\nNote B:\n  Title: Svislé linie\n  Text: Soubory RAW zachovají víc kresby ve stínech. Svislé linie srovnám posunem objektivu nebo v úpravách. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Širokoúhlý objektiv zkresluje okraje snímku.\n\n## Pair p5\nNote A:\n  Title: Článek - Jak fotit interiéry mobilem\n  Links to: Fotografie\n  Text: Telefon držte ve výšce hrudníku a rovně. Zapněte mřížku, aby svislice zůstaly svislé. Viz také Fotografie.\nNote B:\n  Title: Modrá hodinka\n  Text: V modré hodince svítí okna a obloha je ještě modrá. Polarizační filtr potlačí odlesky na skle. Interiéry fotím ze stativu a s delší expozicí. Soubory RAW zachovají víc kresby ve stínech. Širokoúhlý objektiv zkresluje okraje snímku.\n\n## Pair p6\nNote A:\n  Title: Rychlé večeře\n  Tags: #vareni\n  Links to: Vaření\n  Text: Těstoviny s rajčaty jsou hotové za patnáct minut. Čočková polévka vydrží v lednici tři dny. Zbytky zeleniny se hodí do vývaru. Patří k Vaření.\nNote B:\n  Title: Vaření na týden\n  Tags: #vareni\n  Links to: Vaření\n  Text: Čočková polévka vydrží v lednici tři dny. Těstoviny s rajčaty jsou hotové za patnáct minut. Zbytky zeleniny se hodí do vývaru. Patří k Vaření. vareni\n\n## Pair p7\nNote A:\n  Title: Rychlé večeře\n  Tags: #vareni\n  Links to: Vaření\n  Text: Těstoviny s rajčaty jsou hotové za patnáct minut. Čočková polévka vydrží v lednici tři dny. Zbytky zeleniny se hodí do vývaru. Patří k Vaření.\nNote B:\n  Title: Čočková polévka\n  Tags: #vareni\n  Links to: Vaření\n  Text: Chleba peču s párou, aby měl křupavou kůrku. Zbytky zeleniny se hodí do vývaru. Čočková polévka vydrží v lednici tři dny. Patří k Vaření.\n\n## Pair p8\nNote A:\n  Title: Rychlé večeře\n  Tags: #vareni\n  Links to: Vaření\n  Text: Těstoviny s rajčaty jsou hotové za patnáct minut. Čočková polévka vydrží v lednici tři dny. Zbytky zeleniny se hodí do vývaru. Patří k Vaření.\nNote B:\n  Title: Článek - Levné vaření pro studenty\n  Text: Luštěniny jsou levným zdrojem bílkovin. Vařte ve větším a zamrazte porce. Viz také Vaření.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-215\",\"object\":\"chat.completion\",\"created\":1791289800,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Měsíční rozpočet je součástí finance, vysvětluje detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Domácnost a Finance jsou široké témata, nejsou spojeny konkrétně.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají fotografií interiérů a úpravou fotek.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Svislé linie jsou součástí fotografií interiérů a úprav.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Modrá hodinka je součástí fotografií interiérů a úprav.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají vařením a konkrétními recepty.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Čočková polévka je součástí vaření a rychlých večerí.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Levné vaření je součástí rychlých večerí a výživových nápojů.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1778,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":467,\"total_tokens\":2245}}\n"
+      }
+    },
+    {
+      "key": "6a0c34a243e1241ce1e61a545c66d5f36c24d30ed0b3d3c8f5dbfb9d6ab47398",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Ateliér zimní semestr\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Bytový dům v proluce, Dispozice bytů, Portfolio z ateliéru\n  Text: Ateliérový projekt bytového domu v proluce, uzavřený v lednu. Bytový dům v proluce Dispozice bytů Hodnocení ateliéru Portfolio z ateliéru architektura\nNote B:\n  Title: Hodnocení ateliéru\n  Text: Schodiště je uprostřed dispozice a osvětlené světlíkem. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Byty jsou orientované do klidného dvora. Proluka je široká jen jedenáct metrů. Patří k…\n\n## Pair p2\nNote A:\n  Title: Ateliér zimní semestr\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Bytový dům v proluce, Dispozice bytů, Portfolio z ateliéru\n  Text: Ateliérový projekt bytového domu v proluce, uzavřený v lednu. Bytový dům v proluce Dispozice bytů Hodnocení ateliéru Portfolio z ateliéru architektura\nNote B:\n  Title: Soutěž na pavilon\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Dřevěná konstrukce, 2026-02-03 Konzultace soutěže s týmem, Vizualizace pavilonu, Zadání soutěže\n  Text: Studentská soutěž na dřevěný pavilon v městském parku, uzávěrka v červnu. Zadání soutěže Skici pavilonu Dřevěná konstrukce Vizualizace pavilonu Text k soutěžnímu návrhu 2026-02-03 Konzultace soutěže s týmem\n\n## Pair p3\nNote A:\n  Title: Bytový dům v proluce\n  Tags: #Architektura\n  Links to: Ateliér zimní semestr\n  Text: Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. Byty jsou orientované do klidného dvora. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Patří k…\nNote B:\n  Title: Portfolio z ateliéru\n  Tags: #architektura\n  Text: Hodnocení bylo za B, výtky směřovaly k fasádě. Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. architektura\n\n## Pair p4\nNote A:\n  Title: Bytový dům v proluce\n  Tags: #Architektura\n  Links to: Ateliér zimní semestr\n  Text: Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. Byty jsou orientované do klidného dvora. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Patří k…\nNote B:\n  Title: Hodnocení ateliéru\n  Text: Schodiště je uprostřed dispozice a osvětlené světlíkem. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Byty jsou orientované do klidného dvora. Proluka je široká jen jedenáct metrů. Patří k…\n\n## Pair p5\nNote A:\n  Title: Bytový dům v proluce\n  Tags: #Architektura\n  Links to: Ateliér zimní semestr\n  Text: Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. Byty jsou orientované do klidného dvora. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Patří k…\nNote B:\n  Title: Dispozice bytů\n  Tags: #architektura\n  Headings: Rozhodnutí\n  Links to: Ateliér zimní semestr\n  Text: Byty jsou orientované do klidného dvora. Hodnocení bylo za B, výtky směřovaly k fasádě. Projekt je uzavřený a odevzdaný. Výkresy z ateliéru jsem dala do portfolia. Schodiště je uprostřed dispozice a osvětlené světlíkem. Patří k Ateliér…\n\n## Pair p6\nNote A:\n  Title: Dispozice bytů\n  Tags: #architektura\n  Headings: Rozhodnutí\n  Links to: Ateliér zimní semestr\n  Text: Byty jsou orientované do klidného dvora. Hodnocení bylo za B, výtky směřovaly k fasádě. Projekt je uzavřený a odevzdaný. Výkresy z ateliéru jsem dala do portfolia. Schodiště je uprostřed dispozice a osvětlené světlíkem. Patří k Ateliér…\nNote B:\n  Title: Hodnocení ateliéru\n  Text: Schodiště je uprostřed dispozice a osvětlené světlíkem. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Byty jsou orientované do klidného dvora. Proluka je široká jen jedenáct metrů. Patří k…\n\n## Pair p7\nNote A:\n  Title: Dispozice bytů\n  Tags: #architektura\n  Headings: Rozhodnutí\n  Links to: Ateliér zimní semestr\n  Text: Byty jsou orientované do klidného dvora. Hodnocení bylo za B, výtky směřovaly k fasádě. Projekt je uzavřený a odevzdaný. Výkresy z ateliéru jsem dala do portfolia. Schodiště je uprostřed dispozice a osvětlené světlíkem. Patří k Ateliér…\nNote B:\n  Title: Portfolio z ateliéru\n  Tags: #architektura\n  Text: Hodnocení bylo za B, výtky směřovaly k fasádě. Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. architektura\n\n## Pair p8\nNote A:\n  Title: Portfolio z ateliéru\n  Tags: #architektura\n  Text: Hodnocení bylo za B, výtky směřovaly k fasádě. Proluka je široká jen jedenáct metrů. Schodiště je uprostřed dispozice a osvětlené světlíkem. architektura\nNote B:\n  Title: Hodnocení ateliéru\n  Text: Schodiště je uprostřed dispozice a osvětlené světlíkem. Výkresy z ateliéru jsem dala do portfolia. Hodnocení bylo za B, výtky směřovaly k fasádě. Byty jsou orientované do klidného dvora. Proluka je široká jen jedenáct metrů. Patří k…\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-83\",\"object\":\"chat.completion\",\"created\":1791289812,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Projekty jsou různé a nemají společné detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají jednoho projektu a sdílejí detaily.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2355,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":446,\"total_tokens\":2801}}\n"
+      }
+    },
+    {
+      "key": "68316b013c0c047837eddce6046fc9fabfe43e01cc3725588ef0e419be47752b",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\nNote B:\n  Title: Gotické klenby\n  Headings: Souvislosti\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Gotické klenby přenášejí zatížení do žeber a pilířů. Cihlové továrny se dnes často přestavují na kulturní centra.\n\n## Pair p2\nNote A:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\nNote B:\n  Title: Industriální stavby\n  Links to: Dějiny architektury\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n\n## Pair p3\nNote A:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\nNote B:\n  Title: Funkcionalismus v Brně\n  Tags: #architektura\n  Links to: Dějiny architektury\n  Text: Pásová okna jsou typická pro meziválečnou architekturu. Industriální stavby devatenáctého století používaly litinu. Gotické klenby přenášejí zatížení do žeber a pilířů. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny…\n\n## Pair p4\nNote A:\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše…\nNote B:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n\n## Pair p5\nNote A:\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše…\nNote B:\n  Title: Rešerše textilních továren\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Potřebuji dodělat řezy a situaci do konce března. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Patří k Diplomová práce.\n\n## Pair p6\nNote A:\n  Title: Domácí chleba\n  Headings: Podrobnosti\n  Text: Kvásek krmím dvakrát denně moukou a vodou. Zbytky zeleniny se hodí do vývaru. Chleba peču s párou, aby měl křupavou kůrku. Koření nejdřív opražím na oleji a pak přidám cibuli. V neděli uvařím rýži, fazole a pečenou zeleninu na celý týden.…\nNote B:\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\n\n## Pair p7\nNote A:\n  Title: Domácí chleba\n  Headings: Podrobnosti\n  Text: Kvásek krmím dvakrát denně moukou a vodou. Zbytky zeleniny se hodí do vývaru. Chleba peču s párou, aby měl křupavou kůrku. Koření nejdřív opražím na oleji a pak přidám cibuli. V neděli uvařím rýži, fazole a pečenou zeleninu na celý týden.…\nNote B:\n  Title: Čočková polévka\n  Tags: #vareni\n  Links to: Vaření\n  Text: Chleba peču s párou, aby měl křupavou kůrku. Zbytky zeleniny se hodí do vývaru. Čočková polévka vydrží v lednici tři dny. Patří k Vaření.\n\n## Pair p8\nNote A:\n  Title: Domácí chleba\n  Headings: Podrobnosti\n  Text: Kvásek krmím dvakrát denně moukou a vodou. Zbytky zeleniny se hodí do vývaru. Chleba peču s párou, aby měl křupavou kůrku. Koření nejdřív opražím na oleji a pak přidám cibuli. V neděli uvařím rýži, fazole a pečenou zeleninu na celý týden.…\nNote B:\n  Title: Vaření na týden\n  Tags: #vareni\n  Links to: Vaření\n  Text: Čočková polévka vydrží v lednici tři dny. Těstoviny s rajčaty jsou hotové za patnáct minut. Zbytky zeleniny se hodí do vývaru. Patří k Vaření. vareni\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-794\",\"object\":\"chat.completion\",\"created\":1791289825,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají architekturou a společně popisují konkrétní typy stavby.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty obsahují informace o Brněnském funkcionalismu a souvislostech s architekturou.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují stejné konkrétní údaje o architektuře a stavbách.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stejného projektu a obsahují podobné detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stejného projektu a obsahují podobné detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají vaření a obsahují společné recepty a metody.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají vaření a obsahují společné recepty a metody.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají vaření a obsahují společné recepty a metody.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2252,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":495,\"total_tokens\":2747}}\n"
+      }
+    },
+    {
+      "key": "86901c167efab7d11ed90dc8b078f5c7aed5119d4fee5147a5086cd54e31c579",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\nNote B:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n\n## Pair p2\nNote A:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\nNote B:\n  Title: Stěhování do Brna\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Přepis energií, Seznam věcí ke zabalení, 2026-01-31 Prohlídka bytu s majitelem, Nábytek do nového bytu, Prohlídky bytů, Rozpočet na stěhování\n  Text: Najít byt v Brně a přestěhovat se do konce srpna. Prohlídky bytů Rozpočet na stěhování Seznam věcí ke zabalení Přepis energií Nábytek do nového bytu 2026-01-31 Prohlídka bytu s majitelem\n\n## Pair p3\nNote A:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\nNote B:\n  Title: Společné nákupy\n  Links to: Stěhování do Brna\n  Text: Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Návštěvy přes noc hlásíme předem. Viz také Stěhování do Brna.\n\n## Pair p4\nNote A:\n  Title: Kurz parametrického navrhování\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Parametrická fasáda, Úvod do vizuálního programování\n  Text: Výpisky z volitelného kurzu parametrického navrhování. Úvod do vizuálního programování Parametrická fasáda Optimalizace tvaru Zápočtový úkol\nNote B:\n  Title: Zápočtový úkol\n  Headings: Souvislosti\n  Text: Vizuální programování skládá algoritmus z propojených bloků. Výstup se dá poslat rovnou do laserové řezačky. Parametrická fasáda mění velikost otvorů podle oslunění. Cvičení jsou každou středu odpoledne. Zápočtový úkol je generovaný…\n\n## Pair p5\nNote A:\n  Title: Kurz parametrického navrhování\n  Tags: #architektura\n  Headings: Poznámky\n  Links to: Parametrická fasáda, Úvod do vizuálního programování\n  Text: Výpisky z volitelného kurzu parametrického navrhování. Úvod do vizuálního programování Parametrická fasáda Optimalizace tvaru Zápočtový úkol\nNote B:\n  Title: Optimalizace tvaru\n  Text: Vizuální programování skládá algoritmus z…\n\n## Pair p6\nNote A:\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\nNote B:\n  Title: Měsíční rozpočet v2\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně.\n\n## Pair p7\nNote A:\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\nNote B:\n  Title: Spořicí účet\n  Links to: Finance\n  Text: Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Prospěchové stipendium chodí dvakrát za semestr. Patří k Finance.\n\n## Pair p8\nNote A:\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\nNote B:\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-174\",\"object\":\"chat.completion\",\"created\":1791289836,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Rozpis úklidu je součástí Domácnosti.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Stěhování do Brna není součástí Domácnosti.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Společné nákupy jsou součástí Domácnosti.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Zápočtový úkol je součástí Kurzu parametrického navrhování.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Optimalizace tvaru je součástí Kurzu parametrického navrhování.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Měsíční rozpočet v2 je součástí Měsíčního rozpočtu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Spořicí účet je součástí Finance.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Stipendium je součástí Měsíčního rozpočtu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1957,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":426,\"total_tokens\":2383}}\n"
+      }
+    },
+    {
+      "key": "6d6a45b60b13eda4f8d693aa8aa584223408c336a67978ed39cfcadbb7724080",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Opravy v bytě\n  Links to: Domácnost\n  Text: Odpadky se třídí na plast, papír a sklo. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Úklid koupelny se střídá po týdnu. Patří k Domácnost.\nNote B:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n\n## Pair p2\nNote A:\n  Title: Opravy v bytě\n  Links to: Domácnost\n  Text: Odpadky se třídí na plast, papír a sklo. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Úklid koupelny se střídá po týdnu. Patří k Domácnost.\nNote B:\n  Title: Pravidla spolubydlení\n  Links to: Domácnost\n  Text: Návštěvy přes noc hlásíme předem. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Kohoutek v kuchyni kape, napíšu majiteli. Společné nákupy platíme přes sdílenou aplikaci. Patří k Domácnost.\n\n## Pair p3\nNote A:\n  Title: Opravy v bytě\n  Links to: Domácnost\n  Text: Odpadky se třídí na plast, papír a sklo. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Úklid koupelny se střídá po týdnu. Patří k Domácnost.\nNote B:\n  Title: Společné nákupy\n  Links to: Stěhování do Brna\n  Text: Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Návštěvy přes noc hlásíme předem. Viz také Stěhování do Brna.\n\n## Pair p4\nNote A:\n  Title: Společné nákupy\n  Links to: Stěhování do Brna\n  Text: Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Návštěvy přes noc hlásíme předem. Viz také Stěhování do Brna.\nNote B:\n  Title: Pravidla spolubydlení\n  Links to: Domácnost\n  Text: Návštěvy přes noc hlásíme předem. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Kohoutek v kuchyni kape, napíšu majiteli. Společné nákupy platíme přes sdílenou aplikaci. Patří k Domácnost.\n\n## Pair p5\nNote A:\n  Title: Společné nákupy\n  Links to: Stěhování do Brna\n  Text: Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Návštěvy přes noc hlásíme předem. Viz také Stěhování do Brna.\nNote B:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n\n## Pair p6\nNote A:\n  Title: Spořicí účet\n  Links to: Finance\n  Text: Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Prospěchové stipendium chodí dvakrát za semestr. Patří k Finance.\nNote B:\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n\n## Pair p7\nNote A:\n  Title: Spořicí účet\n  Links to: Finance\n  Text: Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Prospěchové stipendium chodí dvakrát za semestr. Patří k Finance.\nNote B:\n  Title: Brigáda v kavárně\n  Tags: #finance\n  Links to: Finance\n  Text: Měsíční rozpočet dělím na nájem, jídlo, školu a radosti. Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Největší výdaj jsou materiály na modely. Účtenky za materiál si schovávám kvůli…\n\n## Pair p8\nNote A:\n  Title: Článek - Levné vaření pro studenty\n  Text: Luštěniny jsou levným zdrojem bílkovin. Vařte ve větším a zamrazte porce. Viz také Vaření.\nNote B:\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-881\",\"object\":\"chat.completion\",\"created\":1791289849,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají úklidu a domácnosti, sdílejí konkrétní informace.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují stejnou informaci o pračce a společných nákupech.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají společných nákupů a sdílejí konkrétní informace.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují stejnou informaci o návštěvách a společných nákupech.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají společných nákupů a úklidu, sdílejí konkrétní informace.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují stejnou informaci o stipendiu a brigádě.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují stejnou informaci o brigádě a stipendiu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají vaření a sdílejí konkrétní informace.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1908,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":495,\"total_tokens\":2403}}\n"
+      }
+    },
+    {
+      "key": "0e3599143e1ac615f31880b03e55294696bb73147c938adb23522df4c8afa73a",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Článek - Levné vaření pro studenty\n  Text: Luštěniny jsou levným zdrojem bílkovin. Vařte ve větším a zamrazte porce. Viz také Vaření.\nNote B:\n  Title: Vaření na týden\n  Tags: #vareni\n  Links to: Vaření\n  Text: Čočková polévka vydrží v lednici tři dny. Těstoviny s rajčaty jsou hotové za patnáct minut. Zbytky zeleniny se hodí do vývaru. Patří k Vaření. vareni\n\n## Pair p2\nNote A:\n  Title: Gotické klenby\n  Headings: Souvislosti\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Gotické klenby přenášejí zatížení do žeber a pilířů. Cihlové továrny se dnes často přestavují na kulturní centra.\nNote B:\n  Title: Industriální stavby\n  Links to: Dějiny architektury\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n\n## Pair p3\nNote A:\n  Title: Gotické klenby\n  Headings: Souvislosti\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Gotické klenby přenášejí zatížení do žeber a pilířů. Cihlové továrny se dnes často přestavují na kulturní centra.\nNote B:\n  Title: Funkcionalismus v Brně\n  Tags: #architektura\n  Links to: Dějiny architektury\n  Text: Pásová okna jsou typická pro meziválečnou architekturu. Industriální stavby devatenáctého století používaly litinu. Gotické klenby přenášejí zatížení do žeber a pilířů. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny…\n\n## Pair p4\nNote A:\n  Title: Článek - Přestavby továren na kulturní centra\n  Text: Velké haly se hodí pro divadla a trhy. Nejdražší bývá oprava střech a oken.\nNote B:\n  Title: Rešerše textilních továren\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Potřebuji dodělat řezy a situaci do konce března. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Patří k Diplomová práce.\n\n## Pair p5\nNote A:\n  Title: Článek - Přestavby továren na kulturní centra\n  Text: Velké haly se hodí pro divadla a trhy. Nejdražší bývá oprava střech a oken.\nNote B:\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše…\n\n## Pair p6\nNote A:\n  Title: Článek - Přestavby továren na kulturní centra\n  Text: Velké haly se hodí pro divadla a trhy. Nejdražší bývá oprava střech a oken.\nNote B:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n\n## Pair p7\nNote A:\n  Title: Dřevěná konstrukce\n  Text: Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Spoje budou ocelové a přiznané. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony.\nNote B:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\n\n## Pair p8\nNote A:\n  Title: Dřevěná konstrukce\n  Text: Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Spoje budou ocelové a přiznané. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony.\nNote B:\n  Title: Vizualizace pavilonu\n  Headings: Otevřené otázky\n  Text: Pavilon má sloužit jako stín a místo pro koncerty. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony. Porota ocení využití místních materiálů.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-338\",\"object\":\"chat.completion\",\"created\":1791289862,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se zabývají vařením a ukládáním potravin.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Texty se liší výhradně architektonickými tématy, ale nejsou spojeny konkrétně.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují informace o gotických klenbách a funkcionalismu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Texty se liší výhradně architektonickými tématy, ale nejsou spojeny konkrétně.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se zabývají přestavbami továren a architekturou.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se zabývají přestavbami továren a architekturou.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají dřevěnou konstrukcí a rozpočtem stavby.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají dřevěnou konstrukcí a vizualizací stavby.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1924,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":484,\"total_tokens\":2408}}\n"
+      }
+    },
+    {
+      "key": "f530a6d2e6346f40b44ae80d69570eaf70887fc204eec77dd6037fddc0152aa9",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Dřevěná konstrukce\n  Text: Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Spoje budou ocelové a přiznané. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony.\nNote B:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\n\n## Pair p2\nNote A:\n  Title: Brigáda v kavárně\n  Tags: #finance\n  Links to: Finance\n  Text: Měsíční rozpočet dělím na nájem, jídlo, školu a radosti. Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Největší výdaj jsou materiály na modely. Účtenky za materiál si schovávám kvůli…\nNote B:\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n\n## Pair p3\nNote A:\n  Title: Brigáda v kavárně\n  Tags: #finance\n  Links to: Finance\n  Text: Měsíční rozpočet dělím na nájem, jídlo, školu a radosti. Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Největší výdaj jsou materiály na modely. Účtenky za materiál si schovávám kvůli…\nNote B:\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\n\n## Pair p4\nNote A:\n  Title: Funkcionalismus v Brně\n  Tags: #architektura\n  Links to: Dějiny architektury\n  Text: Pásová okna jsou typická pro meziválečnou architekturu. Industriální stavby devatenáctého století používaly litinu. Gotické klenby přenášejí zatížení do žeber a pilířů. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny…\nNote B:\n  Title: Industriální stavby\n  Links to: Dějiny architektury\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n\n## Pair p5\nNote A:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\nNote B:\n  Title: Rešerše textilních továren\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Potřebuji dodělat řezy a situaci do konce března. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Patří k Diplomová práce.\n\n## Pair p6\nNote A:\n  Title: Kniha - Město pro chodce\n  Text: Autor tvrdí, že města mají být navržena v rychlosti chůze. Parter budov rozhoduje o tom, zda je ulice živá. Lavičky a stín udrží lidi ve veřejném prostoru.\nNote B:\n  Title: Kniha - Světlo v architektuře\n  Text: Denní světlo je nejlevnější stavební materiál. Severní světlo je rovnoměrné a hodí se do ateliérů. Stíny dávají prostoru hloubku.\n\n## Pair p7\nNote A:\n  Title: Kniha - Město pro chodce\n  Text: Autor tvrdí, že města mají být navržena v rychlosti chůze. Parter budov rozhoduje o tom, zda je ulice živá. Lavičky a stín udrží lidi ve veřejném prostoru.\nNote B:\n  Title: Kniha - Návyky, které vydrží\n  Text: Návyky rostou z malých kroků opakovaných každý den. Nový návyk je dobré navázat na existující rutinu. Měsíc sledování ukáže, jestli návyk funguje.\n\n## Pair p8\nNote A:\n  Title: Kniha - Město pro chodce\n  Text: Autor tvrdí, že města mají být navržena v rychlosti chůze. Parter budov rozhoduje o tom, zda je ulice živá. Lavičky a stín udrží lidi ve veřejném prostoru.\nNote B:\n  Title: Zadání soutěže koncept\n  Text: Střecha ve tvaru vlny propouští rozptýlené světlo. Vizualizace udělám ve večerním světle s lidmi.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-548\",\"object\":\"chat.completion\",\"created\":1791289874,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají stavby a rozpočtu, společně popisují projekt.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty popisují finanční plán a účtenky z brigády.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají měsíčního rozpočtu a účtenek.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají architektury a objektů jako je Vila Tugendhat.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají komunitního centra a modelování.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají architektury a vlivu světla a prostoru.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Texty se týkají různých témat – architektury a návyků.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají vizualizace a střechy s rozptýleným světlem.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1960,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":469,\"total_tokens\":2429}}\n"
+      }
+    },
+    {
+      "key": "4b7a24e5faf526d20fe3b3fbe210e3eb29ad0e64aa142311734629275027b7ee",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Kniha - Návyky, které vydrží\n  Text: Návyky rostou z malých kroků opakovaných každý den. Nový návyk je dobré navázat na existující rutinu. Měsíc sledování ukáže, jestli návyk funguje.\nNote B:\n  Title: Kniha - Peníze bez stresu\n  Text: Spoření má být automatické, aby nebyla potřeba vůle. Rozpočet je plán, ne trest. Nejdřív splatit dluh s nejvyšším úrokem.\n\n## Pair p2\nNote A:\n  Title: Kniha - Návyky, které vydrží\n  Text: Návyky rostou z malých kroků opakovaných každý den. Nový návyk je dobré navázat na existující rutinu. Měsíc sledování ukáže, jestli návyk funguje.\nNote B:\n  Title: Cviky na záda\n  Text: Při dlouhém kreslení si každou hodinu udělám přestávku. Deset minut protahování ráno pomáhá bolavým zádům. Bez telefonu v ložnici spím o hodinu déle.\n\n## Pair p3\nNote A:\n  Title: Kniha - Návyky, které vydrží\n  Text: Návyky rostou z malých kroků opakovaných každý den. Nový návyk je dobré navázat na existující rutinu. Měsíc sledování ukáže, jestli návyk funguje.\nNote B:\n  Title: Zdraví\n  Tags: #zdravi\n  Headings: Poznámky\n  Links to: Preventivní prohlídka, Cviky na záda\n  Text: Péče o zdraví: spánek, prohlídky, pohyb a jídlo. Preventivní prohlídka Spánkový režim Cviky na záda Očkování\n\n## Pair p4\nNote A:\n  Title: Koncept diplomky\n  Tags: #Architektura\n  Text: Bývalá textilka má cenné litinové sloupy, které chci zachovat. Vedoucí doporučil zjednodušit vstupní halu. Statik potvrdil, že stropy unesou novou zátěž. Viz také Dějiny architektury.\nNote B:\n  Title: Diplomová práce\n  Tags: #Architektura\n  Headings: Poznámky\n  Links to: Model v měřítku 1 ku 200, 2026-01-28 Prezentace konceptu v ateliéru, Konzultace s vedoucím, Harmonogram odevzdání, Rešerše textilních továren\n  Text: Diplomová práce o přestavbě bývalé textilky na komunitní centrum, odevzdání v květnu. Rešerše textilních továren Koncept diplomky Konzultace s vedoucím Harmonogram odevzdání Model v měřítku 1 ku 200 2026-01-25 Konzultace diplomky…\n\n## Pair p5\nNote A:\n  Title: Koncept diplomky\n  Tags: #Architektura\n  Text: Bývalá textilka má cenné litinové sloupy, které chci zachovat. Vedoucí doporučil zjednodušit vstupní halu. Statik potvrdil, že stropy unesou novou zátěž. Viz také Dějiny architektury.\nNote B:\n  Title: Konzultace s vedoucím\n  Links to: Dějiny architektury\n  Text: Odevzdání je patnáctého května, plakáty o týden dřív. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Bývalá textilka má cenné litinové sloupy, které chci zachovat. Rešerše…\n\n## Pair p6\nNote A:\n  Title: Koncept diplomky\n  Tags: #Architektura\n  Text: Bývalá textilka má cenné litinové sloupy, které chci zachovat. Vedoucí doporučil zjednodušit vstupní halu. Statik potvrdil, že stropy unesou novou zátěž. Viz také Dějiny architektury.\nNote B:\n  Title: Harmonogram odevzdání\n  Tags: #architektura\n  Links to: Diplomová práce\n  Text: Fasáda zůstane cihlová, nová přístavba bude ze dřeva. Komunitní centrum potřebuje dílny, sál a kavárnu v přízemí. Model bude z lepenky a dřevěných špejlí. Vedoucí doporučil zjednodušit vstupní halu. Patří k Diplomová práce. architektura\n\n## Pair p7\nNote A:\n  Title: Zápočtový úkol\n  Headings: Souvislosti\n  Text: Vizuální programování skládá algoritmus z propojených bloků. Výstup se dá poslat rovnou do laserové řezačky. Parametrická fasáda mění velikost otvorů podle oslunění. Cvičení jsou každou středu odpoledne. Zápočtový úkol je generovaný…\nNote B:\n  Title: Parametrická fasáda\n  Tags: #architektura\n  Text: Cvičení jsou každou středu odpoledne. Parametrická fasáda mění velikost otvorů podle oslunění. Zápočtový úkol je generovaný pavilon z lamel. Vizuální programování skládá algoritmus z propojených bloků.\n\n## Pair p8\nNote A:\n  Title: Zápočtový úkol\n  Headings: Souvislosti\n  Text: Vizuální programování skládá algoritmus z propojených bloků. Výstup se dá poslat rovnou do laserové řezačky. Parametrická fasáda mění velikost otvorů podle oslunění. Cvičení jsou každou středu odpoledne. Zápočtový úkol je generovaný…\nNote B:\n  Title: Úvod do vizuálního programování\n  Tags: #Architektura\n  Headings: Podrobnosti\n  Links to: Kurz parametrického navrhování\n  Text: Atraktory ovlivňují parametry podle vzdálenosti od bodu. Výstup se dá poslat rovnou do laserové řezačky. Cvičení jsou každou středu odpoledne. Optimalizace tvaru hledá nejlehčí konstrukci pro dané zatížení. Zápočtový úkol je generovaný…\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-941\",\"object\":\"chat.completion\",\"created\":1791289886,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Obě knihy se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Návyky a cviky na záda jsou různé téma, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Zdraví a návyky jsou spojeny v péči o zdraví.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Koncept diplomky a diplomová práce jsou součástí jednoho projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Koncept diplomky a konzultace s vedoucím jsou součástí jednoho projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Koncept diplomky a harmonogram odevzdání jsou součástí jednoho projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Zápočtový úkol a parametrická fasáda jsou součástí jednoho projektu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Zápočtový úkol a úvod do vizuálního programování jsou součástí jednoho projektu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2083,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":470,\"total_tokens\":2553}}\n"
+      }
+    },
+    {
+      "key": "92137d9aa2dc9ef7b9aea2840fcf30bf29e2ff12de180c3a77ddb7d2d5040c77",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Modrá hodinka\n  Text: V modré hodince svítí okna a obloha je ještě modrá. Polarizační filtr potlačí odlesky na skle. Interiéry fotím ze stativu a s delší expozicí. Soubory RAW zachovají víc kresby ve stínech. Širokoúhlý objektiv zkresluje okraje snímku.\nNote B:\n  Title: Úprava fotek\n  Tags: #fotografie\n  Links to: Fotografie\n  Text: Fotky upravuji v dávkách: výběr, expozice a pak barvy. Interiéry fotím ze stativu a s delší expozicí. Svislé linie srovnám posunem objektivu nebo v úpravách. Soubory RAW zachovají víc kresby ve stínech. V modré hodince svítí okna a obloha…\n\n## Pair p2\nNote A:\n  Title: Modrá hodinka\n  Text: V modré hodince svítí okna a obloha je ještě modrá. Polarizační filtr potlačí odlesky na skle. Interiéry fotím ze stativu a s delší expozicí. Soubory RAW zachovají víc kresby ve stínech. Širokoúhlý objektiv zkresluje okraje snímku.\nNote B:\n  Title: Fotografování interiérů\n  Links to: Fotografie\n  Text: Polarizační filtr potlačí odlesky na skle. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Soubory RAW zachovají víc kresby ve stínech. Patří k Fotografie.\n\n## Pair p3\nNote A:\n  Title: Modrá hodinka\n  Text: V modré hodince svítí okna a obloha je ještě modrá. Polarizační filtr potlačí odlesky na skle. Interiéry fotím ze stativu a s delší expozicí. Soubory RAW zachovají víc kresby ve stínech. Širokoúhlý objektiv zkresluje okraje snímku.\nNote B:\n  Title: Fotografie\n  Tags: #fotografie\n  Headings: Poznámky\n  Links to: Svislé linie, Úprava fotek, Fotografování interiérů\n  Text: Jak fotit architekturu a upravovat fotky. Fotografování interiérů Svislé linie Úprava fotek Modrá hodinka\n\n## Pair p4\nNote A:\n  Title: Nábytek do nového bytu\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno.\nNote B:\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n\n## Pair p5\nNote A:\n  Title: Optimalizace tvaru\n  Text: Vizuální programování skládá algoritmus z…\nNote B:\n  Title: Zápočtový úkol\n  Headings: Souvislosti\n  Text: Vizuální programování skládá algoritmus z propojených bloků. Výstup se dá poslat rovnou do laserové řezačky. Parametrická fasáda mění velikost otvorů podle oslunění. Cvičení jsou každou středu odpoledne. Zápočtový úkol je generovaný…\n\n## Pair p6\nNote A:\n  Title: Optimalizace tvaru\n  Text: Vizuální programování skládá algoritmus z…\nNote B:\n  Title: Úvod do vizuálního programování\n  Tags: #Architektura\n  Headings: Podrobnosti\n  Links to: Kurz parametrického navrhování\n  Text: Atraktory ovlivňují parametry podle vzdálenosti od bodu. Výstup se dá poslat rovnou do laserové řezačky. Cvičení jsou každou středu odpoledne. Optimalizace tvaru hledá nejlehčí konstrukci pro dané zatížení. Zápočtový úkol je generovaný…\n\n## Pair p7\nNote A:\n  Title: Očkování\n  Tags: #zdravi\n  Text: Bez telefonu v ložnici spím o hodinu déle. Když jdu spát před jedenáctou, ráno je mnohem snazší. Deset minut protahování ráno pomáhá bolavým zádům. Přeočkování proti tetanu je za dva roky. Při preventivní prohlídce byly krevní testy v…\nNote B:\n  Title: Preventivní prohlídka\n  Tags: #zdravi\n  Text: Přeočkování proti tetanu je za dva roky. Fyzioterapeutka doporučila posílit střed těla. Deset minut protahování ráno pomáhá bolavým zádům. Když jdu spát před jedenáctou, ráno je mnohem snazší. Při preventivní prohlídce byly krevní testy v…\n\n## Pair p8\nNote A:\n  Title: Očkování\n  Tags: #zdravi\n  Text: Bez telefonu v ložnici spím o hodinu déle. Když jdu spát před jedenáctou, ráno je mnohem snazší. Deset minut protahování ráno pomáhá bolavým zádům. Přeočkování proti tetanu je za dva roky. Při preventivní prohlídce byly krevní testy v…\nNote B:\n  Title: Spánkový režim\n  Text: Fyzioterapeutka doporučila posílit střed těla. Přeočkování proti tetanu je za dva roky. Bez telefonu v ložnici spím o hodinu déle. Při dlouhém kreslení si každou hodinu udělám přestávku.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-957\",\"object\":\"chat.completion\",\"created\":1791289900,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají fotografování interiérů a sdílejí konkrétní techniky.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají fotografování interiérů a sdílejí konkrétní techniky.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají fotografování a sdílejí konkrétní techniky.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají stěhování a sdílejí konkrétní detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají vizuálního programování a sdílejí konkrétní koncepty.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají vizuálního programování a sdílejí konkrétní koncepty.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají zdraví a sdílejí konkrétní detaily.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se týkají spánku a zdraví a sdílejí konkrétní detaily.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1940,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":524,\"total_tokens\":2464}}\n"
+      }
+    },
+    {
+      "key": "913688713bac907aebf7f2e62d3ddde12094492ef26e7951dc6aa2374ecd725f",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Očkování\n  Tags: #zdravi\n  Text: Bez telefonu v ložnici spím o hodinu déle. Když jdu spát před jedenáctou, ráno je mnohem snazší. Deset minut protahování ráno pomáhá bolavým zádům. Přeočkování proti tetanu je za dva roky. Při preventivní prohlídce byly krevní testy v…\nNote B:\n  Title: Cviky na záda\n  Text: Při dlouhém kreslení si každou hodinu udělám přestávku. Deset minut protahování ráno pomáhá bolavým zádům. Bez telefonu v ložnici spím o hodinu déle.\n\n## Pair p2\nNote A:\n  Title: Preventivní prohlídka\n  Tags: #zdravi\n  Text: Přeočkování proti tetanu je za dva roky. Fyzioterapeutka doporučila posílit střed těla. Deset minut protahování ráno pomáhá bolavým zádům. Když jdu spát před jedenáctou, ráno je mnohem snazší. Při preventivní prohlídce byly krevní testy v…\nNote B:\n  Title: Spánkový režim\n  Text: Fyzioterapeutka doporučila posílit střed těla. Přeočkování proti tetanu je za dva roky. Bez telefonu v ložnici spím o hodinu déle. Při dlouhém kreslení si každou hodinu udělám přestávku.\n\n## Pair p3\nNote A:\n  Title: Preventivní prohlídka\n  Tags: #zdravi\n  Text: Přeočkování proti tetanu je za dva roky. Fyzioterapeutka doporučila posílit střed těla. Deset minut protahování ráno pomáhá bolavým zádům. Když jdu spát před jedenáctou, ráno je mnohem snazší. Při preventivní prohlídce byly krevní testy v…\nNote B:\n  Title: Cviky na záda\n  Text: Při dlouhém kreslení si každou hodinu udělám přestávku. Deset minut protahování ráno pomáhá bolavým zádům. Bez telefonu v ložnici spím o hodinu déle.\n\n## Pair p4\nNote A:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\nNote B:\n  Title: Pravidla spolubydlení\n  Links to: Domácnost\n  Text: Návštěvy přes noc hlásíme předem. Pračku zapínáme jen po desáté večer kvůli nižšímu tarifu. Kohoutek v kuchyni kape, napíšu majiteli. Společné nákupy platíme přes sdílenou aplikaci. Patří k Domácnost.\n\n## Pair p5\nNote A:\n  Title: Zadání soutěže koncept\n  Text: Střecha ve tvaru vlny propouští rozptýlené světlo. Vizualizace udělám ve večerním světle s lidmi.\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\n## Pair p6\nNote A:\n  Title: Zadání soutěže koncept\n  Text: Střecha ve tvaru vlny propouští rozptýlené světlo. Vizualizace udělám ve večerním světle s lidmi.\nNote B:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\n\n## Pair p7\nNote A:\n  Title: Zadání soutěže koncept\n  Text: Střecha ve tvaru vlny propouští rozptýlené světlo. Vizualizace udělám ve večerním světle s lidmi.\nNote B:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\n\n## Pair p8\nNote A:\n  Title: Kniha - Peníze bez stresu\n  Text: Spoření má být automatické, aby nebyla potřeba vůle. Rozpočet je plán, ne trest. Nejdřív splatit dluh s nejvyšším úrokem.\nNote B:\n  Title: Finance\n  Tags: #finance\n  Headings: Poznámky\n  Links to: Měsíční rozpočet, Spořicí účet, Brigáda v kavárně\n  Text: Peníze: rozpočet, stipendium, brigády a spoření. Měsíční rozpočet Stipendium Brigáda v kavárně Spořicí účet\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-966\",\"object\":\"chat.completion\",\"created\":1791289911,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají spánku a zdraví.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty obsahují informace o spánku a zdravotních doporučeních.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají zdraví, spánku a fyzického stavu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají domácnosti a spolubydlení.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají soutěže a vizualizace návrhu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají soutěže a návrhu pavilonu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají soutěže a návrhu pavilonu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají financí a rozpočtu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1869,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":438,\"total_tokens\":2307}}\n"
+      }
+    },
+    {
+      "key": "6e82dcbe8719bdc5cd53643ec20958e911957d98bc4797464afa1128830b0fe0",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Kniha - Peníze bez stresu\n  Text: Spoření má být automatické, aby nebyla potřeba vůle. Rozpočet je plán, ne trest. Nejdřív splatit dluh s nejvyšším úrokem.\nNote B:\n  Title: Měsíční rozpočet\n  Tags: #finance\n  Links to: Finance\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně. Účtenky za materiál si schovávám kvůli přiznání z brigády. Patří k Finance.\n\n## Pair p2\nNote A:\n  Title: Měsíční rozpočet v2\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně.\nNote B:\n  Title: Spořicí účet\n  Links to: Finance\n  Text: Studentská sleva na jízdné ušetří stovky měsíčně. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Prospěchové stipendium chodí dvakrát za semestr. Patří k Finance.\n\n## Pair p3\nNote A:\n  Title: Měsíční rozpočet v2\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Studentská sleva na jízdné ušetří stovky měsíčně.\nNote B:\n  Title: Stipendium\n  Text: Prospěchové stipendium chodí dvakrát za semestr. Brigáda v kavárně vynáší asi šest tisíc měsíčně. Měsíční rozpočet dělím na nájem, jídlo, školu a radosti.\n\n## Pair p4\nNote A:\n  Title: Parametrická fasáda\n  Tags: #architektura\n  Text: Cvičení jsou každou středu odpoledne. Parametrická fasáda mění velikost otvorů podle oslunění. Zápočtový úkol je generovaný pavilon z lamel. Vizuální programování skládá algoritmus z propojených bloků.\nNote B:\n  Title: Úvod do vizuálního programování\n  Tags: #Architektura\n  Headings: Podrobnosti\n  Links to: Kurz parametrického navrhování\n  Text: Atraktory ovlivňují parametry podle vzdálenosti od bodu. Výstup se dá poslat rovnou do laserové řezačky. Cvičení jsou každou středu odpoledne. Optimalizace tvaru hledá nejlehčí konstrukci pro dané zatížení. Zápočtový úkol je generovaný…\n\n## Pair p5\nNote A:\n  Title: Parametrická fasáda\n  Tags: #architektura\n  Text: Cvičení jsou každou středu odpoledne. Parametrická fasáda mění velikost otvorů podle oslunění. Zápočtový úkol je generovaný pavilon z lamel. Vizuální programování skládá algoritmus z propojených bloků.\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\n## Pair p6\nNote A:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\nNote B:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\n\n## Pair p7\nNote A:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\n## Pair p8\nNote A:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-973\",\"object\":\"chat.completion\",\"created\":1791289924,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají financemi, ale nejsou přímo spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají stejnými náklady a stipendiem.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají stipendiem a měsíčním rozpočtem.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají vizuálním programováním a parametrickou fasádou.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají parametrickou fasádou a soutěží na pavilon.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají soutěží na pavilon a jeho návrhem.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají soutěží na pavilon a jeho návrhem.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají soutěží na pavilon a jeho návrhem.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2036,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":480,\"total_tokens\":2516}}\n"
+      }
+    },
+    {
+      "key": "7176fa78b42b025befc103606bccc6e6e0933d9487d73d0a5159ae4791cce644",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Text k soutěžnímu návrhu\n  Text: Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené světlo. Pavilon má sloužit jako stín a místo pro koncerty. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon.\nNote B:\n  Title: Vizualizace pavilonu\n  Headings: Otevřené otázky\n  Text: Pavilon má sloužit jako stín a místo pro koncerty. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony. Porota ocení využití místních materiálů.\n\n## Pair p2\nNote A:\n  Title: Dějiny architektury\n  Tags: #Architektura\n  Headings: Poznámky\n  Links to: Gotické klenby, Funkcionalismus v Brně, Industriální stavby\n  Text: Výpisky z dějin architektury a inspirace pro projekty. Funkcionalismus v Brně Gotické klenby Baroko a světlo Industriální stavby\nNote B:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\n\n## Pair p3\nNote A:\n  Title: Dějiny architektury\n  Tags: #Architektura\n  Headings: Poznámky\n  Links to: Gotické klenby, Funkcionalismus v Brně, Industriální stavby\n  Text: Výpisky z dějin architektury a inspirace pro projekty. Funkcionalismus v Brně Gotické klenby Baroko a světlo Industriální stavby\nNote B:\n  Title: Kniha - Světlo v architektuře\n  Text: Denní světlo je nejlevnější stavební materiál. Severní světlo je rovnoměrné a hodí se do ateliérů. Stíny dávají prostoru hloubku.\n\n## Pair p4\nNote A:\n  Title: Rozpočet na stěhování\n  Text: Stěhovací firma přijede v sobotu…\nNote B:\n  Title: Prohlídky bytů\n  Tags: #domov\n  Links to: Stěhování do Brna\n  Text: Stěhovací firma přijede v sobotu ráno. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Musím nahlásit změnu adresy na úřadě a ve škole. Kauce jsou dva měsíční nájmy. Patří k Stěhování do Brna. domov\n\n## Pair p5\nNote A:\n  Title: Rozpočet na stěhování\n  Text: Stěhovací firma přijede v sobotu…\nNote B:\n  Title: Přepis energií\n  Tags: #Domov\n  Headings: Otevřené otázky\n  Text: Krabice seženu v obchodě se stavebninami. Starý gauč prodám a koupím menší rozkládací. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno. Nájem nesmí přesáhnout dvanáct tisíc včetně energií.\n\n## Pair p6\nNote A:\n  Title: Rozpočet na stěhování\n  Text: Stěhovací firma přijede v sobotu…\nNote B:\n  Title: Nábytek do nového bytu\n  Text: Krabice seženu v obchodě se stavebninami. Elektřinu a plyn přepíšu na sebe hned po podpisu smlouvy. Byt v Králově Poli má dva pokoje a balkon do dvora. Stěhovací firma přijede v sobotu ráno.\n\n## Pair p7\nNote A:\n  Title: Stěhování do Brna\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Přepis energií, Seznam věcí ke zabalení, 2026-01-31 Prohlídka bytu s majitelem, Nábytek do nového bytu, Prohlídky bytů, Rozpočet na stěhování\n  Text: Najít byt v Brně a přestěhovat se do konce srpna. Prohlídky bytů Rozpočet na stěhování Seznam věcí ke zabalení Přepis energií Nábytek do nového bytu 2026-01-31 Prohlídka bytu s majitelem\nNote B:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n\n## Pair p8\nNote A:\n  Title: Stěhování do Brna\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Přepis energií, Seznam věcí ke zabalení, 2026-01-31 Prohlídka bytu s majitelem, Nábytek do nového bytu, Prohlídky bytů, Rozpočet na stěhování\n  Text: Najít byt v Brně a přestěhovat se do konce srpna. Prohlídky bytů Rozpočet na stěhování Seznam věcí ke zabalení Přepis energií Nábytek do nového bytu 2026-01-31 Prohlídka bytu s majitelem\nNote B:\n  Title: Článek - Jak vyjednat nájem\n  Text: Ptejte se na výši záloh za energie. Domluvte si předávací protokol s fotkami.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-423\",\"object\":\"chat.completion\",\"created\":1791289937,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají pavilonu a jeho konkrétního návrhu.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se zabývají architekturou a světlem v architektuře.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají světla a jeho využití v architektuře.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a stěhovací firmy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a stěhovací firmy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a stěhovací firmy.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a domácnosti.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají stěhování a nájmu.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1925,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":462,\"total_tokens\":2387}}\n"
+      }
+    },
+    {
+      "key": "98da4c67abfff4c9a2eaf676325dba73bbbe615ec53eb352a322acfc5da02b28",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Svislé linie\n  Text: Soubory RAW zachovají víc kresby ve stínech. Svislé linie srovnám posunem objektivu nebo v úpravách. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Širokoúhlý objektiv zkresluje okraje snímku.\nNote B:\n  Title: Úprava fotek\n  Tags: #fotografie\n  Links to: Fotografie\n  Text: Fotky upravuji v dávkách: výběr, expozice a pak barvy. Interiéry fotím ze stativu a s delší expozicí. Svislé linie srovnám posunem objektivu nebo v úpravách. Soubory RAW zachovají víc kresby ve stínech. V modré hodince svítí okna a obloha…\n\n## Pair p2\nNote A:\n  Title: Svislé linie\n  Text: Soubory RAW zachovají víc kresby ve stínech. Svislé linie srovnám posunem objektivu nebo v úpravách. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Širokoúhlý objektiv zkresluje okraje snímku.\nNote B:\n  Title: Fotografování interiérů\n  Links to: Fotografie\n  Text: Polarizační filtr potlačí odlesky na skle. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Soubory RAW zachovají víc kresby ve stínech. Patří k Fotografie.\n\n## Pair p3\nNote A:\n  Title: Vaření na týden\n  Tags: #vareni\n  Links to: Vaření\n  Text: Čočková polévka vydrží v lednici tři dny. Těstoviny s rajčaty jsou hotové za patnáct minut. Zbytky zeleniny se hodí do vývaru. Patří k Vaření. vareni\nNote B:\n  Title: Čočková polévka\n  Tags: #vareni\n  Links to: Vaření\n  Text: Chleba peču s párou, aby měl křupavou kůrku. Zbytky zeleniny se hodí do vývaru. Čočková polévka vydrží v lednici tři dny. Patří k Vaření.\n\n## Pair p4\nNote A:\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\nNote B:\n  Title: Rozpis úklidu\n  Tags: #domov\n  Text: Úklid koupelny se střídá po týdnu. Topení v pokoji je potřeba odvzdušnit. Společné nákupy platíme přes sdílenou aplikaci. Kohoutek v kuchyni kape, napíšu majiteli. Patří k Domácnost. Viz také Stěhování do Brna.\n\n## Pair p5\nNote A:\n  Title: Vizualizace pavilonu\n  Headings: Otevřené otázky\n  Text: Pavilon má sloužit jako stín a místo pro koncerty. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony. Porota ocení využití místních materiálů.\nNote B:\n  Title: Skici pavilonu\n  Tags: #architektura\n  Headings: Další kroky\n  Text: Uzávěrka soutěže je třicátého června. Pavilon má sloužit jako stín a místo pro koncerty. Konstrukce z lepeného dřeva musí jít smontovat za dva dny. Rozpočet stavby je omezen na dva miliony. Střecha ve tvaru vlny propouští rozptýlené…\n\n## Pair p6\nNote A:\n  Title: Vizualizace pavilonu\n  Headings: Otevřené otázky\n  Text: Pavilon má sloužit jako stín a místo pro koncerty. Vizualizace udělám ve večerním světle s lidmi. Rozpočet stavby je omezen na dva miliony. Porota ocení využití místních materiálů.\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\n## Pair p7\nNote A:\n  Title: Zdraví\n  Tags: #zdravi\n  Headings: Poznámky\n  Links to: Preventivní prohlídka, Cviky na záda\n  Text: Péče o zdraví: spánek, prohlídky, pohyb a jídlo. Preventivní prohlídka Spánkový režim Cviky na záda Očkování\nNote B:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\n\n## Pair p8\nNote A:\n  Title: Zdraví\n  Tags: #zdravi\n  Headings: Poznámky\n  Links to: Preventivní prohlídka, Cviky na záda\n  Text: Péče o zdraví: spánek, prohlídky, pohyb a jídlo. Preventivní prohlídka Spánkový režim Cviky na záda Očkování\nNote B:\n  Title: Očkování\n  Tags: #zdravi\n  Text: Bez telefonu v ložnici spím o hodinu déle. Když jdu spát před jedenáctou, ráno je mnohem snazší. Deset minut protahování ráno pomáhá bolavým zádům. Přeočkování proti tetanu je za dva roky. Při preventivní prohlídce byly krevní testy v…\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-504\",\"object\":\"chat.completion\",\"created\":1791289950,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají úpravou fotek a svislými liniami.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají úpravou fotek a svislými liniami.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají čočkovou polévkou a vařením.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Poznámky se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají pavionem a jeho využitím.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají vizualizací pavionu a jeho zadáním.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Poznámky se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Obě poznámky se zabývají zdravím a preventivní prohlídkou.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2018,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":472,\"total_tokens\":2490}}\n"
+      }
+    },
+    {
+      "key": "b0002d0a1d3c9bd6c92af9cd54a622534d72fb74cd0d638bba8ddecd3a68f0c2",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You decide whether two notes from a personal knowledge base should link to each other. A link is worth adding when someone reading one note would want to open the other: they belong to the same project or area, one explains, continues or applies the other, or they are about the same specific subject. Notes that only share a broad theme or a common word are not related. For every pair answer: relevant (true or false), strength (1 loosely related, 2 related, 3 closely related) and a reason of at most 15 words. Write the reasons in Czech."
+            },
+            {
+              "role": "user",
+              "content": "## Pair p1\nNote A:\n  Title: Zdraví\n  Tags: #zdravi\n  Headings: Poznámky\n  Links to: Preventivní prohlídka, Cviky na záda\n  Text: Péče o zdraví: spánek, prohlídky, pohyb a jídlo. Preventivní prohlídka Spánkový režim Cviky na záda Očkování\nNote B:\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\n\n## Pair p2\nNote A:\n  Title: Cviky na záda\n  Text: Při dlouhém kreslení si každou hodinu udělám přestávku. Deset minut protahování ráno pomáhá bolavým zádům. Bez telefonu v ložnici spím o hodinu déle.\nNote B:\n  Title: Spánkový režim\n  Text: Fyzioterapeutka doporučila posílit střed těla. Přeočkování proti tetanu je za dva roky. Bez telefonu v ložnici spím o hodinu déle. Při dlouhém kreslení si každou hodinu udělám přestávku.\n\n## Pair p3\nNote A:\n  Title: Úprava fotek\n  Tags: #fotografie\n  Links to: Fotografie\n  Text: Fotky upravuji v dávkách: výběr, expozice a pak barvy. Interiéry fotím ze stativu a s delší expozicí. Svislé linie srovnám posunem objektivu nebo v úpravách. Soubory RAW zachovají víc kresby ve stínech. V modré hodince svítí okna a obloha…\nNote B:\n  Title: Fotografování interiérů\n  Links to: Fotografie\n  Text: Polarizační filtr potlačí odlesky na skle. Fotky upravuji v dávkách: výběr, expozice a pak barvy. Soubory RAW zachovají víc kresby ve stínech. Patří k Fotografie.\n\n## Pair p4\nNote A:\n  Title: Úvod do vizuálního programování\n  Tags: #Architektura\n  Headings: Podrobnosti\n  Links to: Kurz parametrického navrhování\n  Text: Atraktory ovlivňují parametry podle vzdálenosti od bodu. Výstup se dá poslat rovnou do laserové řezačky. Cvičení jsou každou středu odpoledne. Optimalizace tvaru hledá nejlehčí konstrukci pro dané zatížení. Zápočtový úkol je generovaný…\nNote B:\n  Title: Zadání soutěže\n  Tags: #Architektura\n  Links to: Soutěž na pavilon, Kurz parametrického navrhování\n  Text: Vizualizace udělám ve večerním světle s lidmi. Střecha ve tvaru vlny propouští rozptýlené světlo. Uzávěrka soutěže je třicátého června. Patří k Soutěž na pavilon. Viz také Kurz parametrického navrhování.\n\n## Pair p5\nNote A:\n  Title: Fotografie\n  Tags: #fotografie\n  Headings: Poznámky\n  Links to: Svislé linie, Úprava fotek, Fotografování interiérů\n  Text: Jak fotit architekturu a upravovat fotky. Fotografování interiérů Svislé linie Úprava fotek Modrá hodinka\nNote B:\n  Title: Domácnost\n  Tags: #domov\n  Headings: Poznámky\n  Links to: Opravy v bytě, Pravidla spolubydlení\n  Text: Chod domácnosti: úklid, nákupy, opravy a spolubydlení. Rozpis úklidu Společné nákupy Opravy v bytě Pravidla spolubydlení\n\n## Pair p6\nNote A:\n  Title: Fotografie\n  Tags: #fotografie\n  Headings: Poznámky\n  Links to: Svislé linie, Úprava fotek, Fotografování interiérů\n  Text: Jak fotit architekturu a upravovat fotky. Fotografování interiérů Svislé linie Úprava fotek Modrá hodinka\nNote B:\n  Title: Vaření\n  Tags: #vareni\n  Headings: Poznámky\n  Links to: Rychlé večeře, Vaření na týden, Čočková polévka\n  Text: Levné recepty na každý den a vaření na celý týden. Čočková polévka Vaření na týden Domácí chleba Rychlé večeře\n\n## Pair p7\nNote A:\n  Title: Kniha - Světlo v architektuře\n  Text: Denní světlo je nejlevnější stavební materiál. Severní světlo je rovnoměrné a hodí se do ateliérů. Stíny dávají prostoru hloubku.\nNote B:\n  Title: Baroko a světlo\n  Tags: #architektura\n  Text: Gotické klenby přenášejí zatížení do žeber a pilířů. Barokní kostely pracují se skrytými zdroji světla. Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Vila Tugendhat je ukázkou volného půdorysu.\n\n## Pair p8\nNote A:\n  Title: Kniha - Světlo v architektuře\n  Text: Denní světlo je nejlevnější stavební materiál. Severní světlo je rovnoměrné a hodí se do ateliérů. Stíny dávají prostoru hloubku.\nNote B:\n  Title: Industriální stavby\n  Links to: Dějiny architektury\n  Text: Brněnský funkcionalismus stavěl na jednoduchých kubických objemech. Barokní kostely pracují se skrytými zdroji světla. Vila Tugendhat je ukázkou volného půdorysu. Patří k Dějiny architektury.\n\nAnswer with JSON: {\"pairs\": [{\"pairId\": \"...\", \"relevant\": true, \"strength\": 2, \"reason\": \"...\"}]}, one entry for each pair."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 640,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "verify_links",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "pairs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "pairId": {
+                          "type": "string",
+                          "enum": [
+                            "p1",
+                            "p2",
+                            "p3",
+                            "p4",
+                            "p5",
+                            "p6",
+                            "p7",
+                            "p8"
+                          ]
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "strength": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "pairId",
+                        "relevant",
+                        "strength",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "pairs"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-400\",\"object\":\"chat.completion\",\"created\":1791289963,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"pairs\\\": [\\n    {\\n      \\\"pairId\\\": \\\"p1\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Oba texty se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p2\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají spánku a cvičení, jsou těsně spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p3\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 3,\\n      \\\"reason\\\": \\\"Oba texty se týkají fotografování interiérů a úpravy fotek.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p4\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají architektury a vizuálního programování.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p5\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Oba texty se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p6\\\",\\n      \\\"relevant\\\": false,\\n      \\\"strength\\\": 1,\\n      \\\"reason\\\": \\\"Oba texty se zabývají různými tématy, nejsou spojeny.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p7\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají světla v architektuře.\\\"\\n    },\\n    {\\n      \\\"pairId\\\": \\\"p8\\\",\\n      \\\"relevant\\\": true,\\n      \\\"strength\\\": 2,\\n      \\\"reason\\\": \\\"Oba texty se týkají architektury a světla.\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":1954,\"prompt_tokens_details\":{\"cached_tokens\":137},\"completion_tokens\":455,\"total_tokens\":2409}}\n"
+      }
+    }
+  ],
+  "recordedAt": "2026-10-06T12:32:43.513Z"
+}

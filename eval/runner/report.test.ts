@@ -11,6 +11,7 @@ const result = await runEval(await loadFixture(path.join(FIXTURES_DIR, 'cs-small
   tier: 1,
   record: false,
   embedModel: 'bge-m3',
+  chatModel: 'qwen3:8b',
   indexDir: path.join('eval', 'cassettes', 'index', 'cs-small'),
 });
 
@@ -18,11 +19,11 @@ describe('formatReport', () => {
   const markdown = formatReport(result);
 
   it('has a table per area with every method', () => {
-    for (const heading of ['## Classification (rules)', '## Similarity', '## Clusters', '## Safety', '## Cost per 100 notes']) expect(markdown).toContain(heading);
+    for (const heading of ['## Classification (rules)', '## Link suggestions', '## Similarity, duplicates and stubs', '## Clusters', '## Safety', '## Cost per 100 notes']) expect(markdown).toContain(heading);
     for (const method of ['PARA', 'ACE', 'Johnny.Decimal', 'Flat + categories', 'Topic folders']) expect(markdown).toMatch(new RegExp(`^\\| ${method.replace('.', '\\.').replace('+', '\\+')} \\|`, 'm'));
     expect(markdown).toMatch(/^\| words \| /m);
     expect(markdown).toMatch(/^\| embeddings \| /m);
-    expect(markdown).toContain('82 notes in Czech. Embedding model: bge-m3.');
+    expect(markdown).toContain('82 notes in Czech. Models: embeddings: bge-m3, language model: none.');
   });
 
   it('lists notices only when there are some', () => {

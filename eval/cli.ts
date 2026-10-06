@@ -2,7 +2,7 @@
  * Node CLI over the same core the plugin runs. Commands:
  *
  *   npm run analyze -- <vault-folder> [--json]   tier 0 diagnostics, identical to "Analyze vault"
- *   npm run eval -- [--fixture=a,b] [--tier=0|1|2] [--embed-model=bge-m3] [--record] [--out=dir]
+ *   npm run eval -- [--fixture=a,b] [--tier=0|1|2] [--embed-model=bge-m3] [--chat-model=qwen3:8b] [--record] [--out=dir]
  *                     [--check] [--update-thresholds]
  *                                                evals over the fixtures; reports in eval/reports;
  *                                                --check fails on regressions beyond eval/thresholds.json
@@ -47,6 +47,7 @@ async function evalCommand(args: string[]): Promise<number> {
   }
   const record = args.includes('--record');
   const embedModel = flag('embed-model') ?? 'bge-m3';
+  const chatModel = flag('chat-model') ?? 'qwen3:8b';
   const results: EvalResult[] = [];
   for (const name of names) {
     const spec = FIXTURES[name];
@@ -57,7 +58,7 @@ async function evalCommand(args: string[]): Promise<number> {
     const root = spec.committed ? path.join(FIXTURES_DIR, name) : path.join('eval', 'out', 'fixtures', name);
     if (!spec.committed && !(await exists(path.join(root, GROUND_TRUTH_FILE)))) await writeFixture(root, buildFixture(name));
     const indexDir = spec.committed ? path.join('eval', 'cassettes', 'index', name) : path.join('eval', 'out', 'index', name);
-    const result = await runEval(await loadFixture(root), { tier, record, embedModel, indexDir });
+    const result = await runEval(await loadFixture(root), { tier, record, embedModel, chatModel, indexDir });
     process.stdout.write(summarize(result));
     results.push(result);
   }

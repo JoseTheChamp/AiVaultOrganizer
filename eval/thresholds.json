@@ -33,22 +33,55 @@
         "min": 1
       },
       "links.words.precision": {
-        "min": 0.619
+        "min": 0.752
       },
       "links.words.heldOutRecall": {
-        "min": 0.954
+        "min": 0.866
       },
       "similarity.words.precision": {
         "min": 0.809
       },
+      "clusters.words.topic.ari": {
+        "min": 0.464
+      },
+      "duplicates.words.precision": {
+        "min": 1
+      },
+      "duplicates.words.recall": {
+        "min": 1
+      },
       "links.embeddings.precision": {
-        "min": 0.629
+        "min": 0.804
       },
       "links.embeddings.heldOutRecall": {
-        "min": 0.863
+        "min": 1
       },
       "similarity.embeddings.precision": {
         "min": 0.87
+      },
+      "clusters.embeddings.topic.ari": {
+        "min": 0.523
+      },
+      "duplicates.embeddings.precision": {
+        "min": 1
+      },
+      "duplicates.embeddings.recall": {
+        "min": 1
+      },
+      "links.verified.precision": {
+        "min": 0.82
+      },
+      "links.verified.relevance": {
+        "min": 0.906
+      },
+      "links.verified.heldOutRecall": {
+        "min": 0.933
+      },
+      "stubs.precision": {
+        "min": 1
+      },
+      "stubs.recall": {
+        "min": 1
       },
       "safety.undoExact": {
         "min": 1
@@ -57,6 +90,9 @@
         "max": 0
       },
       "safety.failed": {
+        "max": 0
+      },
+      "labels.failures": {
         "max": 0
       }
     },
@@ -92,22 +128,55 @@
         "min": 1
       },
       "links.words.precision": {
-        "min": 0.612
+        "min": 0.8
       },
       "links.words.heldOutRecall": {
-        "min": 1
+        "min": 0.944
       },
       "similarity.words.precision": {
         "min": 0.834
       },
+      "clusters.words.topic.ari": {
+        "min": 0.197
+      },
+      "duplicates.words.precision": {
+        "min": 1
+      },
+      "duplicates.words.recall": {
+        "min": 1
+      },
       "links.embeddings.precision": {
-        "min": 0.597
+        "min": 0.809
       },
       "links.embeddings.heldOutRecall": {
-        "min": 0.909
+        "min": 0.833
       },
       "similarity.embeddings.precision": {
         "min": 0.892
+      },
+      "clusters.embeddings.topic.ari": {
+        "min": 0.278
+      },
+      "duplicates.embeddings.precision": {
+        "min": 1
+      },
+      "duplicates.embeddings.recall": {
+        "min": 1
+      },
+      "links.verified.precision": {
+        "min": 0.823
+      },
+      "links.verified.relevance": {
+        "min": 0.928
+      },
+      "links.verified.heldOutRecall": {
+        "min": 0.833
+      },
+      "stubs.precision": {
+        "min": 1
+      },
+      "stubs.recall": {
+        "min": 1
       },
       "safety.undoExact": {
         "min": 1
@@ -116,6 +185,9 @@
         "max": 0
       },
       "safety.failed": {
+        "max": 0
+      },
+      "labels.failures": {
         "max": 0
       }
     }
