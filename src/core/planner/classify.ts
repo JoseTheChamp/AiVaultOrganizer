@@ -173,8 +173,8 @@ export async function classifyNotes(input: CascadeInput, knn: KnnOptions = DEFAU
   const kinds = new Set(charter.destinations.filter(isKindDestination).map((d) => d.id));
   const stillOpen: NoteRecord[] = [];
   for (const note of pending) {
-    const signal = input.neighbors ? await vote(note, input.neighbors, anchors, knn, kinds) : null;
-    if (signal && signal.share >= knn.minShare && signal.supporters >= knn.minSupporters && signal.similarity >= knn.minSimilarity) {
+    const signal = input.neighbors ? await knnVote(note.path, input.neighbors, anchors, knn, kinds) : null;
+    if (knnDecides(signal, knn)) {
       const destination = byId.get(signal.destination);
       const subfolder = destination && destination.layout !== 'flat' ? signal.subfolder : null;
       const why = `${signal.supporters} of the most similar placed notes are in ${signal.destination}.`;
@@ -243,10 +243,19 @@ export function isKindDestination(destination: Destination): boolean {
   );
 }
 
-async function vote(note: NoteRecord, neighbors: NeighborLookup, anchors: ReadonlyMap<string, Placement>, options: KnnOptions, kinds: ReadonlySet<string>): Promise<KnnSignal | null> {
+/** Whether a vote is strong enough for kNN to decide on its own (PLAN §7.6 step 2). */
+export function knnDecides(signal: KnnSignal | null, knn: KnnOptions): signal is KnnSignal {
+  return signal !== null && signal.share >= knn.minShare && signal.supporters >= knn.minSupporters && signal.similarity >= knn.minSimilarity;
+}
+
+/**
+ * The kNN vote for one note among placed neighbours (anchors), weighted by similarity. Also used
+ * to re-rank a plan from review decisions. Null when no placed neighbour is similar at all.
+ */
+export async function knnVote(path: string, neighbors: NeighborLookup, anchors: ReadonlyMap<string, Pick<Placement, 'destination' | 'subfolder'>>, options: KnnOptions, kinds: ReadonlySet<string>): Promise<KnnSignal | null> {
   // Ask for extra neighbours: unplaced ones don't vote, and neither do daily notes, which are
   // placed by their file name and mention every subject in passing, or notes in kind destinations.
-  const placed = (await neighbors(note.path, options.k * 4))
+  const placed = (await neighbors(path, options.k * 4))
     .filter((n) => {
       const destination = anchors.get(n.path)?.destination;
       return n.score > 0 && destination !== undefined && destination !== null && destination !== DAILY && !kinds.has(destination);

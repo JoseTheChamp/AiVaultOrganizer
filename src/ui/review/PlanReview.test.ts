@@ -31,6 +31,7 @@ function setup(overrides: Partial<Omit<ReviewModel, 'apply'>> & { apply?: Review
     cancelApply: vi.fn<() => void>(),
     undoRun: vi.fn<() => void>(),
     closeApply: vi.fn<() => void>(),
+    learn: vi.fn<(plan: Plan) => void>(),
   } satisfies ReviewActions;
   render(PlanReview, { model, actions });
   return { model, actions };
@@ -97,5 +98,16 @@ describe('PlanReview', () => {
     setup();
     await fireEvent.change(screen.getByRole('combobox', { name: 'Decided by' }), { target: { value: 'llm' } });
     expect(screen.getAllByRole('region').map((region) => region.getAttribute('aria-label'))).toEqual(['Moves into 4 Archive']);
+  });
+
+  it('learns from decisions once there are some, and with something left to decide', async () => {
+    const { actions } = setup();
+    const learn = screen.getByRole<HTMLButtonElement>('button', { name: 'Learn from my decisions' });
+    expect(learn.disabled).toBe(true);
+    const row = screen.getByRole('region', { name: 'Moves into 1 Projects' });
+    await fireEvent.click(within(row).getByRole('button', { name: 'Accept' }));
+    expect(learn.disabled).toBe(false);
+    await fireEvent.click(learn);
+    expect(actions.learn.mock.calls[0]?.[0].operations.find((op) => op.id === move.id)?.status).toBe('accepted');
   });
 });

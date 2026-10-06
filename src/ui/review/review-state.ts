@@ -153,6 +153,8 @@ export interface ReviewActions {
   /** Decisions changed: keep them with the pending plan. */
   save: (plan: Plan) => void;
   apply: (plan: Plan) => void;
+  /** Re-ranks what is undecided from the decisions made so far (no model calls). */
+  learn: (plan: Plan) => void;
   /** Stops the running apply after its current batch. */
   cancelApply: () => void;
   /** Undoes the run just reported. */

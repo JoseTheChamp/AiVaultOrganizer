@@ -159,6 +159,15 @@
     <button type="button" disabled={bulkCount === 0} onclick={() => update(acceptAbove(model.plan, decisions, shown, threshold))}>
       Accept {plural(bulkCount, 'change')}
     </button>
+    <span class="avo-wizard-spacer"></span>
+    <button
+      type="button"
+      disabled={model.busy || counts.pending === 0 || counts.accepted + counts.rejected === 0}
+      title="Places you accepted teach the plugin where similar notes belong; undecided rows are re-scored and flagged notes may get a place. No model is asked."
+      onclick={() => actions.learn(decidedPlan(model.plan, decisions))}
+    >
+      Learn from my decisions
+    </button>
   </div>
 
   {#if shown.length === 0}

@@ -1,8 +1,11 @@
-import { ItemView, type ViewStateResult, type WorkspaceLeaf } from 'obsidian';
+import { ItemView, Notice, type ViewStateResult, type WorkspaceLeaf } from 'obsidian';
 import { previewOperation } from '../../core/apply/preview';
 import { analyzeVault } from '../../core/analysis/analyze';
 import { validatePlan } from '../../core/apply/validate';
 import { loadCharter } from '../../core/charter/load';
+import { plural } from '../../core/model/text';
+import { DEFAULT_KNN, WORD_KNN } from '../../core/planner/classify';
+import { rerankFromDecisions } from '../../core/planner/rerank';
 import type { Plan } from '../../core/model/plan';
 import { type MountedComponent, mountComponent } from '../../ui/mount';
 import { reactive } from '../../ui/reactive.svelte';
@@ -12,6 +15,7 @@ import { runReportState } from '../../ui/review/run-report';
 import { confirmUndo } from '../flows/backup-undo';
 import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import { exclusive } from '../flows/exclusive';
+import { indexingProgress } from '../flows/indexing';
 import { charterConstraints, runPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
 
@@ -128,6 +132,7 @@ export class ReviewView extends ItemView {
       preview: (op) => previewOperation(op, { read: (path) => reader.read(path), linkText: (target, source) => links.linkText(target, source) }),
       save: (decided) => void this.save(decided),
       apply: (decided) => void this.apply(decided),
+      learn: (decided) => void this.learn(decided),
       cancelApply: () => {
         this.signal.aborted = true;
         if (this.model?.apply) this.model.apply.cancelling = true;
@@ -173,6 +178,44 @@ export class ReviewView extends ItemView {
       const report = runReportState({ report: outcome.report, plan: outcome.plan, backupKey: outcome.backup.key, health: { before, after: await health() } });
       model.apply = { ...(model.apply ?? { done: 0, total: 0, cancelling: false }), phase: 'done', report, invalid: null };
     });
+  }
+
+  /**
+   * Re-ranks the undecided rows from the decisions made so far (PLAN §7.6): accepted places become
+   * anchors for kNN, rejected ones are ruled out. Similarity comes from the same index as planning.
+   */
+  private async learn(decided: Plan): Promise<void> {
+    await this.save(decided);
+    if (!this.plan) return;
+    const { reader, hasher, similarity, ai } = this.plugin.services;
+    const charter = await loadCharter(reader, hasher, this.plugin.settings.charterPath);
+    if (charter.status !== 'ok') {
+      new Notice('The charter cannot be read, so there is nothing to learn against. Fix the charter first.');
+      return;
+    }
+    const progress = indexingProgress(this.plugin);
+    try {
+      const source = await similarity.neighborSource({ provider: ai.embeddings(), ignore: charter.charter.ignore, exclude: [charter.path], ...progress.options });
+      progress.say('Learning from your decisions…');
+      const result = await rerankFromDecisions({
+        plan: this.plan,
+        snapshot: await reader.snapshot(),
+        charter: charter.charter,
+        charterPath: charter.path,
+        neighbors: source.neighbors,
+        knn: source.method === 'embeddings' ? DEFAULT_KNN : WORD_KNN,
+      });
+      this.plan = result.plan;
+      await this.plugin.services.plans.save(result.plan);
+      await this.reload();
+      new Notice(
+        result.rescored + result.placed === 0
+          ? 'Your decisions do not change the other suggestions yet. Decide a few more similar notes and try again.'
+          : `Updated ${plural(result.rescored, 'suggestion')}${result.placed > 0 ? ` and proposed a place for ${plural(result.placed, 'flagged note')}` : ''}.`,
+      );
+    } finally {
+      progress.hide();
+    }
   }
 
   /** The stored plan with the reviewer's statuses on its open operations. */
