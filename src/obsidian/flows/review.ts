@@ -2,17 +2,13 @@ import { Notice } from 'obsidian';
 import type { RunReport } from '../../core/apply/executor';
 import type { RunStatus } from '../../core/apply/journal';
 import type { RunOutcome, RunPhase } from '../../core/apply/run';
-import { validatePlan } from '../../core/apply/validate';
 import { loadCharter } from '../../core/charter/load';
 import { describeOperation } from '../../core/model/operation-text';
 import type { Plan } from '../../core/model/plan';
 import { plural } from '../../core/model/text';
 import { charterRoots } from '../../core/planner/charter-roots';
-import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import type AiVaultOrganizerPlugin from '../main';
 import { MessageModal } from '../views/message-modal';
-import { PlanReviewModal } from '../views/plan-review-modal';
-import { exclusive } from './exclusive';
 
 export interface CharterConstraints {
   ignore: string[];
@@ -37,19 +33,14 @@ export async function reviewPendingPlan(plugin: AiVaultOrganizerPlugin): Promise
     new Notice('There is no pending plan to review.');
     return;
   }
-  await openReview(plugin, { ...plan, operations: open });
+  await openReview(plugin, plan);
 }
 
-/** Validates a plan against the vault and the charter, then shows it for review. */
+/** Saves a plan as the pending one and opens it in the review view. */
 export async function openReview(plugin: AiVaultOrganizerPlugin, plan: Plan): Promise<void> {
-  const constraints = await charterConstraints(plugin);
-  const validation = validatePlan(plan, { snapshot: await plugin.services.reader.snapshot(), include: () => true, ...constraints });
-  new PlanReviewModal(plugin.app, {
-    plan,
-    validation,
-    linksAutoUpdate: isLinkAutoUpdateEnabled(plugin.app),
-    onApply: (decided) => void exclusive(plugin, () => applyPlan(plugin, decided)),
-  }).open();
+  await plugin.services.plans.save(plan);
+  plugin.changed();
+  await plugin.openReview(plan.id);
 }
 
 const PHASE_TEXT: Record<RunPhase, string> = {

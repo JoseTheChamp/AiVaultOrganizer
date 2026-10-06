@@ -107,7 +107,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},
   });
   const summary = await summarizePlan(plan, charter, input.model?.provider);
-  return { plan, classification, summary, subfolders, ...(model ? { model } : {}) };
+  return { plan: { ...plan, summary }, classification, summary, subfolders, ...(model ? { model } : {}) };
 }
 
 /** The charter's folders (with their parents) that neither exist nor are created by the moves. */

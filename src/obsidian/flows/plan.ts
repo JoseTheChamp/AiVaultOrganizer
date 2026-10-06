@@ -58,8 +58,6 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
       new Notice(`Nothing to re-align: every note is where the charter puts it.${plan.warnings.length > 0 ? ` ${plan.warnings.map((w) => w.message).join(' ')}` : ''}`);
       return;
     }
-    await plugin.services.plans.save(plan);
-    plugin.changed();
     await openReview(plugin, plan);
   } catch (error) {
     logger.error('Planning failed', error);

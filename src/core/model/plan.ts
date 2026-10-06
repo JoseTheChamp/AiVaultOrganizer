@@ -22,6 +22,8 @@ export const planSchema = z.object({
   models: z.object({ chat: z.string().optional(), embedding: z.string().optional() }).default({}),
   operations: z.array(operationSchema),
   warnings: z.array(warningSchema).default([]),
+  /** The review header's explanation, written when the plan was made (by a model or from numbers). */
+  summary: z.object({ summary: z.string(), highlights: z.array(z.string()), source: z.enum(['model', 'rules']) }).optional(),
 });
 
 export type Plan = z.infer<typeof planSchema>;
@@ -34,6 +36,7 @@ export interface PlanInput {
   warnings?: PlanWarning[];
   promptVersions?: Record<string, number>;
   models?: Plan['models'];
+  summary?: Plan['summary'];
 }
 
 export function createPlan(input: PlanInput): Plan {

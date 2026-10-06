@@ -6,6 +6,7 @@ import { parseSettings, type PluginSettings } from './settings/settings';
 import { SettingsTab } from './settings/settings-tab';
 import { renderCharterBlock } from './views/charter-card';
 import { DASHBOARD_VIEW, DashboardView } from './views/dashboard-view';
+import { REVIEW_VIEW, ReviewView } from './views/review-view';
 
 /** Entry point loaded by Obsidian. Wires adapters, commands and views; contains no domain logic. */
 export default class AiVaultOrganizerPlugin extends Plugin {
@@ -22,6 +23,7 @@ export default class AiVaultOrganizerPlugin extends Plugin {
     this.services = createServices(this.app, new ConsoleLogger(() => this.settings.debugLogging), () => this.settings);
     this.register(() => this.services.dispose());
     this.registerView(DASHBOARD_VIEW, (leaf) => new DashboardView(leaf, this));
+    this.registerView(REVIEW_VIEW, (leaf) => new ReviewView(leaf, this));
     registerCommands(this);
     this.addRibbonIcon('layout-dashboard', 'Open vault organizer', () => void this.openDashboard());
     this.registerMarkdownCodeBlockProcessor('charter', (source, el) => renderCharterBlock(source, el));
@@ -39,6 +41,14 @@ export default class AiVaultOrganizerPlugin extends Plugin {
     const leaf = workspace.getLeavesOfType(DASHBOARD_VIEW)[0] ?? workspace.getRightLeaf(false);
     if (!leaf) return;
     await leaf.setViewState({ type: DASHBOARD_VIEW, active: true });
+    await workspace.revealLeaf(leaf);
+  }
+
+  /** Opens a plan in the review view, reusing an open review. */
+  async openReview(planId: string): Promise<void> {
+    const { workspace } = this.app;
+    const leaf = workspace.getLeavesOfType(REVIEW_VIEW)[0] ?? workspace.getLeaf('tab');
+    await leaf.setViewState({ type: REVIEW_VIEW, active: true, state: { planId } });
     await workspace.revealLeaf(leaf);
   }
 

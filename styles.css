@@ -402,3 +402,174 @@
   min-width: 16em;
   margin: 0;
 }
+
+/* Plan review (main-area view) */
+
+.avo-review-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-3);
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--size-4-3);
+}
+
+.avo-review-header p {
+  margin: var(--size-4-1) 0;
+}
+
+.avo-review-toolbar,
+.avo-review-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-4-2);
+}
+
+.avo-review-bulk {
+  padding: var(--size-4-2) var(--size-4-3);
+  border-radius: var(--radius-m);
+  background-color: var(--background-secondary);
+}
+
+.avo-review-threshold {
+  display: flex;
+  align-items: center;
+  gap: var(--size-4-2);
+  font-size: var(--font-ui-small);
+}
+
+.avo-review-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-1);
+}
+
+.avo-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.avo-row {
+  padding: var(--size-4-2) var(--size-4-1);
+  border-bottom: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-row.is-rejected .avo-row-title {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+
+.avo-row.is-accepted .avo-row-title {
+  color: var(--text-normal);
+}
+
+.avo-row-main {
+  display: flex;
+  align-items: center;
+  gap: var(--size-4-2);
+}
+
+.avo-row-summary {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-2-1);
+  height: auto;
+  padding: var(--size-2-2) var(--size-4-2);
+  background: none;
+  box-shadow: none;
+  text-align: left;
+  white-space: normal;
+}
+
+.avo-row-summary:focus-visible {
+  box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
+}
+
+.avo-row-title {
+  font-size: var(--font-ui-small);
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+.avo-row-rationale {
+  font-size: var(--font-ui-smaller);
+}
+
+.avo-row-actions {
+  display: flex;
+  gap: var(--size-2-2);
+}
+
+.avo-decide.is-active {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.avo-link {
+  height: auto;
+  padding: 0 var(--size-2-2);
+  background: none;
+  box-shadow: none;
+  color: var(--text-accent);
+  font-size: var(--font-ui-small);
+}
+
+.avo-review-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-4-2);
+  padding: var(--size-4-2) 0;
+  border-top: var(--border-width) solid var(--background-modifier-border);
+  background-color: var(--background-primary);
+}
+
+/* Previews of what an operation changes */
+
+.avo-preview {
+  margin: var(--size-4-2) 0 var(--size-4-1) var(--size-4-4);
+  font-size: var(--font-ui-small);
+}
+
+.avo-preview p {
+  margin: var(--size-2-2) 0;
+}
+
+.avo-path {
+  font-family: var(--font-monospace);
+  word-break: break-all;
+}
+
+.avo-diff {
+  max-height: 24em;
+  overflow: auto;
+  padding: var(--size-4-2);
+  border-radius: var(--radius-s);
+  background-color: var(--background-secondary);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  white-space: pre-wrap;
+}
+
+.avo-diff-add {
+  color: var(--color-green);
+}
+
+.avo-diff-remove {
+  color: var(--color-red);
+}
+
+.avo-diff-same {
+  color: var(--text-muted);
+}
+
+.avo-diff-gap {
+  color: var(--text-faint);
+  font-style: italic;
+}
