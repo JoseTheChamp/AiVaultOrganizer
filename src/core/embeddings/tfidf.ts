@@ -28,13 +28,18 @@ const STEM_LENGTH = 6;
  * English word families together (garden, gardening), without a language-specific stemmer.
  */
 export function terms(text: string): string[] {
-  const result: string[] = [];
-  const folded = text.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();
-  for (const word of folded.match(WORD) ?? []) {
-    if (word.length < 3 || STOPWORDS.has(word)) continue;
+  return tokens(text).map((token) => token.term);
+}
+
+/** Index terms with the word each came from (lower case, diacritics kept), for showing keywords. */
+export function tokens(text: string): { term: string; word: string }[] {
+  const result: { term: string; word: string }[] = [];
+  for (const word of text.normalize('NFC').toLowerCase().match(WORD) ?? []) {
+    const folded = word.normalize('NFD').replace(/\p{Mn}/gu, '');
+    if (folded.length < 3 || STOPWORDS.has(folded)) continue;
     // A plural "s" would otherwise survive truncation for short words (beds, tags).
-    const singular = word.length >= 4 && word.endsWith('s') && !word.endsWith('ss') ? word.slice(0, -1) : word;
-    result.push(singular.slice(0, STEM_LENGTH));
+    const singular = folded.length >= 4 && folded.endsWith('s') && !folded.endsWith('ss') ? folded.slice(0, -1) : folded;
+    result.push({ term: singular.slice(0, STEM_LENGTH), word });
   }
   return result;
 }
