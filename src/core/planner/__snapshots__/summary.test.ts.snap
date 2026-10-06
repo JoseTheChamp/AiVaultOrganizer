@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`summarizePlan > renders a stable prompt with no note contents 1`] = `
+[
+  {
+    "content": "You summarize a plan that reorganizes a personal knowledge base, for its owner to review before anything changes. Write in Czech, plainly and without hype. The summary is two or three sentences: what the plan does overall, and what deserves a careful look. Highlights are up to five short points the owner should check, most important first.",
+    "role": "system",
+  },
+  {
+    "content": "Method: PARA
+Operations: new folders: 1, moves: 2, flags for you to look at: 2
+Notes per destination: 1 Projekty: 1, 3 Zdroje: 1
+Examples:
+- Flag "Nevím.md" as ambiguous
+- Flag "Dashboard.md" as query breakage
+- Move "Kvásek.md" to "3 Zdroje/Vaření/Kvásek.md"
+- Move "Koncept.md" to "1 Projekty/Diplomová práce/Koncept.md"
+- Create folder "1 Projekty/Diplomová práce"
+Warnings:
+- 1 note could not be placed.
+
+Answer with JSON: {"summary": "...", "highlights": ["..."]}",
+    "role": "user",
+  },
+]
+`;
