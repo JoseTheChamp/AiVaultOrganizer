@@ -25,7 +25,8 @@
     "coverage": "vitest run --coverage",
     "check": "npm run lint && npm run typecheck && npm test",
     "analyze": "tsx eval/cli.ts analyze",
-    "prepare": "husky"
+    "prepare": "husky",
+    "eval": "tsx eval/cli.ts eval"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
