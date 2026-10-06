@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`cluster-label v1 > renders a stable prompt in the vault language 1`] = `
+[
+  {
+    "content": "You name groups of notes from a personal knowledge base. For each group, give a label of one to four words that its owner could use as a topic or folder name, and one sentence describing what the notes are about. Write both in Czech. Use sentence case and no emoji. Base them only on the keywords and sample notes. If a group mixes subjects, name what most notes share.",
+    "role": "system",
+  },
+  {
+    "content": "## Group g1
+Keywords: rajčata, kompost
+Sample notes:
+  Title: Sazenice
+  Text: Sazenice potřebují světlo.
+
+## Group g2
+Keywords: intervaly
+Sample notes:
+  Title: Trénink
+  Text: Intervaly v úterý.
+
+Answer with JSON: {"labels": [{"groupId": "...", "label": "...", "description": "..."}]}, one entry for each group.",
+    "role": "user",
+  },
+]
+`;
