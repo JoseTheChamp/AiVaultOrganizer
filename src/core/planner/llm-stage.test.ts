@@ -94,6 +94,14 @@ describe('createLlmStage', () => {
     expect(narrow.stats.failures).toBe(0);
   });
 
+  it('files a note with the project its subfolder names, wherever the model put it', async () => {
+    const { classification } = await run([answer(['n1', 'resources', 'website', 0.9], ['n2', 'areas', 'Finances', 0.7]), answer(['n1', 'archive', null, 0.9])]);
+    // "Website" is a project in use under projects only, so the note goes there.
+    expect(classification.placements.get('a.md')).toMatchObject({ destination: 'projects', subfolder: 'website', source: 'llm' });
+    // A new subfolder names no item yet: the model's choice stands.
+    expect(classification.placements.get('b.md')).toMatchObject({ destination: 'areas', subfolder: 'Finances' });
+  });
+
   it('leaves a failed batch undecided and counts it', async () => {
     const { classification, stats } = await run(['nonsense', 'still nonsense', answer(['n1', 'resources', 'Notes', 0.6])]);
     expect(classification.placements.get('a.md')?.destination).toBeNull();

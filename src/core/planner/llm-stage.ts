@@ -99,8 +99,9 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
         const answer = byId.get(`n${i + 1}`);
         if (!answer) return;
         // "abstain" is no target, so the note stays undecided.
-        const target = base.targets.find((t) => t.id === answer.destinationId);
-        const subfolder = target && target.layout !== 'flat' && answer.subfolder ? safeFolderName(answer.subfolder) || null : null;
+        const chosen = base.targets.find((t) => t.id === answer.destinationId);
+        const subfolder = chosen && chosen.layout !== 'flat' && answer.subfolder ? safeFolderName(answer.subfolder) || null : null;
+        const target = chosen && subfolder ? (itemHome(base.targets, chosen, subfolder) ?? chosen) : chosen;
         decisions.set(note.path, {
           destination: target ? target.id : null,
           subfolder,
@@ -182,6 +183,21 @@ const SUBFOLDER_RESERVE = 100;
 function offerSubfolder(target: ClassifyTarget, name: string): void {
   if (target.subfolders.length >= MAX_SUBFOLDERS || target.subfolders.some((existing) => folderKey(existing) === folderKey(name))) return;
   target.subfolders.push(name);
+}
+
+/**
+ * A project or an area has one folder. When the model names an item's subfolder under another
+ * destination (a project's checklist filed as knowledge, a finished project's note under active
+ * ones), the note goes where that item lives. The model recognizes what a note belongs to more
+ * reliably than how the method sorts it: on the M8 evals it named the right project for most ACE
+ * notes it misfiled. Only an unambiguous item counts: in use under exactly one item destination,
+ * and not under the one chosen.
+ */
+function itemHome(targets: readonly ClassifyTarget[], chosen: ClassifyTarget, subfolder: string): ClassifyTarget | null {
+  const key = folderKey(subfolder);
+  if (chosen.subfolders.some((name) => folderKey(name) === key)) return null;
+  const homes = targets.filter((t) => t !== chosen && t.layout === 'subfolder-per-item' && t.subfolders.some((name) => folderKey(name) === key));
+  return homes.length === 1 ? (homes[0] as ClassifyTarget) : null;
 }
 
 /** Which notes a kind destination takes, in words: its rules test a note type or a dated file name. */
