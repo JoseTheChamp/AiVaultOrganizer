@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`classify-notes v1 > renders a stable prompt 1`] = `
+[
+  {
+    "content": "You file notes into the destinations of a personal knowledge base organized with PARA. Projects have a goal and an end. For each note choose the one destination it belongs to, from the list. For destinations with subfolders, also give the subfolder: reuse an existing one when it fits, otherwise propose a short name of one to four words in the language of the notes; use null for flat destinations. If no destination clearly fits, answer "abstain" instead of guessing. Confidence is your probability from 0 to 1 that the destination is right. Write the rationale in Czech, in at most 15 words.",
+    "role": "system",
+  },
+  {
+    "content": "## Destinations
+- projects: Aktivní projekty. (one subfolder per project or item)
+  Existing subfolders: Diplomová práce
+  Example notes: Diplomová práce
+- archive: Neaktivní věci. (flat, no subfolders)
+
+## Notes
+### Note n1
+Title: Koncept
+Properties: type: note
+Text: Koncept komunitního centra v textilce.
+
+Answer with JSON: {"notes": [{"noteId": "...", "destinationId": "...", "subfolder": "..." or null, "confidence": 0.8, "rationale": "..."}]}, one entry for each note.",
+    "role": "user",
+  },
+]
+`;

@@ -52,8 +52,9 @@ export interface EndpointPreset {
  * Known endpoints. Free paths first: local servers need no key and send nothing anywhere. Cloud
  * free tiers may use inputs for training; the consent step warns before private notes go there.
  */
+// Ollama runs a 4,096-token context unless OLLAMA_CONTEXT_LENGTH says otherwise; prompts must fit it.
 export const ENDPOINT_PRESETS: EndpointPreset[] = [
-  { id: 'ollama', label: 'Ollama (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:11434/v1', chatModel: 'qwen3:8b', embeddingModel: 'bge-m3', needsKey: false, local: true, maxContext: 8192, reasoning: 'none' },
+  { id: 'ollama', label: 'Ollama (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:11434/v1', chatModel: 'qwen3:8b', embeddingModel: 'bge-m3', needsKey: false, local: true, maxContext: 4096, reasoning: 'none' },
   { id: 'lm-studio', label: 'LM Studio (local)', kind: 'openai-compatible', baseUrl: 'http://localhost:1234/v1', chatModel: '', embeddingModel: '', needsKey: false, local: true, maxContext: 8192 },
   { id: 'openai', label: 'OpenAI', kind: 'openai-compatible', baseUrl: 'https://api.openai.com/v1', chatModel: 'gpt-4.1-mini', embeddingModel: 'text-embedding-3-small', needsKey: true, local: false, maxContext: 128000 },
   { id: 'anthropic', label: 'Anthropic', kind: 'anthropic', baseUrl: 'https://api.anthropic.com', chatModel: 'claude-opus-5-5', embeddingModel: null, needsKey: true, local: false, maxContext: 200000 },
