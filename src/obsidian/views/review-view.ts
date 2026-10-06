@@ -1,5 +1,6 @@
 import { ItemView, type ViewStateResult, type WorkspaceLeaf } from 'obsidian';
 import { previewOperation } from '../../core/apply/preview';
+import { analyzeVault } from '../../core/analysis/analyze';
 import { validatePlan } from '../../core/apply/validate';
 import { loadCharter } from '../../core/charter/load';
 import type { Plan } from '../../core/model/plan';
@@ -7,9 +8,11 @@ import { type MountedComponent, mountComponent } from '../../ui/mount';
 import { reactive } from '../../ui/reactive.svelte';
 import PlanReview from '../../ui/review/PlanReview.svelte';
 import { type ReviewActions, type ReviewModel, reviewItems } from '../../ui/review/review-state';
+import { runReportState } from '../../ui/review/run-report';
+import { confirmUndo } from '../flows/backup-undo';
 import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import { exclusive } from '../flows/exclusive';
-import { applyPlan, charterConstraints } from '../flows/review';
+import { charterConstraints, runPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
 
 export const REVIEW_VIEW = 'ai-vault-organizer-review';
@@ -29,6 +32,8 @@ export class ReviewView extends ItemView {
   private component: MountedComponent | null = null;
   private model: ReviewModel | null = null;
   private saving: Promise<unknown> = Promise.resolve();
+  /** The running apply's cancel flag, checked by the executor between batches. */
+  private signal = { aborted: false };
 
   constructor(
     leaf: WorkspaceLeaf,
@@ -66,8 +71,8 @@ export class ReviewView extends ItemView {
     this.registerEvent(
       this.plugin.changes.on('changed', () => {
         if (this.model) this.model.busy = this.plugin.busy;
-        // A run updated the plan's statuses: show what is left to decide.
-        if (!this.plugin.busy) void this.reload();
+        // A run updated the plan's statuses: show what is left to decide (after its report).
+        if (!this.plugin.busy && !this.model?.apply) void this.reload();
       }),
     );
     await this.reload();
@@ -100,6 +105,7 @@ export class ReviewView extends ItemView {
       linksAutoUpdateOff: isLinkAutoUpdateEnabled(this.app) === false,
       busy: this.plugin.busy,
       threshold: 0.8,
+      apply: this.model?.apply ?? null,
     };
     if (this.model) {
       Object.assign(this.model, fields);
@@ -121,13 +127,52 @@ export class ReviewView extends ItemView {
     return {
       preview: (op) => previewOperation(op, { read: (path) => reader.read(path), linkText: (target, source) => links.linkText(target, source) }),
       save: (decided) => void this.save(decided),
-      apply: (decided) =>
-        void (async () => {
-          await this.save(decided);
-          if (this.plan) await exclusive(plugin, () => applyPlan(plugin, this.merged(decided)));
-        })(),
+      apply: (decided) => void this.apply(decided),
+      cancelApply: () => {
+        this.signal.aborted = true;
+        if (this.model?.apply) this.model.apply.cancelling = true;
+      },
+      undoRun: () => void confirmUndo(plugin),
+      closeApply: () => {
+        if (this.model) this.model.apply = null;
+        void this.reload();
+      },
       openNote: (path) => void this.app.workspace.openLinkText(path, '', 'tab'),
     };
+  }
+
+  /**
+   * Applies the accepted changes with progress and a report in the view (PLAN §9.1): the health
+   * score before and after, problems by operation, the backup and undo.
+   */
+  private async apply(decided: Plan): Promise<void> {
+    await this.save(decided);
+    const model = this.model;
+    if (!this.plan || !model) return;
+    const plan = this.merged(decided);
+    const { reader } = this.plugin.services;
+    this.signal = { aborted: false };
+    const signal = this.signal;
+    await exclusive(this.plugin, async () => {
+      model.apply = { phase: 'validating', done: 0, total: 0, cancelling: false, report: null, invalid: null };
+      const health = async () => analyzeVault(await reader.snapshot(), { now: Date.now() }).health.score;
+      const before = await health();
+      const outcome = await runPlan(this.plugin, plan, undefined, {
+        signal,
+        onPhase: (phase) => {
+          if (model.apply) model.apply.phase = phase;
+        },
+        onProgress: ({ done, total }) => {
+          if (model.apply) Object.assign(model.apply, { done, total });
+        },
+      });
+      if (outcome.kind === 'invalid') {
+        model.apply = { ...(model.apply ?? { done: 0, total: 0, cancelling: false }), phase: 'done', report: null, invalid: outcome.validation.issues.filter((i) => i.severity === 'error').map((i) => i.message) };
+        return;
+      }
+      const report = runReportState({ report: outcome.report, plan: outcome.plan, backupKey: outcome.backup.key, health: { before, after: await health() } });
+      model.apply = { ...(model.apply ?? { done: 0, total: 0, cancelling: false }), phase: 'done', report, invalid: null };
+    });
   }
 
   /** The stored plan with the reviewer's statuses on its open operations. */

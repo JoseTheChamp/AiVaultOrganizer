@@ -3,6 +3,7 @@
   import { OPERATION_SOURCES } from '../../core/model/operation';
   import { plural } from '../../core/model/text';
   import { percent } from '../format';
+  import ApplyProgress from './ApplyProgress.svelte';
   import ReviewRow from './ReviewRow.svelte';
   import {
     acceptAbove,
@@ -104,6 +105,9 @@
 </script>
 
 <div class="avo-review-view">
+  {#if model.apply}
+    <ApplyProgress state={model.apply} cancel={actions.cancelApply} undo={actions.undoRun} close={actions.closeApply} />
+  {:else}
   <header class="avo-review-header">
     {#if model.plan.summary}
       <p>{model.plan.summary.summary}</p>
@@ -201,7 +205,8 @@
     <span class="avo-muted">{counts.accepted} accepted, {counts.rejected} rejected, {counts.pending} undecided</span>
     <span class="avo-wizard-spacer"></span>
     <button type="button" class="mod-cta" disabled={!canApply} onclick={() => actions.apply(decidedPlan(model.plan, decisions))}>
-      {model.busy ? 'Applying…' : `Apply ${plural(counts.accepted, 'accepted change')}`}
+      {model.busy ? 'Another run is changing the vault…' : `Apply ${plural(counts.accepted, 'accepted change')}`}
     </button>
   </footer>
+  {/if}
 </div>

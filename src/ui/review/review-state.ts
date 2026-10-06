@@ -5,6 +5,7 @@ import { type Operation, type OperationSource, PHASE } from '../../core/model/op
 import { describeOperation, KIND_LABELS } from '../../core/model/operation-text';
 import { isInFolder } from '../../core/model/paths';
 import type { Plan } from '../../core/model/plan';
+import type { ApplyState } from './run-report';
 
 /** A reviewer's decision on one operation; `pending` operations are neither applied nor dropped. */
 export type Decision = 'pending' | 'accepted' | 'rejected';
@@ -142,6 +143,8 @@ export interface ReviewModel {
   busy: boolean;
   /** Starting value of "accept all at or above". */
   threshold: number;
+  /** A run started from this review, while it runs and until its report is closed. */
+  apply: ApplyState | null;
 }
 
 /** What the review's buttons do; the view wires them to the plugin. */
@@ -150,5 +153,11 @@ export interface ReviewActions {
   /** Decisions changed: keep them with the pending plan. */
   save: (plan: Plan) => void;
   apply: (plan: Plan) => void;
+  /** Stops the running apply after its current batch. */
+  cancelApply: () => void;
+  /** Undoes the run just reported. */
+  undoRun: () => void;
+  /** Leaves the report and returns to what is left to review. */
+  closeApply: () => void;
   openNote: (path: string) => void;
 }

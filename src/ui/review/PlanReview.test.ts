@@ -20,14 +20,17 @@ const plan = createPlan({
   summary: { summary: 'This plan moves 2 notes.', highlights: ['1 note could not be placed.'], source: 'rules' },
 });
 
-function setup(overrides: Partial<ReviewModel> = {}) {
+function setup(overrides: Partial<Omit<ReviewModel, 'apply'>> & { apply?: ReviewModel['apply'] } = {}) {
   const validation = { ok: true, issues: [], staleOpIds: [] };
-  const model = reactive<ReviewModel>({ plan, items: reviewItems(plan, validation, presetCharter('para', 'en')), validation, linksAutoUpdateOff: false, busy: false, threshold: 0.8, ...overrides });
+  const model = reactive<ReviewModel>({ plan, items: reviewItems(plan, validation, presetCharter('para', 'en')), validation, linksAutoUpdateOff: false, busy: false, threshold: 0.8, apply: null, ...overrides });
   const actions = {
     preview: vi.fn<(op: typeof move) => Promise<OperationPreview>>().mockResolvedValue({ kind: 'move', from: 'Plan.md', to: '1 Projects/Website/Plan.md' }),
     save: vi.fn<(plan: Plan) => void>(),
     apply: vi.fn<(plan: Plan) => void>(),
     openNote: vi.fn<(path: string) => void>(),
+    cancelApply: vi.fn<() => void>(),
+    undoRun: vi.fn<() => void>(),
+    closeApply: vi.fn<() => void>(),
   } satisfies ReviewActions;
   render(PlanReview, { model, actions });
   return { model, actions };
