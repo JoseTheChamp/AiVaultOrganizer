@@ -138,7 +138,10 @@ also enter prices per million tokens to see cost estimates; no prices are built 
 
 ## Evals
 
-_Coming with milestone 6._
+AI features are measured before they ship. `npm run eval` runs every task over synthetic English and
+Czech fixture vaults with known answers: placement by each method, link suggestions, similarity,
+duplicates and safety (apply and undo). CI fails on regressions. Methodology, the latest numbers and
+what they mean are in [`docs/EVALS.md`](docs/EVALS.md).
 
 ## Architecture
 
