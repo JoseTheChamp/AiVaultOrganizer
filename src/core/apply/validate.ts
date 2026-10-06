@@ -193,6 +193,7 @@ function simulate(ordered: Operation[], snapshot: VaultSnapshot, add: Add): void
         break;
       }
       case 'setProperty':
+      case 'renameProperty':
       case 'addTags':
       case 'replaceTag':
       case 'updateGeneratedSection':

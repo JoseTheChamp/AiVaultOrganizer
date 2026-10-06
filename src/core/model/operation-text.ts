@@ -9,6 +9,8 @@ export function describeOperation(op: Operation): string {
       return `Move "${op.from}" to "${op.to}"`;
     case 'setProperty':
       return `Set "${op.key}" to ${JSON.stringify(op.value)} in "${op.path}"`;
+    case 'renameProperty':
+      return `Rename property "${op.from}" to "${op.to}" in "${op.path}"`;
     case 'addTags':
       return `Add ${op.tags.map((tag) => `#${tag}`).join(', ')} to "${op.path}"`;
     case 'replaceTag':
@@ -30,6 +32,7 @@ export const KIND_LABELS: Record<OperationKind, string> = {
   createFolder: 'New folders',
   move: 'Moves',
   setProperty: 'Properties',
+  renameProperty: 'Property renames',
   addTags: 'Tags',
   replaceTag: 'Tag renames',
   addRelatedLinks: 'Related links',

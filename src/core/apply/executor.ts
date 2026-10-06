@@ -164,6 +164,8 @@ export class ApplyExecutor {
         return this.move(op);
       case 'setProperty':
         return this.editContent(op.path, () => this.deps.writer.processFrontmatter(op.path, (fm) => (fm[op.key] = op.value)));
+      case 'renameProperty':
+        return this.editContent(op.path, () => this.deps.writer.processFrontmatter(op.path, (fm) => renameProperty(fm, op.from, op.to)));
       case 'addTags':
         return this.editContent(op.path, () => this.deps.writer.processFrontmatter(op.path, (fm) => void addTagsToFrontmatter(fm, op.tags)));
       case 'replaceTag':
@@ -277,4 +279,16 @@ export class ApplyExecutor {
     if (after === before) return null;
     return [{ type: 'restoreContent', path, beforeContent: before, afterHash: await hasher.sha256(after) }];
   }
+}
+
+/**
+ * Renames a frontmatter key in place, keeping its value and its position among the keys. A key
+ * already present under the new name is never overwritten: the operation fails instead.
+ */
+function renameProperty(frontmatter: Record<string, unknown>, from: string, to: string): void {
+  if (!(from in frontmatter) || from === to) return;
+  if (to in frontmatter) throw new OperationError(`The note already has a property "${to}"; "${from}" was left as it is.`);
+  const entries = Object.entries(frontmatter).map(([key, value]) => [key === from ? to : key, value] as const);
+  for (const key of Object.keys(frontmatter)) delete frontmatter[key];
+  for (const [key, value] of entries) frontmatter[key] = value;
 }

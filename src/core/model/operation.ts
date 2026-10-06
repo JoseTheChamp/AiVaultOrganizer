@@ -33,6 +33,8 @@ export const operationSchema = z.discriminatedUnion('kind', [
   z.object({ ...base, kind: z.literal('createFolder'), path: vaultPath }),
   z.object({ ...base, kind: z.literal('move'), from: vaultPath, to: vaultPath }),
   z.object({ ...base, kind: z.literal('setProperty'), path: vaultPath, key: z.string().min(1), value: z.json() }),
+  /** Renames a property key, keeping its value and position (e.g. Type to type). */
+  z.object({ ...base, kind: z.literal('renameProperty'), path: vaultPath, from: z.string().min(1), to: z.string().min(1) }),
   z.object({ ...base, kind: z.literal('addTags'), path: vaultPath, tags: z.array(z.string().min(1)).min(1) }),
   z.object({ ...base, kind: z.literal('replaceTag'), path: vaultPath, from: z.string().min(1), to: z.string().min(1) }),
   z.object({
@@ -86,6 +88,7 @@ export const PHASE: Record<OperationKind, number> = {
   createFolder: 0,
   move: 1,
   setProperty: 2,
+  renameProperty: 2,
   addTags: 2,
   replaceTag: 2,
   addRelatedLinks: 3,
@@ -129,6 +132,7 @@ export function touchedPaths(op: Operation): string[] {
       return [op.path, ...(op.related ?? [])];
     case 'createFolder':
     case 'setProperty':
+    case 'renameProperty':
     case 'addTags':
     case 'replaceTag':
     case 'createNote':
