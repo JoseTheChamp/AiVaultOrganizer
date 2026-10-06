@@ -1,1 +1,1 @@
-npx nano-staged
+node scripts/lint-staged-files.mjs
