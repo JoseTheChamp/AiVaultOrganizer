@@ -71,6 +71,15 @@
     const next = STEPS[index + offset];
     if (next) step = next.id;
   }
+
+  // Each step announces itself: focus moves to its heading, so screen readers read the new step.
+  let heading = $state<HTMLHeadingElement | null>(null);
+  let moved = false;
+  $effect(() => {
+    void step;
+    if (moved) heading?.focus();
+    moved = true;
+  });
 </script>
 
 <div class="avo-wizard">
@@ -83,6 +92,7 @@
   </ol>
 
   <div class="avo-wizard-body">
+    <h3 class="avo-step-title" tabindex="-1" bind:this={heading}>Step {index + 1} of {STEPS.length}: {STEPS[index]?.label}</h3>
     {#if step === 'diagnose'}
       <DiagnoseStep analysis={input.analysis} />
     {:else if step === 'method'}

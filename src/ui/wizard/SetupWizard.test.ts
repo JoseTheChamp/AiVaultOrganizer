@@ -77,4 +77,10 @@ describe('SetupWizard', () => {
     await next();
     expect(screen.queryByRole('button', { name: 'Ask for a draft' })).toBeNull();
   });
+
+  it('moves focus to each new step, so screen readers announce it', async () => {
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
+    await next();
+    expect(document.activeElement?.textContent).toBe('Step 2 of 4: Method');
+  });
 });

@@ -8,12 +8,14 @@
 
   let { preview, openNote }: Props = $props();
   const MARK = { same: ' ', add: '+', remove: '−' } as const;
+  // What the sign means, for screen readers.
+  const SPOKEN = { add: 'Added: ', remove: 'Removed: ' } as const;
 </script>
 
 <div class="avo-preview">
   {#if preview.kind === 'move'}
-    <p><span class="avo-path avo-diff-remove">{preview.from}</span></p>
-    <p><span class="avo-path avo-diff-add">{preview.to}</span></p>
+    <p><span class="avo-visually-hidden">From </span><span class="avo-path avo-diff-remove">{preview.from}</span></p>
+    <p><span class="avo-visually-hidden">To </span><span class="avo-path avo-diff-add">{preview.to}</span></p>
     <p class="avo-muted">Obsidian updates links to the note when it moves.</p>
   {:else if preview.kind === 'folder'}
     <p>Creates the folder <span class="avo-path">{preview.path}</span>.</p>
@@ -26,7 +28,10 @@
         {#if line.type === 'gap'}
           <div class="avo-diff-gap">… {line.count} unchanged {line.count === 1 ? 'line' : 'lines'}</div>
         {:else}
-          <div class={`avo-diff-${line.type}`}><span aria-hidden="true">{MARK[line.type]}</span> {line.text}</div>
+          <div class={`avo-diff-${line.type}`}>
+            <span aria-hidden="true">{MARK[line.type]}</span>{#if line.type !== 'same'}<span class="avo-visually-hidden">{SPOKEN[line.type]}</span>{/if}
+            {line.text}
+          </div>
         {/if}
       {/each}
     </div>

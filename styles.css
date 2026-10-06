@@ -4,6 +4,25 @@
  * Every class is prefixed with `avo-` to avoid clashing with themes and other plugins.
  */
 
+/* Text for screen readers only (what a colour or a sign shows to sighted users). */
+.avo-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.avo-step-title {
+  margin: 0 0 var(--size-4-2);
+  font-size: var(--font-ui-medium);
+}
+
+.avo-step-title:focus {
+  outline: none;
+}
+
 .avo-muted {
   color: var(--text-muted);
   font-size: var(--font-ui-small);
@@ -195,6 +214,7 @@
   min-width: 3.5em;
   padding: 0 var(--size-4-1);
   border-radius: var(--radius-s);
+  color: var(--text-normal);
   font-size: var(--font-ui-smaller);
   font-variant-numeric: tabular-nums;
   text-align: center;
@@ -202,15 +222,15 @@
 }
 
 .avo-badge-high {
-  color: var(--color-green);
+  background-color: rgba(var(--color-green-rgb), 0.2);
 }
 
 .avo-badge-medium {
-  color: var(--color-yellow);
+  background-color: rgba(var(--color-yellow-rgb), 0.25);
 }
 
 .avo-badge-low {
-  color: var(--color-red);
+  background-color: rgba(var(--color-red-rgb), 0.2);
 }
 
 /* Dashboard (sidebar view) */
@@ -456,6 +476,14 @@
   border-bottom: var(--border-width) solid var(--background-modifier-border);
 }
 
+.avo-row.is-accepted {
+  box-shadow: inset 3px 0 0 var(--interactive-accent);
+}
+
+.avo-row.is-rejected {
+  box-shadow: inset 3px 0 0 var(--background-modifier-border);
+}
+
 .avo-row.is-rejected .avo-row-title {
   color: var(--text-faint);
   text-decoration: line-through;
@@ -502,6 +530,12 @@
 .avo-row-actions {
   display: flex;
   gap: var(--size-2-2);
+}
+
+.avo-link:focus-visible,
+.avo-decide:focus-visible,
+.avo-choice:focus-within {
+  box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
 }
 
 .avo-decide.is-active {
@@ -557,12 +591,13 @@
   white-space: pre-wrap;
 }
 
+/* Tinted backgrounds, not coloured text: readable in light and dark themes alike. */
 .avo-diff-add {
-  color: var(--color-green);
+  background-color: rgba(var(--color-green-rgb), 0.15);
 }
 
 .avo-diff-remove {
-  color: var(--color-red);
+  background-color: rgba(var(--color-red-rgb), 0.15);
 }
 
 .avo-diff-same {
