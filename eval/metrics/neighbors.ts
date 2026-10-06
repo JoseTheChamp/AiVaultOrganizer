@@ -1,10 +1,12 @@
 export interface NeighborQuality {
-  /** Notes that had at least one neighbour. */
-  notes: number;
+  /** Notes that were queried. */
+  queries: number;
+  /** Queried notes that got at least one neighbour. */
+  answered: number;
   k: number;
-  /** Mean share of a note's top-k neighbours that share its topic (1 = perfect). */
+  /** Precision@k: mean share of the k slots filled by a same-topic note (missing results count as misses). */
   precision: number;
-  /** Mean share of top-k neighbours that share the topic but are written in the other language. */
+  /** Mean share of the k slots filled by a same-topic note written in the other language. */
   crossLanguage: number;
 }
 
@@ -18,16 +20,16 @@ export function neighborQuality(
   languages: Readonly<Record<string, string>>,
   k: number,
 ): NeighborQuality {
-  let notes = 0;
+  let answered = 0;
   let precision = 0;
   let crossLanguage = 0;
   for (const [path, list] of neighbors) {
     const top = list.slice(0, k);
-    if (top.length === 0) continue;
-    notes++;
+    if (top.length > 0) answered++;
     const same = top.filter((other) => topics[other] === topics[path]);
-    precision += same.length / top.length;
-    crossLanguage += same.filter((other) => languages[other] !== languages[path]).length / top.length;
+    precision += same.length / k;
+    crossLanguage += same.filter((other) => languages[other] !== languages[path]).length / k;
   }
-  return { notes, k, precision: notes ? precision / notes : 0, crossLanguage: notes ? crossLanguage / notes : 0 };
+  const queries = neighbors.size;
+  return { queries, answered, k, precision: queries ? precision / queries : 0, crossLanguage: queries ? crossLanguage / queries : 0 };
 }

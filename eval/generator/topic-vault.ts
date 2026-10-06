@@ -55,14 +55,15 @@ export function generateTopicVault(options: Partial<TopicVaultOptions> = {}): To
     } else {
       lines.push(sentences.join(' '));
     }
-    const siblings = byTopic.get(topic.id) ?? [];
+    // Links stay within a language, so word overlap across languages comes only from shared names.
+    const siblings = byTopic.get(`${topic.id}/${language}`) ?? [];
     if (siblings.length > 0 && random() < 0.3) lines.push('', `Related: [[${pick(random, siblings)}]]`);
     if (random() < 0.3) lines.push('', `#${pick(random, material.tags)}`);
 
     files[path] = `${lines.join('\n')}\n`;
     topics[path] = topic.id;
     languages[path] = language;
-    byTopic.set(topic.id, [...siblings, title]);
+    byTopic.set(`${topic.id}/${language}`, [...siblings, title]);
   }
   return { files, topics, languages };
 }

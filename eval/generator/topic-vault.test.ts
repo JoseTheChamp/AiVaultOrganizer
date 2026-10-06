@@ -47,6 +47,7 @@ describe('neighborQuality', () => {
       ['c', ['a', 'b']],
       ['d', []],
     ]);
-    expect(neighborQuality(neighbors, topics, languages, 2)).toEqual({ notes: 2, k: 2, precision: 0.25, crossLanguage: 0.25 });
+    // a: 1 of 2 slots same topic (b, other language); c: none; d: no results at all.
+    expect(neighborQuality(neighbors, topics, languages, 2)).toEqual({ queries: 3, answered: 2, k: 2, precision: 0.5 / 3, crossLanguage: 0.5 / 3 });
   });
 });
