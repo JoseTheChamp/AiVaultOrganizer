@@ -70,8 +70,11 @@ export interface EvalResult {
 }
 
 const K = 5;
-/** Baseline duplicate detectors: a nearest neighbour at least this similar is called a duplicate. */
-const DUPLICATE_THRESHOLD: Record<SimilarityMethod, number> = { words: 0.8, embeddings: 0.95 };
+/**
+ * Baseline duplicate detectors until M7 adds MinHash and title checks: a nearest neighbour at least
+ * this similar is called a duplicate (0.92 for embeddings is the PLAN §7.4 value).
+ */
+const DUPLICATE_THRESHOLD: Record<SimilarityMethod, number> = { words: 0.8, embeddings: 0.92 };
 
 type Search = (path: string, k: number, exclude: ReadonlySet<string>) => Neighbor[];
 

@@ -11,6 +11,7 @@ dev-vault/
 # Test and eval output
 coverage/
 eval/out/
+eval/reports/
 
 # Environment and secrets
 .env

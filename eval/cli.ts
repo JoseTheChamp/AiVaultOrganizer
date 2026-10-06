@@ -2,8 +2,8 @@
  * Node CLI over the same core the plugin runs. Commands:
  *
  *   npm run analyze -- <vault-folder> [--json]   tier 0 diagnostics, identical to "Analyze vault"
- *   npm run eval -- [--fixture=a,b] [--tier=0|1|2] [--embed-model=bge-m3] [--record]
- *                                                evals over the fixtures (replays stored embeddings)
+ *   npm run eval -- [--fixture=a,b] [--tier=0|1|2] [--embed-model=bge-m3] [--record] [--out=dir]
+ *                                                evals over the fixtures; reports in eval/reports
  *   tsx eval/cli.ts build-fixtures [name …]        rebuilds the committed eval fixtures (or the named ones)
  *   tsx eval/cli.ts generate-topics <folder> [--notes=600] [--seed=1]
  *                                                writes the synthetic topic vault and its ground truth
@@ -16,7 +16,8 @@ import { NodeFsVault } from './adapters/node-vault';
 import { GROUND_TRUTH_FILE, loadFixture } from './fixture/ground-truth';
 import { buildFixture, FIXTURES, FIXTURES_DIR, writeFixture } from './fixture/specs';
 import { generateTopicVault } from './generator/topic-vault';
-import { runEval } from './runner/run-eval';
+import { writeReports } from './runner/report';
+import { type EvalResult, runEval } from './runner/run-eval';
 import { summarize } from './runner/summary';
 
 async function main(argv: string[]): Promise<number> {
@@ -43,6 +44,7 @@ async function evalCommand(args: string[]): Promise<number> {
   }
   const record = args.includes('--record');
   const embedModel = flag('embed-model') ?? 'bge-m3';
+  const results: EvalResult[] = [];
   for (const name of names) {
     const spec = FIXTURES[name];
     if (!spec) {
@@ -54,7 +56,10 @@ async function evalCommand(args: string[]): Promise<number> {
     const indexDir = spec.committed ? path.join('eval', 'cassettes', 'index', name) : path.join('eval', 'out', 'index', name);
     const result = await runEval(await loadFixture(root), { tier, record, embedModel, indexDir });
     process.stdout.write(summarize(result));
+    results.push(result);
   }
+  const written = await writeReports(results, flag('out') ?? path.join('eval', 'reports'), new Date().toISOString().slice(0, 10));
+  process.stdout.write(`Reports: ${written.filter((file) => file.endsWith('.md')).join(', ')}\n`);
   return 0;
 }
 
