@@ -19,6 +19,8 @@ export class Meter {
   calls = 0;
   inputTokens = 0;
   outputTokens = 0;
+  /** Requests a replayed cassette had no answer for (tasks treat these as failed calls). */
+  missing = 0;
 }
 
 class MeteredEmbeddings implements EmbeddingProvider {
@@ -59,10 +61,15 @@ class MeteredChat implements ChatProvider {
   }
   async chat(request: ChatRequest): Promise<ChatResponse> {
     this.meter.calls++;
-    const response = await this.inner.chat(request);
-    this.meter.inputTokens += response.usage.inputTokens;
-    this.meter.outputTokens += response.usage.outputTokens;
-    return response;
+    try {
+      const response = await this.inner.chat(request);
+      this.meter.inputTokens += response.usage.inputTokens;
+      this.meter.outputTokens += response.usage.outputTokens;
+      return response;
+    } catch (error) {
+      if (isMissingRecording(error)) this.meter.missing++;
+      throw error;
+    }
   }
 }
 
@@ -77,7 +84,7 @@ export function evalEmbeddings(model: string, record: boolean, meter: Meter): Em
 
 export interface EvalChat {
   provider: ChatProvider;
-  /** Saves new interactions after recording. */
+  /** Saves new interactions after recording; safe to call after every task. */
   finish(): Promise<void>;
 }
 

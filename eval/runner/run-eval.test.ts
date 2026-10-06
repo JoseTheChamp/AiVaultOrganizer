@@ -22,10 +22,15 @@ describe('runEval on en-small', { timeout: 120_000 }, () => {
     expect(Object.keys(result.clusters).sort()).toEqual(['embeddings', 'folders', 'words']);
     expect(result.cost.embeddings?.calls).toBe(0);
     for (const method of FIXTURE_METHOD_KEYS) {
+      expect(Object.keys(result.classification[method])).toEqual(['rules', 'words', 'embeddings']);
       // Rules are deterministic: whatever they decide must be right.
-      const { coverage, precision } = result.classification[method];
-      if (coverage > 0) expect(precision).toBe(1);
+      const rules = result.classification[method].rules;
+      if (rules && rules.coverage > 0) expect(rules.precision).toBe(1);
+      // Each stage only adds decisions.
+      expect(result.classification[method].embeddings?.coverage).toBeGreaterThanOrEqual(rules?.coverage ?? 0);
     }
+    expect(result.plan).toMatchObject({ errors: 0, failed: 0, brokenLinks: 0, undoExact: true, summarySource: 'rules' });
+    expect(result.plan.operations.move).toBeGreaterThan(0);
     expect(result.stubs.recall).toBe(1);
     expect(result.safety).toMatchObject({ brokenLinks: 0, undoExact: true, failed: 0 });
     expect(result.safety.applied).toBe(result.safety.operations);
@@ -38,12 +43,16 @@ describe('runEval on en-small', { timeout: 120_000 }, () => {
     expect(result.links.verified?.suggestions).toBeGreaterThan(0);
     expect(result.labels?.failures).toBe(0);
     expect(result.cost.chat?.calls).toBeGreaterThan(0);
+    for (const method of FIXTURE_METHOD_KEYS) expect(result.classification[method].llm?.decidedBy.llm).toBeGreaterThan(0);
+    expect(result.plan).toMatchObject({ errors: 0, failed: 0, brokenLinks: 0, undoExact: true, summarySource: 'model' });
   });
 
   it('skips tiers with a notice when nothing was recorded for the models', async () => {
     const result = await runEval(fixture, { ...options, tier: 2, embedModel: 'not-recorded', chatModel: 'not-recorded' });
     expect(Object.keys(result.links)).toEqual(['words']);
-    expect(result.notices).toEqual([expect.stringContaining('no stored not-recorded vectors'), expect.stringContaining('no recorded not-recorded answers')]);
+    expect(result.notices).toEqual([expect.stringContaining('no stored not-recorded vectors'), expect.stringContaining('no recorded not-recorded answers for cluster labels, verified links, classification, plan')]);
+    expect(result.classification.para.llm).toBeUndefined();
+    expect(result.plan).toMatchObject({ undoExact: true, summarySource: 'rules' });
   });
 
   it('runs only rules and words at tier 0', async () => {

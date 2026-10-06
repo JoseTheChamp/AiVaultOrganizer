@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import * as z from 'zod';
-import type { EvalResult } from './run-eval';
+import { FIXTURE_METHOD_KEYS } from '../fixture/ground-truth';
+import { type EvalResult, STAGES } from './run-eval';
 
 /**
  * Regression thresholds for the replayed evals (PLAN §8.3): per fixture, metric paths into an
@@ -17,7 +18,11 @@ export const THRESHOLDS_FILE = 'eval/thresholds.json';
 
 /** Metrics pinned in CI. Floors unless listed as ceilings. */
 const PINNED = [
-  ...['para', 'ace', 'jd', 'flat', 'topics'].flatMap((method) => [`classification.${method}.coverage`, `classification.${method}.precision`]),
+  ...FIXTURE_METHOD_KEYS.flatMap((method) => [
+    ...STAGES.flatMap((stage) => [`classification.${method}.${stage}.coverage`, `classification.${method}.${stage}.precision`]),
+    `classification.${method}.llm.accuracy`,
+    `classification.${method}.llm.subfolderAccuracy`,
+  ]),
   ...['words', 'embeddings'].flatMap((method) => [
     `links.${method}.precision`,
     `links.${method}.heldOutRecall`,
@@ -31,9 +36,19 @@ const PINNED = [
   'links.verified.heldOutRecall',
   'stubs.precision',
   'stubs.recall',
+  'plan.undoExact',
   'safety.undoExact',
 ];
-const CEILINGS = ['safety.brokenLinks', 'safety.failed', 'labels.failures'];
+const CEILINGS = [
+  // Calibration: the confidences the review shows must keep meaning what they say.
+  ...FIXTURE_METHOD_KEYS.map((method) => `classification.${method}.llm.ece`),
+  'plan.errors',
+  'plan.failed',
+  'plan.brokenLinks',
+  'safety.brokenLinks',
+  'safety.failed',
+  'labels.failures',
+];
 
 /** A metric by its dotted path; booleans count as 1 and 0. Undefined when the task did not run. */
 export function metricAt(result: EvalResult, path: string): number | undefined {

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { METHOD_LABELS } from '../../src/core/model/methods';
 import { FIXTURE_METHOD_KEYS, FIXTURE_METHODS } from '../fixture/ground-truth';
 import { per100Notes } from '../metrics/cost';
-import type { EvalResult } from './run-eval';
+import { type EvalResult, STAGES } from './run-eval';
 
 const pct = (value: number): string => `${(value * 100).toFixed(1)} %`;
 const num = (value: number): string => value.toFixed(3);
@@ -20,14 +20,19 @@ export function formatReport(result: EvalResult): string {
     '',
     `${result.notes} notes in ${result.language === 'cs' ? 'Czech' : 'English'}. Models: ${models}.`,
     '',
-    '## Classification (rules)',
+    '## Classification',
+    '',
+    'Stages: rules alone; rules and kNN over word statistics; rules and kNN over embeddings; all of these and the language model. Subfolders: of the notes in the right destination that belong in a subfolder, the share in the right one.',
     '',
     ...table(
-      ['Method', 'Coverage', 'Precision', 'Accuracy', 'Macro-F1', 'ECE', 'Rules / kNN / LLM'],
-      FIXTURE_METHOD_KEYS.map((method) => {
-        const m = result.classification[method];
-        return [METHOD_LABELS[FIXTURE_METHODS[method]], pct(m.coverage), pct(m.precision), pct(m.accuracy), num(m.macroF1), num(m.ece), `${m.decidedBy.rules} / ${m.decidedBy.knn} / ${m.decidedBy.llm}`];
-      }),
+      ['Method', 'Stages', 'Coverage', 'Precision', 'Accuracy', 'Macro-F1', 'ECE', 'Confident (share / accuracy)', 'Subfolders', 'Rules / kNN / LLM'],
+      FIXTURE_METHOD_KEYS.flatMap((method) =>
+        STAGES.flatMap((stage) => {
+          const m = result.classification[method][stage];
+          if (!m) return [];
+          return [[METHOD_LABELS[FIXTURE_METHODS[method]], stage, pct(m.coverage), pct(m.precision), pct(m.accuracy), num(m.macroF1), num(m.ece), `${pct(m.confident.share)} / ${pct(m.confident.accuracy)}`, m.subfolderAccuracy === null ? 'n/a' : pct(m.subfolderAccuracy), `${m.decidedBy.rules} / ${m.decidedBy.knn} / ${m.decidedBy.llm}`]];
+        }),
+      ),
     ),
     '',
     '## Link suggestions',
@@ -70,9 +75,21 @@ export function formatReport(result: EvalResult): string {
       ),
     );
   }
+  const { plan } = result;
   lines.push(
     '',
+    '## Full plan (PARA)',
+    '',
+    `The planner end to end: every operation accepted, applied through the executor, then undone. Summary written by ${plan.summarySource === 'model' ? 'the language model' : 'rules'}.`,
+    '',
+    ...table(
+      ['Operations', 'Validation errors', 'Applied', 'Failed', 'Broken links', 'Undo exact'],
+      [[Object.entries(plan.operations).map(([kind, count]) => `${kind} ${count}`).join(', ') || 'none', String(plan.errors), String(plan.applied), String(plan.failed), String(plan.brokenLinks), plan.undoExact ? 'yes' : '**no**']],
+    ),
+    '',
     '## Safety',
+    '',
+    'Every note filed where the ground truth puts it under PARA, applied and undone.',
     '',
     ...table(
       ['Operations', 'Applied', 'Failed', 'Broken links', 'Undo exact'],

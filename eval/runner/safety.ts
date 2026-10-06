@@ -1,14 +1,12 @@
 import { ApplyRunService } from '../../src/core/apply/run';
 import { UndoService } from '../../src/core/apply/undo';
 import { presetCharter } from '../../src/core/charter/presets';
-import { RuleEngine } from '../../src/core/drift/rules';
 import type { NoteRecord, VaultSnapshot } from '../../src/core/model/note';
 import { createOperation, type Operation } from '../../src/core/model/operation';
 import { ancestorFolders, parentFolder } from '../../src/core/model/paths';
 import { createPlan } from '../../src/core/model/plan';
 import { applyHarness } from '../../src/core/testing/apply-harness';
-import { DAILY, FIXTURE_METHOD_KEYS, FIXTURE_METHODS, type FixtureMethod, type GroundTruth } from '../fixture/ground-truth';
-import { type ClassificationMetrics, classificationMetrics, type Prediction } from '../metrics/classification';
+import { DAILY, type GroundTruth } from '../fixture/ground-truth';
 
 export interface SafetyMetrics {
   /** Moves in the plan that files every note where PARA says it belongs. */
@@ -19,23 +17,6 @@ export interface SafetyMetrics {
   brokenLinks: number;
   /** Whether undo restored every byte and folder (must be true). */
   undoExact: boolean;
-}
-
-/** Tier 0 classification: what the preset charters' rules alone decide; everything else abstains. */
-export function classifyByRules(snapshot: VaultSnapshot, truth: GroundTruth): Record<FixtureMethod, ClassificationMetrics> {
-  const result = {} as Record<FixtureMethod, ClassificationMetrics>;
-  for (const method of FIXTURE_METHOD_KEYS) {
-    const engine = new RuleEngine(presetCharter(FIXTURE_METHODS[method], truth.language));
-    const predictions: Prediction[] = snapshot.notes.map((note) => {
-      const placement = engine.evaluate(note);
-      if (placement.status === 'ruled') return { path: note.path, destination: placement.destination.id, confidence: 1, decidedBy: 'rules' };
-      if (placement.status === 'system' && placement.role === 'daily') return { path: note.path, destination: DAILY, confidence: 1, decidedBy: 'rules' };
-      return { path: note.path, destination: null, confidence: 0, decidedBy: null };
-    });
-    const expected = new Map(Object.entries(truth.notes).map(([path, note]) => [path, note.destinations[method].id]));
-    result[method] = classificationMetrics(predictions, expected);
-  }
-  return result;
 }
 
 /**

@@ -2,35 +2,149 @@
   "tolerance": 0.02,
   "fixtures": {
     "en-small": {
-      "classification.para.coverage": {
-        "min": 0.158
+      "classification.para.rules.coverage": {
+        "min": 0.231
       },
-      "classification.para.precision": {
+      "classification.para.rules.precision": {
         "min": 1
       },
-      "classification.ace.coverage": {
+      "classification.para.words.coverage": {
+        "min": 0.317
+      },
+      "classification.para.words.precision": {
+        "min": 0.961
+      },
+      "classification.para.embeddings.coverage": {
+        "min": 0.451
+      },
+      "classification.para.embeddings.precision": {
+        "min": 0.891
+      },
+      "classification.para.llm.coverage": {
+        "min": 1
+      },
+      "classification.para.llm.precision": {
+        "min": 0.89
+      },
+      "classification.para.llm.accuracy": {
+        "min": 0.89
+      },
+      "classification.para.llm.subfolderAccuracy": {
+        "min": 0.753
+      },
+      "classification.ace.rules.coverage": {
         "min": 0.28
       },
-      "classification.ace.precision": {
+      "classification.ace.rules.precision": {
         "min": 1
       },
-      "classification.jd.coverage": {
-        "min": 0
+      "classification.ace.words.coverage": {
+        "min": 0.292
       },
-      "classification.jd.precision": {
-        "min": 0
+      "classification.ace.words.precision": {
+        "min": 0.958
       },
-      "classification.flat.coverage": {
-        "min": 0.219
+      "classification.ace.embeddings.coverage": {
+        "min": 0.28
       },
-      "classification.flat.precision": {
+      "classification.ace.embeddings.precision": {
         "min": 1
       },
-      "classification.topics.coverage": {
+      "classification.ace.llm.coverage": {
+        "min": 1
+      },
+      "classification.ace.llm.precision": {
+        "min": 0.743
+      },
+      "classification.ace.llm.accuracy": {
+        "min": 0.743
+      },
+      "classification.ace.llm.subfolderAccuracy": {
+        "min": 0.809
+      },
+      "classification.jd.rules.coverage": {
         "min": 0.097
       },
-      "classification.topics.precision": {
+      "classification.jd.rules.precision": {
         "min": 1
+      },
+      "classification.jd.words.coverage": {
+        "min": 0.097
+      },
+      "classification.jd.words.precision": {
+        "min": 1
+      },
+      "classification.jd.embeddings.coverage": {
+        "min": 0.097
+      },
+      "classification.jd.embeddings.precision": {
+        "min": 1
+      },
+      "classification.jd.llm.coverage": {
+        "min": 1
+      },
+      "classification.jd.llm.precision": {
+        "min": 0.914
+      },
+      "classification.jd.llm.accuracy": {
+        "min": 0.914
+      },
+      "classification.flat.rules.coverage": {
+        "min": 0.512
+      },
+      "classification.flat.rules.precision": {
+        "min": 1
+      },
+      "classification.flat.words.coverage": {
+        "min": 0.914
+      },
+      "classification.flat.words.precision": {
+        "min": 1
+      },
+      "classification.flat.embeddings.coverage": {
+        "min": 0.792
+      },
+      "classification.flat.embeddings.precision": {
+        "min": 1
+      },
+      "classification.flat.llm.coverage": {
+        "min": 1
+      },
+      "classification.flat.llm.precision": {
+        "min": 1
+      },
+      "classification.flat.llm.accuracy": {
+        "min": 1
+      },
+      "classification.topics.rules.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.rules.precision": {
+        "min": 1
+      },
+      "classification.topics.words.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.words.precision": {
+        "min": 1
+      },
+      "classification.topics.embeddings.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.embeddings.precision": {
+        "min": 1
+      },
+      "classification.topics.llm.coverage": {
+        "min": 1
+      },
+      "classification.topics.llm.precision": {
+        "min": 1
+      },
+      "classification.topics.llm.accuracy": {
+        "min": 1
+      },
+      "classification.topics.llm.subfolderAccuracy": {
+        "min": 0.459
       },
       "links.words.precision": {
         "min": 0.752
@@ -83,8 +197,35 @@
       "stubs.recall": {
         "min": 1
       },
+      "plan.undoExact": {
+        "min": 1
+      },
       "safety.undoExact": {
         "min": 1
+      },
+      "classification.para.llm.ece": {
+        "max": 0.091
+      },
+      "classification.ace.llm.ece": {
+        "max": 0.115
+      },
+      "classification.jd.llm.ece": {
+        "max": 0.125
+      },
+      "classification.flat.llm.ece": {
+        "max": 0.043
+      },
+      "classification.topics.llm.ece": {
+        "max": 0.103
+      },
+      "plan.errors": {
+        "max": 0
+      },
+      "plan.failed": {
+        "max": 0
+      },
+      "plan.brokenLinks": {
+        "max": 0
       },
       "safety.brokenLinks": {
         "max": 0
@@ -97,35 +238,149 @@
       }
     },
     "cs-small": {
-      "classification.para.coverage": {
-        "min": 0.195
+      "classification.para.rules.coverage": {
+        "min": 0.28
       },
-      "classification.para.precision": {
+      "classification.para.rules.precision": {
         "min": 1
       },
-      "classification.ace.coverage": {
+      "classification.para.words.coverage": {
+        "min": 0.439
+      },
+      "classification.para.words.precision": {
+        "min": 0.972
+      },
+      "classification.para.embeddings.coverage": {
+        "min": 0.426
+      },
+      "classification.para.embeddings.precision": {
+        "min": 1
+      },
+      "classification.para.llm.coverage": {
+        "min": 1
+      },
+      "classification.para.llm.precision": {
+        "min": 0.865
+      },
+      "classification.para.llm.accuracy": {
+        "min": 0.865
+      },
+      "classification.para.llm.subfolderAccuracy": {
+        "min": 0.634
+      },
+      "classification.ace.rules.coverage": {
         "min": 0.256
       },
-      "classification.ace.precision": {
+      "classification.ace.rules.precision": {
         "min": 1
       },
-      "classification.jd.coverage": {
-        "min": 0
+      "classification.ace.words.coverage": {
+        "min": 0.268
       },
-      "classification.jd.precision": {
-        "min": 0
-      },
-      "classification.flat.coverage": {
-        "min": 0.146
-      },
-      "classification.flat.precision": {
+      "classification.ace.words.precision": {
         "min": 1
       },
-      "classification.topics.coverage": {
+      "classification.ace.embeddings.coverage": {
+        "min": 0.28
+      },
+      "classification.ace.embeddings.precision": {
+        "min": 1
+      },
+      "classification.ace.llm.coverage": {
+        "min": 1
+      },
+      "classification.ace.llm.precision": {
+        "min": 0.914
+      },
+      "classification.ace.llm.accuracy": {
+        "min": 0.914
+      },
+      "classification.ace.llm.subfolderAccuracy": {
+        "min": 0.792
+      },
+      "classification.jd.rules.coverage": {
         "min": 0.097
       },
-      "classification.topics.precision": {
+      "classification.jd.rules.precision": {
         "min": 1
+      },
+      "classification.jd.words.coverage": {
+        "min": 0.097
+      },
+      "classification.jd.words.precision": {
+        "min": 1
+      },
+      "classification.jd.embeddings.coverage": {
+        "min": 0.097
+      },
+      "classification.jd.embeddings.precision": {
+        "min": 1
+      },
+      "classification.jd.llm.coverage": {
+        "min": 1
+      },
+      "classification.jd.llm.precision": {
+        "min": 0.829
+      },
+      "classification.jd.llm.accuracy": {
+        "min": 0.829
+      },
+      "classification.flat.rules.coverage": {
+        "min": 0.548
+      },
+      "classification.flat.rules.precision": {
+        "min": 1
+      },
+      "classification.flat.words.coverage": {
+        "min": 0.987
+      },
+      "classification.flat.words.precision": {
+        "min": 1
+      },
+      "classification.flat.embeddings.coverage": {
+        "min": 0.841
+      },
+      "classification.flat.embeddings.precision": {
+        "min": 1
+      },
+      "classification.flat.llm.coverage": {
+        "min": 1
+      },
+      "classification.flat.llm.precision": {
+        "min": 0.975
+      },
+      "classification.flat.llm.accuracy": {
+        "min": 0.975
+      },
+      "classification.topics.rules.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.rules.precision": {
+        "min": 1
+      },
+      "classification.topics.words.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.words.precision": {
+        "min": 1
+      },
+      "classification.topics.embeddings.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.embeddings.precision": {
+        "min": 1
+      },
+      "classification.topics.llm.coverage": {
+        "min": 1
+      },
+      "classification.topics.llm.precision": {
+        "min": 1
+      },
+      "classification.topics.llm.accuracy": {
+        "min": 1
+      },
+      "classification.topics.llm.subfolderAccuracy": {
+        "min": 0.243
       },
       "links.words.precision": {
         "min": 0.8
@@ -178,8 +433,35 @@
       "stubs.recall": {
         "min": 1
       },
+      "plan.undoExact": {
+        "min": 1
+      },
       "safety.undoExact": {
         "min": 1
+      },
+      "classification.para.llm.ece": {
+        "max": 0.132
+      },
+      "classification.ace.llm.ece": {
+        "max": 0.111
+      },
+      "classification.jd.llm.ece": {
+        "max": 0.09
+      },
+      "classification.flat.llm.ece": {
+        "max": 0.048
+      },
+      "classification.topics.llm.ece": {
+        "max": 0.108
+      },
+      "plan.errors": {
+        "max": 0
+      },
+      "plan.failed": {
+        "max": 0
+      },
+      "plan.brokenLinks": {
+        "max": 0
       },
       "safety.brokenLinks": {
         "max": 0

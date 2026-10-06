@@ -16,19 +16,23 @@ import { webCryptoHasher } from '../../src/core/hash';
 import type { VaultSnapshot } from '../../src/core/model/note';
 import { parentFolder } from '../../src/core/model/paths';
 import { buildCard, type NoteCard } from '../../src/core/planner/cards';
+import { DEFAULT_KNN, WORD_KNN } from '../../src/core/planner/classify';
 import { systemClock } from '../../src/core/ports';
 import { NodeStorage } from '../adapters/node-storage';
-import type { FixtureMethod, GroundTruth, LoadedFixture } from '../fixture/ground-truth';
-import { type ClassificationMetrics, ratio } from '../metrics/classification';
+import type { GroundTruth, LoadedFixture } from '../fixture/ground-truth';
+import { ratio } from '../metrics/classification';
 import { type ClusterMetrics, clusterMetrics } from '../metrics/clusters';
 import { type Cost, NO_COST } from '../metrics/cost';
 import { type DuplicateMetrics, duplicateMetrics } from '../metrics/duplicates';
 import { type LinkMetrics, linkMetrics } from '../metrics/links';
 import { type NeighborQuality, neighborQuality } from '../metrics/neighbors';
-import { evalChat, evalEmbeddings, isMissingRecording, Meter } from './providers';
-import { applyAndUndo, classifyByRules, type SafetyMetrics } from './rules-and-safety';
+import { type ClassificationResults, classificationTask, type PlanMetrics, planTask } from './planning';
+import { type EvalChat, evalChat, evalEmbeddings, Meter } from './providers';
+import { applyAndUndo, type SafetyMetrics } from './safety';
 
-export type { SafetyMetrics } from './rules-and-safety';
+export { STAGES } from './planning';
+export type { ClassificationResults, PlanMetrics, Stage, StageMetrics } from './planning';
+export type { SafetyMetrics } from './safety';
 export type Tier = 0 | 1 | 2;
 export type SimilarityMethod = 'words' | 'embeddings';
 
@@ -64,7 +68,8 @@ export interface EvalResult {
   tier: Tier;
   embedModel: string | null;
   chatModel: string | null;
-  classification: Record<FixtureMethod, ClassificationMetrics>;
+  /** Per organizing method, the cascade measured stage by stage. */
+  classification: ClassificationResults;
   /** Link suggestions: word statistics (Tier 0), embeddings (Tier 1), verified by a model (Tier 2). */
   links: Partial<Record<SimilarityMethod | 'verified', LinkMetrics>>;
   similarity: Partial<Record<SimilarityMethod, NeighborQuality>>;
@@ -72,6 +77,8 @@ export interface EvalResult {
   duplicates: Partial<Record<SimilarityMethod, DuplicateMetrics>>;
   stubs: { found: number; actual: number; precision: number; recall: number };
   labels?: LabelQuality;
+  /** The whole planner with a PARA charter, applied and undone. */
+  plan: PlanMetrics;
   safety: SafetyMetrics;
   cost: Record<string, Cost>;
   /** What was skipped and why. */
@@ -118,7 +125,6 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
   const projects = new Map(Object.entries(truth.notes).map(([path, note]) => [path, note.entity]));
   const clusterQuality = (assignments: ReadonlyMap<string, string>): ClusterQuality => ({ topic: clusterMetrics(assignments, topics), project: clusterMetrics(assignments, projects) });
 
-  const classification = await time('classification', () => classifyByRules(snapshot, truth));
   const triage = triageNotes(snapshot.notes);
   const actualStubs = new Set(Object.entries(truth.notes).filter(([, note]) => note.isStub).map(([path]) => path));
   const foundStubs = triage.stubs.filter((stub) => actualStubs.has(stub.path)).length;
@@ -156,28 +162,64 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
     duplicates[method.name] = duplicateMetrics(findDuplicates(duplicateInput, neighbors).map((pair) => [pair.a, pair.b] as [string, string]), truth);
   }
 
+  const best = methods.at(-1) as Method;
+  const meter = new Meter();
+  let chat: EvalChat | undefined;
+  // Tier 2 tasks whose prompts the cassette has no answers for; they are reported, not guessed.
+  const unrecorded: string[] = [];
+  /** Times a task and counts its model calls; with `record`, saves the cassette after each task. */
+  const withModel = async <T>(task: string, run: () => Promise<T>): Promise<{ value: T; recorded: boolean }> => {
+    const before = { ...meter };
+    const value = await time(task, run);
+    cost[task] = { ...(cost[task] ?? NO_COST), calls: meter.calls - before.calls, inputTokens: meter.inputTokens - before.inputTokens, outputTokens: meter.outputTokens - before.outputTokens };
+    await chat?.finish();
+    const recorded = meter.missing === before.missing;
+    if (!recorded) unrecorded.push(task);
+    return { value, recorded };
+  };
+
   let labels: LabelQuality | undefined;
   if (options.tier >= 2) {
-    const best = methods.at(-1) as Method;
-    const meter = new Meter();
-    const chat = await evalChat(truth.fixture, options.chatModel, options.record, meter);
+    chat = await evalChat(truth.fixture, options.chatModel, options.record, meter);
+    const provider = chat.provider;
     const cards = new Map<string, NoteCard>();
     for (const note of snapshot.notes) {
       const card = buildCard(note, contents.get(note.path) ?? '');
       if (card) cards.set(note.path, card);
     }
+    const missing = meter.missing;
     try {
-      labels = await time('cluster labels', () => labelQuality(chat.provider, truth, best.clustering, contents, cards, topics));
-      const verified = await time('verified links', () => verifyLinks(chat.provider, truth.language, candidatesBy.get(best.name) ?? new Map(), cards));
-      const kept = new Map<string, string[]>();
-      for (const candidate of verified.kept) kept.set(candidate.source, [...(kept.get(candidate.source) ?? []), candidate.target]);
-      links.verified = linkMetrics(kept, truth, LINK_K, isDaily);
+      const named = await withModel('cluster labels', () => labelQuality(provider, truth, best.clustering, contents, cards, topics));
+      if (named.recorded) labels = named.value;
     } catch (error) {
-      if (!isMissingRecording(error) && !(error instanceof ProviderError)) throw error;
-      notices.push(`Tier 2 skipped for ${truth.fixture}: no recorded ${options.chatModel} answers for these prompts; run with --record against a local Ollama.`);
+      // Labeling gives up when every batch failed, which is what a cassette without answers causes.
+      if (!(error instanceof ProviderError) || meter.missing === missing) throw error;
+      unrecorded.push('cluster labels');
     }
-    await chat.finish();
-    cost.chat = { calls: meter.calls, inputTokens: meter.inputTokens, outputTokens: meter.outputTokens, ms: (cost['cluster labels']?.ms ?? 0) + (cost['verified links']?.ms ?? 0) };
+    const verified = await withModel('verified links', () => verifyLinks(provider, truth.language, candidatesBy.get(best.name) ?? new Map(), cards));
+    if (verified.recorded) {
+      const kept = new Map<string, string[]>();
+      for (const candidate of verified.value.kept) kept.set(candidate.source, [...(kept.get(candidate.source) ?? []), candidate.target]);
+      links.verified = linkMetrics(kept, truth, LINK_K, isDaily);
+    }
+  }
+
+  const neighbors = (method: Method) => (path: string, k: number) => method.search(path, k, new Set());
+  const embeddings = methods.find((method) => method.name === 'embeddings');
+  const classified = await withModel('classification', () =>
+    classificationTask({ snapshot, truth, contents, words: neighbors(methods[0] as Method), ...(embeddings ? { embeddings: neighbors(embeddings) } : {}), ...(chat ? { chat: chat.provider } : {}) }),
+  );
+  const classification = classified.value;
+  // A stage that ran without its recorded answers measures nothing; leave it out.
+  if (!classified.recorded) for (const stages of Object.values(classification)) delete stages.llm;
+  const planInput = { snapshot, truth, contents, neighbors: neighbors(best), knn: best.name === 'embeddings' ? DEFAULT_KNN : WORD_KNN };
+  let plan = (await withModel('plan', () => planTask({ ...planInput, ...(chat ? { chat: chat.provider } : {}) }))).value;
+  if (unrecorded.includes('plan')) plan = await planTask(planInput);
+  if (chat) {
+    cost.chat = { calls: meter.calls, inputTokens: meter.inputTokens, outputTokens: meter.outputTokens, ms: ['cluster labels', 'verified links', 'classification', 'plan'].reduce((sum, task) => sum + (cost[task]?.ms ?? 0), 0) };
+  }
+  if (unrecorded.length > 0) {
+    notices.push(`Tier 2 incomplete for ${truth.fixture}: no recorded ${options.chatModel} answers for ${unrecorded.join(', ')}; run with --record against a local Ollama.`);
   }
 
   const safety = await time('safety', () => applyAndUndo(snapshot, contents, truth));
@@ -195,6 +237,7 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
     duplicates,
     stubs,
     ...(labels ? { labels } : {}),
+    plan,
     safety,
     cost,
     notices,
