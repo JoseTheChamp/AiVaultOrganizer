@@ -18,12 +18,18 @@ the two.
 ## How it works
 
 1. **Diagnose** the vault: structure, links, orphans, tag variants, the organization method you already use.
-2. **Choose a method** (PARA, Johnny.Decimal, ACE, Zettelkasten, Flat + categories, Topic folders) or codify
-   your current structure.
+2. **Choose a method** (PARA, Johnny.Decimal, ACE, Zettelkasten, Flat + categories, Topic folders), codify
+   your current structure, or let a language model draft a charter from samples of your notes.
 3. **Write the charter**, a note that explains the system to you and holds the rules for the plugin.
-4. **Review a plan** of moves, properties, tags and links. Accept or reject every item.
-5. **Apply** after an automatic backup; links are verified after every batch; undo is one command.
-6. **Check drift** later and re-align only what changed.
+4. **Plan**: rules place what they can, notes like the ones already placed follow them, and a language
+   model (if you set one up and agree) proposes places for the rest.
+5. **Review the plan** of moves, properties, tags and links. Accept or reject every item, or everything
+   above a confidence you choose; your decisions teach the plugin where similar notes belong.
+6. **Apply** after an automatic backup; links are verified after every batch; undo is one command.
+7. **Check drift** later and re-align only what changed.
+
+The **dashboard** (ribbon icon, or **Open dashboard**) shows the vault's health, the charter and how many
+notes are off it, a plan waiting for review, the last run and your AI setup.
 
 **Find similar notes** shows the notes closest to the one you are reading. Without any AI it compares
 the words notes share. With **Better similarity** on, it compares meaning, which also finds related
@@ -42,13 +48,37 @@ that changed. Click the progress notice to stop indexing at any time.
 | **Topic folders** | One folder per subject | (your folders) |
 | **Keep my current structure** | Codifies the folders you already have | (your folders) |
 
-Run **Set up charter** (command palette). The plugin detects what you already use, recommends a method, and
-previews what its rules would do before writing anything. The charter becomes a note (`Vault Charter.md`)
-that explains your system in plain language (English or Czech) and ends with a ```charter YAML block holding
+Run **Set up charter** (command palette or dashboard). A short wizard diagnoses the vault, recommends a
+method (or, with a language model, asks it for a draft), lets you rename folders and set conventions, and
+shows the charter note before anything is written. The charter becomes a note (`Vault Charter.md`) that
+explains your system in plain language (English or Czech) and ends with a ```charter YAML block holding
 the rules. Edit either part; the plugin only regenerates the marked sections and never touches your own text.
 
-**Check drift** shows where the vault departs from its charter; **Plan re-alignment** proposes the moves the
-rules imply for your review. Placing notes that no rule covers needs the AI tiers (coming next).
+**Check drift** shows where the vault departs from its charter. **Plan re-alignment** builds a plan for the
+whole vault:
+
+- rules decide first, and are never wrong;
+- notes no rule covers follow the placed notes they most resemble, by shared words, or by meaning with
+  **Better similarity**;
+- what is still open goes to the language model, after a dialog shows what would be sent where, how many
+  requests and tokens it takes, and what it would cost at your prices; or plan without it, and those notes
+  are flagged for you;
+- properties and tags are normalized, maps of content updated, and queries the moves would change are
+  flagged.
+
+The **review** opens in its own tab:
+
+- changes are grouped by what they do and where notes go, with filters by who decided (rules, similar
+  notes, the model), confidence, destination and status;
+- each row shows the reason, a calibrated confidence and, on demand, exactly what changes (paths,
+  frontmatter lines, inserted links);
+- the keyboard works throughout: <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>a</kbd> accepts, <kbd>r</kbd>
+  rejects, <kbd>u</kbd> undecides, <kbd>Enter</kbd> previews;
+- **Learn from my decisions** re-scores the undecided rows from what you accepted and rejected, without
+  asking any model.
+
+Applying shows progress you can cancel, then a report with the health score before and after and a button
+to undo the run.
 
 ## Safety
 
@@ -115,18 +145,23 @@ also enter prices per million tokens to see cost estimates; no prices are built 
   `requestUrl`.
 - **Local-only by default.** Local-only mode is on by default and blocks any request to a host other than
   this computer (`localhost`, `127.x.x.x`, `::1`). This is enforced in one place for every provider.
-- **What is sent today.**
+- **What is sent.**
   - **Test connection** lists the models and sends a one-word prompt, or embeds the words "connection
     test".
-  - **Find similar notes** with **Better similarity** on sends the text of your notes (without
-    frontmatter or code) to the embedding endpoint, once per note and again only after a note changes.
-    For a provider that is not on this computer, it first asks, showing how many notes would go to
-    which host.
+  - **Better similarity** (similar notes, planning, learning from decisions) sends the text of your notes
+    (without frontmatter or code) to the embedding endpoint, once per note and again only after a note
+    changes. For a provider that is not on this computer, it first asks, showing how many notes would go
+    to which host.
+  - **Plan re-alignment with a language model** sends a *note card* for each note that rules and similar
+    notes could not place: title, folder, tags, a few properties (such as type and status), headings,
+    outgoing links, how recently it changed and the first few hundred characters of text. It also sends
+    the plan's counts and a few one-line descriptions of changes for the summary. A dialog shows this,
+    the host and the estimated cost first, every time.
+  - **Ask for a draft** in the setup wizard sends the vault's statistics, keywords of its largest groups of
+    similar notes and up to five note cards per group, after the same dialog.
   - Nothing else is sent.
 - **Private notes.** Add `ai-vault-organizer: private` to a note's properties to keep it away from every
   AI feature. Notes your charter ignores are never sent either.
-- **What later features send.** Features that send note content will show which notes go to which host
-  before anything is sent.
 - **Where data is stored.** All of it stays inside your vault, under `.ai-vault-organizer/cache/`.
   Exclude that folder from sync if you prefer.
   - **Model responses** (`cache/llm/`), so repeated runs are free. They may quote your notes. Clear
