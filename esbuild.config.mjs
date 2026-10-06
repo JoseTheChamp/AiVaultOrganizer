@@ -4,6 +4,7 @@ import { builtinModules } from 'node:module';
 import { copyFile, mkdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import esbuild from 'esbuild';
+import { inlineWorkerPlugin } from './scripts/inline-worker-plugin.mjs';
 
 const production = process.argv[2] === 'production';
 const pluginId = 'ai-vault-organizer';
@@ -54,7 +55,7 @@ const context = await esbuild.context({
   treeShaking: true,
   minify: production,
   outfile: path.join(outDir, 'main.js'),
-  plugins: [copyAssets],
+  plugins: [inlineWorkerPlugin({ minify: production }), copyAssets],
 });
 
 if (production) {
