@@ -18,7 +18,7 @@ const TEXT: Record<Lang, Record<string, string>> = {
     categories: 'Categories',
     referencesDescription: 'Notes about things outside your own world: books, films, people and places.',
     clippingsDescription: 'Writing by others, saved from the web.',
-    categoriesDescription: 'One note per category, each showing its members in a Bases view.',
+    categoriesDescription: 'Only the category notes themselves (type: category), one per category, each showing its members in a Bases view. Never ordinary notes.',
   },
   cs: {
     references: 'Reference',
@@ -26,7 +26,7 @@ const TEXT: Record<Lang, Record<string, string>> = {
     categories: 'Kategorie',
     referencesDescription: 'Poznámky o věcech mimo tvůj svět: knihy, filmy, lidé a místa.',
     clippingsDescription: 'Texty jiných autorů uložené z webu.',
-    categoriesDescription: 'Jedna poznámka na kategorii, každá ukazuje své členy v pohledu Bases.',
+    categoriesDescription: 'Jen samotné poznámky kategorií (type: category), jedna na kategorii, každá ukazuje své členy v pohledu Bases. Nikdy běžné poznámky.',
   },
 };
 
@@ -43,7 +43,7 @@ export const flatCategories: Preset = {
     cs: 'Tento vault je **plochý s kategoriemi** (přístup Stepha Anga): vlastní poznámky leží v kořeni a vlastnost `categories` s odkazy na poznámky kategorií říká, čím každá poznámka je. Složky slouží jen pro věci mimo tvůj svět (reference), texty jiných (výstřižky), denní poznámky a přílohy.',
   },
   guidance:
-    'Prefer properties over folders: decide which category links a note should list in its categories property. Only notes about external things (books, people, places, films) go to References, and saved web articles to Clippings.',
+    'Folders are the exception: your own notes (projects, ideas, journals, learning, how-tos) stay in the vault root, and their categories property says what they are. Only notes about one external thing (a book, a person, a place, a film) go to References, saved web articles to Clippings, and only category notes themselves to Categories.',
   build(lang: Lang) {
     const t = TEXT[lang];
     const c = COMMON[lang];
