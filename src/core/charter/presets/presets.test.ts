@@ -47,6 +47,14 @@ describe('Johnny.Decimal', () => {
     expect(charter.jd?.areas.map((a) => a.id)).toEqual(['00-09', '10-19', '20-29', '30-39']);
     expect(new RegExp('^11\\.\\d{2}(?:\\s|$)').test('11.02 Accounts')).toBe(true);
   });
+
+  it('describes what each category holds, and keeps daily notes in the system area', async () => {
+    const charter = charterSchema.parse(johnnyDecimal.build('cs'));
+    expect(charter.destinations.find((d) => d.id === 'jd-12')?.description).toBe('Osobní agenda: Zdraví. Zdraví a kondice: trénink, sportovní akce, cvičení, zdravotní záznamy a spánek.');
+    expect(charter.system.daily).toEqual({ path: '00-09 Systém/02 Deník', filename: 'YYYY-MM-DD' });
+    const { notes } = await InMemoryVault.from({ '2026-01-07.md': 'Den.' }).snapshot();
+    expect(new RuleEngine(charter).evaluate(notes[0] as (typeof notes)[number])).toMatchObject({ status: 'system', role: 'daily' });
+  });
 });
 
 describe('registry', () => {
