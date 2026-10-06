@@ -10,5 +10,6 @@ Add one whenever a decision is non-trivial, affects user data, the invariants or
 | [0003](0003-charter-format.md) | Charter format | Accepted |
 | [0004](0004-bring-your-own-model.md) | Bring-your-own-model provider layer | Accepted |
 | [0005](0005-similarity-index.md) | Similarity index | Accepted |
+| [0006](0006-analysis-and-links.md) | Analysis and link suggestions | Accepted |
 
 Copy [`template.md`](template.md) to `NNNN-short-title.md` to start a new record.
