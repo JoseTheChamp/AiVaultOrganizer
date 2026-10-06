@@ -1,6 +1,8 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
 import obsidianmd from 'eslint-plugin-obsidianmd';
+import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   globalIgnores([
@@ -13,6 +15,30 @@ export default defineConfig([
     'fixtures/',
   ]),
   ...obsidianmd.configs.recommended,
+  // The recommended rules come without a file pattern; limit them to components, or they run on
+  // package.json and TypeScript files whose parser has no Svelte context.
+  ...svelte.configs.recommended.map((config) => (config.files || !config.rules ? config : { ...config, files: ['**/*.svelte', '**/*.svelte.ts'] })),
+  {
+    // Svelte components (src/ui): TypeScript in <script lang="ts">, checked against the same project.
+    files: ['**/*.svelte', '**/*.svelte.ts'],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        extraFileExtensions: ['.svelte'],
+        parser: tseslint.parser,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      // The plugin-review rule against innerHTML, in Svelte form.
+      'svelte/no-at-html-tags': 'error',
+      // Styles live in styles.css with Obsidian's variables, never inline.
+      'svelte/no-inline-styles': 'error',
+      'svelte/require-each-key': 'error',
+      'svelte/button-has-type': 'error',
+    },
+  },
   {
     files: ['**/*.{ts,mts,cts}'],
     languageOptions: {

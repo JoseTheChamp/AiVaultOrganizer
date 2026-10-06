@@ -4,6 +4,7 @@ import { builtinModules } from 'node:module';
 import { copyFile, mkdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import esbuild from 'esbuild';
+import sveltePlugin from 'esbuild-svelte';
 import { inlineWorkerPlugin } from './scripts/inline-worker-plugin.mjs';
 
 const production = process.argv[2] === 'production';
@@ -14,7 +15,8 @@ const outDir = production ? '.' : devDir;
 // Raised deliberately when a dependency is added; catches accidental bloat such as
 // `import { z } from 'zod'`, which pulls every zod locale (~260 kB) into the bundle.
 // 400 kB since the charter layer: zod and yaml are now used almost in full (~97 kB each).
-const MAX_BUNDLE_BYTES = 400 * 1024;
+// 600 kB since the UI (ADR 0008): the Svelte runtime (~50 kB), the planner and the views.
+const MAX_BUNDLE_BYTES = 600 * 1024;
 
 const banner = `/*
 AI Vault Organizer — bundled by esbuild. Source: https://github.com/JoseTheChamp/AiVaultOrganizer
@@ -55,7 +57,10 @@ const context = await esbuild.context({
   treeShaking: true,
   minify: production,
   outfile: path.join(outDir, 'main.js'),
-  plugins: [inlineWorkerPlugin({ minify: production }), copyAssets],
+  // Svelte 5 compiles TypeScript in components natively. Components carry no styles of their own:
+  // every rule lives in styles.css with Obsidian's CSS variables (a test enforces this).
+  conditions: ['svelte', 'browser'],
+  plugins: [sveltePlugin({ compilerOptions: { css: 'external', dev: !production } }), inlineWorkerPlugin({ minify: production }), copyAssets],
 });
 
 if (production) {

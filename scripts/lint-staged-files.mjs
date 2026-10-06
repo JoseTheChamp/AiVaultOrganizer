@@ -1,11 +1,11 @@
-// Pre-commit hook: lints the staged TypeScript and JavaScript files (and package.json) with ESLint.
+// Pre-commit hook: lints the staged TypeScript, JavaScript and Svelte files (and package.json) with ESLint.
 // Replaces nano-staged 1.0.2, which decodes git's output chunk by chunk and so corrupts non-ASCII
 // file names (Czech fixture notes) whenever a multi-byte character spans two chunks.
 // Lints the working-tree version of each staged file; this repo always stages whole files.
 import { execFileSync, spawnSync } from 'node:child_process';
 import path from 'node:path';
 
-const LINTED = /\.(?:ts|mts|mjs)$|(?:^|\/)package\.json$/;
+const LINTED = /\.(?:ts|mts|mjs|svelte)$|(?:^|\/)package\.json$/;
 
 // -z: NUL-separated raw bytes, decoded once as a whole, so names arrive intact.
 const output = execFileSync('git', ['diff', '--cached', '--name-only', '-z', '--diff-filter=ACMR'], { encoding: 'buffer' });

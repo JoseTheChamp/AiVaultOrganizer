@@ -17,5 +17,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "eval/**/*.ts", "scripts/**/*.ts", "*.ts", "*.mts"]
+  "include": ["src/**/*.ts", "src/**/*.svelte", "eval/**/*.ts", "scripts/**/*.ts", "*.ts", "*.mts"]
 }
