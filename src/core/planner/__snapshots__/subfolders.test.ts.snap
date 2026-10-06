@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`subfolder-naming v1 > renders a stable prompt 1`] = `
+[
+  {
+    "content": "You name folders in a personal knowledge base. For each proposed folder give a name of one to four words in English, in sentence case, that its owner would recognise at a glance. If an existing folder means the same thing, answer with its exact name so the notes join it. Give two proposals the same name only if they really are the same thing.",
+    "role": "system",
+  },
+  {
+    "content": "Destination projects: Active projects.
+Existing folders: Website relaunch
+
+Proposed folders:
+- f1: "Run stuff" (notes: Long run log; Race pace strategy)
+
+Answer with JSON: {"folders": [{"key": "...", "name": "..."}]}, one entry for each proposal.",
+    "role": "user",
+  },
+]
+`;
