@@ -3,7 +3,9 @@
  *
  *   npm run analyze -- <vault-folder> [--json]   tier 0 diagnostics, identical to "Analyze vault"
  *   npm run eval -- [--fixture=a,b] [--tier=0|1|2] [--embed-model=bge-m3] [--record] [--out=dir]
- *                                                evals over the fixtures; reports in eval/reports
+ *                     [--check] [--update-thresholds]
+ *                                                evals over the fixtures; reports in eval/reports;
+ *                                                --check fails on regressions beyond eval/thresholds.json
  *   tsx eval/cli.ts build-fixtures [name …]        rebuilds the committed eval fixtures (or the named ones)
  *   tsx eval/cli.ts generate-topics <folder> [--notes=600] [--seed=1]
  *                                                writes the synthetic topic vault and its ground truth
@@ -18,6 +20,7 @@ import { buildFixture, FIXTURES, FIXTURES_DIR, writeFixture } from './fixture/sp
 import { generateTopicVault } from './generator/topic-vault';
 import { writeReports } from './runner/report';
 import { type EvalResult, runEval } from './runner/run-eval';
+import { baselineThresholds, checkThresholds, readThresholds, THRESHOLDS_FILE, writeThresholds } from './runner/thresholds';
 import { summarize } from './runner/summary';
 
 async function main(argv: string[]): Promise<number> {
@@ -60,6 +63,19 @@ async function evalCommand(args: string[]): Promise<number> {
   }
   const written = await writeReports(results, flag('out') ?? path.join('eval', 'reports'), new Date().toISOString().slice(0, 10));
   process.stdout.write(`Reports: ${written.filter((file) => file.endsWith('.md')).join(', ')}\n`);
+  if (args.includes('--update-thresholds')) {
+    await writeThresholds(baselineThresholds(results, 0.02));
+    process.stdout.write(`Thresholds updated in ${THRESHOLDS_FILE}.\n`);
+  }
+  if (args.includes('--check')) {
+    const thresholds = await readThresholds();
+    const failures = results.flatMap((result) => checkThresholds(result, thresholds));
+    if (failures.length > 0) {
+      process.stderr.write(`Eval regressions beyond ${THRESHOLDS_FILE} (tolerance ${thresholds.tolerance}):\n${failures.map((f) => `  ${f}`).join('\n')}\n`);
+      return 1;
+    }
+    process.stdout.write(`All pinned metrics are within ${THRESHOLDS_FILE}.\n`);
+  }
   return 0;
 }
 

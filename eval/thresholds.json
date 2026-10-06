@@ -1,0 +1,123 @@
+{
+  "tolerance": 0.02,
+  "fixtures": {
+    "en-small": {
+      "classification.para.coverage": {
+        "min": 0.158
+      },
+      "classification.para.precision": {
+        "min": 1
+      },
+      "classification.ace.coverage": {
+        "min": 0.28
+      },
+      "classification.ace.precision": {
+        "min": 1
+      },
+      "classification.jd.coverage": {
+        "min": 0
+      },
+      "classification.jd.precision": {
+        "min": 0
+      },
+      "classification.flat.coverage": {
+        "min": 0.219
+      },
+      "classification.flat.precision": {
+        "min": 1
+      },
+      "classification.topics.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.precision": {
+        "min": 1
+      },
+      "links.words.precision": {
+        "min": 0.619
+      },
+      "links.words.heldOutRecall": {
+        "min": 0.954
+      },
+      "similarity.words.precision": {
+        "min": 0.809
+      },
+      "links.embeddings.precision": {
+        "min": 0.629
+      },
+      "links.embeddings.heldOutRecall": {
+        "min": 0.863
+      },
+      "similarity.embeddings.precision": {
+        "min": 0.87
+      },
+      "safety.undoExact": {
+        "min": 1
+      },
+      "safety.brokenLinks": {
+        "max": 0
+      },
+      "safety.failed": {
+        "max": 0
+      }
+    },
+    "cs-small": {
+      "classification.para.coverage": {
+        "min": 0.195
+      },
+      "classification.para.precision": {
+        "min": 1
+      },
+      "classification.ace.coverage": {
+        "min": 0.256
+      },
+      "classification.ace.precision": {
+        "min": 1
+      },
+      "classification.jd.coverage": {
+        "min": 0
+      },
+      "classification.jd.precision": {
+        "min": 0
+      },
+      "classification.flat.coverage": {
+        "min": 0.146
+      },
+      "classification.flat.precision": {
+        "min": 1
+      },
+      "classification.topics.coverage": {
+        "min": 0.097
+      },
+      "classification.topics.precision": {
+        "min": 1
+      },
+      "links.words.precision": {
+        "min": 0.612
+      },
+      "links.words.heldOutRecall": {
+        "min": 1
+      },
+      "similarity.words.precision": {
+        "min": 0.834
+      },
+      "links.embeddings.precision": {
+        "min": 0.597
+      },
+      "links.embeddings.heldOutRecall": {
+        "min": 0.909
+      },
+      "similarity.embeddings.precision": {
+        "min": 0.892
+      },
+      "safety.undoExact": {
+        "min": 1
+      },
+      "safety.brokenLinks": {
+        "max": 0
+      },
+      "safety.failed": {
+        "max": 0
+      }
+    }
+  }
+}

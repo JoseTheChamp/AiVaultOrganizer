@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   check:
-    name: Lint, typecheck, test, build
+    name: Lint, typecheck, test, evals, build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +26,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test -- --coverage
+      - name: Evals (replayed, offline)
+        run: npm run eval:ci
       - run: npm run build
       - name: Bundle size
         run: ls -l main.js styles.css manifest.json
