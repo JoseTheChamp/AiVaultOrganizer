@@ -1,3 +1,4 @@
+import { mulberry32, pick, sample } from './random';
 import { FILLER, type TopicMaterial, TOPICS } from './topics';
 
 export interface TopicVaultOptions {
@@ -74,29 +75,4 @@ function uniqueTitle(raw: string, folder: string, files: Record<string, string>)
   let candidate = title;
   for (let n = 2; `${folder ? `${folder}/` : ''}${candidate}.md` in files; n++) candidate = `${title} (${n})`;
   return candidate;
-}
-
-function pick<T>(random: () => number, items: readonly T[]): T {
-  const item = items[Math.floor(random() * items.length)];
-  if (item === undefined) throw new Error('pick from an empty list');
-  return item;
-}
-
-function sample<T>(random: () => number, items: readonly T[], count: number): T[] {
-  const pool = [...items];
-  const chosen: T[] = [];
-  while (chosen.length < count && pool.length > 0) chosen.push(...pool.splice(Math.floor(random() * pool.length), 1));
-  return chosen;
-}
-
-/** Small, fast, seedable PRNG; plenty for fixtures. */
-export function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state = (state + 0x6d2b79f5) >>> 0;
-    let t = state;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }
