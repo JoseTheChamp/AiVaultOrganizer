@@ -6,7 +6,7 @@ import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
 import { createPlan, type Plan } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
-import { type Classification, classifyNotes } from './classify';
+import { type Classification, classifyNotes, type KnnOptions } from './classify';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from './llm-stage';
 import { mocOperations } from './mocs';
 import { tagOperations, propertyOperations } from './normalize';
@@ -24,10 +24,14 @@ export interface PlannerInput {
   now: Date;
   /** Similarity search over the notes (words or embeddings): enables kNN. */
   neighbors?: (path: string, k: number) => readonly Neighbor[];
+  /** kNN thresholds for the similarity behind `neighbors`: DEFAULT_KNN (embeddings) or WORD_KNN. */
+  knn?: KnnOptions;
   /** A language model: classifies what cheaper stages could not, names subfolders, summarizes. */
   model?: { provider: ChatProvider; name: string; embedding?: string };
   /** Accepted link suggestions to include. */
   links?: readonly LinkSuggestion[];
+  /** Show the model how recently notes changed (off for replayed evals, where file times vary). */
+  cardAges?: boolean;
 }
 
 export interface PlannerResult {
@@ -60,7 +64,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
   if (input.model) {
     const cards = new Map<string, NoteCard>();
     for (const note of snapshot.notes) {
-      const card = buildCard(note, await read(note.path), undefined, { now: input.now.getTime() });
+      const card = buildCard(note, await read(note.path), undefined, input.cardAges === false ? {} : { now: input.now.getTime() });
       if (card) cards.set(note.path, card);
     }
     const stage = createLlmStage({ provider: input.model.provider, cards, folders: snapshot.folders, secondSample: SECOND_SAMPLE });
@@ -70,7 +74,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     model = { classification: stage.stats, naming: naming.stats };
   }
 
-  const classification = await classifyNotes({ snapshot, charter, charterPath: input.charterPath, neighbors: input.neighbors, llm: llmStage });
+  const classification = await classifyNotes({ snapshot, charter, charterPath: input.charterPath, neighbors: input.neighbors, llm: llmStage }, input.knn);
   const subfolders = await reconcileSubfolders(classification, charter, snapshot.folders, namer);
   const placed = placementOperations(classification, snapshot, charter);
   const moves = placed.operations.filter((op): op is Extract<Operation, { kind: 'move' }> => op.kind === 'move');

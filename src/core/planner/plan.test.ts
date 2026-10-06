@@ -8,7 +8,8 @@ import type { Neighbor } from '../embeddings/top-k';
 import type { Operation } from '../model/operation';
 import { applyHarness } from '../testing/apply-harness';
 import { ScriptedChatProvider } from '../testing/fake-chat';
-import { buildPlan, followMoves } from './plan';
+import { DEFAULT_KNN } from './classify';
+import { buildPlan, followMoves, type PlannerInput } from './plan';
 import { charterRoots } from './rule-plan';
 
 const charter: Charter = {
@@ -38,7 +39,7 @@ const NEIGHBORS: Record<string, Neighbor[]> = {
   ],
 };
 
-async function plan(model?: ScriptedChatProvider) {
+async function plan(model?: ScriptedChatProvider, options: Pick<PlannerInput, 'knn' | 'cardAges'> = {}) {
   const harness = applyHarness(files, ['Inbox', '1 Projects', '1 Projects/Website relaunch']);
   const snapshot = await harness.vault.snapshot();
   const result = await buildPlan({
@@ -49,6 +50,7 @@ async function plan(model?: ScriptedChatProvider) {
     now: new Date(Date.UTC(2026, 9, 7)),
     neighbors: (path, k) => (NEIGHBORS[path] ?? []).slice(0, k),
     ...(model ? { model: { provider: model, name: 'scripted' } } : {}),
+    ...options,
   });
   return { ...harness, snapshot, result };
 }
@@ -98,6 +100,22 @@ describe('buildPlan', () => {
     expect(result.plan.promptVersions).toEqual({ 'classify-notes': 1, 'subfolder-naming': 1, 'plan-summary': 1 });
     expect(result.model?.classification.calls).toBe(1);
     expect(result.summary).toEqual({ summary: 'Two notes move.', highlights: [], source: 'model' });
+  });
+
+  it('takes kNN thresholds that suit the similarity, and can leave note ages out', async () => {
+    // Stricter than these neighbours: kNN decides nothing, so both loose notes go to the model.
+    const reply = JSON.stringify({ notes: [] });
+    const model = new ScriptedChatProvider([reply, reply, JSON.stringify({ summary: 'Nothing moves.', highlights: [] })]);
+    const { result } = await plan(model, { knn: { ...DEFAULT_KNN, minSimilarity: 0.95 } });
+    expect(result.plan.operations.filter((op) => op.kind === 'move')).toEqual([]);
+    expect(model.requests[0]?.messages.at(-1)?.content).toContain('Website plan');
+
+    const withAges = new ScriptedChatProvider([reply, reply, '{}', '{}']);
+    await plan(withAges, { knn: { ...DEFAULT_KNN, minSimilarity: 0.95 } });
+    const withoutAges = new ScriptedChatProvider([reply, reply, '{}', '{}']);
+    await plan(withoutAges, { knn: { ...DEFAULT_KNN, minSimilarity: 0.95 }, cardAges: false });
+    expect(JSON.stringify(withAges.requests[0])).toContain('Last changed');
+    expect(JSON.stringify(withoutAges.requests[0])).not.toContain('Last changed');
   });
 });
 
