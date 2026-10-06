@@ -1,37 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { clusterLabelV1 } from '../ai/prompts/cluster-label.v1';
 import { ScriptedChatProvider } from '../testing/fake-chat';
-import { InMemoryVault } from '../testing/in-memory-vault';
-import { buildCard, type NoteCard, renderCard } from '../planner/cards';
+import { testCard } from '../testing/cards';
 import { labelClusters } from './cluster-labels';
 
-const card = (title: string, excerpt: string): NoteCard => ({ path: `${title}.md`, title, folder: '', tags: [], headings: [], excerpt, links: [] });
-
-describe('buildCard', () => {
-  it('summarizes a note compactly and skips private notes', async () => {
-    const vault = InMemoryVault.from({
-      'Garden/Tomatoes.md': '---\ntags: [garden]\n---\n# Seedlings\nThe seedlings need more light. [[Compost]] helps.\n\n```js\ncode()\n```',
-      'Compost.md': 'Turn it often.',
-      'Diary.md': '---\nai-vault-organizer: private\n---\nSecret.',
-    });
-    const notes = (await vault.snapshot()).notes;
-    const tomatoes = notes.find((n) => n.path === 'Garden/Tomatoes.md');
-    const diary = notes.find((n) => n.path === 'Diary.md');
-    if (!tomatoes || !diary) throw new Error('missing notes');
-    const result = buildCard(tomatoes, await vault.read(tomatoes.path), { excerptChars: 30, headings: 10, links: 10 });
-    expect(result).toEqual({
-      path: 'Garden/Tomatoes.md',
-      title: 'Tomatoes',
-      folder: 'Garden',
-      tags: ['garden'],
-      headings: ['Seedlings'],
-      excerpt: 'The seedlings need more…',
-      links: ['Compost'],
-    });
-    expect(result && renderCard(result)).toBe('Title: Tomatoes\nTags: #garden\nHeadings: Seedlings\nLinks to: Compost\nText: The seedlings need more…');
-    expect(buildCard(diary, await vault.read(diary.path))).toBeNull();
-  });
-});
+const card = (title: string, excerpt: string) => testCard(`${title}.md`, excerpt);
 
 describe('cluster-label v1', () => {
   const input = {

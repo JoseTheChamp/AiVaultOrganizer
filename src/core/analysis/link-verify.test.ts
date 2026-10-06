@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { verifyLinksV1 } from '../ai/prompts/verify-links.v1';
-import type { NoteCard } from '../planner/cards';
+import { testCard } from '../testing/cards';
 import { ScriptedChatProvider } from '../testing/fake-chat';
 import type { LinkCandidate } from './link-candidates';
 import { verifyLinks } from './link-verify';
 
-const card = (path: string, excerpt = `About ${path}.`): NoteCard => ({ path, title: path.replace('.md', ''), folder: '', tags: [], headings: [], excerpt, links: [] });
+const card = (path: string, excerpt = `About ${path}.`) => testCard(path, excerpt);
 const candidate = (source: string, target: string, score = 0.8): LinkCandidate => ({ source, target, score, similarity: score, sharedTags: 0, sharedNeighbors: 0 });
 const answer = (...pairs: [string, boolean, number, string][]) =>
   JSON.stringify({ pairs: pairs.map(([pairId, relevant, strength, reason]) => ({ pairId, relevant, strength, reason })) });
