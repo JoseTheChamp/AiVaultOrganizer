@@ -30,7 +30,7 @@ const INDEX: Area[] = [
     categories: [
       { id: '21', name: { en: 'Projects', cs: 'Projekty' }, about: { en: 'Work and study projects with a goal and an end, with all their notes.', cs: 'Pracovní a studijní projekty s cílem a koncem, se všemi jejich poznámkami.' } },
       { id: '22', name: { en: 'Meetings', cs: 'Schůzky' }, about: { en: 'Meetings about work projects: agendas, minutes and follow-ups.', cs: 'Schůzky k pracovním projektům: program, zápisy a úkoly z nich.' } },
-      { id: '23', name: { en: 'Reference', cs: 'Reference' }, about: { en: 'Reference material on any subject: topics you keep notes on, saved articles and people.', cs: 'Referenční materiál na jakékoli téma: témata, o kterých si vedeš poznámky, uložené články a lidé.' } },
+      { id: '23', name: { en: 'Reference', cs: 'Reference' }, about: { en: 'Reference material on any subject, at work or at home: topics you keep notes on (such as cooking, photography or programming), saved articles and people.', cs: 'Referenční materiál na jakékoli téma, pracovní i osobní: témata, o kterých si vedeš poznámky (například vaření, fotografie nebo programování), uložené články a lidé.' } },
     ],
   },
   {
@@ -38,7 +38,7 @@ const INDEX: Area[] = [
     name: { en: 'Learning', cs: 'Vzdělávání' },
     categories: [
       { id: '31', name: { en: 'Courses', cs: 'Kurzy' }, about: { en: 'Courses and classes, with their lecture notes.', cs: 'Kurzy a předměty s poznámkami z výuky.' } },
-      { id: '32', name: { en: 'Books', cs: 'Knihy' }, about: { en: 'Notes on books you read.', cs: 'Poznámky ke knihám, které čteš.' } },
+      { id: '32', name: { en: 'Books', cs: 'Knihy' }, about: { en: 'One note per book you have read.', cs: 'Jedna poznámka na každou přečtenou knihu.' } },
     ],
   },
 ];

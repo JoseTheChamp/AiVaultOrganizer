@@ -8,27 +8,27 @@ import { defaultIgnore, type Lang, type Preset } from './types';
 const DESCRIPTIONS: Record<Lang, Record<string, string>> = {
   en: {
     maps: 'Maps of content: notes that gather and explain links to other notes.',
-    notes: 'Ideas and knowledge in your own words.',
+    notes: 'Ideas and knowledge in your own words, by topic, that belong to no effort.',
     sources: 'Notes about books, articles, videos and other sources.',
     people: 'One note per person.',
     logs: 'Time-based logs and journals other than daily notes.',
     meetings: 'Meeting notes, named with their date.',
-    on: 'Efforts you are actively working on now.',
-    ongoing: 'Recurring efforts that never really end.',
-    simmering: 'Efforts on the back burner, picked up now and then.',
-    sleeping: 'Efforts that are paused or done.',
+    on: 'Projects you are actively working on now, each in its own folder with all its notes: plans, checklists, drafts and research.',
+    ongoing: 'Areas of responsibility that never end, such as health, finances or the home, each in its own folder with all its notes.',
+    simmering: 'Projects on the back burner, picked up now and then.',
+    sleeping: 'Projects that are paused or finished, with all their notes.',
   },
   cs: {
     maps: 'Mapy obsahu: poznámky, které shromažďují a vysvětlují odkazy na jiné poznámky.',
-    notes: 'Myšlenky a znalosti vlastními slovy.',
+    notes: 'Myšlenky a znalosti vlastními slovy, podle témat, které nepatří k žádnému úsilí.',
     sources: 'Poznámky ke knihám, článkům, videím a dalším zdrojům.',
     people: 'Jedna poznámka na každého člověka.',
     logs: 'Časové záznamy a deníky kromě denních poznámek.',
     meetings: 'Zápisy ze schůzek, pojmenované datem.',
-    on: 'Úsilí, na kterém právě aktivně pracuješ.',
-    ongoing: 'Opakující se úsilí, které vlastně nikdy nekončí.',
-    simmering: 'Úsilí na mírném ohni, ke kterému se občas vracíš.',
-    sleeping: 'Úsilí, které je pozastavené nebo hotové.',
+    on: 'Projekty, na kterých právě aktivně pracuješ, každý ve vlastní složce se všemi poznámkami: plány, seznamy, koncepty a podklady.',
+    ongoing: 'Oblasti odpovědnosti, které nikdy nekončí, například zdraví, finance nebo domov, každá ve vlastní složce se všemi poznámkami.',
+    simmering: 'Projekty na mírném ohni, ke kterým se občas vracíš.',
+    sleeping: 'Projekty, které jsou pozastavené nebo hotové, se všemi poznámkami.',
   },
 };
 
@@ -40,7 +40,7 @@ export const ace: Preset = {
     cs: 'Tento vault používá **ACE** (Nick Milo, Linking Your Thinking): poznámky třídíme podle záměru. **Atlas** obsahuje znalosti (k porozumění), **Calendar** časové poznámky (k reflexi) a **Efforts** projekty a činnosti (k jednání), seřazené podle toho, kolik pozornosti teď dostávají.',
   },
   guidance:
-    'Decide by intention, not topic: knowledge to understand goes to Atlas (maps, notes, sources, people), time-bound notes to Calendar, and anything you act on to Efforts, choosing On, Ongoing, Simmering or Sleeping by how much attention it gets now.',
+    'Decide by intention, not topic. A note that belongs to a project or an area of responsibility goes to Efforts with it, even when it explains something: On, Ongoing, Simmering or Sleeping by how much attention that effort gets now. Knowledge to understand that belongs to no effort goes to Atlas (maps, notes, sources, people), and time-bound notes to Calendar.',
   build(lang: Lang) {
     const d = DESCRIPTIONS[lang];
     return {
