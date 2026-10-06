@@ -8,6 +8,7 @@ export async function exclusive(plugin: AiVaultOrganizerPlugin, task: () => Prom
     return;
   }
   plugin.busy = true;
+  plugin.changed();
   try {
     await task();
   } catch (error) {
@@ -15,5 +16,6 @@ export async function exclusive(plugin: AiVaultOrganizerPlugin, task: () => Prom
     new Notice('The operation failed. Enable debug logging and check the developer console for details.');
   } finally {
     plugin.busy = false;
+    plugin.changed();
   }
 }

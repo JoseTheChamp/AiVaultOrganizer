@@ -121,6 +121,7 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
       return;
     }
     await plugin.services.plans.save(plan);
+    plugin.changed();
     await openReview(plugin, plan);
   } catch (error) {
     logger.error('Planning failed', error);

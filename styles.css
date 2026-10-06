@@ -212,3 +212,36 @@
 .avo-badge-low {
   color: var(--color-red);
 }
+
+/* Dashboard (sidebar view) */
+
+.avo-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-3);
+  padding: var(--size-4-2);
+  font-size: var(--font-ui-small);
+}
+
+.avo-dash-section {
+  padding-bottom: var(--size-4-3);
+  border-bottom: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-dash-section p {
+  margin: var(--size-4-1) 0;
+}
+
+.avo-dash-title {
+  margin: 0 0 var(--size-4-1);
+  font-size: var(--font-ui-small);
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+}
+
+.avo-dash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-4-2);
+  margin-top: var(--size-4-2);
+}

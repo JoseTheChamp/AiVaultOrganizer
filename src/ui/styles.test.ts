@@ -22,7 +22,9 @@ describe('component styles', async () => {
   it.each(files)('%s has no <style> block and only defined classes', async (file) => {
     const source = await readFile(file, 'utf8');
     expect(source).not.toMatch(/<style[\s>]/);
-    const used = [...source.matchAll(/['"`\s](avo-[a-z0-9-]+)(?=['"`\s])/g)].map((match) => match[1] as string);
+    // Static class names inside class attributes; dynamic ones (`avo-badge-${level}`) end in "-".
+    const attributes = [...source.matchAll(/class=(?:"([^"]*)"|\{([^}]*)\})/g)].map((match) => match[1] ?? match[2] ?? '');
+    const used = attributes.flatMap((text) => [...text.matchAll(/avo-[a-z0-9-]*[a-z0-9]\b(?!-)/g)].map((match) => match[0]));
     expect(used.filter((name) => !defined.has(name))).toEqual([]);
   });
 });
