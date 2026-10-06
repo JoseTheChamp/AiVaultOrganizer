@@ -11,5 +11,6 @@ Add one whenever a decision is non-trivial, affects user data, the invariants or
 | [0004](0004-bring-your-own-model.md) | Bring-your-own-model provider layer | Accepted |
 | [0005](0005-similarity-index.md) | Similarity index | Accepted |
 | [0006](0006-analysis-and-links.md) | Analysis and link suggestions | Accepted |
+| [0007](0007-planner.md) | Planner: classification cascade, normalization and the drafting agent | Accepted |
 
 Copy [`template.md`](template.md) to `NNNN-short-title.md` to start a new record.
