@@ -1,14 +1,26 @@
 import { type App, normalizePath, Notice, PluginSettingTab, SecretComponent, Setting, type SettingDefinitionItem } from 'obsidian';
-import { configFromPreset, ENDPOINT_PRESETS, findPreset } from '../../core/ai/config';
+import {
+  configFromPreset,
+  ENDPOINT_PRESETS,
+  type EndpointPreset,
+  findPreset,
+  followsLanguageModel,
+  suggestEmbeddingEndpoint,
+  trimBaseUrl,
+} from '../../core/ai/config';
 import { endpointPolicyProblem } from '../../core/ai/local-only';
 import type { EndpointSetting } from '../../core/ai/settings';
 import type AiVaultOrganizerPlugin from '../main';
+
+type Purpose = 'chat' | 'embeddings';
 
 /** One settings row, rendered imperatively so the same spec serves both settings APIs. */
 interface RowSpec {
   name: string;
   desc: string;
   render: (setting: Setting) => void;
+  /** Indented under the toggle above it. */
+  child?: boolean;
 }
 
 interface GroupSpec {
@@ -37,9 +49,7 @@ export class SettingsTab extends PluginSettingTab {
     containerEl.empty();
     for (const group of this.groups()) {
       new Setting(containerEl).setName(group.heading).setHeading();
-      for (const row of group.rows) {
-        row.render(new Setting(containerEl).setName(row.name).setDesc(row.desc));
-      }
+      for (const row of group.rows) renderRow(row, new Setting(containerEl).setName(row.name).setDesc(row.desc));
     }
   }
 
@@ -50,7 +60,7 @@ export class SettingsTab extends PluginSettingTab {
       items: group.rows.map((row) => ({
         name: row.name,
         desc: row.desc,
-        render: (setting: Setting) => row.render(setting),
+        render: (setting: Setting) => renderRow(row, setting),
       })),
     }));
   }
@@ -91,8 +101,7 @@ export class SettingsTab extends PluginSettingTab {
           },
         ],
       },
-      { heading: 'Language model', rows: this.endpointRows('chat') },
-      { heading: 'Embeddings', rows: this.endpointRows('embeddings') },
+      { heading: 'AI', rows: [...this.languageModelRows(), ...this.similarityRows()] },
       {
         heading: 'Privacy and limits',
         rows: [
@@ -221,23 +230,17 @@ export class SettingsTab extends PluginSettingTab {
     ];
   }
 
-  /** Rows for one endpoint (chat or embeddings): on/off, provider, URL, model, key, test. */
-  private endpointRows(purpose: 'chat' | 'embeddings'): RowSpec[] {
+  /** The language model: the main AI setting. */
+  private languageModelRows(): RowSpec[] {
     const ai = this.plugin.settings.ai;
-    const endpoint: EndpointSetting = ai[purpose];
-    const isChat = purpose === 'chat';
-    const presets = ENDPOINT_PRESETS.filter((preset) => isChat || (preset.embeddingModel !== null && preset.kind === 'openai-compatible'));
-    const preset = findPreset(endpoint.preset);
     const rows: RowSpec[] = [
       {
-        name: isChat ? 'Use a language model' : 'Use embeddings',
-        desc: isChat
-          ? 'Lets the planner ask a model where notes belong when no rule decides. Everything else works without it.'
-          : 'Semantic similarity for link suggestions and placing notes by example. Without it, word statistics are used.',
+        name: 'Use a language model',
+        desc: 'Lets the planner ask a model where notes belong when no rule decides. Everything else works without it.',
         render: (setting) => {
           setting.addToggle((toggle) => {
-            toggle.setValue(endpoint.enabled).onChange(async (value) => {
-              endpoint.enabled = value;
+            toggle.setValue(ai.chat.enabled).onChange(async (value) => {
+              ai.chat.enabled = value;
               await this.save();
               this.refresh();
             });
@@ -245,82 +248,167 @@ export class SettingsTab extends PluginSettingTab {
         },
       },
     ];
-    if (!endpoint.enabled) return rows;
-
+    if (!ai.chat.enabled) return rows;
     rows.push(
+      this.providerRow('chat', ENDPOINT_PRESETS, 'Local providers keep everything on this computer and need no key.', (chosen) =>
+        this.changeChat((chat) => Object.assign(chat, configFromPreset(chosen, 'chat', chat.secretName))),
+      ),
+      this.endpointRow('chat', (value) => this.changeChat((chat) => (chat.baseUrl = value))),
+      this.modelRow('chat', 'Model', 'A model that follows instructions and supports structured output.', 'qwen3:8b'),
+    );
+    if (needsKeyRow(ai.chat)) rows.push(this.keyRow('chat', (value) => this.changeChat((chat) => (chat.secretName = value))));
+    return rows;
+  }
+
+  /**
+   * Embeddings, presented as an optional upgrade to similarity. They follow the language model's
+   * provider (and key) until the user picks another, so most people never have to configure them.
+   */
+  private similarityRows(): RowSpec[] {
+    const ai = this.plugin.settings.ai;
+    const embeddings = ai.embeddings;
+    const rows: RowSpec[] = [
       {
-        name: 'Provider',
-        desc: 'Local providers keep everything on this computer and need no key.',
+        name: 'Better similarity',
+        desc: 'Finds related notes by meaning instead of shared words, even across languages. Needs an embedding model. Without it, word statistics are used, which need no setup.',
         render: (setting) => {
-          setting.addDropdown((dropdown) => {
-            for (const option of presets) dropdown.addOption(option.id, option.label);
-            dropdown.setValue(endpoint.preset).onChange(async (value) => {
-              const chosen = findPreset(value);
-              if (!chosen) return;
-              Object.assign(endpoint, configFromPreset(chosen, purpose, endpoint.secretName), { enabled: true });
+          setting.addToggle((toggle) => {
+            toggle.setValue(embeddings.enabled).onChange(async (value) => {
+              embeddings.enabled = value;
               await this.save();
               this.refresh();
             });
           });
         },
       },
-      {
-        name: 'Endpoint',
-        desc: endpointPolicyProblem(endpoint.baseUrl, ai.localOnly) ?? 'Base URL of the API.',
-        render: (setting) => {
-          setting.addText((text) => {
-            text.setValue(endpoint.baseUrl).onChange(async (value) => {
-              endpoint.baseUrl = value.trim();
-              await this.save();
-            });
-          });
-          if (endpointPolicyProblem(endpoint.baseUrl, ai.localOnly)) setting.descEl.addClass('avo-warning');
-        },
-      },
-      {
-        name: 'Model',
-        desc: isChat ? 'A model that follows instructions and supports structured output.' : 'A multilingual embedding model works best for mixed-language vaults.',
-        render: (setting) => {
-          setting
-            .addText((text) => {
-              text
-                .setPlaceholder(isChat ? 'qwen3:8b' : 'bge-m3')
-                .setValue(endpoint.model)
-                .onChange(async (value) => {
-                  endpoint.model = value.trim();
-                  await this.save();
-                });
-            })
-            .addButton((button) =>
-              button.setButtonText('Test connection').onClick(async () => {
-                button.setDisabled(true);
-                try {
-                  const report = await this.plugin.services.ai.testConnection(purpose);
-                  new Notice(report.message, report.ok ? 5000 : 10_000);
-                } finally {
-                  button.setDisabled(false);
-                }
-              }),
-            );
-        },
-      },
+    ];
+    if (!embeddings.enabled) return rows;
+
+    const chatPreset = findPreset(ai.chat.preset);
+    let providerDesc = 'Local providers keep your notes on this computer.';
+    if (ai.chat.enabled && chatPreset?.embeddingModel === null) {
+      providerDesc = `${chatPreset.label} has no embedding model. A local one works with any language model.`;
+    } else if (ai.chat.enabled && followsLanguageModel(embeddings, ai.chat)) {
+      providerDesc = 'Uses the language model provider and its key.';
+    }
+    const presets = ENDPOINT_PRESETS.filter((preset) => preset.kind === 'openai-compatible' && preset.embeddingModel !== null);
+    rows.push(
+      this.providerRow('embeddings', presets, providerDesc, async (chosen) => {
+        // Choosing the language model's provider again re-links to it (same URL and key).
+        const next = chosen.id === ai.chat.preset ? suggestEmbeddingEndpoint(ai.chat) : configFromPreset(chosen, 'embeddings', embeddings.secretName);
+        Object.assign(embeddings, next);
+        await this.save();
+      }),
     );
-    // Local servers never need a key; custom endpoints may (self-hosted proxies often do).
-    if (preset?.local !== true || endpoint.secretName) {
-      rows.push({
-        name: 'API key',
-        desc: "Choose or add a key in Obsidian's keychain. Only its name is saved in the plugin settings; the key never leaves this device except to this provider.",
-        render: (setting) => {
-          setting.addComponent((el) =>
-            new SecretComponent(this.app, el).setValue(endpoint.secretName).onChange(async (value) => {
-              endpoint.secretName = value;
-              await this.save();
-            }),
-          );
-        },
-      });
+    const preset = findPreset(embeddings.preset);
+    if (!preset || preset.id === 'custom' || trimBaseUrl(preset.baseUrl) !== trimBaseUrl(embeddings.baseUrl)) {
+      rows.push(
+        this.endpointRow('embeddings', async (value) => {
+          embeddings.baseUrl = value;
+          await this.save();
+        }),
+      );
+    }
+    rows.push(this.modelRow('embeddings', 'Embedding model', 'A multilingual model such as bge-m3 works best for vaults in more than one language.', 'bge-m3'));
+    if (needsKeyRow(embeddings)) {
+      rows.push(
+        this.keyRow('embeddings', async (value) => {
+          embeddings.secretName = value;
+          await this.save();
+        }),
+      );
     }
     return rows;
+  }
+
+  /** Applies a change to the language model and carries it over to embeddings that follow it. */
+  private async changeChat(apply: (chat: EndpointSetting) => void): Promise<void> {
+    const ai = this.plugin.settings.ai;
+    const following = followsLanguageModel(ai.embeddings, ai.chat);
+    apply(ai.chat);
+    if (following) Object.assign(ai.embeddings, suggestEmbeddingEndpoint(ai.chat));
+    await this.save();
+  }
+
+  private providerRow(purpose: Purpose, presets: EndpointPreset[], desc: string, choose: (preset: EndpointPreset) => Promise<void>): RowSpec {
+    const ai = this.plugin.settings.ai;
+    const endpoint = ai[purpose];
+    const problem = endpointPolicyProblem(endpoint.baseUrl, ai.localOnly);
+    return {
+      name: purpose === 'chat' ? 'Provider' : 'Embedding provider',
+      desc: problem ?? desc,
+      child: true,
+      render: (setting) => {
+        setting.addDropdown((dropdown) => {
+          for (const option of presets) dropdown.addOption(option.id, option.label);
+          dropdown.setValue(endpoint.preset).onChange(async (value) => {
+            const chosen = findPreset(value);
+            if (!chosen) return;
+            await choose(chosen);
+            this.refresh();
+          });
+        });
+        if (problem) setting.descEl.addClass('avo-warning');
+      },
+    };
+  }
+
+  private endpointRow(purpose: Purpose, change: (value: string) => Promise<void>): RowSpec {
+    const endpoint = this.plugin.settings.ai[purpose];
+    return {
+      name: 'Endpoint',
+      desc: 'Base URL of the API.',
+      child: true,
+      render: (setting) => {
+        setting.addText((text) => {
+          text.setValue(endpoint.baseUrl).onChange((value) => change(value.trim()));
+        });
+      },
+    };
+  }
+
+  private modelRow(purpose: Purpose, name: string, desc: string, placeholder: string): RowSpec {
+    const endpoint = this.plugin.settings.ai[purpose];
+    return {
+      name,
+      desc,
+      child: true,
+      render: (setting) => {
+        setting
+          .addText((text) => {
+            text
+              .setPlaceholder(placeholder)
+              .setValue(endpoint.model)
+              .onChange(async (value) => {
+                endpoint.model = value.trim();
+                await this.save();
+              });
+          })
+          .addButton((button) =>
+            button.setButtonText('Test connection').onClick(async () => {
+              button.setDisabled(true);
+              try {
+                const report = await this.plugin.services.ai.testConnection(purpose);
+                new Notice(report.message, report.ok ? 5000 : 10_000);
+              } finally {
+                button.setDisabled(false);
+              }
+            }),
+          );
+      },
+    };
+  }
+
+  private keyRow(purpose: Purpose, change: (value: string) => Promise<void>): RowSpec {
+    const endpoint = this.plugin.settings.ai[purpose];
+    return {
+      name: 'API key',
+      desc: "Choose or add a key in Obsidian's keychain. Only its name is saved in the plugin settings; the key never leaves this device except to this provider.",
+      child: true,
+      render: (setting) => {
+        setting.addComponent((el) => new SecretComponent(this.app, el).setValue(endpoint.secretName).onChange(change));
+      },
+    };
   }
 
   private numberInput(setting: Setting, value: number, apply: (value: number) => void): void {
@@ -334,4 +422,14 @@ export class SettingsTab extends PluginSettingTab {
       });
     });
   }
+}
+
+function renderRow(row: RowSpec, setting: Setting): void {
+  if (row.child) setting.settingEl.addClass('avo-setting-child');
+  row.render(setting);
+}
+
+/** Local servers never need a key; custom endpoints may (self-hosted proxies often do). */
+function needsKeyRow(endpoint: EndpointSetting): boolean {
+  return findPreset(endpoint.preset)?.local !== true || endpoint.secretName !== '';
 }

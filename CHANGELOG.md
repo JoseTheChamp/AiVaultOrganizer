@@ -22,10 +22,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Charter rules render as a summary card in reading view, or as a list of problems with line numbers.
 - `Check drift` and `Plan re-alignment`: see where the vault departs from its charter and review the moves
   its rules imply.
-- AI settings: choose a language model and an embedding model from Ollama, LM Studio, OpenAI, Anthropic,
-  OpenRouter, Google Gemini, Mistral, Groq or any OpenAI-compatible endpoint, and test the connection.
-  API keys are kept in Obsidian's keychain, never in the plugin settings. Features that use the models
-  arrive in later releases.
+- AI settings: choose a language model from Ollama, LM Studio, OpenAI, Anthropic, OpenRouter, Google
+  Gemini, Mistral, Groq or any OpenAI-compatible endpoint, and test the connection. An optional
+  "Better similarity" setting adds an embedding model; it uses the language model's provider and key
+  when that provider has one, and a local Ollama model otherwise. API keys are kept in Obsidian's
+  keychain, never in the plugin settings.
 - Local-only mode, on by default: requests to anything other than this computer are blocked.
 - Limits for model use: parallel requests, requests per minute, a token budget per run and optional
   prices for cost estimates. Responses are cached so repeated runs are free; the cache can be cleared

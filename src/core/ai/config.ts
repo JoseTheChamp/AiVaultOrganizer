@@ -70,6 +70,41 @@ export function configFromPreset(preset: EndpointPreset, purpose: 'chat' | 'embe
   });
 }
 
+/**
+ * The embedding endpoint that goes with a language model: the same provider, URL and key when that
+ * provider offers embeddings, so one key is enough; otherwise a local Ollama model, which works next
+ * to any language model (Anthropic, for example, has no embedding API).
+ */
+export function suggestEmbeddingEndpoint(chat: EndpointConfig): EndpointConfig {
+  const preset = findPreset(chat.preset);
+  if (preset?.kind === 'openai-compatible' && preset.embeddingModel !== null) {
+    return endpointConfigSchema.parse({
+      kind: preset.kind,
+      preset: preset.id,
+      baseUrl: chat.baseUrl,
+      model: preset.embeddingModel,
+      secretName: chat.secretName,
+      maxContext: preset.maxContext,
+    });
+  }
+  const ollama = findPreset('ollama');
+  return ollama ? configFromPreset(ollama, 'embeddings') : endpointConfigSchema.parse({ model: 'bge-m3' });
+}
+
+/**
+ * Whether the embedding endpoint is still the one suggested for `chat`. While it is, it follows
+ * changes to the language model; once the user picks something else, it is left alone.
+ */
+export function followsLanguageModel(embeddings: EndpointConfig, chat: EndpointConfig): boolean {
+  const suggested = suggestEmbeddingEndpoint(chat);
+  return (
+    embeddings.preset === suggested.preset &&
+    trimBaseUrl(embeddings.baseUrl) === trimBaseUrl(suggested.baseUrl) &&
+    embeddings.model === suggested.model &&
+    embeddings.secretName === suggested.secretName
+  );
+}
+
 /** Base URL without trailing slashes, for joining paths. */
 export function trimBaseUrl(url: string): string {
   return url.trim().replace(/\/+$/, '');

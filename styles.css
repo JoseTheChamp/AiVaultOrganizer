@@ -166,3 +166,9 @@
 .avo-charter-system dd {
   margin: 0;
 }
+
+/* Settings: rows that belong to the toggle above them */
+
+.avo-setting-child {
+  padding-inline-start: var(--size-4-6);
+}

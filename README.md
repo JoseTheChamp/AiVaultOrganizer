@@ -69,13 +69,18 @@ backups uploaded.
 ## AI setup
 
 The plugin works without any AI. Rules, drift checks, analysis and undo never call a model. AI is off
-until you turn it on in **Settings → AI Vault Organizer**, under **Language model** and **Embeddings**.
-Features that use the models (classification, link suggestions, charter drafting) arrive in later
-releases.
+until you turn it on in **Settings → AI Vault Organizer → AI**. Most people set up one model:
+
+- **Use a language model** is the main setting. The model decides where a note belongs when no rule
+  does, and later helps draft your charter.
+- **Better similarity** is an optional upgrade. An embedding model finds related notes by meaning
+  rather than shared words, even across languages. Without it, the plugin compares words, which needs
+  no setup. It uses the language model's provider and key when that provider has embeddings; Claude
+  has none, so a local Ollama model is suggested instead.
 
 **Local, free (recommended).** Install [Ollama](https://ollama.com) and pull a model, for example
-`ollama pull qwen3:8b` for chat and `ollama pull bge-m3` for embeddings. bge-m3 is multilingual, which
-matters for vaults that aren't English-only. Then:
+`ollama pull qwen3:8b` for the language model and `ollama pull bge-m3` for better similarity. bge-m3 is
+multilingual, which matters for vaults that aren't English-only. Then:
 
 1. Turn on **Use a language model**.
 2. Keep the provider **Ollama (local)**.
