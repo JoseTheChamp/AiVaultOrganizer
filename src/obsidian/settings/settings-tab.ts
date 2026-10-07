@@ -249,6 +249,21 @@ export class SettingsTab extends PluginSettingTab {
     const ai = this.plugin.settings.ai;
     const rows: RowSpec[] = [
       {
+        name: 'Guided setup',
+        desc: 'Choose where AI runs, add your key and test it in one step. The rows below hold every detail.',
+        render: (setting) => {
+          setting.addButton((button) =>
+            button
+              .setButtonText('Set up AI')
+              .setCta()
+              .onClick(async () => {
+                await this.plugin.openAiSetup();
+                this.refresh();
+              }),
+          );
+        },
+      },
+      {
         name: 'Use a language model',
         desc: 'Lets the planner ask a model where notes belong when no rule decides. Everything else works without it.',
         render: (setting) => {

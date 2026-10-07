@@ -73,14 +73,6 @@ describe('SetupWizard', () => {
     expect(within(preview()).queryByText('3 Resources')).toBeNull();
   });
 
-  it('without AI, offers to set it up instead', async () => {
-    const setUpAi = vi.fn<() => void>();
-    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn(), setUpAi });
-    expect(screen.queryByRole('button', { name: 'Suggest a system' })).toBeNull();
-    await fireEvent.click(screen.getByRole('button', { name: 'Set up AI' }));
-    expect(setUpAi).toHaveBeenCalledOnce();
-  });
-
   it('moves focus to each new step, so screen readers announce it', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();

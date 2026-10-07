@@ -10,6 +10,7 @@ import type AiVaultOrganizerPlugin from './main';
 /** Registers the command palette entries. Ids omit the plugin id; Obsidian prefixes them. */
 export function registerCommands(plugin: AiVaultOrganizerPlugin): void {
   plugin.addCommand({ id: 'open-dashboard', name: 'Open dashboard', callback: () => void plugin.openDashboard() });
+  plugin.addCommand({ id: 'set-up-ai', name: 'Set up AI', callback: () => void plugin.openAiSetup() });
   plugin.addCommand({ id: 'analyze-vault', name: 'Analyze vault', callback: () => void analyze(plugin) });
   plugin.addCommand({ id: 'set-up-charter', name: 'Set up charter', callback: () => void setUpCharter(plugin) });
   plugin.addCommand({ id: 'check-drift', name: 'Check drift', callback: () => void checkDrift(plugin) });

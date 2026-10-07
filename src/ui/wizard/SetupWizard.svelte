@@ -15,14 +15,12 @@
     /** Writes the charter (through a reviewed plan) and, when asked, plans the vault against it. */
     submit: (charter: Charter, planNow: boolean) => void;
     cancel: () => void;
-    /** Asks the language model for a charter (after consent); absent without a language model. */
+    /** Asks AI for a charter, setting AI up first if needed (after consent). */
     requestDraft?: (lang: Lang, wish: string) => Promise<Charter | null>;
-    /** Opens the AI setup; offered when no language model is set up. */
-    setUpAi?: () => void;
     icons?: IconSetter;
   }
 
-  let { input, submit, cancel, requestDraft, setUpAi, icons }: Props = $props();
+  let { input, submit, cancel, requestDraft, icons }: Props = $props();
   // svelte-ignore state_referenced_locally
   provideIcons(icons);
 
@@ -107,11 +105,6 @@
             <span class="avo-muted">Not sure? Let AI read samples of your notes and suggest a system.</span>
             <input type="text" bind:value={wish} placeholder="Optional wish, e.g. keep courses apart" aria-label="A wish for the suggestion" disabled={drafting} />
             <button type="button" disabled={drafting} onclick={() => void askForDraft()}>{drafting ? 'Suggesting…' : 'Suggest a system'}</button>
-          </div>
-        {:else if setUpAi}
-          <div class="avo-draft">
-            <span class="avo-muted">Not sure? With AI set up, it can suggest a system from your notes.</span>
-            <button type="button" onclick={setUpAi}>Set up AI</button>
           </div>
         {/if}
       </ChooseStep>

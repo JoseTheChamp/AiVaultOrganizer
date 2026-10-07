@@ -1,9 +1,10 @@
-import { Events, Plugin } from 'obsidian';
+import { Events, Notice, Plugin } from 'obsidian';
 import { registerCommands } from './commands';
 import { ConsoleLogger } from './logger';
 import { createServices, type PluginServices } from './services';
 import { parseSettings, type PluginSettings } from './settings/settings';
 import { SettingsTab } from './settings/settings-tab';
+import { openAiSetup } from './views/ai-setup-modal';
 import { renderCharterBlock } from './views/charter-card';
 import { DASHBOARD_VIEW, DashboardView } from './views/dashboard-view';
 import { REVIEW_VIEW, ReviewView } from './views/review-view';
@@ -42,6 +43,25 @@ export default class AiVaultOrganizerPlugin extends Plugin {
     if (!leaf) return;
     await leaf.setViewState({ type: DASHBOARD_VIEW, active: true });
     await workspace.revealLeaf(leaf);
+  }
+
+  /** The guided AI setup; resolves true when a language model is set up and answers. */
+  openAiSetup(): Promise<boolean> {
+    return openAiSetup(this.app, this);
+  }
+
+  /**
+   * Opens this plugin's settings tab. Obsidian has no public API for it; when the internal one is
+   * missing, a notice says where to look instead.
+   */
+  openSettings(): void {
+    const setting = (this.app as unknown as { setting?: { open(): void; openTabById(id: string): void } }).setting;
+    if (setting) {
+      setting.open();
+      setting.openTabById(this.manifest.id);
+    } else {
+      new Notice('Open the settings and choose this plugin in the list on the left.');
+    }
   }
 
   /** Opens a plan in the review view, reusing an open review. */

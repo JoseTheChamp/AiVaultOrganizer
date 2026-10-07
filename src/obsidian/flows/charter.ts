@@ -32,7 +32,7 @@ export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void
     const input = { snapshot, analysis, existing: current.status === 'ok' ? current.charter : null, replacesInvalid: current.status === 'invalid', charterPath: path };
     new SetupWizardModal(plugin.app, {
       ...input,
-      ...(plugin.services.ai.chat() ? { requestDraft: (lang: Lang, wish: string) => draftCharterWithAI(plugin, input, lang, wish) } : {}),
+      requestDraft: (lang: Lang, wish: string) => draftCharterWithAI(plugin, input, lang, wish),
       onSubmit: (charter, planNow) =>
         void (async () => {
           let saved = false;

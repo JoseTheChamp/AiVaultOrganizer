@@ -7,7 +7,7 @@ import type { WizardInput } from '../../ui/wizard/wizard-state';
 
 export interface SetupWizardOptions extends WizardInput {
   onSubmit: (charter: Charter, planNow: boolean) => void;
-  /** Present when a language model is set up. */
+  /** Asks AI for a charter (setting AI up first if needed). */
   requestDraft?: (lang: Lang, wish: string) => Promise<Charter | null>;
 }
 

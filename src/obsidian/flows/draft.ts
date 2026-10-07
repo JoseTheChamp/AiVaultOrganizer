@@ -16,12 +16,11 @@ import { indexingProgress } from './indexing';
  * Returns the draft for the wizard to show, or null when the user declines or the agent fails.
  */
 export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard: WizardInput, language: Lang, wish: string): Promise<Charter | null> {
+  // Without a language model, set one up first; the suggestion continues when that works.
+  if (!plugin.services.ai.chat() && !(await plugin.openAiSetup())) return null;
   const settings = plugin.settings.ai;
   const provider = plugin.services.ai.chat({ budget: new RunBudget({ maxTokens: DEFAULT_AGENT.maxTokens }) });
-  if (!provider) {
-    new Notice('Set up a language model in the settings to get a draft.');
-    return null;
-  }
+  if (!provider) return null;
   const progress = indexingProgress(plugin);
   try {
     const model = await plugin.services.similarity.wordModel({ ignore: wizard.existing?.ignore ?? [], ...progress.options });
