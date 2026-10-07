@@ -259,6 +259,59 @@
   color: var(--text-muted);
 }
 
+.avo-dash-health {
+  display: flex;
+  align-items: center;
+  gap: var(--size-4-3);
+}
+
+.avo-dash-health .avo-score {
+  min-width: 72px;
+  padding: var(--size-4-2);
+}
+
+.avo-next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-4-1);
+  padding: var(--size-4-3);
+  border: var(--border-width) solid var(--interactive-accent);
+  border-radius: var(--radius-m);
+}
+
+.avo-next p {
+  margin: 0;
+}
+
+.avo-next-title {
+  font-weight: var(--font-semibold);
+}
+
+.avo-next button {
+  margin-top: var(--size-4-2);
+}
+
+.avo-status {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--size-4-2) var(--size-4-3);
+  margin: 0;
+}
+
+.avo-status dt {
+  color: var(--text-muted);
+}
+
+.avo-status dd {
+  margin: 0;
+}
+
+.avo-dash-footer {
+  display: flex;
+  gap: var(--size-4-2);
+}
+
 .avo-dash-actions {
   display: flex;
   flex-wrap: wrap;

@@ -29,6 +29,7 @@ describe('dashboardState', () => {
   it('without a charter: health, no drift, nothing pending', async () => {
     const result = await state({ 'A.md': 'Hello [[B]].', 'B.md': 'World.' });
     expect(result.charter).toEqual({ status: 'missing', path: CHARTER });
+    expect(result.next).toEqual({ kind: 'set-up-charter' });
     expect(result.drift).toBeNull();
     expect(result.health.notes).toBe(2);
     expect(result.pending).toBeNull();
@@ -40,6 +41,7 @@ describe('dashboardState', () => {
     const result = await state({ [CHARTER]: charter, 'Plan.md': '---\ntype: project\n---\n', 'Projects/Done.md': '---\ntype: project\n---\n' });
     expect(result.charter).toMatchObject({ status: 'ok', method: 'PARA', revision: 3 });
     expect(result.drift).toMatchObject({ offCharter: 1, notes: 2 });
+    expect(result.next).toEqual({ kind: 'organize', notes: 1 });
   });
 
   it('counts open operations of a pending plan, and describes the last run and the models', async () => {

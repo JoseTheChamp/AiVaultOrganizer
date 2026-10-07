@@ -1,6 +1,6 @@
 <script lang="ts">
   import { plural, verb } from '../../core/model/text';
-  import type { DashboardActions, DashboardModel, ModelStatus } from './dashboard-state';
+  import type { DashboardActions, DashboardModel, ModelStatus, NextStep } from './dashboard-state';
 
   interface Props {
     model: DashboardModel;
@@ -12,9 +12,28 @@
   const busy = $derived(model.busy);
 
   const GRADE = { good: 'Good', fair: 'Fair', poor: 'Needs work' } as const;
-  const RUN = { completed: 'completed', failed: 'stopped after an error', cancelled: 'cancelled', 'verification-failed': 'stopped to protect links', running: 'did not finish' } as const;
 
-  const describe = (status: ModelStatus, none: string) => (status.model ? `${status.model} on ${status.where}` : none);
+  /** What the card says and does for each next step. */
+  function card(next: NextStep): { title: string; detail: string; action: { label: string; run: () => void } | null } {
+    switch (next.kind) {
+      case 'set-up-charter':
+        return { title: 'Choose how to organize your vault', detail: 'Pick a system and see how your notes would fit it.', action: { label: 'Choose a system', run: actions.setUp } };
+      case 'fix-charter':
+        return { title: 'The charter has problems', detail: 'Fix them in the charter note, then come back.', action: { label: 'Open charter', run: actions.openCharter } };
+      case 'review':
+        return { title: `Review ${plural(next.changes, 'proposed change')}`, detail: 'Nothing changes until you approve.', action: { label: 'Review', run: actions.review } };
+      case 'organize':
+        return {
+          title: `${plural(next.notes, 'note')} ${verb(next.notes, 'is', 'are')} out of place`,
+          detail: 'Plan where they belong; you approve every change.',
+          action: { label: 'Organize', run: actions.plan },
+        };
+      case 'tidy':
+        return { title: 'Everything is in place', detail: 'Notes that drift from your system show up here.', action: null };
+    }
+  }
+
+  const where = (status: ModelStatus) => (status.local ? 'on this computer' : `via ${status.where}`);
 </script>
 
 <div class="avo-dashboard">
@@ -23,82 +42,60 @@
   {:else if !state}
     <p class="avo-muted">Reading the vault…</p>
   {:else}
-    <section class="avo-dash-section" aria-labelledby="avo-dash-health">
+    {@const next = card(state.next)}
+    <div class="avo-dash-health">
       <div class={['avo-score', `avo-score-${state.health.grade}`]}>
         <span class="avo-score-value">{state.health.score}</span>
-        <span class="avo-score-label" id="avo-dash-health">Health: {GRADE[state.health.grade]}</span>
+        <span class="avo-score-label">{GRADE[state.health.grade]}</span>
       </div>
-      <p class="avo-muted">{plural(state.health.notes, 'note')}</p>
+      <span class="avo-muted">Vault health, {plural(state.health.notes, 'note')}</span>
+    </div>
+
+    <section class="avo-next" aria-label="Next step">
+      <p class="avo-next-title">{next.title}</p>
+      <p class="avo-muted">{next.detail}</p>
+      {#if next.action}
+        <button type="button" class="mod-cta" disabled={busy} onclick={next.action.run}>{next.action.label}</button>
+      {/if}
     </section>
 
-    <section class="avo-dash-section" aria-labelledby="avo-dash-charter">
-      <h4 class="avo-dash-title" id="avo-dash-charter">Charter</h4>
-      {#if state.charter.status === 'ok'}
-        <p>{state.charter.method}, revision {state.charter.revision}</p>
-        {#if state.drift}
-          <p>
-            {#if state.drift.offCharter === 0}
-              Every note follows the charter.
-            {:else}
-              {plural(state.drift.offCharter, 'note')} of {state.drift.notes} {verb(state.drift.offCharter, 'is', 'are')} off-charter.
-            {/if}
-          </p>
+    <dl class="avo-status">
+      <dt>System</dt>
+      <dd>
+        {#if state.charter.status === 'ok'}
+          {state.charter.method}
+          <button type="button" class="avo-link" onclick={actions.openCharter}>Open</button>
+          <button type="button" class="avo-link" disabled={busy} onclick={actions.setUp}>Change</button>
+        {:else}
+          <span class="avo-muted">Not chosen yet</span>
         {/if}
-        <div class="avo-dash-actions">
-          <button type="button" class="mod-cta" disabled={busy} onclick={actions.plan}>Plan re-alignment</button>
-          <button type="button" onclick={actions.openCharter}>Open charter</button>
-          <button type="button" disabled={busy} onclick={actions.setUp}>Edit charter</button>
-        </div>
-      {:else if state.charter.status === 'missing'}
-        <p>No charter yet. The charter is a note that describes your system; the plugin follows it.</p>
-        <div class="avo-dash-actions">
-          <button type="button" class="mod-cta" disabled={busy} onclick={actions.setUp}>Set up charter</button>
-        </div>
-      {:else if state.charter.status === 'invalid'}
-        <p class="avo-warning">The charter rules have {plural(state.charter.problems, 'problem')}. Fix them in the charter note.</p>
-        <div class="avo-dash-actions">
-          <button type="button" class="mod-cta" onclick={actions.openCharter}>Open charter</button>
-        </div>
-      {:else}
-        <p class="avo-warning">"{state.charter.path}" is not a charter. Rename it, or choose another charter note in the settings.</p>
-      {/if}
-    </section>
+      </dd>
 
-    {#if state.pending}
-      <section class="avo-dash-section" aria-labelledby="avo-dash-pending">
-        <h4 class="avo-dash-title" id="avo-dash-pending">Pending plan</h4>
-        <p>{plural(state.pending.open, 'proposed change')} {verb(state.pending.open, 'waits', 'wait')} for your review.</p>
-        <div class="avo-dash-actions">
-          <button type="button" class="mod-cta" disabled={busy} onclick={actions.review}>Review</button>
-        </div>
-      </section>
-    {/if}
+      <dt>AI</dt>
+      <dd>
+        {#if state.chat.model}
+          {state.chat.model} <span class="avo-muted">{where(state.chat)}</span>
+          <button type="button" class="avo-link" onclick={actions.setUpAi}>Change</button>
+        {:else}
+          <span class="avo-muted">Off</span>
+          <button type="button" class="avo-link" onclick={actions.setUpAi}>Set up</button>
+        {/if}
+      </dd>
 
-    <section class="avo-dash-section" aria-labelledby="avo-dash-run">
-      <h4 class="avo-dash-title" id="avo-dash-run">Last run</h4>
-      {#if state.lastRun}
-        <p>
-          {new Date(state.lastRun.at).toLocaleString()}: {plural(state.lastRun.applied, 'change')}, {RUN[state.lastRun.status]}{state.lastRun.undone ? ', undone' : ''}.
-        </p>
-      {:else}
-        <p class="avo-muted">Nothing has been applied yet.</p>
-      {/if}
-      {#if state.canUndo}
-        <div class="avo-dash-actions">
-          <button type="button" disabled={busy} onclick={actions.undo}>Undo last run</button>
-        </div>
-      {/if}
-    </section>
+      <dt>Last change</dt>
+      <dd>
+        {#if state.lastRun}
+          {new Date(state.lastRun.at).toLocaleDateString()}, {plural(state.lastRun.applied, 'change')}{state.lastRun.undone ? ' (undone)' : ''}
+          {#if state.canUndo}<button type="button" class="avo-link" disabled={busy} onclick={actions.undo}>Undo</button>{/if}
+        {:else}
+          <span class="avo-muted">None yet</span>
+        {/if}
+      </dd>
+    </dl>
 
-    <section class="avo-dash-section" aria-labelledby="avo-dash-ai">
-      <h4 class="avo-dash-title" id="avo-dash-ai">AI</h4>
-      <p>Language model: {describe(state.chat, 'none (rules and similar notes only)')}</p>
-      <p>Better similarity: {describe(state.embeddings, 'off (shared words)')}</p>
-    </section>
-
-    <div class="avo-dash-actions">
-      <button type="button" onclick={actions.analyze}>Analyze vault</button>
-      <button type="button" onclick={actions.refresh}>Refresh</button>
+    <div class="avo-dash-footer">
+      <button type="button" class="avo-link" onclick={actions.analyze}>Full diagnosis</button>
+      <button type="button" class="avo-link" onclick={actions.refresh}>Refresh</button>
     </div>
   {/if}
 </div>

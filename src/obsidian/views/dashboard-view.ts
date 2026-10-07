@@ -51,6 +51,7 @@ export class DashboardView extends ItemView {
       plan: () => void planRealignment(plugin),
       review: () => void reviewPendingPlan(plugin),
       undo: () => void confirmUndo(plugin),
+      setUpAi: () => void plugin.openAiSetup(),
     };
     this.contentEl.empty();
     this.component = mountComponent(Dashboard, this.contentEl, { model: this.model, actions });

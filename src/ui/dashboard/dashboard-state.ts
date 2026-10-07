@@ -34,7 +34,16 @@ export interface ModelStatus {
   local: boolean;
 }
 
+/** The one thing to do now, leading from setup to a tidy vault. */
+export type NextStep =
+  | { kind: 'set-up-charter' }
+  | { kind: 'fix-charter' }
+  | { kind: 'review'; changes: number }
+  | { kind: 'organize'; notes: number }
+  | { kind: 'tidy' };
+
 export interface DashboardState {
+  next: NextStep;
   health: { score: number; grade: 'good' | 'fair' | 'poor'; notes: number };
   charter: CharterStatus;
   /** Null without a valid charter. */
@@ -65,6 +74,7 @@ export interface DashboardActions {
   plan: () => void;
   review: () => void;
   undo: () => void;
+  setUpAi: () => void;
 }
 
 /** Everything the dashboard shows, from data the plugin already has (Tier 0, no model calls). */
@@ -75,16 +85,26 @@ export function dashboardState(input: DashboardInput): DashboardState {
   const drift = valid ? computeDrift(snapshot, valid, { charterPath: charter.path, now: input.now }) : null;
   const open = input.pendingPlan?.operations.filter((op) => op.status === 'pending' || op.status === 'accepted').length ?? 0;
   const run = input.lastRun;
+  const pending = input.pendingPlan && open > 0 ? { planId: input.pendingPlan.id, open } : null;
   return {
+    next: nextStep(charter.status, pending, drift?.offCharter ?? 0),
     health: { score: analysis.health.score, grade: analysis.health.grade, notes: snapshot.notes.length },
     charter: charterStatus(charter),
     drift: drift ? { offCharter: drift.offCharter, notes: drift.noteCount, missingFolders: drift.missingFolders.length } : null,
-    pending: input.pendingPlan && open > 0 ? { planId: input.pendingPlan.id, open } : null,
+    pending,
     lastRun: run ? { at: run.end?.finishedAt ?? run.run.startedAt, status: run.end?.status ?? 'running', applied: run.end?.applied ?? run.ops.length, undone: run.undo !== null } : null,
     canUndo: input.canUndo,
     chat: modelStatus(input.ai.chat),
     embeddings: modelStatus(input.ai.embeddings),
   };
+}
+
+function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number): NextStep {
+  if (charter === 'missing') return { kind: 'set-up-charter' };
+  if (charter !== 'ok') return { kind: 'fix-charter' };
+  if (pending) return { kind: 'review', changes: pending.open };
+  if (offCharter > 0) return { kind: 'organize', notes: offCharter };
+  return { kind: 'tidy' };
 }
 
 function charterStatus(load: CharterLoad): CharterStatus {
