@@ -99,7 +99,7 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
   const choice = await askConsent(
     plugin.app,
     {
-      purpose: 'place the notes that rules and similar notes could not',
+      purpose: 'place the notes your rules and similar notes could not',
       estimate,
       model: settings.chat.model,
       baseUrl: settings.chat.baseUrl,
@@ -107,7 +107,7 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
       prices: { inputPerMillion: settings.inputPricePerMillion, outputPerMillion: settings.outputPricePerMillion },
       budgetTokens: settings.budgetTokens,
     },
-    'Plan without it',
+    'Without AI',
   );
   if (choice === 'cancel') return 'cancel';
   return choice === 'model' ? { provider, name: settings.chat.model } : null;

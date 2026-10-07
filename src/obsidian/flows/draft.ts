@@ -37,7 +37,7 @@ export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard:
     const choice = await askConsent(
       plugin.app,
       {
-        purpose: 'propose a charter from groups of similar notes, reading samples of them',
+        purpose: 'suggest a system after reading samples of your notes',
         estimate: estimateAgentRun(context, withheld),
         model: settings.chat.model,
         baseUrl: settings.chat.baseUrl,

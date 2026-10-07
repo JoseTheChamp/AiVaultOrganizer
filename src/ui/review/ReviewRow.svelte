@@ -25,7 +25,7 @@
     register(summary);
     return () => register(null);
   });
-  const SOURCE = { rule: 'a rule', knn: 'similar notes', llm: 'the language model', user: 'you' } as const;
+  const SOURCE = { rule: 'a rule', knn: 'similar notes', llm: 'AI', user: 'you' } as const;
   const notePath = $derived('path' in item.op ? item.op.path : item.op.from);
 </script>
 
@@ -33,7 +33,6 @@
   <div class="avo-row-main">
     <button type="button" class="avo-row-summary" bind:this={summary} aria-expanded={expanded} {onkeydown} onclick={toggle}>
       <span class="avo-row-title">{item.description}</span>
-      {#if item.op.rationale}<span class="avo-muted avo-row-rationale">{item.op.rationale}</span>{/if}
     </button>
     {#if item.decidable}
       <ConfidenceBadge confidence={item.op.confidence} source={SOURCE[item.op.source]} />
@@ -49,6 +48,7 @@
     <p class={issue.severity === 'error' ? 'avo-error' : 'avo-warning'}>{issue.message}</p>
   {/each}
   {#if expanded}
+    {#if item.op.rationale}<p class="avo-muted avo-row-rationale">Why: {item.op.rationale}</p>{/if}
     {#if preview}
       <OperationPreview {preview} {openNote} />
     {:else}

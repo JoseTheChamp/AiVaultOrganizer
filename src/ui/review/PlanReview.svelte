@@ -32,7 +32,8 @@
 
   /** Rows shown per group before "Show all": long plans stay quick to scroll. */
   const PAGE = 100;
-  const SOURCE_LABELS = { rule: 'Rules', knn: 'Similar notes', llm: 'Language model', user: 'You' } as const;
+  const SOURCE_LABELS = { rule: 'Rules', knn: 'Similar notes', llm: 'AI', user: 'You' } as const;
+  const THRESHOLDS = [0.95, 0.9, 0.8, 0.7, 0.5];
 
   // Decisions start from the plan and follow it when a run updates it; the reviewer overrides them.
   let decisions = $derived(initialDecisions(model.plan));
@@ -55,6 +56,13 @@
   const blocking = $derived(model.validation.issues.filter((issue) => issue.severity === 'error' && (!issue.opId || decisions.get(issue.opId) === 'accepted')));
   const general = $derived(model.validation.issues.filter((issue) => !issue.opId));
   const needsAck = $derived(hasMoves && model.linksAutoUpdateOff && !acknowledged);
+  const notes = $derived([
+    ...(model.plan.summary?.highlights ?? []).map((text) => ({ text, tone: 'info' })),
+    ...model.plan.warnings.map((warning) => ({ text: warning.message, tone: 'warning' })),
+    ...general.map((issue) => ({ text: issue.message, tone: issue.severity })),
+  ]);
+  const flagged = $derived(model.items.filter((item) => item.op.kind === 'flag' && item.op.issue === 'ambiguous').length);
+  const filtering = $derived(filters.source !== 'all' || filters.destination !== 'all' || filters.status !== 'all' || filters.minConfidence > 0);
   const canApply = $derived(counts.accepted > 0 && blocking.length === 0 && !model.busy && !needsAck);
 
   function update(next: Map<string, Decision>): void {
@@ -109,66 +117,65 @@
     <ApplyProgress state={model.apply} cancel={actions.cancelApply} undo={actions.undoRun} close={actions.closeApply} />
   {:else}
   <header class="avo-review-header">
-    {#if model.plan.summary}
-      <p>{model.plan.summary.summary}</p>
-      {#if model.plan.summary.highlights.length > 0}
+    <p class="avo-review-summary">{model.plan.summary?.summary ?? `${plural(model.items.length, 'proposed change')}.`}</p>
+    {#if notes.length > 0}
+      <details class="avo-details">
+        <summary>{plural(notes.length, 'note')} about this plan</summary>
         <ul class="avo-issues">
-          {#each model.plan.summary.highlights as highlight (highlight)}<li>{highlight}</li>{/each}
+          {#each notes as note (note.text)}<li class={note.tone === 'error' ? 'avo-error' : note.tone === 'warning' ? 'avo-warning' : ''}>{note.text}</li>{/each}
         </ul>
-      {/if}
+      </details>
     {/if}
-    {#each model.plan.warnings as warning (warning.code)}
-      <p class="avo-warning">{warning.message}</p>
-    {/each}
-    {#each general as issue (issue.message)}
-      <p class={issue.severity === 'error' ? 'avo-error' : 'avo-warning'}>{issue.message}</p>
-    {/each}
-    <p class="avo-muted">
-      Nothing changes until you apply. A backup is made first, and every change can be undone. Keys: j and k move, a accepts, r rejects, u undecides,
-      Enter shows what changes.
-    </p>
+    {#if flagged > 0 && !model.aiReady}
+      <p class="avo-hint">
+        {plural(flagged, 'note')} could not be placed without AI.
+        <button type="button" class="avo-link" onclick={actions.setUpAi}>Set up AI to place them</button>
+      </p>
+    {/if}
   </header>
 
-  <div class="avo-review-toolbar" role="search">
+  <div class="avo-review-toolbar">
     <input type="search" placeholder="Find" aria-label="Find in proposed changes" bind:value={filters.query} />
-    <select class="dropdown" aria-label="Decided by" bind:value={filters.source}>
-      <option value="all">Decided by anyone</option>
-      {#each OPERATION_SOURCES as source (source)}<option value={source}>{SOURCE_LABELS[source]}</option>{/each}
+    <details class="avo-filters">
+      <summary>Filters{filtering ? ' (on)' : ''}</summary>
+      <div class="avo-filters-body">
+        <select class="dropdown" aria-label="Decided by" bind:value={filters.source}>
+          <option value="all">Decided by anyone</option>
+          {#each OPERATION_SOURCES as source (source)}<option value={source}>{SOURCE_LABELS[source]}</option>{/each}
+        </select>
+        <select class="dropdown" aria-label="Destination" bind:value={filters.destination}>
+          <option value="all">All destinations</option>
+          {#each destinations as destination (destination)}<option value={destination}>{destination}</option>{/each}
+        </select>
+        <select class="dropdown" aria-label="Status" bind:value={filters.status}>
+          <option value="all">Any status</option>
+          <option value="pending">Undecided</option>
+          <option value="accepted">Accepted</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <label class="avo-review-threshold">
+          <span>Confidence at least {percent(filters.minConfidence)}</span>
+          <input type="range" min="0" max="1" step="0.05" bind:value={filters.minConfidence} />
+        </label>
+      </div>
+    </details>
+    <span class="avo-wizard-spacer"></span>
+    <select class="dropdown" aria-label="Confidence to accept at" bind:value={threshold}>
+      {#each THRESHOLDS as value (value)}<option {value}>{percent(value)} or more</option>{/each}
     </select>
-    <select class="dropdown" aria-label="Destination" bind:value={filters.destination}>
-      <option value="all">All destinations</option>
-      {#each destinations as destination (destination)}<option value={destination}>{destination}</option>{/each}
-    </select>
-    <select class="dropdown" aria-label="Status" bind:value={filters.status}>
-      <option value="all">Any status</option>
-      <option value="pending">Undecided</option>
-      <option value="accepted">Accepted</option>
-      <option value="rejected">Rejected</option>
-    </select>
-    <label class="avo-review-threshold">
-      <span>Confidence at least {percent(filters.minConfidence)}</span>
-      <input type="range" min="0" max="1" step="0.05" bind:value={filters.minConfidence} />
-    </label>
-  </div>
-
-  <div class="avo-review-bulk">
-    <label class="avo-review-threshold">
-      <span>Accept all shown at or above {percent(threshold)}</span>
-      <input type="range" min="0.5" max="1" step="0.05" bind:value={threshold} />
-    </label>
     <button type="button" disabled={bulkCount === 0} onclick={() => update(acceptAbove(model.plan, decisions, shown, threshold))}>
       Accept {plural(bulkCount, 'change')}
     </button>
-    <span class="avo-wizard-spacer"></span>
     <button
       type="button"
       disabled={model.busy || counts.pending === 0 || counts.accepted + counts.rejected === 0}
-      title="Places you accepted teach the plugin where similar notes belong; undecided rows are re-scored and flagged notes may get a place. No model is asked."
+      title="Your accepted and rejected changes teach the plugin where similar notes belong. No AI is asked."
       onclick={() => actions.learn(decidedPlan(model.plan, decisions))}
     >
       Learn from my decisions
     </button>
   </div>
+  <p class="avo-muted avo-review-keys">Nothing changes until you apply, and you can undo it. Keys: j and k move, a accepts, r rejects, Enter shows the change.</p>
 
   {#if shown.length === 0}
     <p class="avo-muted">No proposed change matches these filters.</p>

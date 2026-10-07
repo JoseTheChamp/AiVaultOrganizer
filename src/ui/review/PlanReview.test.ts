@@ -22,7 +22,7 @@ const plan = createPlan({
 
 function setup(overrides: Partial<Omit<ReviewModel, 'apply'>> & { apply?: ReviewModel['apply'] } = {}) {
   const validation = { ok: true, issues: [], staleOpIds: [] };
-  const model = reactive<ReviewModel>({ plan, items: reviewItems(plan, validation, presetCharter('para', 'en')), validation, linksAutoUpdateOff: false, busy: false, threshold: 0.8, apply: null, ...overrides });
+  const model = reactive<ReviewModel>({ plan, items: reviewItems(plan, validation, presetCharter('para', 'en')), validation, linksAutoUpdateOff: false, busy: false, threshold: 0.8, aiReady: true, apply: null, ...overrides });
   const actions = {
     preview: vi.fn<(op: typeof move) => Promise<OperationPreview>>().mockResolvedValue({ kind: 'move', from: 'Plan.md', to: '1 Projects/Website/Plan.md' }),
     save: vi.fn<(plan: Plan) => void>(),
@@ -32,6 +32,7 @@ function setup(overrides: Partial<Omit<ReviewModel, 'apply'>> & { apply?: Review
     undoRun: vi.fn<() => void>(),
     closeApply: vi.fn<() => void>(),
     learn: vi.fn<(plan: Plan) => void>(),
+    setUpAi: vi.fn<() => void>(),
   } satisfies ReviewActions;
   render(PlanReview, { model, actions });
   return { model, actions };
@@ -109,5 +110,19 @@ describe('PlanReview', () => {
     expect(learn.disabled).toBe(false);
     await fireEvent.click(learn);
     expect(actions.learn.mock.calls[0]?.[0].operations.find((op) => op.id === move.id)?.status).toBe('accepted');
+  });
+
+  it('offers AI for the notes it could not place, only when AI is off', async () => {
+    const { actions } = setup({ aiReady: false });
+    await fireEvent.click(screen.getByRole('button', { name: 'Set up AI to place them' }));
+    expect(actions.setUpAi).toHaveBeenCalledOnce();
+  });
+
+  it('shows the reason only when a row is opened', async () => {
+    setup();
+    expect(screen.queryByText(/Like the website notes/)).toBeNull();
+    const row = screen.getByRole('region', { name: 'Moves into 1 Projects' });
+    await fireEvent.click(within(row).getByRole('button', { name: /Move "Plan.md"/ }));
+    expect(within(row).getByText('Why: Like the website notes.')).toBeTruthy();
   });
 });

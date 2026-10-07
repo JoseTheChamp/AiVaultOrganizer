@@ -16,6 +16,7 @@ import { confirmUndo } from '../flows/backup-undo';
 import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import { exclusive } from '../flows/exclusive';
 import { indexingProgress } from '../flows/indexing';
+import { planRealignment } from '../flows/plan';
 import { charterConstraints, runPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
 
@@ -109,6 +110,7 @@ export class ReviewView extends ItemView {
       linksAutoUpdateOff: isLinkAutoUpdateEnabled(this.app) === false,
       busy: this.plugin.busy,
       threshold: 0.8,
+      aiReady: this.plugin.services.ai.chat() !== null,
       apply: this.model?.apply ?? null,
     };
     if (this.model) {
@@ -138,6 +140,10 @@ export class ReviewView extends ItemView {
         if (this.model?.apply) this.model.apply.cancelling = true;
       },
       undoRun: () => void confirmUndo(plugin),
+      setUpAi: () =>
+        void (async () => {
+          if (await plugin.openAiSetup()) await planRealignment(plugin);
+        })(),
       closeApply: () => {
         if (this.model) this.model.apply = null;
         void this.reload();

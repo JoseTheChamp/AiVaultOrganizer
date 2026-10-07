@@ -21,19 +21,19 @@ const state: ConsentState = {
 describe('ConsentDialog', () => {
   it('says what goes where and what it costs, and returns the answer', async () => {
     const answer = vi.fn<(choice: ConsentChoice) => void>();
-    render(ConsentDialog, { state, withoutLabel: 'Plan without it', answer });
-    expect(screen.getByText(/These go to api.example.com/)).toBeTruthy();
-    expect(screen.getByText(/Notes marked private \(2 here\)/)).toBeTruthy();
-    expect(screen.getByText('5–12 requests, about 24,000–54,000 tokens in all.')).toBeTruthy();
-    expect(screen.getByText('About 0.016–0.036 at the prices in your settings.')).toBeTruthy();
-    await fireEvent.click(screen.getByRole('button', { name: 'Plan without it' }));
-    await fireEvent.click(screen.getByRole('button', { name: 'Use the model' }));
+    render(ConsentDialog, { state, withoutLabel: 'Without AI', answer });
+    expect(screen.getByText(/via api.example.com would place the notes/)).toBeTruthy();
+    expect(screen.getByText(/About 5–12 requests and 24,000–54,000 tokens, about 0.016–0.036 at your prices/)).toBeTruthy();
+    expect(screen.getByText(/It goes to api.example.com/)).toBeTruthy();
+    expect(screen.getByText(/Private notes \(2 here\)/)).toBeTruthy();
+    await fireEvent.click(screen.getByRole('button', { name: 'Without AI' }));
+    await fireEvent.click(screen.getByRole('button', { name: 'Use AI' }));
     expect(answer.mock.calls).toEqual([['without'], ['model']]);
   });
 
   it('cannot use a model that local-only mode blocks', () => {
-    render(ConsentDialog, { state: { ...state, blocked: true }, withoutLabel: 'Plan without it', answer: vi.fn() });
+    render(ConsentDialog, { state: { ...state, blocked: true }, withoutLabel: 'Without AI', answer: vi.fn() });
     expect(screen.getByRole('alert').textContent).toContain('Local-only mode is on');
-    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Use the model' }).disabled).toBe(true);
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Use AI' }).disabled).toBe(true);
   });
 });

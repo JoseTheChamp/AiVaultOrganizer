@@ -614,6 +614,38 @@
   margin: var(--size-4-1) 0;
 }
 
+.avo-review-summary {
+  font-size: var(--font-ui-medium);
+}
+
+.avo-hint {
+  padding: var(--size-4-2) var(--size-4-3);
+  border-radius: var(--radius-m);
+  background-color: var(--background-secondary);
+}
+
+.avo-filters {
+  position: relative;
+  font-size: var(--font-ui-small);
+}
+
+.avo-filters > summary {
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.avo-filters-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-4-2);
+  margin-top: var(--size-4-2);
+}
+
+.avo-review-keys {
+  margin: 0;
+  font-size: var(--font-ui-smaller);
+}
+
 .avo-review-toolbar,
 .avo-review-bulk {
   display: flex;

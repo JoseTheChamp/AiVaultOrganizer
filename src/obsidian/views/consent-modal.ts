@@ -21,7 +21,7 @@ class ConsentModal extends Modal {
   }
 
   override onOpen(): void {
-    this.setTitle('Use the language model?');
+    this.setTitle('Use AI?');
     this.component = mountComponent(ConsentDialog, this.contentEl, {
       state: consentState(this.input),
       withoutLabel: this.withoutLabel,

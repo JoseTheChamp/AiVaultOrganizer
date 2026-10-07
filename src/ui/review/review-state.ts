@@ -143,6 +143,8 @@ export interface ReviewModel {
   busy: boolean;
   /** Starting value of "accept all at or above". */
   threshold: number;
+  /** A language model is set up (otherwise the review offers to set one up for flagged notes). */
+  aiReady: boolean;
   /** A run started from this review, while it runs and until its report is closed. */
   apply: ApplyState | null;
 }
@@ -161,5 +163,7 @@ export interface ReviewActions {
   undoRun: () => void;
   /** Leaves the report and returns to what is left to review. */
   closeApply: () => void;
+  /** Sets AI up, then plans again so it can place the flagged notes. */
+  setUpAi: () => void;
   openNote: (path: string) => void;
 }

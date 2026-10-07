@@ -4,7 +4,7 @@
 
   interface Props {
     state: ConsentState;
-    /** Label for going on without the model, e.g. "Plan without it". */
+    /** Label for going on without the model, e.g. "Without AI". */
     withoutLabel: string;
     answer: (choice: ConsentChoice) => void;
   }
@@ -15,42 +15,34 @@
 
 <div class="avo-consent">
   <p>
-    The language model <strong>{state.model}</strong> on <strong>{state.where}</strong> would {state.purpose}: {plural(state.notes, 'note')}.
+    <strong>{state.model}</strong>
+    {state.local ? 'on this computer' : `via ${state.where}`} would {state.purpose}: {plural(state.notes, 'note')}.
+  </p>
+  <p class="avo-muted">
+    About {range(state.calls)} requests and {range(state.tokens)} tokens{#if state.cost}, about {range(state.cost, money)} at your prices{/if}.
+    {#if state.local}Nothing leaves this computer.{/if}
   </p>
 
   {#if state.blocked}
-    <p class="avo-warning" role="alert">
-      Local-only mode is on, so {state.where} cannot be reached. Turn local-only mode off in the settings to use this model, or go on without it.
-    </p>
+    <p class="avo-warning" role="alert">Local-only mode is on, so {state.where} cannot be reached. Turn it off in the AI settings to use this model.</p>
+  {/if}
+  {#if state.overBudget}
+    <p class="avo-warning">This may go over your token budget for one run; notes left over are flagged for you.</p>
   {/if}
 
-  <h4 class="avo-dash-title">What is sent</h4>
-  <p>{CARD_CONTENTS}</p>
-  <p class="avo-muted">
-    {#if state.local}
-      The model runs on this computer; nothing leaves it.
-    {:else}
-      These go to {state.where} and are handled under its terms.
-    {/if}
-    Notes marked private{state.withheld > 0 ? ` (${state.withheld} here)` : ''} and notes your charter ignores are never sent.
-  </p>
-
-  <h4 class="avo-dash-title">Estimate</h4>
-  <ul class="avo-issues">
-    <li>{range(state.calls)} requests, about {range(state.tokens)} tokens in all.</li>
-    {#if state.cost}
-      <li>About {range(state.cost, money)} at the prices in your settings.</li>
-    {/if}
-    {#if state.overBudget}
-      <li class="avo-warning">This may exceed the token budget for one run; notes left over are flagged for you instead.</li>
-    {/if}
-  </ul>
-  <p class="avo-muted">Answers are cached, so planning again with the same notes costs nothing. Nothing in the vault changes until you review and apply the plan.</p>
+  <details class="avo-details">
+    <summary>What is sent</summary>
+    <p>{CARD_CONTENTS}</p>
+    <p>
+      {state.local ? 'It stays on this computer.' : `It goes to ${state.where}.`}
+      Private notes{state.withheld > 0 ? ` (${state.withheld} here)` : ''} and ignored notes are never sent. Answers are cached, so asking again costs nothing.
+    </p>
+  </details>
 
   <div class="avo-wizard-footer">
     <button type="button" onclick={() => answer('cancel')}>Cancel</button>
     <span class="avo-wizard-spacer"></span>
     <button type="button" onclick={() => answer('without')}>{withoutLabel}</button>
-    <button type="button" class="mod-cta" disabled={state.blocked} onclick={() => answer('model')}>Use the model</button>
+    <button type="button" class="mod-cta" disabled={state.blocked} onclick={() => answer('model')}>Use AI</button>
   </div>
 </div>
