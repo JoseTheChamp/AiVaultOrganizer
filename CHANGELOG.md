@@ -26,9 +26,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Vault charter: a note that explains your system and holds its rules, with presets for PARA, ACE,
   Flat + categories, Johnny.Decimal, Zettelkasten and Topic folders (English and Czech), or a charter that
   codifies your current folders.
-- Setup wizard (`Set up charter`): diagnosis, a recommended method, folder names and conventions you can
-  change, and a preview of the charter note before anything is written. With a language model, it can
-  draft a charter from samples of your notes.
+- Setup wizard (`Set up charter`): every method shown as the folder tree it would give your vault, with
+  how many notes fit each folder and what the method is good and not so good for; folder names you can
+  change with a live preview; and the charter note before anything is written. AI can suggest a system
+  from samples of your notes.
+- `Set up AI`: one dialog to run AI on this computer or with your API key (stored in Obsidian's keychain),
+  with a connection test that names a missing local model.
 - Charter rules render as a summary card in reading view, or as a list of problems with line numbers.
 - `Check drift` and `Plan re-alignment`: see where the vault departs from its charter, and get a plan for
   the whole vault. Rules decide first; notes no rule covers follow the placed notes they resemble; a
@@ -36,8 +39,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   category notes updated, and queries the moves would change are flagged.
 - Before any note goes to a language model, a dialog shows which model and host, exactly what is sent,
   how many requests and tokens it takes and, with prices set, what it costs.
-- Dashboard in the sidebar (ribbon icon or `Open dashboard`): health score, charter and drift, a plan
-  waiting for review, the last run and the AI setup.
+- Dashboard in the sidebar (ribbon icon or `Open dashboard`): the vault's health, the one next step
+  (choose a system, review, organize), and the system, AI and last change at a glance.
 - AI settings: choose a language model from Ollama, LM Studio, OpenAI, Anthropic, OpenRouter, Google
   Gemini, Mistral, Groq or any OpenAI-compatible endpoint, and test the connection. An optional
   "Better similarity" setting adds an embedding model; it uses the language model's provider and key

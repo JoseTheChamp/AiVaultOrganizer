@@ -48,9 +48,10 @@ that changed. Click the progress notice to stop indexing at any time.
 | **Topic folders** | One folder per subject | (your folders) |
 | **Keep my current structure** | Codifies the folders you already have | (your folders) |
 
-Run **Set up charter** (command palette or dashboard). A short wizard diagnoses the vault, recommends a
-method (or, with a language model, asks it for a draft), lets you rename folders and set conventions, and
-shows the charter note before anything is written. The charter becomes a note (`Vault Charter.md`) that
+Run **Set up charter** (command palette or dashboard). A three-step wizard shows each method as the folder
+tree it would give your vault, with how many of your notes already fit each folder and what the method is
+good and not so good for. It recommends the method your vault is closest to (AI can also suggest one from
+your notes), lets you rename folders, and shows the charter note before anything is written. The charter becomes a note (`Vault Charter.md`) that
 explains your system in plain language (English or Czech) and ends with a ```charter YAML block holding
 the rules. Edit either part; the plugin only regenerates the marked sections and never touches your own text.
 
@@ -103,8 +104,13 @@ backups uploaded.
 
 ## AI setup
 
-The plugin works without any AI. Rules, drift checks, analysis and undo never call a model. AI is off
-until you turn it on in **Settings → AI Vault Organizer → AI**. Most people set up one model:
+The plugin works without any AI. Rules, drift checks, analysis and undo never call a model. AI sorts the
+notes your charter's rules cannot place, which in a messy vault is most of them, and can suggest a system.
+
+The quickest way is **Set up AI** (command palette, the dashboard, or the button at the top of the AI
+settings): pick *on this computer*, *with my API key* or *no AI*, paste a key if you need one, and
+**Save and test**. Keys go into Obsidian's keychain; the plugin settings only keep their name. The rest of
+this section describes the same choices in the settings tab.
 
 - **Use a language model** is the main setting. The model decides where a note belongs when no rule
   does, and later helps draft your charter.
