@@ -1,4 +1,4 @@
-import { type App, Modal } from 'obsidian';
+import { type App, Modal, setIcon } from 'obsidian';
 import type { Lang } from '../../core/charter/presets';
 import type { Charter } from '../../core/charter/schema';
 import { type MountedComponent, mountComponent } from '../../ui/mount';
@@ -37,6 +37,7 @@ export class SetupWizardModal extends Modal {
         onSubmit(charter, planNow);
       },
       cancel: () => this.close(),
+      icons: setIcon,
       ...(requestDraft ? { requestDraft } : {}),
     });
   }

@@ -13,14 +13,17 @@
 </script>
 
 <p>
-  {updating ? 'The charter note' : 'This note'} ("{path}") explains your system in words and holds the rules the plugin follows. You can edit it any
-  time; the plugin re-reads it.
+  {updating ? 'Updates' : 'Creates'} the note <strong>{path}</strong>, which describes your system in plain words and holds its rules. You can edit it
+  any time.
 </p>
 {#if replacesInvalid}
-  <p class="avo-warning">Your current charter rules have errors; saving replaces them. A backup is made first.</p>
+  <p class="avo-warning">Your current charter rules have errors; this replaces them.</p>
 {/if}
-<textarea class="avo-charter-preview" readonly rows="16" aria-label="Charter note preview" value={text}></textarea>
+<details class="avo-details">
+  <summary>Show the note</summary>
+  <textarea class="avo-charter-preview" readonly rows="14" aria-label="Charter note preview" value={text}></textarea>
+</details>
 <label class="avo-field avo-field-inline">
   <input type="checkbox" checked={planNow} onchange={(event) => setPlanNow(event.currentTarget.checked)} />
-  <span>Plan where every note belongs after saving. Nothing moves until you review and apply the plan.</span>
+  <span>Then plan where my notes go (nothing moves until you approve)</span>
 </label>

@@ -3,22 +3,28 @@
   import { customizeCharter } from '../../core/charter/customize';
   import { type Lang, toLang } from '../../core/charter/presets/index';
   import type { Charter } from '../../core/charter/schema';
-  import CharterStep from './CharterStep.svelte';
-  import CustomizeStep from './CustomizeStep.svelte';
-  import DiagnoseStep from './DiagnoseStep.svelte';
-  import MethodStep from './MethodStep.svelte';
-  import { baseCharter, type Choice, choiceOptions, initialChanges, previewCharter, recommendedChoice, STEPS, type WizardInput, type WizardStep } from './wizard-state';
+  import { type IconSetter, provideIcons } from '../icons';
+  import AdjustStep from './AdjustStep.svelte';
+  import { charterFit } from './charter-tree';
+  import ChooseStep from './ChooseStep.svelte';
+  import CreateStep from './CreateStep.svelte';
+  import { baseCharter, type Choice, choiceOptions, initialChanges, recommendedChoice, STEPS, type WizardInput, type WizardStep } from './wizard-state';
 
   interface Props {
     input: WizardInput;
     /** Writes the charter (through a reviewed plan) and, when asked, plans the vault against it. */
     submit: (charter: Charter, planNow: boolean) => void;
     cancel: () => void;
-    /** Asks the drafting agent for a charter (after consent); absent without a language model. */
+    /** Asks the language model for a charter (after consent); absent without a language model. */
     requestDraft?: (lang: Lang, wish: string) => Promise<Charter | null>;
+    /** Opens the AI setup; offered when no language model is set up. */
+    setUpAi?: () => void;
+    icons?: IconSetter;
   }
 
-  let { input, submit, cancel, requestDraft }: Props = $props();
+  let { input, submit, cancel, requestDraft, setUpAi, icons }: Props = $props();
+  // svelte-ignore state_referenced_locally
+  provideIcons(icons);
 
   // The wizard owns its working copy of the choices; the input it was opened with does not change.
   const start = (() => {
@@ -27,7 +33,7 @@
     return { lang, choice, changes: initialChanges(baseCharter(input, choice, lang)) };
   })();
 
-  let step = $state<WizardStep>('diagnose');
+  let step = $state<WizardStep>('choose');
   let lang = $state(start.lang);
   let choice = $state<Choice>(start.choice);
   let changes = $state(start.changes);
@@ -36,15 +42,16 @@
   let drafting = $state(false);
   let wish = $state('');
 
-  const options = $derived(choiceOptions(input, lang, draft));
+  const options = $derived(choiceOptions(input, draft));
   const base = $derived(baseCharter(input, choice, lang, draft));
+  const baseFit = $derived(charterFit(base, input.snapshot, input.charterPath));
   const result = $derived(customizeCharter(base, changes));
   const charter = $derived(result.ok ? result.value : null);
   const problems = $derived(result.ok ? [] : result.error);
-  const preview = $derived(charter ? previewCharter(input, charter) : null);
+  const fit = $derived(charter ? charterFit(charter, input.snapshot, input.charterPath) : null);
   const index = $derived(STEPS.findIndex((candidate) => candidate.id === step));
 
-  // A new method or language starts the form over from that charter.
+  // A new system or language starts the adjustments over from that charter.
   function choose(next: Choice): void {
     choice = next;
     changes = initialChanges(baseCharter(input, next, lang, draft));
@@ -92,25 +99,26 @@
   </ol>
 
   <div class="avo-wizard-body">
-    <h3 class="avo-step-title" tabindex="-1" bind:this={heading}>Step {index + 1} of {STEPS.length}: {STEPS[index]?.label}</h3>
-    {#if step === 'diagnose'}
-      <DiagnoseStep analysis={input.analysis} />
-    {:else if step === 'method'}
-      <MethodStep {options} {choice} {lang} langLocked={choice === 'existing' || choice === 'draft'} {choose} {setLang}>
+    <h3 class="avo-step-title avo-visually-hidden" tabindex="-1" bind:this={heading}>Step {index + 1} of {STEPS.length}: {STEPS[index]?.label}</h3>
+    {#if step === 'choose'}
+      <ChooseStep analysis={input.analysis} {options} {choice} fit={baseFit} {lang} langLocked={choice === 'existing' || choice === 'draft'} {choose} {setLang}>
         {#if requestDraft}
           <div class="avo-draft">
-            <label class="avo-field">
-              <span>Let the language model propose a charter from samples of your notes. Anything it should know? (optional)</span>
-              <input type="text" bind:value={wish} placeholder="For example: I am a student and want courses kept apart" disabled={drafting} />
-            </label>
-            <button type="button" disabled={drafting} onclick={() => void askForDraft()}>{drafting ? 'Drafting…' : 'Ask for a draft'}</button>
+            <span class="avo-muted">Not sure? Let AI read samples of your notes and suggest a system.</span>
+            <input type="text" bind:value={wish} placeholder="Optional wish, e.g. keep courses apart" aria-label="A wish for the suggestion" disabled={drafting} />
+            <button type="button" disabled={drafting} onclick={() => void askForDraft()}>{drafting ? 'Suggesting…' : 'Suggest a system'}</button>
+          </div>
+        {:else if setUpAi}
+          <div class="avo-draft">
+            <span class="avo-muted">Not sure? With AI set up, it can suggest a system from your notes.</span>
+            <button type="button" onclick={setUpAi}>Set up AI</button>
           </div>
         {/if}
-      </MethodStep>
-    {:else if step === 'customize'}
-      <CustomizeStep {base} {changes} {problems} {preview} />
+      </ChooseStep>
+    {:else if step === 'adjust'}
+      <AdjustStep {base} {changes} {problems} {fit} />
     {:else if charter}
-      <CharterStep
+      <CreateStep
         path={input.charterPath}
         text={renderCharterNote(charter)}
         updating={input.existing !== null}
@@ -127,12 +135,12 @@
     {#if index > 0}
       <button type="button" onclick={() => go(-1)}>Back</button>
     {/if}
-    {#if step === 'charter'}
+    {#if step === 'create'}
       <button type="button" class="mod-cta" disabled={!charter} onclick={() => charter && submit(charter, planNow)}>
         {input.existing ? 'Update charter' : 'Create charter'}
       </button>
     {:else}
-      <button type="button" class="mod-cta" disabled={step === 'customize' && !charter} onclick={() => go(1)}>Next</button>
+      <button type="button" class="mod-cta" disabled={step === 'adjust' && !charter} onclick={() => go(1)}>Next</button>
     {/if}
   </div>
 </div>

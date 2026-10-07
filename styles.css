@@ -269,7 +269,7 @@
 /* Setup wizard */
 
 .avo-wizard-modal {
-  width: min(760px, 92vw);
+  width: min(980px, 94vw);
 }
 
 .avo-wizard {
@@ -299,8 +299,131 @@
 }
 
 .avo-wizard-body {
-  max-height: 60vh;
+  max-height: 68vh;
   overflow-y: auto;
+}
+
+/* Choosing a system: options on the left, the chosen one as folders on the right. */
+.avo-choose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--size-4-4);
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .avo-choose {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.avo-choose-preview {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-2);
+}
+
+.avo-choose-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--size-4-2);
+  margin: 0;
+}
+
+.avo-details {
+  margin: var(--size-4-2) 0;
+  font-size: var(--font-ui-small);
+}
+
+.avo-details > summary {
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.avo-details[open] > summary {
+  margin-bottom: var(--size-4-2);
+}
+
+.avo-good,
+.avo-bad {
+  margin: var(--size-4-2) 0 0;
+  font-weight: var(--font-semibold);
+}
+
+/* A charter as folders */
+
+.avo-tree-box {
+  padding: var(--size-4-2) var(--size-4-3);
+  border: var(--border-width) solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background-color: var(--background-secondary);
+}
+
+.avo-tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.avo-tree .avo-tree {
+  margin-left: var(--size-4-2);
+  padding-left: var(--size-4-3);
+  border-left: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-tree-row {
+  display: flex;
+  align-items: center;
+  gap: var(--size-4-1);
+  padding-top: var(--size-2-2);
+}
+
+.avo-tree-name {
+  font-weight: var(--font-medium);
+}
+
+.avo-tree-count {
+  margin-left: auto;
+  padding: 0 var(--size-4-1);
+  border-radius: var(--radius-s);
+  background-color: var(--background-modifier-hover);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-variant-numeric: tabular-nums;
+}
+
+.avo-tree-description {
+  overflow: hidden;
+  margin-left: calc(var(--icon-s) + var(--size-4-1));
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avo-tree-summary {
+  margin: var(--size-4-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.avo-icon {
+  display: inline-flex;
+  color: var(--text-muted);
+}
+
+.avo-icon svg {
+  width: var(--icon-s);
+  height: var(--icon-s);
+}
+
+.avo-adjust {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-2);
 }
 
 .avo-wizard-footer {
@@ -374,7 +497,7 @@
 
 .avo-destination {
   display: grid;
-  grid-template-columns: auto minmax(10em, 16em) 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--size-4-2);
   align-items: center;
   font-size: var(--font-ui-small);

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import { fireEvent, render, screen } from '@testing-library/svelte';
+import { fireEvent, render, screen, within } from '@testing-library/svelte';
 import { describe, expect, it, vi } from 'vitest';
 import { analyzeVault } from '../../core/analysis/analyze';
-import type { Charter } from '../../core/charter/schema';
 import { presetCharter } from '../../core/charter/presets/index';
+import type { Charter } from '../../core/charter/schema';
 import { InMemoryVault } from '../../core/testing/in-memory-vault';
 import SetupWizard from './SetupWizard.svelte';
 import type { WizardInput } from './wizard-state';
@@ -19,30 +19,36 @@ async function input(): Promise<WizardInput> {
 }
 
 const next = () => fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+const preview = () => screen.getByRole('region', { name: /in your vault|Preview/ });
 
 describe('SetupWizard', () => {
-  it('walks from diagnosis to a customized charter and hands it back', async () => {
+  it('shows the chosen system as folders fitted to the vault, with what it is good for', async () => {
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
+    expect(screen.getByRole<HTMLInputElement>('radio', { name: /^PARA/ }).checked).toBe(true);
+    const tree = within(preview());
+    expect(tree.getByText('1 Projects')).toBeTruthy();
+    expect(tree.getByText('Website')).toBeTruthy();
+    expect(tree.getByText(/3 of 4 notes fit by its rules/)).toBeTruthy();
+    expect(tree.getByText('About PARA')).toBeTruthy();
+    expect(tree.getByText('Many projects that start and finish')).toBeTruthy();
+
+    await fireEvent.click(screen.getByRole('radio', { name: /^ACE/ }));
+    expect(within(preview()).getByText('Atlas')).toBeTruthy();
+  });
+
+  it('adjusts folders with a live preview and hands the charter back', async () => {
     const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
     render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
-    expect(screen.getByText(/Health:/)).toBeTruthy();
-
-    await next();
-    const para = screen.getByRole('radio', { name: /^PARA/ });
-    expect((para as HTMLInputElement).checked).toBe(true);
-    await fireEvent.click(screen.getByRole('radio', { name: /^ACE/ }));
-    await fireEvent.click(para);
-
     await next();
     await fireEvent.input(screen.getByRole('textbox', { name: 'Folder for resources' }), { target: { value: 'Library' } });
     await fireEvent.click(screen.getByRole('checkbox', { name: 'Use 4 Archive' }));
-    expect(screen.getByText(/With this charter/)).toBeTruthy();
+    expect(within(preview()).getByText('Library')).toBeTruthy();
+    expect(within(preview()).queryByText('4 Archive')).toBeNull();
 
     await next();
-    const preview = screen.getByRole<HTMLTextAreaElement>('textbox', { name: 'Charter note preview' });
-    expect(preview.value).toContain('path: Library');
-    await fireEvent.click(screen.getByRole('checkbox', { name: /Plan where every note belongs/ }));
+    expect(screen.getByRole<HTMLTextAreaElement>('textbox', { name: 'Charter note preview' }).value).toContain('path: Library');
+    await fireEvent.click(screen.getByRole('checkbox', { name: /Then plan where my notes go/ }));
     await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
-
     const [charter, planNow] = submit.mock.calls[0] ?? [];
     expect(charter?.destinations.map((d) => d.path)).toEqual(['1 Projects', '2 Areas', 'Library']);
     expect(planNow).toBe(false);
@@ -51,36 +57,33 @@ describe('SetupWizard', () => {
   it('blocks the next step while the changes do not make a charter', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();
-    await next();
     await fireEvent.input(screen.getByRole('textbox', { name: 'Folder for areas' }), { target: { value: '1 Projects' } });
     expect(screen.getByRole('alert').textContent).toContain('"1 Projects" is used by two destinations');
     expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Next' }).disabled).toBe(true);
   });
 
-  it('offers a draft from the language model and starts from it', async () => {
-    const wizard = await input();
+  it('suggests a system with AI and starts from it', async () => {
     const draft: Charter = { ...presetCharter('para', 'en'), destinations: presetCharter('para', 'en').destinations.slice(0, 2) };
     const requestDraft = vi.fn<(lang: 'en' | 'cs', wish: string) => Promise<Charter | null>>().mockResolvedValue(draft);
-    render(SetupWizard, { input: wizard, submit: vi.fn(), cancel: vi.fn(), requestDraft });
-    await next();
-    await fireEvent.input(screen.getByRole('textbox', { name: /Anything it should know/ }), { target: { value: ' keep it small ' } });
-    await fireEvent.click(screen.getByRole('button', { name: 'Ask for a draft' }));
-    await vi.waitFor(() => expect(screen.getByRole<HTMLInputElement>('radio', { name: /^AI draft/ }).checked).toBe(true));
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn(), requestDraft });
+    await fireEvent.input(screen.getByRole('textbox', { name: 'A wish for the suggestion' }), { target: { value: ' keep it small ' } });
+    await fireEvent.click(screen.getByRole('button', { name: 'Suggest a system' }));
+    await vi.waitFor(() => expect(screen.getByRole<HTMLInputElement>('radio', { name: /^Suggested by AI/ }).checked).toBe(true));
     expect(requestDraft).toHaveBeenCalledWith('en', 'keep it small');
-    expect(screen.getByText(/Based on PARA, with 1 Projects, 2 Areas/)).toBeTruthy();
-    await next();
-    expect(screen.queryByRole('textbox', { name: 'Folder for resources' })).toBeNull();
+    expect(within(preview()).queryByText('3 Resources')).toBeNull();
   });
 
-  it('has no draft button without a language model', async () => {
-    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
-    await next();
-    expect(screen.queryByRole('button', { name: 'Ask for a draft' })).toBeNull();
+  it('without AI, offers to set it up instead', async () => {
+    const setUpAi = vi.fn<() => void>();
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn(), setUpAi });
+    expect(screen.queryByRole('button', { name: 'Suggest a system' })).toBeNull();
+    await fireEvent.click(screen.getByRole('button', { name: 'Set up AI' }));
+    expect(setUpAi).toHaveBeenCalledOnce();
   });
 
   it('moves focus to each new step, so screen readers announce it', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();
-    expect(document.activeElement?.textContent).toBe('Step 2 of 4: Method');
+    expect(document.activeElement?.textContent).toBe('Step 2 of 3: Adjust');
   });
 });
