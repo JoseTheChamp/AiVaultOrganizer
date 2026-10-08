@@ -41,6 +41,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   how many requests and tokens it takes and, with prices set, what it costs.
 - Dashboard in the sidebar (ribbon icon or `Open dashboard`): the vault's health, the one next step
   (choose a system, review, organize), and the system, AI and last change at a glance.
+- Long tasks (organizing, indexing, a suggested system) show in a notice and on the dashboard what they
+  are doing, how many notes are done, how long they have run and, once the pace is known, how long is
+  left. They can be stopped from either place.
 - AI settings: choose a language model from Ollama, LM Studio, OpenAI, Anthropic, OpenRouter, Google
   Gemini, Mistral, Groq or any OpenAI-compatible endpoint, and test the connection. An optional
   "Better similarity" setting adds an embedding model; it uses the language model's provider and key

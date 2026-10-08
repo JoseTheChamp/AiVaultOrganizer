@@ -55,14 +55,21 @@ describe('Dashboard', () => {
     expect(wired.setUp).toHaveBeenCalledOnce();
   });
 
-  it('shows a task in progress with its count, and stops it', async () => {
+  it('shows a task in progress with its count, clock and time left, and stops it', async () => {
+    vi.useFakeTimers();
     const wired = actions();
     const shown = model();
     render(Dashboard, { model: shown, actions: wired });
-    shown.activity = { title: 'Organizing', detail: 'qwen3:8b is placing notes, step', done: 3, total: 12, stoppable: true };
+    shown.activity = { title: 'Organizing', detail: 'qwen3:8b is placing notes', done: 30, total: 74, startedAt: Date.now() - 100_000, remaining: 200_000, stoppable: true };
     flushSync();
     const progress = within(screen.getByRole('region', { name: 'In progress' }));
-    expect(progress.getByText('qwen3:8b is placing notes, step 3 of 12')).toBeTruthy();
+    expect(progress.getByText('qwen3:8b is placing notes, 30 of 74')).toBeTruthy();
+    expect(progress.getByText('1:40, about 3 min to go')).toBeTruthy();
+    // The clock ticks between updates, so a slow request does not look stuck.
+    vi.advanceTimersByTime(3000);
+    flushSync();
+    expect(progress.getByText('1:43, about 3 min to go')).toBeTruthy();
+    vi.useRealTimers();
     expect(screen.queryByRole('region', { name: 'Next step' })).toBeNull();
     await fireEvent.click(progress.getByRole('button', { name: 'Stop' }));
     expect(wired.stop).toHaveBeenCalledOnce();

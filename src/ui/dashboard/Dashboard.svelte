@@ -1,5 +1,6 @@
 <script lang="ts">
   import { plural, verb } from '../../core/model/text';
+  import { clock, progressText, remainingText } from '../activity';
   import { statusView } from '../ai-status';
   import type { DashboardActions, DashboardModel, NextStep } from './dashboard-state';
 
@@ -9,10 +10,20 @@
   }
 
   let { model, actions }: Props = $props();
-  const state = $derived(model.state);
+  const current = $derived(model.state);
   // Nothing that changes the vault, or starts another long task, while one runs.
   const busy = $derived(model.busy || model.activity !== null);
   const ai = $derived(model.aiStatus ? statusView(model.aiStatus) : null);
+
+  // A task's clock ticks on its own: one request to a local model may take minutes, and the card
+  // must not look stuck meanwhile.
+  let now = $state(Date.now());
+  $effect(() => {
+    if (!model.activity) return;
+    now = Date.now();
+    const timer = window.setInterval(() => (now = Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  });
 
   const GRADE = { good: 'Good', fair: 'Fair', poor: 'Needs work' } as const;
 
@@ -57,33 +68,36 @@
 <div class="avo-dashboard">
   {#if model.error}
     <p class="avo-error" role="alert">{model.error}</p>
-  {:else if !state}
+  {:else if !current}
     <p class="avo-muted">Reading the vault…</p>
   {:else}
     <div class="avo-dash-health">
-      <div class={['avo-score', `avo-score-${state.health.grade}`]}>
-        <span class="avo-score-value">{state.health.score}</span>
-        <span class="avo-score-label">{GRADE[state.health.grade]}</span>
+      <div class={['avo-score', `avo-score-${current.health.grade}`]}>
+        <span class="avo-score-value">{current.health.score}</span>
+        <span class="avo-score-label">{GRADE[current.health.grade]}</span>
       </div>
-      <span class="avo-muted">Vault health, {plural(state.health.notes, 'note')}</span>
+      <span class="avo-muted">Vault health, {plural(current.health.notes, 'note')}</span>
     </div>
 
     {#if model.activity}
       {@const activity = model.activity}
-      <section class="avo-next" aria-label="In progress" aria-live="polite">
+      <section class="avo-next" aria-label="In progress">
         <p class="avo-next-title">{activity.title}…</p>
-        <p class="avo-muted">{activity.detail}{activity.total ? ` ${activity.done ?? 0} of ${activity.total}` : ''}</p>
+        <p class="avo-muted" aria-live="polite">{progressText(activity)}</p>
         {#if activity.total}
           <progress class="avo-meter" max={activity.total} value={activity.done ?? 0} aria-label={activity.title}></progress>
         {:else}
           <progress class="avo-meter" aria-label={activity.title}></progress>
         {/if}
-        {#if activity.stoppable}
-          <button type="button" onclick={actions.stop}>Stop</button>
-        {/if}
+        <div class="avo-activity-footer">
+          <span class="avo-muted">{clock(now - activity.startedAt)}{activity.remaining !== undefined ? `, ${remainingText(activity.remaining)}` : ''}</span>
+          {#if activity.stoppable}
+            <button type="button" onclick={actions.stop}>Stop</button>
+          {/if}
+        </div>
       </section>
     {:else}
-      {@const next = card(state.next, state.chat.model !== null)}
+      {@const next = card(current.next, current.chat.model !== null)}
       <section class="avo-next" aria-label="Next step">
         <p class="avo-next-title">{next.title}</p>
         <p class="avo-muted">{next.detail}</p>
@@ -101,8 +115,8 @@
     <dl class="avo-status">
       <dt>System</dt>
       <dd>
-        {#if state.charter.status === 'ok'}
-          {state.charter.method}
+        {#if current.charter.status === 'ok'}
+          {current.charter.method}
           <button type="button" class="avo-link" onclick={actions.openCharter}>Open</button>
           <button type="button" class="avo-link" disabled={busy} onclick={actions.setUp}>Change</button>
         {:else}
@@ -112,11 +126,11 @@
 
       <dt>AI</dt>
       <dd>
-        {#if state.chat.model}
+        {#if current.chat.model}
           <span class="avo-ai-line">
             <span class={['avo-light', `avo-light-${ai?.tone ?? 'off'}`]} aria-hidden="true"></span>
-            {state.chat.model}
-            <span class="avo-muted">{ai ? ai.label : 'Checking…'}{state.chat.local ? ', on this computer' : `, via ${state.chat.where}`}</span>
+            {current.chat.model}
+            <span class="avo-muted">{ai ? ai.label : 'Checking…'}{current.chat.local ? ', on this computer' : `, via ${current.chat.where}`}</span>
           </span>
           {#if ai?.problem}<span class="avo-ai-problem">{ai.problem}</span>{/if}
           <button type="button" class="avo-link" onclick={actions.setUpAi}>{ai?.problem ? 'Fix' : 'Change'}</button>
@@ -128,9 +142,9 @@
 
       <dt>Last change</dt>
       <dd>
-        {#if state.lastRun}
-          {new Date(state.lastRun.at).toLocaleDateString()}, {plural(state.lastRun.applied, 'change')}{state.lastRun.undone ? ' (undone)' : ''}
-          {#if state.canUndo}<button type="button" class="avo-link" disabled={busy} onclick={actions.undo}>Undo</button>{/if}
+        {#if current.lastRun}
+          {new Date(current.lastRun.at).toLocaleDateString()}, {plural(current.lastRun.applied, 'change')}{current.lastRun.undone ? ' (undone)' : ''}
+          {#if current.canUndo}<button type="button" class="avo-link" disabled={busy} onclick={actions.undo}>Undo</button>{/if}
         {:else}
           <span class="avo-muted">None yet</span>
         {/if}

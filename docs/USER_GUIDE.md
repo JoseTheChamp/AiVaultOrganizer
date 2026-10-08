@@ -59,8 +59,8 @@ The dashboard sits in the right sidebar.
 - **Next step**: the one thing to do now. A new vault starts with *Set up AI* (or *Continue without
   AI*), then *Choose a system*; later it is *Review* a waiting plan, *Organize* notes that are out of
   place, or nothing when everything is in place.
-- **In progress**: while the plugin organizes or indexes, this card shows the step, a progress bar and
-  **Stop**.
+- **In progress**: while the plugin organizes or indexes, this card shows the step, how many notes are
+  done, a progress bar, a clock and, once the pace is known, how long is left, with **Stop**.
 - **System**: your method, with **Open** (the charter note) and **Change** (the wizard again).
 - **AI**: the model, where it runs, and a status light: green when it answers, yellow when the model is
   not installed, red when it is offline or blocked by local-only mode, with what to do. It is checked when
@@ -166,9 +166,11 @@ not running, the key is wrong, or the model is not installed (with the models th
 4. The plan also normalizes properties and tags, updates maps of content, and flags notes whose queries
    (Dataview, Bases) would show something different after the moves.
 
-While it works, the dashboard and a notice show each step, for example *qwen3:8b is placing notes, step 3
-of 12*. **Stop** (or a click on the notice) ends the AI part: notes it has not reached are flagged for you,
-and the rest of the plan is ready to review. If the model is offline, the **Use AI?** dialog says so and
+While it works, the dashboard and a notice show each step, for example *qwen3:8b is placing notes, 30 of
+74, about 3 min to go*. The model first places every note, then double-checks the uncertain ones with a
+second request: answers that agree are trusted more. A model on your computer may take a minute or more
+per request; the clock shows it is still working. **Stop** (or a click on the notice) ends the AI part:
+notes it has not reached are flagged for you, and the rest of the plan is ready to review. If the model is offline, the **Use AI?** dialog says so and
 offers to plan without it.
 
 Nothing changes yet. The plan opens in the review.

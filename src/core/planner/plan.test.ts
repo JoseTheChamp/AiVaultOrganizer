@@ -120,7 +120,7 @@ describe('buildPlan', () => {
 });
 
 describe('buildPlan progress and stopping', () => {
-  it('reports its steps and counts model requests', async () => {
+  it('reports its steps and counts the notes the model answered', async () => {
     const steps: string[] = [];
     const reply = JSON.stringify({ notes: [{ noteId: 'n1', rationale: 'A dashboard.', destinationId: 'abstain', subfolder: null, confidence: 0.2 }] });
     await plan(new ScriptedChatProvider([reply, JSON.stringify({ summary: 'Two notes move.', highlights: [] })]), {

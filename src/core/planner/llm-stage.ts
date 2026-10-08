@@ -32,10 +32,17 @@ export interface LlmStageOptions {
   batchSize?: number;
   /** Ask again about answers whose self-reported confidence falls in this range. */
   secondSample?: { low: number; high: number } | false;
-  /** Requests done and planned so far (second samples are added once they are known). */
-  onProgress?: (progress: { done: number; total: number }) => void;
+  /** Notes answered so far: first every note, then a second opinion on the borderline ones. */
+  onProgress?: (progress: LlmProgress) => void;
   /** Checked before every request: a stopped stage leaves the notes it has not reached undecided. */
   signal?: { readonly aborted: boolean };
+}
+
+/** Progress of the model stage, in notes, per pass. */
+export interface LlmProgress {
+  pass: 'placing' | 'double-checking';
+  done: number;
+  total: number;
 }
 
 /**
@@ -67,7 +74,7 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
     const sendable = notes.filter((note) => options.cards.has(note.path));
     stats.withheld += notes.length - sendable.length;
     const base = promptBase(context, options.folders);
-    const decisions = await ask(sendable, base);
+    const decisions = await ask(sendable, base, 'placing');
 
     // A second opinion for borderline answers (PLAN §7.6): the same notes in reverse order land
     // in different batches, so the model sees them in a different context. Agreement is evidence.
@@ -79,7 +86,7 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
         })
       : [];
     if (borderline.length > 0 && !options.signal?.aborted) {
-      const second = await ask([...borderline].reverse(), base);
+      const second = await ask([...borderline].reverse(), base, 'double-checking');
       for (const note of borderline) {
         const first = decisions.get(note.path) as LlmDecision;
         const other = second.get(note.path);
@@ -89,19 +96,20 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
     return decisions;
   };
 
-  const progress = { done: 0, total: 0 };
-  const ask = async (notes: readonly NoteRecord[], base: Omit<ClassifyNotesInput, 'notes'>): Promise<Map<string, LlmDecision>> => {
+  // Counted in notes, not requests: a person knows how many notes they have, and a second pass
+  // that adds requests must not make the count run backwards.
+  const ask = async (notes: readonly NoteRecord[], base: Omit<ClassifyNotesInput, 'notes'>, pass: LlmProgress['pass']): Promise<Map<string, LlmDecision>> => {
     const decisions = new Map<string, LlmDecision>();
     const planned = batches(notes, base, options.cards, batchSize, options.provider.capabilities.maxContext);
-    progress.total += planned.length;
-    options.onProgress?.({ ...progress });
+    let done = 0;
+    options.onProgress?.({ pass, done, total: notes.length });
     for (const batch of planned) {
       if (options.signal?.aborted) break;
       const input: ClassifyNotesInput = { ...base, notes: batch.map((note, i) => ({ id: `n${i + 1}`, card: options.cards.get(note.path) as NoteCard })) };
       const result = await runPrompt(options.provider, classifyNotesV2, input);
       stats.calls += result.ok ? result.value.attempts : result.error.attempts;
-      progress.done++;
-      options.onProgress?.({ ...progress });
+      done += batch.length;
+      options.onProgress?.({ pass, done, total: notes.length });
       if (!result.ok) {
         stats.failures++;
         continue;

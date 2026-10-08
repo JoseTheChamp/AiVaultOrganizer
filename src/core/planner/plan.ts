@@ -43,9 +43,9 @@ export interface PlannerInput {
   signal?: { readonly aborted: boolean };
 }
 
-/** A planning step; `classifying` counts model requests when a model takes part. */
+/** A planning step; with a model, `classifying` and `double-checking` count the notes it has answered. */
 export interface PlanProgress {
-  step: 'reading' | 'classifying' | 'naming' | 'checking' | 'summarizing';
+  step: 'reading' | 'classifying' | 'double-checking' | 'naming' | 'checking' | 'summarizing';
   done?: number;
   total?: number;
 }
@@ -90,7 +90,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
       cards,
       folders: snapshot.folders,
       secondSample: SECOND_SAMPLE,
-      onProgress: ({ done, total }) => report({ step: 'classifying', done, total }),
+      onProgress: ({ pass, done, total }) => report({ step: pass === 'placing' ? 'classifying' : 'double-checking', done, total }),
       ...(input.signal ? { signal: input.signal } : {}),
     });
     const naming = createSubfolderNamer(input.model.provider, toLang(charter.language));

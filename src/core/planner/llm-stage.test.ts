@@ -6,7 +6,7 @@ import { testCard } from '../testing/cards';
 import { ScriptedChatProvider } from '../testing/fake-chat';
 import { InMemoryVault } from '../testing/in-memory-vault';
 import { classifyNotes } from './classify';
-import { createLlmStage } from './llm-stage';
+import { createLlmStage, SECOND_SAMPLE } from './llm-stage';
 
 const answer = (...notes: [string, string, string | null, number][]) =>
   JSON.stringify({ notes: notes.map(([noteId, destinationId, subfolder, confidence]) => ({ noteId, rationale: 'Because.', destinationId, subfolder, confidence })) });
@@ -100,6 +100,22 @@ describe('createLlmStage', () => {
     expect(classification.placements.get('a.md')).toMatchObject({ destination: 'projects', subfolder: 'website', source: 'llm' });
     // A new subfolder names no item yet: the model's choice stands.
     expect(classification.placements.get('b.md')).toMatchObject({ destination: 'areas', subfolder: 'Finances' });
+  });
+
+  it('counts answered notes per pass, so a second opinion never runs the count backwards', async () => {
+    const vault = InMemoryVault.from({ 'a.md': 'A.', 'b.md': 'B.', 'c.md': 'C.' });
+    const snapshot = await vault.snapshot();
+    const cards = new Map(['a.md', 'b.md', 'c.md'].map((path) => [path, testCard(path)]));
+    const provider = new ScriptedChatProvider([
+      answer(['n1', 'projects', null, 0.6], ['n2', 'areas', null, 0.97]),
+      answer(['n1', 'resources', null, 0.5]),
+      // The borderline notes, c and a, asked again in one batch.
+      answer(['n1', 'resources', null, 0.5], ['n2', 'projects', null, 0.6]),
+    ]);
+    const seen: string[] = [];
+    const model = createLlmStage({ provider, cards, folders: [], batchSize: 2, secondSample: SECOND_SAMPLE, onProgress: ({ pass, done, total }) => seen.push(`${pass} ${done}/${total}`) });
+    await classifyNotes({ snapshot, charter: presetCharter('para', 'en'), charterPath: null, llm: model.stage });
+    expect(seen).toEqual(['placing 0/3', 'placing 2/3', 'placing 3/3', 'double-checking 0/2', 'double-checking 2/2']);
   });
 
   it('leaves a failed batch undecided and counts it', async () => {

@@ -2,6 +2,7 @@ import { Notice } from 'obsidian';
 import { hostOf } from '../../core/ai/endpoint-url';
 import type { NeighborSourceQuery, SendEstimate, SimilarityFallback, SimilarityMethod } from '../../core/embeddings/similarity';
 import { plural } from '../../core/model/text';
+import { type Activity, clock, Pace, progressText, remainingText } from '../../ui/activity';
 import type AiVaultOrganizerPlugin from '../main';
 import { MessageModal } from '../views/message-modal';
 
@@ -20,20 +21,26 @@ export interface ActivityHandle {
 
 /**
  * Starts showing a long task (organizing, indexing, a draft): in a notice that stops it when
- * clicked, and on the dashboard with a progress bar and Stop. Text is sent to a cloud embedding
- * provider only after the user agrees.
+ * clicked, and on the dashboard with a progress bar and Stop. Both show how long it has run and,
+ * once the pace of a counted step is known, how long it may still take: a local model can take
+ * minutes per request, and a run must never look stuck. Text is sent to a cloud embedding provider
+ * only after the user agrees.
  */
 export function startActivity(plugin: AiVaultOrganizerPlugin, title: string): ActivityHandle {
   const host = hostOf(plugin.settings.ai.embeddings.baseUrl);
+  let startedAt = Date.now();
+  const pace = new Pace();
   let notice: Notice | null = null;
+  /** What the notice and the card show now; null while paused. */
+  let shown: Pick<Activity, 'detail' | 'done' | 'total' | 'remaining'> | null = null;
   let stopped = false;
   let ended = false;
   const stop = () => {
     stopped = true;
     show('Stopping…');
   };
-  const show = (detail: string, done?: number, total?: number) => {
-    if (ended) return;
+  const render = () => {
+    if (!shown) return;
     if (!notice) {
       notice = new Notice('', 0);
       // Clicking a notice dismisses it; for this one it also stops the task.
@@ -42,11 +49,23 @@ export function startActivity(plugin: AiVaultOrganizerPlugin, title: string): Ac
         stop();
       });
     }
-    const count = done !== undefined && total ? ` ${done} of ${total}.` : '';
-    notice?.setMessage(`${title}: ${detail}${count}${stopped ? '' : ' Click to stop.'}`);
-    plugin.setActivity({ title, detail, ...(done !== undefined && total ? { done, total } : {}), stoppable: !stopped }, stop);
+    const text = `${progressText(shown)}${shown.remaining !== undefined ? `, ${remainingText(shown.remaining)}` : ''}`;
+    notice.setMessage(`${title} (${clock(Date.now() - startedAt)}): ${text.endsWith('…') ? text : `${text}.`}${stopped ? '' : ' Click to stop.'}`);
+  };
+  // The clock in the notice ticks between updates; the dashboard keeps its own.
+  const timer = plugin.registerInterval(window.setInterval(render, 1000));
+  const show = (detail: string, done?: number, total?: number) => {
+    if (ended) return;
+    // The clock counts the work, not the time a dialog waited for an answer.
+    if (!shown) startedAt = Date.now();
+    const counted = done !== undefined && total ? { done, total } : {};
+    const remaining = done !== undefined && total ? pace.remaining(detail, done, total, Date.now()) : undefined;
+    shown = { detail, ...counted, ...(remaining !== undefined ? { remaining } : {}) };
+    render();
+    plugin.setActivity({ title, ...shown, startedAt, stoppable: !stopped }, stop);
   };
   const pause = () => {
+    shown = null;
     notice?.hide();
     notice = null;
     plugin.setActivity(null);
@@ -70,6 +89,7 @@ export function startActivity(plugin: AiVaultOrganizerPlugin, title: string): Ac
     end: () => {
       pause();
       ended = true;
+      window.clearInterval(timer);
     },
   };
 }

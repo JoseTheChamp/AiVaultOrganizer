@@ -79,7 +79,8 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
 /** What the dashboard and the notice say during each planning step. */
 const STEP_TEXT: Record<PlanProgress['step'], (model: string | null) => string> = {
   reading: () => 'preparing notes for AI',
-  classifying: (model) => (model ? `${model} is placing notes, step` : 'matching notes to your system'),
+  classifying: (model) => (model ? `${model} is placing notes` : 'matching notes to your system'),
+  'double-checking': (model) => `${model ?? 'AI'} is double-checking uncertain notes`,
   naming: () => 'naming new folders',
   checking: () => 'checking properties, tags and queries',
   summarizing: () => 'writing the summary',
