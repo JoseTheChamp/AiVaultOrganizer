@@ -98,4 +98,10 @@ describe('destination lines', () => {
     charter.destinations = [{ ...charter.destinations[0]!, description: 'No period here' }];
     expect(renderSection(charter, 'where-does-it-go')).toContain('No period here → `Notes/<topic>`');
   });
+
+  it('say which folder takes what nothing else fits', () => {
+    const charter = presetCharter('topics', 'en');
+    charter.destinations = [...charter.destinations, { id: 'other', path: 'Other', fallback: true, description: 'Notes that fit no other folder.', layout: 'flat', priority: 0, match: [], examples: [] }];
+    expect(renderSection(charter, 'where-does-it-go')).toContain('Notes that fit no other folder → `Other` (when nothing else fits)');
+  });
 });

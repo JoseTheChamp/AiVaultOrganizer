@@ -48,6 +48,11 @@ export const destinationSchema = z
     path: folder.optional(),
     /** Category link such as "[[Books]]" (properties and hybrid mode). */
     category: z.string().min(1).optional(),
+    /**
+     * Notes nothing else fits wait here, and are classified again on every run (ADR 0010). Never
+     * offered to the model. At most one destination is the fallback.
+     */
+    fallback: z.boolean().optional(),
     /** What belongs here, in the vault's language; fed to the classifier verbatim. */
     description: z.string().default(''),
     layout: z.enum(LAYOUTS).default('flat'),
@@ -128,10 +133,15 @@ export const charterSchema = z
   .strict()
   .superRefine((charter, ctx) => {
     const ids = new Set<string>();
+    let fallback: string | null = null;
     charter.destinations.forEach((destination, index) => {
       const path = ['destinations', index];
       if (ids.has(destination.id)) ctx.addIssue({ code: 'custom', path: [...path, 'id'], message: `duplicate destination id "${destination.id}"` });
       ids.add(destination.id);
+      if (destination.fallback && fallback !== null) {
+        ctx.addIssue({ code: 'custom', path: [...path, 'fallback'], message: `only one destination can be the fallback ("${fallback}" already is)` });
+      }
+      if (destination.fallback) fallback ??= destination.id;
       if (charter.mode !== 'properties' && destination.path === undefined && destination.category === undefined) {
         ctx.addIssue({ code: 'custom', path, message: 'needs a path (or a category in hybrid mode)' });
       }

@@ -80,6 +80,9 @@ describe('parseCharterYaml', () => {
     expect(issues(`${base}  - { id: a }`)).toContain('destinations.0: needs a path (or a category in hybrid mode)');
     expect(issues(`${base}  - { id: a, path: A, match: [{ filename: "([" }] }`).join()).toContain('valid regular expression');
     expect(issues(`${base}  - { id: Bad Id, path: A }`).join()).toContain('lowercase');
+    expect(issues(`${base}  - { id: a, path: A, fallback: true }\n  - { id: b, path: B, fallback: true }`)).toContain(
+      'destinations.1.fallback: only one destination can be the fallback ("a" already is)',
+    );
     expect(issues('version: 1\npreset: custom\ninbox: In\ndestinations:\n  - { id: a, path: In }')).toContain(
       'destinations.0.path: must differ from the inbox folder',
     );
@@ -104,6 +107,15 @@ describe('stringifyCharter', () => {
     expect(yaml).not.toContain('priority');
     expect(yaml).not.toContain('examples');
     expect(yaml.indexOf('version')).toBe(0);
+  });
+
+  it('writes the fallback flag only where it is set', () => {
+    const parsed = parseCharterYaml('version: 1\npreset: custom\ndestinations:\n  - { id: notes, path: Notes }\n  - { id: other, path: Other, fallback: true, description: Notes nothing else fits. }\n');
+    if (!parsed.ok) throw new Error('must parse');
+    const yaml = stringifyCharter(parsed.value);
+    expect(yaml).toContain('- id: other\n    path: Other\n    fallback: true');
+    expect(yaml.match(/fallback/g)).toHaveLength(1);
+    expect(parseCharterYaml(yaml)).toEqual(parsed);
   });
 });
 

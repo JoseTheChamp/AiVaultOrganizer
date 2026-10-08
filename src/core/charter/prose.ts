@@ -16,6 +16,7 @@ const T = {
     daily: (path: string, format: string) => `Daily notes (\`${format}\`) → \`${path}\``,
     rootNotes: 'Your own notes → the vault root, classified by properties',
     automatic: 'automatically when',
+    fallback: 'when nothing else fits',
     or: 'or',
     item: 'item',
     topic: 'topic',
@@ -42,6 +43,7 @@ const T = {
     daily: (path: string, format: string) => `Denní poznámky (\`${format}\`) → \`${path}\``,
     rootNotes: 'Vlastní poznámky → kořen vaultu, zařazené podle vlastností',
     automatic: 'automaticky, když',
+    fallback: 'když nic jiného nesedí',
     or: 'nebo',
     item: 'položka',
     topic: 'téma',
@@ -104,7 +106,8 @@ function destinationLine(charter: Charter, destination: Destination): string {
     : `\`categories: ${destination.category ?? destination.id}\``;
   const description = destination.description.trim().replace(/\.$/, '') || destination.id;
   const rules = destination.match.map(describeRule).join(` ${t.or} `);
-  return `${description} → ${where}${rules ? ` (${t.automatic} ${rules})` : ''}`;
+  const when = [destination.fallback ? t.fallback : '', rules ? `${t.automatic} ${rules}` : ''].filter(Boolean).join('; ');
+  return `${description} → ${where}${when ? ` (${when})` : ''}`;
 }
 
 export function describeRule(rule: Rule): string {

@@ -49,7 +49,7 @@ function lineOf(doc: Document, path: string[], counter: LineCounter): number | u
 }
 
 const KEY_ORDER = ['version', 'revision', 'preset', 'language', 'mode', 'inbox', 'destinations', 'system', 'ignore', 'conventions', 'mocs', 'drift', 'jd'];
-const DESTINATION_ORDER = ['id', 'path', 'category', 'description', 'layout', 'priority', 'match', 'examples'];
+const DESTINATION_ORDER = ['id', 'path', 'category', 'fallback', 'description', 'layout', 'priority', 'match', 'examples'];
 
 /**
  * Serializes a charter as readable YAML: stable key order, defaults that carry no information left
@@ -101,6 +101,7 @@ function compactDestination(destination: Charter['destinations'][number]): Recor
     const value = (destination as Record<string, unknown>)[key];
     if (value === undefined) continue;
     if (key === 'priority' && value === 0) continue;
+    if (key === 'fallback' && value !== true) continue;
     if ((key === 'match' || key === 'examples') && Array.isArray(value) && value.length === 0) continue;
     if (key === 'layout' && value === 'flat') continue;
     result[key] = value;
