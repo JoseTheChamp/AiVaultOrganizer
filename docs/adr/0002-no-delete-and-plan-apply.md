@@ -1,6 +1,6 @@
 # 0002. No-delete invariant and the plan/apply transaction
 
-- Status: Accepted
+- Status: Accepted, amended by [0009](0009-remove-emptied-folders.md) (folders a plan leaves empty)
 - Date: 2026-10-05
 
 ## Context

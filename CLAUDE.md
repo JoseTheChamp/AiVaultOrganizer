@@ -15,9 +15,11 @@ evals and docs are part of the deliverable. When in doubt, do it right rather th
 
 ## Non-negotiable invariants
 
-1. **No deletion of user content.** There is no `delete` operation in the domain model. Destructive-looking
-   changes are moves into an archive folder, proposed and approved like any other change. The only
-   exception: undoing a run may send files *the plugin itself created* to Obsidian's trash (`fileManager.trashFile`).
+1. **No deletion of user content.** There is no `delete` operation for notes or files in the domain model.
+   Destructive-looking changes are moves into an archive folder, proposed and approved like any other change.
+   The only exceptions, both through Obsidian's trash (`fileManager.trashFile`): undoing a run may trash files
+   *the plugin itself created*, and a reviewed plan may remove folders *its own moves left empty*
+   (`removeEmptyFolder`, ADR 0009).
 2. **Single write path.** Every vault mutation goes Plan → validate → backup → apply → journal → verify.
    No code outside `src/core/apply` (and its Obsidian adapter) writes to the vault.
 3. **LLMs never act on the vault.** Model output, including tool calls, can only produce Operations inside a
