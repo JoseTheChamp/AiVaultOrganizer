@@ -39,7 +39,11 @@ describe('wizard state', () => {
   it('starts from the charter being edited, so earlier changes survive', async () => {
     const existing = { ...presetCharter('para', 'en'), inbox: 'Inbox' };
     const wizard = await input(PARA_VAULT, existing);
-    expect(baseCharter(wizard, 'existing', 'en')).toBe(existing);
+    // The charter being edited, with an Other folder for what nothing else fits (removable).
+    const start = baseCharter(wizard, 'existing', 'en');
+    expect(start.destinations.slice(0, -1)).toEqual(existing.destinations);
+    expect(start.destinations.at(-1)).toMatchObject({ path: 'Other', fallback: true });
+    expect(start.inbox).toBe('Inbox');
     expect(initialChanges(existing)).toMatchObject({ inbox: 'Inbox', removed: [], tagStyle: 'keep' });
     // A preset is fitted to the vault: its numbered folders already exist.
     expect(baseCharter(wizard, 'para', 'en').destinations[0]?.path).toBe('1 Projects');

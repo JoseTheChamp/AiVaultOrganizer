@@ -50,7 +50,7 @@ describe('SetupWizard', () => {
     await fireEvent.click(screen.getByRole('checkbox', { name: /Then plan where my notes go/ }));
     await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
     const [charter, planNow] = submit.mock.calls[0] ?? [];
-    expect(charter?.destinations.map((d) => d.path)).toEqual(['1 Projects', '2 Areas', 'Library']);
+    expect(charter?.destinations.map((d) => d.path)).toEqual(['1 Projects', '2 Areas', 'Library', 'Other']);
     expect(planNow).toBe(false);
   });
 
@@ -61,6 +61,10 @@ describe('SetupWizard', () => {
     const row = within(resources.closest('.avo-destination') as HTMLElement);
     expect(row.getByText(/reference material/)).toBeTruthy();
     expect(row.getByText('Your folder already holds 1 note: Bread.')).toBeTruthy();
+    // Every method comes with Other, for notes nothing else fits.
+    const other = screen.getByRole<HTMLInputElement>('textbox', { name: 'Folder for other' });
+    expect(other.value).toBe('Other');
+    expect(within(other.closest('.avo-destination') as HTMLElement).getByText(/fit no other folder/)).toBeTruthy();
     // Naming a folder the vault does not have shows nothing about it.
     await fireEvent.input(resources, { target: { value: 'Library' } });
     expect(row.queryByText(/already holds/)).toBeNull();

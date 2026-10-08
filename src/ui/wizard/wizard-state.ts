@@ -1,5 +1,6 @@
 import type { VaultAnalysis } from '../../core/analysis/analyze';
 import type { CharterChanges, NewFolder } from '../../core/charter/customize';
+import { withFallback } from '../../core/charter/fallback';
 import { adaptPresetToVault, inferCharter } from '../../core/charter/infer';
 import { METHOD_ABOUT, type MethodAbout } from '../../core/charter/presets/about';
 import { type Lang, PRESET_ORDER, presetCharter } from '../../core/charter/presets/index';
@@ -80,8 +81,15 @@ export function choiceOptions(input: Pick<WizardInput, 'analysis' | 'existing'>,
   ];
 }
 
-/** The charter a choice starts from, fitted to the vault (existing folder names are reused). */
+/**
+ * The charter a choice starts from, fitted to the vault (existing folder names are reused), with an
+ * Other folder for notes nothing else fits (ADR 0010); the user can remove it.
+ */
 export function baseCharter(input: WizardInput, choice: Choice, lang: Lang, draft: Charter | null = null): Charter {
+  return withFallback(startingCharter(input, choice, lang, draft));
+}
+
+function startingCharter(input: WizardInput, choice: Choice, lang: Lang, draft: Charter | null): Charter {
   if (choice === 'draft' && draft) return draft;
   if (choice === 'existing' && input.existing) return input.existing;
   // Without the charter or draft they refer to, these fall back to the vault's own structure.

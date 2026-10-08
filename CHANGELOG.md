@@ -17,6 +17,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   who decided, confidence, destination and status, a preview of exactly what each change does, accept or
   reject per row or everything above a confidence, and keyboard review (j, k, a, r, u, Enter). Decisions
   are saved as you make them.
+- An **Other** folder in every method, added by the setup wizard (removable): notes no rule, similar note
+  or AI places for sure go there instead of being left behind, with the AI's best guess as the reason, and
+  are placed again each time you organize.
 - Plans propose removing the folders their moves leave empty, so a reorganized vault shows its new
   structure instead of a trail of empty folders. Each removal is reviewed like a move, happens only if
   the folder is still empty, goes to the trash and is undone with the run.

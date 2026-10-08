@@ -116,6 +116,10 @@ what is there (*Your folder already holds 12 notes: Bread, Leek soup, Tea and 9 
 kind the folder is for, pick another name: the plugin files notes by what the folder is for, not by its
 name.
 
+Every method comes with **Other** (`90-99 Other/91 Other` in Johnny.Decimal, a `[[Other]]` category in
+Flat + categories): notes nothing else fits go there, so organizing leaves no note behind. Remove it if
+you would rather have such notes flagged for you.
+
 **More options** holds:
 
 - **Inbox folder**: where new notes wait to be filed. Leave it empty for no inbox.
@@ -171,16 +175,21 @@ not running, the key is wrong, or the model is not installed (with the models th
    - It names the model and where it runs, the number of notes, and the estimated requests, tokens and
      (with prices set) cost. After a first run it also says how long the run may take at that run's pace.
    - **What is sent** shows exactly what the model sees.
-   - **Use AI** sends; **Without AI** plans with rules and similar notes only (the rest are flagged for
-     you); **Cancel** stops.
-4. The plan also normalizes properties and tags, updates maps of content, and flags notes whose queries
+   - **Use AI** sends; **Without AI** plans with rules and similar notes only; **Cancel** stops.
+4. What nothing places for sure goes to **Other**: notes no rule, similar note or AI could place, and notes
+   the AI was unsure about (its two answers disagreed). The reason shows the best guess, such as *No folder
+   fits for sure (best guess: 13 Home, 39 %)*. Notes in Other are placed again each time you organize, so
+   once you add a folder that fits them (**Change** on the dashboard), they move there. Without Other, such
+   notes are flagged for you instead.
+5. The plan also normalizes properties and tags, updates maps of content, and flags notes whose queries
    (Dataview, Bases) would show something different after the moves.
 
 While it works, the dashboard and a notice show each step, for example *qwen3:8b is placing notes, 30 of
 74, about 3 min to go*. The model first places every note, then double-checks the uncertain ones with a
 second request: answers that agree are trusted more. A model on your computer may take a minute or more
 per request; the clock shows it is still working. **Stop** (or a click on the notice) ends the AI part:
-notes it has not reached are flagged for you, and the rest of the plan is ready to review. If the model is offline, the **Use AI?** dialog says so and
+notes it has not reached wait in Other (or are flagged, without Other), and the rest of the plan is ready
+to review. If the model is offline, the **Use AI?** dialog says so and
 offers to plan without it.
 
 Nothing changes yet. The plan opens in the review.
