@@ -59,6 +59,13 @@
           action: { label: 'Organize', run: actions.plan },
           ...(withoutAi ? { alternative: withoutAi } : {}),
         };
+      case 'waiting':
+        return {
+          title: `${plural(next.notes, 'note')} ${verb(next.notes, 'waits', 'wait')} in ${next.where}`,
+          detail: 'No folder fits them yet. Add folders for them, then organize to move them there.',
+          action: { label: 'Add folders', run: actions.setUp },
+          alternative: { label: 'Organize', run: actions.plan },
+        };
       case 'tidy':
         return { title: 'Everything is in place', detail: 'Notes that drift from your system show up here.', action: null };
     }

@@ -45,6 +45,12 @@ describe('dashboardState', () => {
     expect(result.next).toEqual({ kind: 'organize', notes: 1 });
   });
 
+  it('says when notes wait in the fallback for a folder of their own', async () => {
+    const charter = ['---', 'charter: true', '---', '```charter', 'version: 1', 'preset: custom', 'destinations:', '  - { id: projects, path: Projects }', '  - { id: other, path: Other, fallback: true }', '```'].join('\n');
+    const result = await state({ [CHARTER]: charter, 'Projects/A.md': '', 'Other/B.md': '', 'Other/C.md': '' });
+    expect(result.next).toEqual({ kind: 'waiting', notes: 2, where: 'Other' });
+  });
+
   it('counts open operations of a pending plan, and describes the last run and the models', async () => {
     const plan = createPlan({
       id: 'p1',

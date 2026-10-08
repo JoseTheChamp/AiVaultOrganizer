@@ -58,7 +58,7 @@ The dashboard sits in the right sidebar.
   folder depth.
 - **Next step**: the one thing to do now. A new vault starts with *Set up AI* (or *Continue without
   AI*), then *Choose a system*; later it is *Review* a waiting plan, *Organize* notes that are out of
-  place, or nothing when everything is in place.
+  place, *Add folders* for notes waiting in Other, or nothing when everything is in place.
 - **In progress**: while the plugin organizes or indexes, this card shows the step, how many notes are
   done, a progress bar, a clock and, once the pace is known, how long is left, with **Stop**.
 - **System**: your method, with **Open** (the charter note) and **Change** (the wizard again).

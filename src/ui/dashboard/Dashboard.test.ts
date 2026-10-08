@@ -75,6 +75,16 @@ describe('Dashboard', () => {
     expect(wired.stop).toHaveBeenCalledOnce();
   });
 
+  it('sends notes waiting in Other to folders of their own', async () => {
+    const wired = actions();
+    render(Dashboard, { model: model({ state: { ...state, next: { kind: 'waiting', notes: 14, where: 'Other' }, pending: null } }), actions: wired });
+    expect(next().getByText('14 notes wait in Other')).toBeTruthy();
+    await fireEvent.click(next().getByRole('button', { name: 'Add folders' }));
+    await fireEvent.click(next().getByRole('button', { name: 'Organize' }));
+    expect(wired.setUp).toHaveBeenCalledOnce();
+    expect(wired.plan).toHaveBeenCalledOnce();
+  });
+
   it("lights the model's status and says how to fix it", () => {
     const shown = model({ aiStatus: { state: 'offline', message: 'Could not reach http://localhost:11434/v1.' } });
     render(Dashboard, { model: shown, actions: actions() });

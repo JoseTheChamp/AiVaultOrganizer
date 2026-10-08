@@ -1,3 +1,5 @@
+import type { VaultSnapshot } from '../model/note';
+import { isInFolder } from '../model/paths';
 import { toLang } from './presets/index';
 import { type Charter, charterSchema, type DestinationInput } from './schema';
 
@@ -28,6 +30,20 @@ export function withFallback(charter: Charter): Charter {
   const where = charter.mode === 'properties' ? { category: `[[${name}]]` } : { path };
   const fallback: DestinationInput = { id, ...where, fallback: true, description };
   return charterSchema.parse({ ...charter, destinations: [...charter.destinations, fallback], ...(jd ? { jd } : {}) });
+}
+
+/** The notes waiting in the charter's fallback (in its folder, or with its category), and where that is. */
+export function waitingInFallback(snapshot: VaultSnapshot, charter: Charter): { notes: number; where: string } | null {
+  const fallback = charter.destinations.find((destination) => destination.fallback);
+  if (!fallback) return null;
+  const category = fallback.category?.toLowerCase();
+  const notes = snapshot.notes.filter((note) => {
+    if (fallback.path) return isInFolder(note.path, fallback.path);
+    const categories = note.frontmatter.categories;
+    const list: unknown[] = Array.isArray(categories) ? categories : [categories];
+    return list.some((value) => typeof value === 'string' && value.toLowerCase() === category);
+  }).length;
+  return { notes, where: fallback.path ?? fallback.category ?? fallback.id };
 }
 
 /** Where the fallback goes, and the Johnny.Decimal index that lists it. */

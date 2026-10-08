@@ -4,6 +4,7 @@ import type { Activity } from '../activity';
 import { hostOf, isLoopbackUrl } from '../../core/ai/endpoint-url';
 import { analyzeVault } from '../../core/analysis/analyze';
 import type { JournalRun, RunStatus } from '../../core/apply/journal';
+import { waitingInFallback } from '../../core/charter/fallback';
 import type { CharterLoad } from '../../core/charter/load';
 import { computeDrift } from '../../core/drift/drift';
 import { METHOD_LABELS } from '../../core/model/methods';
@@ -43,6 +44,8 @@ export type NextStep =
   | { kind: 'fix-charter' }
   | { kind: 'review'; changes: number }
   | { kind: 'organize'; notes: number }
+  /** Everything is filed, but some notes only in the fallback: they need folders of their own. */
+  | { kind: 'waiting'; notes: number; where: string }
   | { kind: 'tidy' };
 
 export interface DashboardState {
@@ -95,8 +98,9 @@ export function dashboardState(input: DashboardInput): DashboardState {
   const open = input.pendingPlan?.operations.filter((op) => op.status === 'pending' || op.status === 'accepted').length ?? 0;
   const run = input.lastRun;
   const pending = input.pendingPlan && open > 0 ? { planId: input.pendingPlan.id, open } : null;
+  const waiting = valid ? waitingInFallback(snapshot, valid) : null;
   return {
-    next: nextStep(charter.status, pending, drift?.offCharter ?? 0, input.ai.chat.enabled && input.ai.chat.model !== ''),
+    next: nextStep(charter.status, pending, drift?.offCharter ?? 0, waiting, input.ai.chat.enabled && input.ai.chat.model !== ''),
     health: { score: analysis.health.score, grade: analysis.health.grade, notes: snapshot.notes.length },
     charter: charterStatus(charter),
     drift: drift ? { offCharter: drift.offCharter, notes: drift.noteCount, missingFolders: drift.missingFolders.length } : null,
@@ -108,12 +112,14 @@ export function dashboardState(input: DashboardInput): DashboardState {
   };
 }
 
-function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number, aiOn: boolean): NextStep {
+function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number, waiting: { notes: number; where: string } | null, aiOn: boolean): NextStep {
   // AI makes organizing a messy vault possible, so a new vault starts by connecting it (skippable).
   if (charter === 'missing') return aiOn ? { kind: 'set-up-charter' } : { kind: 'set-up-ai' };
   if (charter !== 'ok') return { kind: 'fix-charter' };
   if (pending) return { kind: 'review', changes: pending.open };
   if (offCharter > 0) return { kind: 'organize', notes: offCharter };
+  // A vault whose leftovers all wait in Other looks finished, but those notes still need a home.
+  if (waiting && waiting.notes > 0) return { kind: 'waiting', notes: waiting.notes, where: waiting.where };
   return { kind: 'tidy' };
 }
 

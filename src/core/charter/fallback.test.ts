@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { withFallback } from './fallback';
+import { InMemoryVault } from '../testing/in-memory-vault';
+import { waitingInFallback, withFallback } from './fallback';
 import { presetCharter } from './presets/index';
 import type { Charter } from './schema';
 
@@ -26,6 +27,13 @@ describe('withFallback', () => {
     const [other] = fallbackOf(withFallback(presetCharter('flat-categories', 'en')));
     expect(other).toMatchObject({ category: '[[Other]]' });
     expect(other?.path).toBeUndefined();
+  });
+
+  it('counts the notes waiting in it, by folder or by category', async () => {
+    const snapshot = await InMemoryVault.from({ 'Other/A.md': '', 'Other/Deep/B.md': '', 'C.md': '---\ncategories: ["[[Other]]"]\n---\n', 'D.md': '' }).snapshot();
+    expect(waitingInFallback(snapshot, withFallback(presetCharter('para', 'en')))).toEqual({ notes: 2, where: 'Other' });
+    expect(waitingInFallback(snapshot, withFallback(presetCharter('flat-categories', 'en')))).toEqual({ notes: 1, where: '[[Other]]' });
+    expect(waitingInFallback(snapshot, presetCharter('para', 'en'))).toBeNull();
   });
 
   it('makes an Other folder the charter already has the fallback, and leaves a fallback as it is', () => {
