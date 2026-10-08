@@ -1,7 +1,7 @@
 import type { Charter } from '../charter/schema';
 import type { NoteRecord, VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
-import { ancestorFolders, fileName, isInFolder, joinPath, parentFolder } from '../model/paths';
+import { fileName, isInFolder, joinPath, parentFolder } from '../model/paths';
 import type { PlanWarning } from '../model/plan';
 import { plural } from '../model/text';
 import { type Classification, DAILY, type Placement, ROOT } from './classify';
@@ -69,9 +69,9 @@ export function placementOperations(classification: Classification, snapshot: Va
       }
       taken.delete(note.path.toLowerCase());
       taken.add(to.toLowerCase());
-      for (const folder of [...ancestorFolders(joinPath(target, 'x')), ...(target ? [target] : [])]) {
-        if (!existing.has(folder.toLowerCase())) folders.add(folder);
-      }
+      // The target only: applying creates its parents, and a parent that is no destination itself
+      // (a Johnny.Decimal area) would fail validation as a change of its own.
+      if (target && !existing.has(target.toLowerCase())) folders.add(target);
       move = createOperation({ kind: 'move', from: note.path, to }, { ...meta, rationale: `${placement.rationale} → "${target || 'vault root'}"` });
       moves.push(move);
     }

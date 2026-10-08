@@ -153,13 +153,15 @@ describe('buildPlan without neighbours or a model', () => {
 
   it("creates the charter's missing folders when asked, leaving their parents to the apply step", async () => {
     const charter = presetCharter('johnny-decimal', 'en');
-    const plan = await rulesOnly(charter, {}, [], true);
+    // A note the rules file under 11 Finance, so its folder is also needed by a move.
+    const plan = await rulesOnly(charter, { '11.01 Budget.md': '' }, [], true);
+    expect(plan.operations.find((op) => op.kind === 'move')).toMatchObject({ to: '10-19 Life admin/11 Finance/11.01 Budget.md' });
     const folders = plan.operations.map((op) => (op.kind === 'createFolder' ? op.path : null));
     expect(folders).toContain('10-19 Life admin/11 Finance');
     expect(folders).toContain('00-09 System/02 Daily');
     // An area on its own is no destination: proposing it made the review show its own plan as invalid.
     expect(folders).not.toContain('10-19 Life admin');
-    const report = validatePlan(plan, { snapshot: await applyHarness({}).vault.snapshot(), ignore: charter.ignore, allowedRoots: charterRoots(charter), include: () => true });
+    const report = validatePlan(plan, { snapshot: await applyHarness({ '11.01 Budget.md': '' }).vault.snapshot(), ignore: charter.ignore, allowedRoots: charterRoots(charter), include: () => true });
     expect(report.issues).toEqual([]);
   });
 

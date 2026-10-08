@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "llm-en-small-qwen3-8b",
-  "recordedAt": "2026-10-06T15:11:18.535Z",
+  "recordedAt": "2026-10-08T10:44:00.199Z",
   "interactions": [
     {
       "key": "ce4c60053eb637e900e05f48414887597f34057562ccf15230f289d0d116af09",
@@ -8364,7 +8364,7 @@
       }
     },
     {
-      "key": "74f9395924100f96eb8d597ab06034d5c7a42124499270883e24400ecd1580e8",
+      "key": "157105c49f8ec61ab733b5596bf9c2b7d80d12cc8fa60d12efe965958bc3678b",
       "request": {
         "method": "POST",
         "url": "http://localhost:11434/v1/chat/completions",
@@ -8377,7 +8377,7 @@
             },
             {
               "role": "user",
-              "content": "Method: PARA\nOperations: new folders: 12, moves: 71, property renames: 16, tag renames: 5\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nExamples:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\"\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\"\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\"\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\"\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\"\n- Move \"Old notes/API v2 rollout plan.md\" to \"4 Archive/API v2 rollout plan.md\"\n- Move \"Misc/Knife skills.md\" to \"2 Areas/Cooking/Knife skills.md\"\n- Move \"Deprecation notices.md\" to \"3 Resources/TypeScript/Deprecation notices.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
+              "content": "Method: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nExamples:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\"\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\"\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\"\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\"\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\"\n- Move \"Old notes/API v2 rollout plan.md\" to \"4 Archive/API v2 rollout plan.md\"\n- Move \"Misc/Knife skills.md\" to \"2 Areas/Cooking/Knife skills.md\"\n- Move \"Deprecation notices.md\" to \"3 Resources/TypeScript/Deprecation notices.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
             }
           ],
           "stream": false,
@@ -8423,7 +8423,7 @@
         "headers": {
           "content-type": "application/json"
         },
-        "text": "{\"id\":\"chatcmpl-773\",\"object\":\"chat.completion\",\"created\":1791299478,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes your knowledge base by creating new folders, moving files, and renaming properties and tags. It focuses on structuring projects, areas, resources, and archive content.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Check the 12 new folders to ensure they align with your current organization needs\\\",\\n    \\\"Review the 71 file moves to confirm destinations match intended categories\\\",\\n    \\\"Verify the 16 property renames for consistency with your naming conventions\\\",\\n    \\\"Ensure the 5 tag renames accurately reflect new or updated categorizations\\\",\\n    \\\"Confirm the 3 Archive moves are appropriate for long-term storage\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":361,\"prompt_tokens_details\":{\"cached_tokens\":4},\"completion_tokens\":137,\"total_tokens\":498}}\n"
+        "text": "{\"id\":\"chatcmpl-151\",\"object\":\"chat.completion\",\"created\":1791456239,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes your knowledge base by creating new folders, moving items, and renaming properties and tags. It reclassifies notes into projects, areas, resources, and archive categories.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Check the 71 moves for accuracy, especially the 18 project-related items\\\",\\n    \\\"Verify that 16 property renames align with your current naming conventions\\\",\\n    \\\"Review the 5 tag renames to ensure they reflect the correct categorization\\\",\\n    \\\"Confirm that 28 resource items are properly placed under the Resources folder\\\",\\n    \\\"Ensure the 3 archived items are correctly moved to the Archive folder\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":361,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens\":142,\"total_tokens\":503}}\n"
       }
     }
   ]
