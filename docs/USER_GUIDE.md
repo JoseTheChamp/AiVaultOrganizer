@@ -56,10 +56,15 @@ The dashboard sits in the right sidebar.
 - **Health**: a score from 0 to 100 for how organized the vault is: notes nothing links to, notes left
   in the root or the inbox, broken links, tags spelled several ways, missing properties, empty folders and
   folder depth.
-- **Next step**: the one thing to do now. It is *Choose a system*, *Review* a waiting plan, *Organize*
-  notes that are out of place, or nothing when everything is in place.
+- **Next step**: the one thing to do now. A new vault starts with *Set up AI* (or *Continue without
+  AI*), then *Choose a system*; later it is *Review* a waiting plan, *Organize* notes that are out of
+  place, or nothing when everything is in place.
+- **In progress**: while the plugin organizes or indexes, this card shows the step, a progress bar and
+  **Stop**.
 - **System**: your method, with **Open** (the charter note) and **Change** (the wizard again).
-- **AI**: the model and where it runs, or **Set up**.
+- **AI**: the model, where it runs, and a status light: green when it answers, yellow when the model is
+  not installed, red when it is offline or blocked by local-only mode, with what to do. It is checked when
+  the dashboard opens and once a minute, with a free request that lists models (no tokens).
 - **Last change**: the last run, with **Undo**.
 
 **Full diagnosis** at the bottom opens the detailed analysis of the vault.
@@ -160,6 +165,11 @@ not running, the key is wrong, or the model is not installed (with the models th
      you); **Cancel** stops.
 4. The plan also normalizes properties and tags, updates maps of content, and flags notes whose queries
    (Dataview, Bases) would show something different after the moves.
+
+While it works, the dashboard and a notice show each step, for example *qwen3:8b is placing notes, step 3
+of 12*. **Stop** (or a click on the notice) ends the AI part: notes it has not reached are flagged for you,
+and the rest of the plan is ready to review. If the model is offline, the **Use AI?** dialog says so and
+offers to plan without it.
 
 Nothing changes yet. The plan opens in the review.
 
