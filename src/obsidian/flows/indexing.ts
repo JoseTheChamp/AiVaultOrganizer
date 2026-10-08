@@ -5,39 +5,72 @@ import { plural } from '../../core/model/text';
 import type AiVaultOrganizerPlugin from '../main';
 import { MessageModal } from '../views/message-modal';
 
-/** A progress notice for index updates that stops indexing when clicked. */
-export interface IndexingProgress {
-  /** Index options for a similarity query: progress, stopping, and consent before sending. */
+/** A long task in progress: a notice that stops it when clicked, and the dashboard's progress card. */
+export interface ActivityHandle {
+  /** Options for a similarity query: indexing progress, stopping, and consent before sending. */
   options: Pick<NeighborSourceQuery, 'onProgress' | 'isCancelled' | 'confirmSend'>;
-  /** Shows a message in the same notice (for the steps after indexing). */
-  say(message: string): void;
-  hide(): void;
+  /** Set when the user stops the task; model stages check it between requests. */
+  signal: { readonly aborted: boolean };
+  /** Shows what is happening now, with progress when it can be counted. */
+  update(detail: string, done?: number, total?: number): void;
+  /** Takes the notice and the card away while a dialog asks something; the next update brings them back. */
+  pause(): void;
+  end(): void;
 }
 
 /**
- * Indexing (the first run, or notes changed since) shows a notice that stops when clicked; text is
- * sent to a cloud embedding provider only after the user agrees.
+ * Starts showing a long task (organizing, indexing, a draft): in a notice that stops it when
+ * clicked, and on the dashboard with a progress bar and Stop. Text is sent to a cloud embedding
+ * provider only after the user agrees.
  */
-export function indexingProgress(plugin: AiVaultOrganizerPlugin): IndexingProgress {
+export function startActivity(plugin: AiVaultOrganizerPlugin, title: string): ActivityHandle {
   const host = hostOf(plugin.settings.ai.embeddings.baseUrl);
   let notice: Notice | null = null;
   let stopped = false;
-  const show = (message: string, stoppable: boolean) => {
+  let ended = false;
+  const stop = () => {
+    stopped = true;
+    show('Stopping…');
+  };
+  const show = (detail: string, done?: number, total?: number) => {
+    if (ended) return;
     if (!notice) {
       notice = new Notice('', 0);
-      // Clicking a notice dismisses it; for this one it also stops indexing.
-      notice.containerEl.addEventListener('click', () => (stopped = true));
+      // Clicking a notice dismisses it; for this one it also stops the task.
+      notice.containerEl.addEventListener('click', () => {
+        notice = null;
+        stop();
+      });
     }
-    notice.setMessage(stoppable ? `${message} Click to stop.` : message);
+    const count = done !== undefined && total ? ` ${done} of ${total}.` : '';
+    notice?.setMessage(`${title}: ${detail}${count}${stopped ? '' : ' Click to stop.'}`);
+    plugin.setActivity({ title, detail, ...(done !== undefined && total ? { done, total } : {}), stoppable: !stopped }, stop);
+  };
+  const pause = () => {
+    notice?.hide();
+    notice = null;
+    plugin.setActivity(null);
   };
   return {
     options: {
       isCancelled: () => stopped,
-      onProgress: ({ done, total, method }) => show(`${method === 'embeddings' ? 'Indexing notes by meaning' : 'Reading notes'}: ${done} of ${total}.`, true),
-      confirmSend: (estimate) => confirmSend(plugin, host, estimate),
+      onProgress: ({ done, total, method }) => show(method === 'embeddings' ? 'indexing notes by meaning' : 'reading notes', done, total),
+      confirmSend: async (estimate) => {
+        pause();
+        return confirmSend(plugin, host, estimate);
+      },
     },
-    say: (message) => show(message, false),
-    hide: () => notice?.hide(),
+    signal: {
+      get aborted() {
+        return stopped;
+      },
+    },
+    update: show,
+    pause,
+    end: () => {
+      pause();
+      ended = true;
+    },
   };
 }
 

@@ -12,6 +12,8 @@ export interface ConsentInput {
   localOnly: boolean;
   prices: Prices;
   budgetTokens: number;
+  /** Why the model cannot be used right now (offline, not installed), from its status check. */
+  unavailable?: string | null;
 }
 
 /** The answer: send with the model, go on without it, or stop. */
@@ -23,8 +25,8 @@ export interface ConsentState {
   /** "this computer", or the host notes go to. */
   where: string;
   local: boolean;
-  /** A cloud model while local-only mode is on: it cannot be used. */
-  blocked: boolean;
+  /** Why the model cannot be used now (local-only mode, offline, not installed), or null. */
+  unavailable: string | null;
   notes: number;
   withheld: number;
   calls: { min: number; max: number };
@@ -51,7 +53,7 @@ export function consentState(input: ConsentInput): ConsentState {
     model: input.model,
     where: local ? 'this computer' : hostOf(input.baseUrl),
     local,
-    blocked: !local && input.localOnly,
+    unavailable: !local && input.localOnly ? `Local-only mode is on, so ${hostOf(input.baseUrl)} cannot be reached. Turn it off in Set up AI.` : (input.unavailable ?? null),
     notes: estimate.notes,
     withheld: estimate.withheld,
     calls: estimate.calls,

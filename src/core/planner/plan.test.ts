@@ -39,7 +39,7 @@ const NEIGHBORS: Record<string, Neighbor[]> = {
   ],
 };
 
-async function plan(model?: ScriptedChatProvider, options: Pick<PlannerInput, 'knn' | 'cardAges'> = {}) {
+async function plan(model?: ScriptedChatProvider, options: Pick<PlannerInput, 'knn' | 'cardAges' | 'onProgress' | 'signal'> = {}) {
   const harness = applyHarness(files, ['Inbox', '1 Projects', '1 Projects/Website relaunch']);
   const snapshot = await harness.vault.snapshot();
   const result = await buildPlan({
@@ -116,6 +116,25 @@ describe('buildPlan', () => {
     await plan(withoutAges, { knn: { ...DEFAULT_KNN, minSimilarity: 0.95 }, cardAges: false });
     expect(JSON.stringify(withAges.requests[0])).toContain('Last changed');
     expect(JSON.stringify(withoutAges.requests[0])).not.toContain('Last changed');
+  });
+});
+
+describe('buildPlan progress and stopping', () => {
+  it('reports its steps and counts model requests', async () => {
+    const steps: string[] = [];
+    const reply = JSON.stringify({ notes: [{ noteId: 'n1', rationale: 'A dashboard.', destinationId: 'abstain', subfolder: null, confidence: 0.2 }] });
+    await plan(new ScriptedChatProvider([reply, JSON.stringify({ summary: 'Two notes move.', highlights: [] })]), {
+      onProgress: ({ step, done, total }) => steps.push(done === undefined ? step : `${step} ${done}/${total ?? 0}`),
+    });
+    expect(steps).toEqual(['reading', 'classifying 0/1', 'classifying 1/1', 'naming', 'checking', 'summarizing']);
+  });
+
+  it('stops asking the model when told to, and still builds the plan', async () => {
+    const model = new ScriptedChatProvider([]);
+    const { result } = await plan(model, { signal: { aborted: true } });
+    expect(model.requests).toEqual([]);
+    expect(result.summary.source).toBe('rules');
+    expect(result.plan.operations.flatMap((op) => (op.kind === 'flag' && op.issue === 'ambiguous' ? [op.path] : []))).toContain('Dashboard.md');
   });
 });
 

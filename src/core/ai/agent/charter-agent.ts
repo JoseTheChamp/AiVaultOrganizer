@@ -28,6 +28,8 @@ export interface AgentOptions {
   maxSteps: number;
   /** Token budget for the whole run (input and output, estimated). */
   maxTokens: number;
+  /** Checked before every step: a stopped agent returns without a draft. */
+  signal?: { readonly aborted: boolean };
 }
 
 export const DEFAULT_AGENT: AgentOptions = { maxSteps: 8, maxTokens: 40_000 };
@@ -49,6 +51,7 @@ export async function draftCharter(provider: ChatProvider, context: AgentContext
   let spent = 0;
   let lastProblems: string[] = [];
   for (let step = 1; step <= options.maxSteps; step++) {
+    if (options.signal?.aborted) return { ok: false, reason: 'Stopped.', steps: step - 1, toolCalls, lastProblems };
     const request = { messages, tools: charterAgentV1.tools, toolChoice: 'auto' as const, temperature: 0, maxTokens: 2000, prompt: { id: charterAgentV1.id, version: charterAgentV1.version } };
     const estimate = estimateRequest(request);
     if (spent + estimate.input + estimate.output > options.maxTokens) return { ok: false, reason: 'The token budget ran out before a valid draft.', steps: step - 1, toolCalls, lastProblems };

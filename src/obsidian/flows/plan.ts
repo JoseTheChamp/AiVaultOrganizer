@@ -8,11 +8,12 @@ import { plural } from '../../core/model/text';
 import { buildCard, type NoteCard } from '../../core/planner/cards';
 import { classifyNotes, DEFAULT_KNN, type KnnOptions, type NeighborLookup, WORD_KNN } from '../../core/planner/classify';
 import { estimatePlanRun } from '../../core/planner/estimate';
-import { buildPlan, type PlannerInput } from '../../core/planner/plan';
+import { buildPlan, type PlannerInput, type PlanProgress } from '../../core/planner/plan';
+import { statusView } from '../../ui/ai-status';
 import type AiVaultOrganizerPlugin from '../main';
 import { askConsent } from '../views/consent-modal';
 import { requireCharter } from './require-charter';
-import { fallbackMessage, indexingProgress } from './indexing';
+import { fallbackMessage, startActivity } from './indexing';
 import { openReview } from './review';
 
 /**
@@ -26,7 +27,12 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
   const loaded = await requireCharter(plugin);
   if (!loaded) return;
   const { reader, similarity, ai, logger } = plugin.services;
-  const progress = indexingProgress(plugin);
+  if (plugin.activity) {
+    new Notice(`${plugin.activity.title} is still running. Wait for it, or stop it from the dashboard.`);
+    return;
+  }
+  const progress = startActivity(plugin, 'Organizing');
+  progress.update('reading the vault');
   try {
     const source = await similarity.neighborSource({ provider: ai.embeddings(), ignore: loaded.charter.ignore, exclude: [loaded.path], ...progress.options });
     const fallback = fallbackMessage(source, hostOf(plugin.settings.ai.embeddings.baseUrl), 'Comparing notes by shared words instead.');
@@ -35,10 +41,9 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
     const knn = source.method === 'embeddings' ? DEFAULT_KNN : WORD_KNN;
     const snapshot = await reader.snapshot();
 
-    progress.say('Planning…');
-    const model = await askForModel(plugin, { snapshot, charter: loaded.charter, charterPath: loaded.path, neighbors, knn }, () => progress.hide());
+    progress.update('matching notes to your system');
+    const model = await askForModel(plugin, { snapshot, charter: loaded.charter, charterPath: loaded.path, neighbors, knn }, () => progress.pause());
     if (model === 'cancel') return;
-    progress.say(model ? `Planning with ${model.name}…` : 'Planning…');
     const { plan, model: stats } = await buildPlan({
       snapshot,
       charter: loaded.charter,
@@ -48,9 +53,13 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
       neighbors,
       knn,
       createDestinationFolders: true,
+      signal: progress.signal,
+      onProgress: (step) => progress.update(STEP_TEXT[step.step](model?.name ?? null), step.done, step.total),
       ...(model ? { model: { ...model, ...(source.method === 'embeddings' ? { embedding: plugin.settings.ai.embeddings.model } : {}) } } : {}),
     });
-    progress.hide();
+    const stopped = progress.signal.aborted;
+    progress.end();
+    if (stopped) new Notice('Stopped. Notes the AI did not get to are flagged for you; the rest of the plan is ready to review.', 8000);
     if (stats && stats.classification.failures > 0) {
       new Notice(`The model could not answer for ${plural(stats.classification.failures, 'batch', 'batches')} of notes; those notes are flagged for you to place.`, 10_000);
     }
@@ -63,9 +72,18 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
     logger.error('Planning failed', error);
     new Notice('Planning failed. Enable debug logging and check the developer console for details.');
   } finally {
-    progress.hide();
+    progress.end();
   }
 }
+
+/** What the dashboard and the notice say during each planning step. */
+const STEP_TEXT: Record<PlanProgress['step'], (model: string | null) => string> = {
+  reading: () => 'preparing notes for AI',
+  classifying: (model) => (model ? `${model} is placing notes, step` : 'matching notes to your system'),
+  naming: () => 'naming new folders',
+  checking: () => 'checking properties, tags and queries',
+  summarizing: () => 'writing the summary',
+};
 
 interface Cascade {
   snapshot: VaultSnapshot;
@@ -95,6 +113,8 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
   }
   const estimate = estimatePlanRun({ snapshot, charter, classification, cards, folders: snapshot.folders, maxContext: provider.capabilities.maxContext });
   if (estimate.notes === 0) return null;
+  // A model that cannot answer would only fail batch after batch: say so before anything is sent.
+  const status = await plugin.services.ai.status();
   beforeAsking();
   const choice = await askConsent(
     plugin.app,
@@ -106,6 +126,7 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
       localOnly: settings.localOnly,
       prices: { inputPerMillion: settings.inputPricePerMillion, outputPerMillion: settings.outputPricePerMillion },
       budgetTokens: settings.budgetTokens,
+      unavailable: statusView(status).problem,
     },
     'Without AI',
   );

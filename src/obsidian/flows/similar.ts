@@ -2,18 +2,18 @@ import { Notice, type TFile } from 'obsidian';
 import { hostOf } from '../../core/ai/endpoint-url';
 import type AiVaultOrganizerPlugin from '../main';
 import { SimilarNotesModal } from '../views/similar-notes-modal';
-import { fallbackMessage, indexingProgress } from './indexing';
+import { fallbackMessage, startActivity } from './indexing';
 import { charterConstraints } from './review';
 
 const RESULTS = 20;
 
 /**
- * `Find similar notes` for the active note: indexes what changed (see `indexingProgress`) and,
+ * `Find similar notes` for the active note: indexes what changed (see `startActivity`) and,
  * whatever goes wrong, still answers from word statistics.
  */
 export async function findSimilarNotes(plugin: AiVaultOrganizerPlugin, file: TFile): Promise<void> {
   const { ignore } = await charterConstraints(plugin);
-  const progress = indexingProgress(plugin);
+  const progress = startActivity(plugin, 'Finding similar notes');
   try {
     const result = await plugin.services.similarity.similar({
       path: file.path,
@@ -30,6 +30,6 @@ export async function findSimilarNotes(plugin: AiVaultOrganizerPlugin, file: TFi
     plugin.services.logger.error('Finding similar notes failed', error);
     new Notice('Finding similar notes failed. Enable debug logging and check the developer console for details.');
   } finally {
-    progress.hide();
+    progress.end();
   }
 }

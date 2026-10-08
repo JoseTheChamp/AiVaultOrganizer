@@ -98,6 +98,44 @@ export async function testConnection(purpose: 'chat' | 'embeddings', settings: A
   }
 }
 
+/** Whether the language model can be used right now, for the dashboard's status light. */
+export type AiStatus =
+  | { state: 'off' }
+  /** Local-only mode forbids the configured (cloud) host. */
+  | { state: 'blocked'; message: string }
+  | { state: 'online'; model: string; latencyMs: number }
+  /** The server answers but does not have the configured model. */
+  | { state: 'missing-model'; model: string; available: string[] }
+  | { state: 'offline'; message: string };
+
+/**
+ * A cheap check that the language model is reachable: only the provider's model list, which costs
+ * no tokens, never a chat request. A server without a model list counts as online if it answers.
+ */
+export async function checkStatus(settings: AiSettings, deps: AiDeps): Promise<AiStatus> {
+  const config = settings.chat;
+  if (!config.enabled || !config.model) return { state: 'off' };
+  const policy = endpointPolicyProblem(config.baseUrl, settings.localOnly);
+  if (policy) return { state: 'blocked', message: policy };
+  const started = deps.clock.now();
+  try {
+    const models = await client(config, settings, deps)
+      .listModels()
+      .catch((error: unknown) => {
+        if (error instanceof ProviderError && (error.kind === 'bad-request' || error.kind === 'invalid-response')) return null;
+        throw error;
+      });
+    const latencyMs = deps.clock.now() - started;
+    if (models && models.length > 0 && !models.some((name) => name === config.model || name === `${config.model}:latest`)) {
+      return { state: 'missing-model', model: config.model, available: models };
+    }
+    return { state: 'online', model: config.model, latencyMs };
+  } catch (error) {
+    if (error instanceof ProviderError) return { state: 'offline', message: error.message };
+    throw error;
+  }
+}
+
 function preview(models: string[]): string {
   if (models.length === 0) return 'none listed';
   return models.length > 8 ? `${models.slice(0, 8).join(', ')} …` : models.join(', ');

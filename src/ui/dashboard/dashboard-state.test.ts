@@ -29,7 +29,8 @@ describe('dashboardState', () => {
   it('without a charter: health, no drift, nothing pending', async () => {
     const result = await state({ 'A.md': 'Hello [[B]].', 'B.md': 'World.' });
     expect(result.charter).toEqual({ status: 'missing', path: CHARTER });
-    expect(result.next).toEqual({ kind: 'set-up-charter' });
+    // A new vault without AI starts by connecting it.
+    expect(result.next).toEqual({ kind: 'set-up-ai' });
     expect(result.drift).toBeNull();
     expect(result.health.notes).toBe(2);
     expect(result.pending).toBeNull();

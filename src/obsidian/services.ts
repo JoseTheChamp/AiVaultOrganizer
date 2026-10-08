@@ -1,6 +1,6 @@
 import type { App } from 'obsidian';
 import { ResponseCache } from '../core/ai/cache';
-import { type AiDeps, type ConnectionReport, createChatProvider, createEmbeddingProvider, testConnection } from '../core/ai/factory';
+import { type AiDeps, type AiStatus, checkStatus, type ConnectionReport, createChatProvider, createEmbeddingProvider, testConnection } from '../core/ai/factory';
 import type { RunBudget } from '../core/ai/budget';
 import type { ChatProvider, EmbeddingProvider } from '../core/ai/types';
 import { type SearchBackend, SimilarityEngine } from '../core/embeddings/similarity';
@@ -44,6 +44,8 @@ export interface AiServices {
   chat(options?: { budget?: RunBudget; cache?: boolean }): ChatProvider | null;
   embeddings(): EmbeddingProvider | null;
   testConnection(purpose: 'chat' | 'embeddings'): Promise<ConnectionReport>;
+  /** Whether the language model answers now (a free model-list request, no tokens). */
+  status(): Promise<AiStatus>;
   clearCache(): Promise<number>;
 }
 
@@ -84,6 +86,7 @@ export function createServices(app: App, logger: Logger, settings: () => PluginS
       chat: (options) => createChatProvider(settings().ai, aiDeps, options),
       embeddings: () => createEmbeddingProvider(settings().ai, aiDeps),
       testConnection: (purpose) => testConnection(purpose, settings().ai, aiDeps),
+      status: () => checkStatus(settings().ai, aiDeps),
       clearCache: () => new ResponseCache(storage, hasher).clear(),
     },
     similarity: new SimilarityEngine({ reader, storage, hasher, clock, search, logger }),

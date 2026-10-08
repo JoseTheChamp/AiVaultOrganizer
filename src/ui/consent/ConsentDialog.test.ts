@@ -9,7 +9,7 @@ const state: ConsentState = {
   model: 'gpt-x',
   where: 'api.example.com',
   local: false,
-  blocked: false,
+  unavailable: null,
   notes: 40,
   withheld: 2,
   calls: { min: 5, max: 12 },
@@ -31,9 +31,9 @@ describe('ConsentDialog', () => {
     expect(answer.mock.calls).toEqual([['without'], ['model']]);
   });
 
-  it('cannot use a model that local-only mode blocks', () => {
-    render(ConsentDialog, { state: { ...state, blocked: true }, withoutLabel: 'Without AI', answer: vi.fn() });
-    expect(screen.getByRole('alert').textContent).toContain('Local-only mode is on');
+  it('cannot use a model that is blocked or offline, and says why', () => {
+    render(ConsentDialog, { state: { ...state, unavailable: 'The model does not answer. Start its app.' }, withoutLabel: 'Without AI', answer: vi.fn() });
+    expect(screen.getByRole('alert').textContent).toBe('The model does not answer. Start its app.');
     expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Use AI' }).disabled).toBe(true);
   });
 });

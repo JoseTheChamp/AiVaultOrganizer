@@ -38,6 +38,17 @@ export interface PlannerInput {
   cardAges?: boolean;
   /** Also create the charter's folders that do not exist yet, even with no note to move there. */
   createDestinationFolders?: boolean;
+  /** What the planner is doing, for a progress display. */
+  onProgress?: (progress: PlanProgress) => void;
+  /** Stops asking the model: notes it has not reached are flagged, and the plan is still built. */
+  signal?: { readonly aborted: boolean };
+}
+
+/** A planning step; `classifying` counts model requests when a model takes part. */
+export interface PlanProgress {
+  step: 'reading' | 'classifying' | 'naming' | 'checking' | 'summarizing';
+  done?: number;
+  total?: number;
 }
 
 export interface PlannerResult {
@@ -67,21 +78,34 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
   let model: PlannerResult['model'];
   let llmStage;
   let namer;
+  const report = input.onProgress ?? (() => undefined);
   if (input.model) {
+    report({ step: 'reading' });
     const cards = new Map<string, NoteCard>();
     for (const note of snapshot.notes) {
       const card = buildCard(note, await read(note.path), undefined, input.cardAges === false ? {} : { now: input.now.getTime() });
       if (card) cards.set(note.path, card);
     }
-    const stage = createLlmStage({ provider: input.model.provider, cards, folders: snapshot.folders, secondSample: SECOND_SAMPLE });
+    const stage = createLlmStage({
+      provider: input.model.provider,
+      cards,
+      folders: snapshot.folders,
+      secondSample: SECOND_SAMPLE,
+      onProgress: ({ done, total }) => report({ step: 'classifying', done, total }),
+      ...(input.signal ? { signal: input.signal } : {}),
+    });
     const naming = createSubfolderNamer(input.model.provider, toLang(charter.language));
     llmStage = stage.stage;
     namer = naming.namer;
     model = { classification: stage.stats, naming: naming.stats };
   }
 
+  if (!llmStage) report({ step: 'classifying' });
   const classification = await classifyNotes({ snapshot, charter, charterPath: input.charterPath, neighbors: input.neighbors, llm: llmStage }, input.knn);
-  const subfolders = await reconcileSubfolders(classification, charter, snapshot.folders, namer);
+  const stopped = input.signal?.aborted === true;
+  if (namer && !stopped) report({ step: 'naming' });
+  const subfolders = await reconcileSubfolders(classification, charter, snapshot.folders, stopped ? undefined : namer);
+  report({ step: 'checking' });
   const placed = placementOperations(classification, snapshot, charter);
   const skeleton = input.createDestinationFolders ? destinationFolders(charter, snapshot, placed.operations) : [];
   const moves = placed.operations.filter((op): op is Extract<Operation, { kind: 'move' }> => op.kind === 'move');
@@ -106,7 +130,8 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV1].map((prompt) => [prompt.id, prompt.version])) : {},
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},
   });
-  const summary = await summarizePlan(plan, charter, input.model?.provider);
+  if (input.model && !stopped) report({ step: 'summarizing' });
+  const summary = await summarizePlan(plan, charter, stopped ? undefined : input.model?.provider);
   return { plan: { ...plan, summary }, classification, summary, subfolders, ...(model ? { model } : {}) };
 }
 

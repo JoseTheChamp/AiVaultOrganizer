@@ -23,8 +23,8 @@
     {#if state.local}Nothing leaves this computer.{/if}
   </p>
 
-  {#if state.blocked}
-    <p class="avo-warning" role="alert">Local-only mode is on, so {state.where} cannot be reached. Turn it off in the AI settings to use this model.</p>
+  {#if state.unavailable}
+    <p class="avo-warning" role="alert">{state.unavailable}</p>
   {/if}
   {#if state.overBudget}
     <p class="avo-warning">This may go over your token budget for one run; notes left over are flagged for you.</p>
@@ -43,6 +43,6 @@
     <button type="button" onclick={() => answer('cancel')}>Cancel</button>
     <span class="avo-wizard-spacer"></span>
     <button type="button" onclick={() => answer('without')}>{withoutLabel}</button>
-    <button type="button" class="mod-cta" disabled={state.blocked} onclick={() => answer('model')}>Use AI</button>
+    <button type="button" class="mod-cta" disabled={state.unavailable !== null} onclick={() => answer('model')}>Use AI</button>
   </div>
 </div>

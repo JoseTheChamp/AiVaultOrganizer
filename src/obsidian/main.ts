@@ -4,6 +4,7 @@ import { ConsoleLogger } from './logger';
 import { createServices, type PluginServices } from './services';
 import { parseSettings, type PluginSettings } from './settings/settings';
 import { SettingsTab } from './settings/settings-tab';
+import type { Activity } from '../ui/activity';
 import { openAiSetup } from './views/ai-setup-modal';
 import { renderCharterBlock } from './views/charter-card';
 import { DASHBOARD_VIEW, DashboardView } from './views/dashboard-view';
@@ -18,6 +19,9 @@ export default class AiVaultOrganizerPlugin extends Plugin {
   busy = false;
   /** Fires `changed` when the plugin's state may have changed: a run, an undo, a saved plan. */
   readonly changes = new Events();
+  /** A long task in progress (organizing, indexing), for the dashboard; `activity` fires on change. */
+  activity: Activity | null = null;
+  private stopActivity: (() => void) | null = null;
 
   override async onload(): Promise<void> {
     await this.loadSettings();
@@ -34,6 +38,18 @@ export default class AiVaultOrganizerPlugin extends Plugin {
   /** Tells open views to refresh. */
   changed(): void {
     this.changes.trigger('changed');
+  }
+
+  /** Shows (or clears) a long task on the dashboard; `stop` is what its Stop button does. */
+  setActivity(activity: Activity | null, stop?: () => void): void {
+    this.activity = activity;
+    this.stopActivity = stop ?? null;
+    this.changes.trigger('activity');
+  }
+
+  /** The dashboard's Stop button. */
+  stop(): void {
+    this.stopActivity?.();
   }
 
   /** Reveals the dashboard in the right sidebar, opening it there once. */

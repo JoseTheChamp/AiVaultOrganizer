@@ -15,7 +15,7 @@ import { runReportState } from '../../ui/review/run-report';
 import { confirmUndo } from '../flows/backup-undo';
 import { isLinkAutoUpdateEnabled } from '../adapters/obsidian-vault-writer';
 import { exclusive } from '../flows/exclusive';
-import { indexingProgress } from '../flows/indexing';
+import { startActivity } from '../flows/indexing';
 import { planRealignment } from '../flows/plan';
 import { charterConstraints, runPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
@@ -199,10 +199,10 @@ export class ReviewView extends ItemView {
       new Notice('The charter cannot be read, so there is nothing to learn against. Fix the charter first.');
       return;
     }
-    const progress = indexingProgress(this.plugin);
+    const progress = startActivity(this.plugin, 'Learning from your decisions');
     try {
       const source = await similarity.neighborSource({ provider: ai.embeddings(), ignore: charter.charter.ignore, exclude: [charter.path], ...progress.options });
-      progress.say('Learning from your decisions…');
+      progress.update('re-scoring the undecided changes');
       const result = await rerankFromDecisions({
         plan: this.plan,
         snapshot: await reader.snapshot(),
@@ -220,7 +220,7 @@ export class ReviewView extends ItemView {
           : `Updated ${plural(result.rescored, 'suggestion')}${result.placed > 0 ? ` and proposed a place for ${plural(result.placed, 'flagged note')}` : ''}.`,
       );
     } finally {
-      progress.hide();
+      progress.end();
     }
   }
 

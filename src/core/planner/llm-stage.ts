@@ -32,6 +32,10 @@ export interface LlmStageOptions {
   batchSize?: number;
   /** Ask again about answers whose self-reported confidence falls in this range. */
   secondSample?: { low: number; high: number } | false;
+  /** Requests done and planned so far (second samples are added once they are known). */
+  onProgress?: (progress: { done: number; total: number }) => void;
+  /** Checked before every request: a stopped stage leaves the notes it has not reached undecided. */
+  signal?: { readonly aborted: boolean };
 }
 
 /**
@@ -74,7 +78,7 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
           return Boolean(decision?.destination) && (decision?.confidence ?? 0) >= range.low && (decision?.confidence ?? 1) <= range.high;
         })
       : [];
-    if (borderline.length > 0) {
+    if (borderline.length > 0 && !options.signal?.aborted) {
       const second = await ask([...borderline].reverse(), base);
       for (const note of borderline) {
         const first = decisions.get(note.path) as LlmDecision;
@@ -85,12 +89,19 @@ export function createLlmStage(options: LlmStageOptions): ModelStage {
     return decisions;
   };
 
+  const progress = { done: 0, total: 0 };
   const ask = async (notes: readonly NoteRecord[], base: Omit<ClassifyNotesInput, 'notes'>): Promise<Map<string, LlmDecision>> => {
     const decisions = new Map<string, LlmDecision>();
-    for (const batch of batches(notes, base, options.cards, batchSize, options.provider.capabilities.maxContext)) {
+    const planned = batches(notes, base, options.cards, batchSize, options.provider.capabilities.maxContext);
+    progress.total += planned.length;
+    options.onProgress?.({ ...progress });
+    for (const batch of planned) {
+      if (options.signal?.aborted) break;
       const input: ClassifyNotesInput = { ...base, notes: batch.map((note, i) => ({ id: `n${i + 1}`, card: options.cards.get(note.path) as NoteCard })) };
       const result = await runPrompt(options.provider, classifyNotesV2, input);
       stats.calls += result.ok ? result.value.attempts : result.error.attempts;
+      progress.done++;
+      options.onProgress?.({ ...progress });
       if (!result.ok) {
         stats.failures++;
         continue;

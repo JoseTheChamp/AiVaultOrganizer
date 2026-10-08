@@ -28,7 +28,7 @@ describe('consentState', () => {
       model: 'qwen3:8b',
       where: 'this computer',
       local: true,
-      blocked: false,
+      unavailable: null,
       notes: 40,
       withheld: 2,
       calls: { min: 5, max: 12 },
@@ -40,10 +40,14 @@ describe('consentState', () => {
 
   it('names the host of a cloud model, prices the run and blocks it in local-only mode', () => {
     const cloud = consentState(input({ baseUrl: 'https://api.openai.com/v1', prices: { inputPerMillion: 0.5, outputPerMillion: 1.5 } }));
-    expect(cloud).toMatchObject({ where: 'api.openai.com', local: false, blocked: true });
+    expect(cloud).toMatchObject({ where: 'api.openai.com', local: false, unavailable: 'Local-only mode is on, so api.openai.com cannot be reached. Turn it off in Set up AI.' });
     expect(cloud.cost?.min).toBeCloseTo(0.016, 6);
     expect(cloud.cost?.max).toBeCloseTo(0.036, 6);
-    expect(consentState(input({ baseUrl: 'https://api.openai.com/v1', localOnly: false })).blocked).toBe(false);
+    expect(consentState(input({ baseUrl: 'https://api.openai.com/v1', localOnly: false })).unavailable).toBeNull();
+  });
+
+  it('passes on why a model that does not answer cannot be used', () => {
+    expect(consentState(input({ unavailable: 'The model does not answer.' })).unavailable).toBe('The model does not answer.');
   });
 
   it('warns when the run may exceed the token budget', () => {

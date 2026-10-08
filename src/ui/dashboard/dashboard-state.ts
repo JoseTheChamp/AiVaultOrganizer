@@ -1,4 +1,6 @@
+import type { AiStatus } from '../../core/ai/factory';
 import type { EndpointSetting } from '../../core/ai/settings';
+import type { Activity } from '../activity';
 import { hostOf, isLoopbackUrl } from '../../core/ai/endpoint-url';
 import { analyzeVault } from '../../core/analysis/analyze';
 import type { JournalRun, RunStatus } from '../../core/apply/journal';
@@ -36,6 +38,7 @@ export interface ModelStatus {
 
 /** The one thing to do now, leading from setup to a tidy vault. */
 export type NextStep =
+  | { kind: 'set-up-ai' }
   | { kind: 'set-up-charter' }
   | { kind: 'fix-charter' }
   | { kind: 'review'; changes: number }
@@ -63,6 +66,10 @@ export interface DashboardModel {
   error: string | null;
   /** True while a run changes the vault; actions that change it wait. */
   busy: boolean;
+  /** A long task in progress (organizing, indexing), with Stop. */
+  activity: Activity | null;
+  /** Whether the language model answers; null until checked. */
+  aiStatus: AiStatus | null;
 }
 
 /** What the dashboard's buttons do; the view wires them to the plugin's flows. */
@@ -75,6 +82,8 @@ export interface DashboardActions {
   review: () => void;
   undo: () => void;
   setUpAi: () => void;
+  /** Stops the task in progress. */
+  stop: () => void;
 }
 
 /** Everything the dashboard shows, from data the plugin already has (Tier 0, no model calls). */
@@ -87,7 +96,7 @@ export function dashboardState(input: DashboardInput): DashboardState {
   const run = input.lastRun;
   const pending = input.pendingPlan && open > 0 ? { planId: input.pendingPlan.id, open } : null;
   return {
-    next: nextStep(charter.status, pending, drift?.offCharter ?? 0),
+    next: nextStep(charter.status, pending, drift?.offCharter ?? 0, input.ai.chat.enabled && input.ai.chat.model !== ''),
     health: { score: analysis.health.score, grade: analysis.health.grade, notes: snapshot.notes.length },
     charter: charterStatus(charter),
     drift: drift ? { offCharter: drift.offCharter, notes: drift.noteCount, missingFolders: drift.missingFolders.length } : null,
@@ -99,8 +108,9 @@ export function dashboardState(input: DashboardInput): DashboardState {
   };
 }
 
-function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number): NextStep {
-  if (charter === 'missing') return { kind: 'set-up-charter' };
+function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number, aiOn: boolean): NextStep {
+  // AI makes organizing a messy vault possible, so a new vault starts by connecting it (skippable).
+  if (charter === 'missing') return aiOn ? { kind: 'set-up-charter' } : { kind: 'set-up-ai' };
   if (charter !== 'ok') return { kind: 'fix-charter' };
   if (pending) return { kind: 'review', changes: pending.open };
   if (offCharter > 0) return { kind: 'organize', notes: offCharter };

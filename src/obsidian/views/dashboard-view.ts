@@ -20,7 +20,8 @@ export const DASHBOARD_VIEW = 'ai-vault-organizer-dashboard';
  */
 export class DashboardView extends ItemView {
   private component: MountedComponent | null = null;
-  private readonly model = reactive<DashboardModel>({ state: null, error: null, busy: false });
+  private readonly model = reactive<DashboardModel>({ state: null, error: null, busy: false, activity: null, aiStatus: null });
+  private checking = false;
 
   constructor(
     leaf: WorkspaceLeaf,
@@ -44,7 +45,10 @@ export class DashboardView extends ItemView {
   override async onOpen(): Promise<void> {
     const { plugin } = this;
     const actions: DashboardActions = {
-      refresh: () => void this.refresh(),
+      refresh: () => {
+        void this.refresh();
+        void this.checkAi();
+      },
       analyze: () => void analyze(plugin),
       setUp: () => void setUpCharter(plugin),
       openCharter: () => void this.app.workspace.openLinkText(plugin.settings.charterPath, '', false),
@@ -52,18 +56,41 @@ export class DashboardView extends ItemView {
       review: () => void reviewPendingPlan(plugin),
       undo: () => void confirmUndo(plugin),
       setUpAi: () => void plugin.openAiSetup(),
+      stop: () => plugin.stop(),
     };
     this.contentEl.empty();
     this.component = mountComponent(Dashboard, this.contentEl, { model: this.model, actions });
     const later = debounce(() => void this.refresh(), 2000, true);
-    this.registerEvent(plugin.changes.on('changed', () => void this.refresh()));
+    this.registerEvent(
+      plugin.changes.on('changed', () => {
+        void this.refresh();
+        void this.checkAi();
+      }),
+    );
+    this.registerEvent(plugin.changes.on('activity', () => (this.model.activity = plugin.activity)));
     this.registerEvent(this.app.metadataCache.on('resolved', later));
-    await this.refresh();
+    // The status light stays current while the dashboard is open: a free model-list request a minute.
+    this.registerInterval(window.setInterval(() => void this.checkAi(), 60_000));
+    this.model.activity = plugin.activity;
+    await Promise.all([this.refresh(), this.checkAi()]);
   }
 
   override async onClose(): Promise<void> {
     this.component?.destroy();
     this.component = null;
+  }
+
+  /** Asks the language model whether it answers; never overlaps with a check already running. */
+  private async checkAi(): Promise<void> {
+    if (this.checking) return;
+    this.checking = true;
+    try {
+      this.model.aiStatus = await this.plugin.services.ai.status();
+    } catch (error) {
+      this.plugin.services.logger.warn('AI status check failed', error);
+    } finally {
+      this.checking = false;
+    }
   }
 
   private async refresh(): Promise<void> {

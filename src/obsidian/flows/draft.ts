@@ -8,7 +8,7 @@ import type { Charter } from '../../core/charter/schema';
 import type { WizardInput } from '../../ui/wizard/wizard-state';
 import type AiVaultOrganizerPlugin from '../main';
 import { askConsent } from '../views/consent-modal';
-import { indexingProgress } from './indexing';
+import { startActivity } from './indexing';
 
 /**
  * "Ask the AI for a draft" in the setup wizard (PLAN §2.1 step 2, §7.7): groups similar notes by
@@ -21,10 +21,10 @@ export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard:
   const settings = plugin.settings.ai;
   const provider = plugin.services.ai.chat({ budget: new RunBudget({ maxTokens: DEFAULT_AGENT.maxTokens }) });
   if (!provider) return null;
-  const progress = indexingProgress(plugin);
+  const progress = startActivity(plugin, 'Suggesting a system');
   try {
     const model = await plugin.services.similarity.wordModel({ ignore: wizard.existing?.ignore ?? [], ...progress.options });
-    progress.say('Grouping similar notes…');
+    progress.update('grouping similar notes');
     const { context, withheld } = await agentContext({
       analysis: wizard.analysis,
       snapshot: wizard.snapshot,
@@ -33,7 +33,7 @@ export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard:
       language,
       now: Date.now(),
     });
-    progress.hide();
+    progress.pause();
     const choice = await askConsent(
       plugin.app,
       {
@@ -48,8 +48,9 @@ export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard:
       'Not now',
     );
     if (choice !== 'model') return null;
-    progress.say(`${settings.chat.model} is drafting a charter…`);
-    const result = await draftCharter(provider, context, wish);
+    progress.update(`${settings.chat.model} is reading samples and drafting`);
+    const result = await draftCharter(provider, context, wish, { ...DEFAULT_AGENT, signal: progress.signal });
+    if (progress.signal.aborted) return null;
     if (result.ok) return result.charter;
     plugin.services.logger.warn('Charter draft failed', { reason: result.reason, problems: result.lastProblems });
     new Notice(`The model did not produce a valid charter (${result.reason}). Choose a method yourself, or try again.`, 10_000);
@@ -59,6 +60,6 @@ export async function draftCharterWithAI(plugin: AiVaultOrganizerPlugin, wizard:
     new Notice('The draft failed. Enable debug logging and check the developer console for details.');
     return null;
   } finally {
-    progress.hide();
+    progress.end();
   }
 }
