@@ -33,7 +33,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - `Set up AI`: one dialog to run AI on this computer or with your API key (stored in Obsidian's keychain),
   with a connection test that names a missing local model.
 - Charter rules render as a summary card in reading view, or as a list of problems with line numbers.
-- `Check drift` and `Plan re-alignment`: see where the vault departs from its charter, and get a plan for
+- `Check drift` and `Organize vault`: see where the vault departs from its charter, and get a plan for
   the whole vault. Rules decide first; notes no rule covers follow the placed notes they resemble; a
   language model proposes places for the rest. Properties and tags are normalized, maps of content and
   category notes updated, and queries the moves would change are flagged.

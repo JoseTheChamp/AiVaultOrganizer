@@ -153,7 +153,7 @@ not running, the key is wrong, or the model is not installed (with the models th
 
 ## Organizing your notes
 
-**Organize** on the dashboard (or **Plan re-alignment**) builds a plan for the whole vault:
+**Organize** on the dashboard (or the **Organize vault** command) builds a plan for the whole vault:
 
 1. **Rules** place what they can. They are never wrong.
 2. **Similar notes** place notes that closely resemble notes already in the right folder.
@@ -310,7 +310,7 @@ Close Obsidian, extract the zip and copy the contents of `vault/` over your vaul
 | Open dashboard | The sidebar dashboard. |
 | Set up AI | Connect a language model. |
 | Set up charter | The wizard: choose and adjust a system. |
-| Plan re-alignment | Plan where notes belong (the dashboard's *Organize*). |
+| Organize vault | Plan where notes belong (the dashboard's *Organize*). |
 | Review pending plan | Reopen the last plan. |
 | Check drift | Where the vault departs from the charter. |
 | Undo last run | Restore the vault as it was before the last run. |

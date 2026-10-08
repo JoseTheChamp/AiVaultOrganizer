@@ -14,7 +14,7 @@ export function registerCommands(plugin: AiVaultOrganizerPlugin): void {
   plugin.addCommand({ id: 'analyze-vault', name: 'Analyze vault', callback: () => void analyze(plugin) });
   plugin.addCommand({ id: 'set-up-charter', name: 'Set up charter', callback: () => void setUpCharter(plugin) });
   plugin.addCommand({ id: 'check-drift', name: 'Check drift', callback: () => void checkDrift(plugin) });
-  plugin.addCommand({ id: 'plan-realignment', name: 'Plan re-alignment', callback: () => void planRealignment(plugin) });
+  plugin.addCommand({ id: 'plan-realignment', name: 'Organize vault', callback: () => void planRealignment(plugin) });
   plugin.addCommand({ id: 'review-pending-plan', name: 'Review pending plan', callback: () => void reviewPendingPlan(plugin) });
   plugin.addCommand({ id: 'create-backup', name: 'Create backup', callback: () => void exclusive(plugin, () => createBackup(plugin)) });
   plugin.addCommand({ id: 'undo-last-run', name: 'Undo last run', callback: () => void confirmUndo(plugin) });

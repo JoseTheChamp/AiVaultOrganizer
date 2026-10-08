@@ -119,7 +119,7 @@ export class ReviewView extends ItemView {
     }
     if (open.operations.length === 0) {
       this.contentEl.empty();
-      this.contentEl.createEl('p', { cls: 'avo-muted', text: 'Every change in this plan has been applied or dropped. Plan re-alignment again to see what is left.' });
+      this.contentEl.createEl('p', { cls: 'avo-muted', text: 'Every change in this plan has been applied or dropped. Organize again to see what is left.' });
       return;
     }
     this.model = reactive(fields);

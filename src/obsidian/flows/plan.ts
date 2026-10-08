@@ -19,7 +19,7 @@ import { fallbackMessage, startActivity } from './indexing';
 import { openReview } from './review';
 
 /**
- * `Plan re-alignment`: the planner's proposal for the whole vault, saved as the pending plan and
+ * `Organize vault`: the planner's proposal for the whole vault, saved as the pending plan and
  * opened for review. Notes no rule places are compared with placed notes (kNN), by meaning when an
  * embedding model is set up and by shared words otherwise. What is still open then goes to the
  * language model, if one is set up and the user agrees after seeing what would be sent and what it

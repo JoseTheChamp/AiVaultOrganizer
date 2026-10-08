@@ -40,7 +40,7 @@ export class DriftModal extends Modal {
     new Setting(contentEl)
       .addButton((button) =>
         button
-          .setButtonText('Plan re-alignment')
+          .setButtonText('Organize')
           .setCta()
           .setDisabled(!actionable)
           .onClick(() => {
