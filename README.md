@@ -5,6 +5,8 @@ ever deleted, and every change can be undone.
 
 > **Status:** early development, not yet released. See [`docs/PLAN.md`](docs/PLAN.md) for the roadmap.
 
+**New here?** Read the [user guide](docs/USER_GUIDE.md).
+
 ## Why
 
 Vaults drift. Notes pile up in the root, tags fork into variants, folders stop meaning what they used to,
