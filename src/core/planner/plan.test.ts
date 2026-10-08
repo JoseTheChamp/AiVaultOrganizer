@@ -151,12 +151,16 @@ describe('buildPlan without neighbours or a model', () => {
     expect(plan.warnings).toEqual([]);
   });
 
-  it("creates the charter's missing folders, with their parents, when asked", async () => {
-    const plan = await rulesOnly(presetCharter('johnny-decimal', 'en'), {}, [], true);
+  it("creates the charter's missing folders when asked, leaving their parents to the apply step", async () => {
+    const charter = presetCharter('johnny-decimal', 'en');
+    const plan = await rulesOnly(charter, {}, [], true);
     const folders = plan.operations.map((op) => (op.kind === 'createFolder' ? op.path : null));
-    expect(folders).toContain('10-19 Life admin');
-    expect(folders.indexOf('10-19 Life admin')).toBeLessThan(folders.indexOf('10-19 Life admin/11 Finance'));
+    expect(folders).toContain('10-19 Life admin/11 Finance');
     expect(folders).toContain('00-09 System/02 Daily');
+    // An area on its own is no destination: proposing it made the review show its own plan as invalid.
+    expect(folders).not.toContain('10-19 Life admin');
+    const report = validatePlan(plan, { snapshot: await applyHarness({}).vault.snapshot(), ignore: charter.ignore, allowedRoots: charterRoots(charter), include: () => true });
+    expect(report.issues).toEqual([]);
   });
 
   it('adds the category link of a category destination, after the move when there is one', async () => {

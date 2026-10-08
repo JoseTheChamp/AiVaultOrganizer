@@ -6,7 +6,6 @@ import { toLang } from '../charter/presets';
 import type { Charter } from '../charter/schema';
 import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
-import { ancestorFolders, joinPath } from '../model/paths';
 import { createPlan, type Plan } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
 import { charterRoots } from './charter-roots';
@@ -139,10 +138,9 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
 function destinationFolders(charter: Charter, snapshot: VaultSnapshot, operations: readonly Operation[]): Operation[] {
   const known = new Set([...snapshot.folders, ...operations.flatMap((op) => (op.kind === 'createFolder' ? [op.path] : []))].map((folder) => folder.toLowerCase()));
   const missing = new Set<string>();
-  for (const root of charterRoots(charter)) {
-    if (root === '') continue;
-    for (const folder of [...ancestorFolders(joinPath(root, 'x')), root]) if (!known.has(folder.toLowerCase())) missing.add(folder);
-  }
+  // Only the destinations themselves: applying a folder creates its parents (a Johnny.Decimal
+  // area), and a parent proposed on its own lies outside every destination, so it fails validation.
+  for (const root of charterRoots(charter)) if (root !== '' && !known.has(root.toLowerCase())) missing.add(root);
   return [...missing].sort().map((path) => createOperation({ kind: 'createFolder', path }, { source: 'rule', confidence: 1, rationale: 'The charter defines this folder.' }));
 }
 
