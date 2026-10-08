@@ -46,6 +46,14 @@ const INSTANT_MS = 1000;
  */
 export class Pace {
   private step: { key: string; from: number; base: number; last: number; lastAt: number } | null = null;
+  /** Measured time and units over every step, for the next run's estimate. */
+  private measured = { ms: 0, units: 0 };
+
+  /** Average milliseconds per unit over all steps so far, cached answers left out; undefined before any. */
+  get msPerUnit(): number | undefined {
+    return this.measured.units > 0 ? this.measured.ms / this.measured.units : undefined;
+  }
+
   /** Milliseconds left in step `key` at `done` of `total`, or undefined until its pace is known. */
   remaining(key: string, done: number, total: number, now: number): number | undefined {
     const step = this.step;
@@ -56,6 +64,9 @@ export class Pace {
     if (done > step.last && now - step.lastAt < INSTANT_MS) {
       step.from = now;
       step.base = done;
+    } else if (done > step.last) {
+      this.measured.ms += now - step.lastAt;
+      this.measured.units += done - step.last;
     }
     step.last = done;
     step.lastAt = now;

@@ -15,11 +15,21 @@ export const settingsSchema = z.object({
   backupIncludeAttachments: z.boolean().default(false).catch(false),
   ai: aiSettingsSchema.default(() => aiSettingsSchema.parse({})).catch(() => aiSettingsSchema.parse({})),
   debugLogging: z.boolean().default(false).catch(false),
+  /**
+   * How fast each language model placed notes on its last run (ms per note, keyed by
+   * `paceKey`), so the next run can say how long it may take. A local model may need minutes.
+   */
+  modelPace: z.record(z.string(), z.number().positive()).default({}).catch({}),
 });
 
 export type PluginSettings = z.infer<typeof settingsSchema>;
 
 export const DEFAULT_SETTINGS: PluginSettings = settingsSchema.parse({});
+
+/** The key of a model's pace: the same model behind another endpoint runs at another speed. */
+export function paceKey(chat: { baseUrl: string; model: string }): string {
+  return `${chat.model} @ ${chat.baseUrl}`;
+}
 
 export function parseSettings(raw: unknown): PluginSettings {
   const input = typeof raw === 'object' && raw !== null ? raw : {};

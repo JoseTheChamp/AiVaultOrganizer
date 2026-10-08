@@ -16,6 +16,7 @@ const state: ConsentState = {
   tokens: { min: 24_000, max: 54_000 },
   cost: { min: 0.016, max: 0.036 },
   overBudget: false,
+  duration: null,
 };
 
 describe('ConsentDialog', () => {
@@ -29,6 +30,11 @@ describe('ConsentDialog', () => {
     await fireEvent.click(screen.getByRole('button', { name: 'Without AI' }));
     await fireEvent.click(screen.getByRole('button', { name: 'Use AI' }));
     expect(answer.mock.calls).toEqual([['without'], ['model']]);
+  });
+
+  it('says how long a run may take once the model has been timed', () => {
+    render(ConsentDialog, { state: { ...state, duration: { min: 240_000, max: 480_000 } }, withoutLabel: 'Without AI', answer: vi.fn() });
+    expect(screen.getByText(/At the pace of the last run, this takes 4–8 min./)).toBeTruthy();
   });
 
   it('cannot use a model that is blocked or offline, and says why', () => {

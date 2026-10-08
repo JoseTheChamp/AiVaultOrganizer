@@ -46,6 +46,19 @@ describe('Pace', () => {
     expect(pace.remaining('double-checking', 6, 12, 91_000)).toBe(30_000);
   });
 
+  it('measures the pace over all steps for the next run, cached answers left out', () => {
+    const pace = new Pace();
+    expect(pace.msPerUnit).toBeUndefined();
+    pace.remaining('placing', 0, 30, 0);
+    pace.remaining('placing', 10, 30, 100);
+    pace.remaining('placing', 20, 30, 40_100);
+    pace.remaining('placing', 30, 30, 80_100);
+    pace.remaining('double-checking', 0, 10, 80_200);
+    pace.remaining('double-checking', 10, 10, 120_200);
+    // 30 notes in 120 s, without the ten answered from the cache.
+    expect(pace.msPerUnit).toBe(4000);
+  });
+
   it('has nothing left to guess at the end of a step', () => {
     const pace = new Pace();
     pace.remaining('placing', 0, 10, 0);

@@ -9,8 +9,10 @@ import { buildCard, type NoteCard } from '../../core/planner/cards';
 import { classifyNotes, DEFAULT_KNN, type KnnOptions, type NeighborLookup, WORD_KNN } from '../../core/planner/classify';
 import { estimatePlanRun } from '../../core/planner/estimate';
 import { buildPlan, type PlannerInput, type PlanProgress } from '../../core/planner/plan';
+import { Pace } from '../../ui/activity';
 import { statusView } from '../../ui/ai-status';
 import type AiVaultOrganizerPlugin from '../main';
+import { paceKey } from '../settings/settings';
 import { askConsent } from '../views/consent-modal';
 import { requireCharter } from './require-charter';
 import { fallbackMessage, startActivity } from './indexing';
@@ -44,6 +46,8 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
     progress.update('matching notes to your system');
     const model = await askForModel(plugin, { snapshot, charter: loaded.charter, charterPath: loaded.path, neighbors, knn }, () => progress.pause());
     if (model === 'cancel') return;
+    // How fast the model answers, so the next run can say how long it may take.
+    const pace = new Pace();
     const { plan, model: stats } = await buildPlan({
       snapshot,
       charter: loaded.charter,
@@ -54,11 +58,18 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
       knn,
       createDestinationFolders: true,
       signal: progress.signal,
-      onProgress: (step) => progress.update(STEP_TEXT[step.step](model?.name ?? null), step.done, step.total),
+      onProgress: (step) => {
+        progress.update(STEP_TEXT[step.step](model?.name ?? null), step.done, step.total);
+        if (model && step.done !== undefined && step.total) pace.remaining(step.step, step.done, step.total, Date.now());
+      },
       ...(model ? { model: { ...model, ...(source.method === 'embeddings' ? { embedding: plugin.settings.ai.embeddings.model } : {}) } } : {}),
     });
     const stopped = progress.signal.aborted;
     progress.end();
+    if (pace.msPerUnit !== undefined) {
+      plugin.settings.modelPace = { ...plugin.settings.modelPace, [paceKey(plugin.settings.ai.chat)]: pace.msPerUnit };
+      await plugin.saveSettings();
+    }
     if (stopped) new Notice('Stopped. Notes the AI did not get to are flagged for you; the rest of the plan is ready to review.', 8000);
     if (stats && stats.classification.failures > 0) {
       new Notice(`The model could not answer for ${plural(stats.classification.failures, 'batch', 'batches')} of notes; those notes are flagged for you to place.`, 10_000);
@@ -116,6 +127,7 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
   if (estimate.notes === 0) return null;
   // A model that cannot answer would only fail batch after batch: say so before anything is sent.
   const status = await plugin.services.ai.status();
+  const msPerNote = plugin.settings.modelPace[paceKey(settings.chat)];
   beforeAsking();
   const choice = await askConsent(
     plugin.app,
@@ -128,6 +140,7 @@ async function askForModel(plugin: AiVaultOrganizerPlugin, cascade: Cascade, bef
       prices: { inputPerMillion: settings.inputPricePerMillion, outputPerMillion: settings.outputPricePerMillion },
       budgetTokens: settings.budgetTokens,
       unavailable: statusView(status).problem,
+      ...(msPerNote ? { msPerNote } : {}),
     },
     'Without AI',
   );

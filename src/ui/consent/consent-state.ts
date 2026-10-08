@@ -14,6 +14,8 @@ export interface ConsentInput {
   budgetTokens: number;
   /** Why the model cannot be used right now (offline, not installed), from its status check. */
   unavailable?: string | null;
+  /** How fast this model placed notes on its last run (ms per note), when known. */
+  msPerNote?: number;
 }
 
 /** The answer: send with the model, go on without it, or stop. */
@@ -36,6 +38,8 @@ export interface ConsentState {
   cost: { min: number; max: number } | null;
   /** The upper estimate exceeds the token budget of one run: it may stop early. */
   overBudget: boolean;
+  /** How long the run may take (ms) at the last run's pace; null before a first run. */
+  duration: { min: number; max: number } | null;
 }
 
 /** The note card, in words: everything a model ever sees of a note (PLAN §7.2, §7.11). */
@@ -60,7 +64,16 @@ export function consentState(input: ConsentInput): ConsentState {
     tokens,
     cost: low !== null && high !== null ? { min: low, max: high } : null,
     overBudget: tokens.max > input.budgetTokens,
+    // Every note once, and at most once more for a second opinion.
+    duration: input.msPerNote ? { min: estimate.notes * input.msPerNote, max: 2 * estimate.notes * input.msPerNote } : null,
   };
+}
+
+/** "4–8 min" or "about a minute": how long a run may take, never less than a minute. */
+export function minutes(duration: { min: number; max: number }): string {
+  const [low, high] = [duration.min, duration.max].map((ms) => Math.max(1, Math.round(ms / 60_000))) as [number, number];
+  if (low !== high) return `${low}–${high} min`;
+  return low === 1 ? 'about a minute' : `about ${low} min`;
 }
 
 /** "about 12,000" or "12,000–24,000": ranges collapse when both ends agree. */

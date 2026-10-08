@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { StageEstimate } from '../../core/planner/llm-stage';
-import { type ConsentInput, consentState, range } from './consent-state';
+import { type ConsentInput, consentState, minutes, range } from './consent-state';
 
 const estimate: StageEstimate = {
   notes: 40,
@@ -35,7 +35,16 @@ describe('consentState', () => {
       tokens: { min: 24_000, max: 54_000 },
       cost: null,
       overBudget: false,
+      duration: null,
     });
+  });
+
+  it("says how long the run may take at the last run's pace, a second opinion included", () => {
+    // 40 notes at 3 s each, up to twice that with second opinions.
+    expect(consentState(input({ msPerNote: 3000 })).duration).toEqual({ min: 120_000, max: 240_000 });
+    expect(minutes({ min: 120_000, max: 240_000 })).toBe('2–4 min');
+    expect(minutes({ min: 10_000, max: 50_000 })).toBe('about a minute');
+    expect(minutes({ min: 290_000, max: 310_000 })).toBe('about 5 min');
   });
 
   it('names the host of a cloud model, prices the run and blocks it in local-only mode', () => {

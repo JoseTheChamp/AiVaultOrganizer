@@ -159,7 +159,7 @@ not running, the key is wrong, or the model is not installed (with the models th
 2. **Similar notes** place notes that closely resemble notes already in the right folder.
 3. **AI**, if set up, proposes places for the rest. A dialog asks first: **Use AI?**
    - It names the model and where it runs, the number of notes, and the estimated requests, tokens and
-     (with prices set) cost.
+     (with prices set) cost. After a first run it also says how long the run may take at that run's pace.
    - **What is sent** shows exactly what the model sees.
    - **Use AI** sends; **Without AI** plans with rules and similar notes only (the rest are flagged for
      you); **Cancel** stops.

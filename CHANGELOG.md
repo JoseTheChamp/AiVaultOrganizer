@@ -38,7 +38,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   language model proposes places for the rest. Properties and tags are normalized, maps of content and
   category notes updated, and queries the moves would change are flagged.
 - Before any note goes to a language model, a dialog shows which model and host, exactly what is sent,
-  how many requests and tokens it takes and, with prices set, what it costs.
+  how many requests and tokens it takes, how long it may take at the pace of the last run and, with
+  prices set, what it costs.
 - Dashboard in the sidebar (ribbon icon or `Open dashboard`): the vault's health, the one next step
   (choose a system, review, organize), and the system, AI and last change at a glance.
 - Long tasks (organizing, indexing, a suggested system) show in a notice and on the dashboard what they

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { plural } from '../../core/model/text';
-  import { CARD_CONTENTS, type ConsentChoice, type ConsentState, range } from './consent-state';
+  import { CARD_CONTENTS, type ConsentChoice, type ConsentState, minutes, range } from './consent-state';
 
   interface Props {
     state: ConsentState;
@@ -20,6 +20,7 @@
   </p>
   <p class="avo-muted">
     About {range(state.calls)} requests and {range(state.tokens)} tokens{#if state.cost}, about {range(state.cost, money)} at your prices{/if}.
+    {#if state.duration}At the pace of the last run, this takes {minutes(state.duration)}.{/if}
     {#if state.local}Nothing leaves this computer.{/if}
   </p>
 
