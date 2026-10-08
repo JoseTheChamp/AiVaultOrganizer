@@ -17,6 +17,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   who decided, confidence, destination and status, a preview of exactly what each change does, accept or
   reject per row or everything above a confidence, and keyboard review (j, k, a, r, u, Enter). Decisions
   are saved as you make them.
+- Plans propose removing the folders their moves leave empty, so a reorganized vault shows its new
+  structure instead of a trail of empty folders. Each removal is reviewed like a move, happens only if
+  the folder is still empty, goes to the trash and is undone with the run.
 - Applying shows its progress and can be cancelled; the run report lists what was skipped or failed and
   why, the health score before and after, and offers to undo the run.
 - `Learn from my decisions` in the review: places you accepted or rejected re-score the undecided changes

@@ -10,6 +10,7 @@ import { createPlan, type Plan } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
 import { charterRoots } from './charter-roots';
 import { type Classification, classifyNotes, type KnnOptions, type NeighborLookup } from './classify';
+import { emptiedFolderOperations } from './emptied-folders';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from './llm-stage';
 import { mocOperations } from './mocs';
 import { tagOperations, propertyOperations } from './normalize';
@@ -118,13 +119,14 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
   const sofar = [...skeleton, ...placed.operations, ...edits];
   const mocs = await mocOperations({ snapshot, charter, operations: sofar, read });
   const queries = await queryBreakageOperations(snapshot, sofar, read);
+  const emptied = emptiedFolderOperations(snapshot, charter, [...sofar, ...mocs]);
 
   const stamp = input.now.toISOString().replace(/[-:.]/g, '').slice(0, 15);
   const plan = createPlan({
     id: `plan-${stamp}`,
     createdAt: input.now.toISOString(),
     charterRevision: charter.revision,
-    operations: [...sofar, ...mocs, ...queries],
+    operations: [...sofar, ...mocs, ...queries, ...emptied],
     warnings: placed.warnings,
     promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV1].map((prompt) => [prompt.id, prompt.version])) : {},
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},

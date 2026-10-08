@@ -70,6 +70,8 @@ describe('buildPlan', () => {
       'replaceTag 1 Projects/Website relaunch/Sitemap.md',
       'replaceTag 1 Projects/Website relaunch/Website plan.md',
       'flag query-breakage Dashboard.md',
+      // Its only note moves, and the charter's inbox is "0 Inbox": the folder would be left empty.
+      'removeEmptyFolder Inbox',
     ]);
     // Edits of a moved note wait for its move, and keep the original path in their precondition.
     const rename = ops.find((op) => op.kind === 'renameProperty');

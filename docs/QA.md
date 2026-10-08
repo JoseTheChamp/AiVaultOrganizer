@@ -77,8 +77,11 @@ release and after changes to the UI or the Obsidian adapters, and record the res
 
 - [ ] Progress shows the phase and "N of M"; **Cancel** stops after the current batch.
 - [ ] The report lists what was skipped or failed and why, the health score before and after, and the backup.
+- [ ] Folders the plan emptied are gone afterwards; a folder whose move out you rejected is kept, and the
+      report says so.
 - [ ] **Undo this run** (or **Undo last run**) restores the vault:
-      `node scripts/hash-vault.mjs dev-vault --compare before.json` prints "Identical".
+      `node scripts/hash-vault.mjs dev-vault --compare before.json` prints "Identical" (folders included, so the
+      removed ones are back).
 
 ### Themes and accessibility
 

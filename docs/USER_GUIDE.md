@@ -2,7 +2,7 @@
 
 AI Vault Organizer keeps your Obsidian vault organized against a **charter**: a note that describes how
 your vault is organized and holds the rules the plugin follows. The plugin proposes changes, you approve
-them, a backup is made first, and every run can be undone. Nothing is ever deleted.
+them, a backup is made first, and every run can be undone. No note is ever deleted.
 
 This guide covers the current development version. It is desktop only.
 
@@ -35,7 +35,7 @@ The plugin is not in Obsidian's community directory yet.
 3. In Obsidian, open **Settings → Community plugins**, turn off restricted mode if needed, and enable
    **AI Vault Organizer**.
 
-Try it on a copy of your vault first. The plugin never deletes anything and can undo every run, but a
+Try it on a copy of your vault first. The plugin never deletes a note and can undo every run, but a
 copy costs nothing.
 
 ## Quick start
@@ -185,6 +185,10 @@ warnings.
 - *Needs your attention* comes first: notes nobody could place, possible duplicates, and queries that
   would change. **Open note** opens the note.
 - *New folders*, *Moves into …*, *Property renames*, *Tags* and so on follow.
+- *Empty folders to remove* comes last: folders this plan's moves would leave empty, so the old structure
+  does not linger. A folder goes to the trash only if it is still empty when the plan runs (otherwise it
+  is kept, and the run report says why), and undo brings it back. Its confidence is that of the least
+  certain move out of it, so accepting by confidence never removes a folder whose notes stay.
 
 Each change has a **confidence** badge. Rules are certain (100 %). For similar notes and AI, the number is
 calibrated on test vaults so that high means usually right: changes at 80 % or more were right 94–100 %

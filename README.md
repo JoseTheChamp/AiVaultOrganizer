@@ -1,6 +1,6 @@
 # AI Vault Organizer
 
-Keep your Obsidian vault organized against a written **charter**: AI proposes, you approve, nothing is
+Keep your Obsidian vault organized against a written **charter**: AI proposes, you approve, no note is
 ever deleted, and every change can be undone.
 
 > **Status:** early development, not yet released. See [`docs/PLAN.md`](docs/PLAN.md) for the roadmap.
@@ -85,8 +85,9 @@ to undo the run.
 
 ## Safety
 
-- **Nothing is ever deleted.** There is no delete operation; "removing" a note means moving it into an archive
-  folder you approved. Undo may only trash files the plugin created itself.
+- **No note is ever deleted.** There is no delete operation for notes or files; "removing" a note means moving it
+  into an archive folder you approved. Folders a plan leaves empty go to the trash only if you approve and they
+  are still empty when it runs, and undo brings them back. Undo may only trash files the plugin created itself.
 - **You review everything.** Changes are proposals until you apply them (`Review pending plan`).
 - **A backup comes first.** Every apply starts with a zip of all notes, canvases and bases in
   `.ai-vault-organizer/backups/` (the last 10 are kept; configurable).

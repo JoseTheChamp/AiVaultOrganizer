@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "llm-cs-small-qwen3-8b",
-  "recordedAt": "2026-10-06T15:28:31.754Z",
+  "recordedAt": "2026-10-08T11:06:56.915Z",
   "interactions": [
     {
       "key": "d8891e3cd62f10014384205740cbb2198f614a5b754d16313472b7f01ffa845a",
@@ -8275,7 +8275,7 @@
       }
     },
     {
-      "key": "fcf759138d4a48d587ab8eb6e515541f0dab3862646b3c30dc5f9458cee408a3",
+      "key": "7b844c8a773624217ebaf1467cbab4a4afe141e1fda0c74556c2036601316068",
       "request": {
         "method": "POST",
         "url": "http://localhost:11434/v1/chat/completions",
@@ -8288,7 +8288,7 @@
             },
             {
               "role": "user",
-              "content": "Method: PARA\nOperations: new folders: 7, moves: 69, property renames: 9, tag renames: 7\nNotes per destination: 1 Projekty: 26, 2 Oblasti: 15, 3 Zdroje: 23, 4 Archiv: 1\nExamples:\n- Move \"Koncept diplomky.md\" to \"3 Zdroje/Architektura/Koncept diplomky.md\"\n- Move \"Různé/Měsíční rozpočet v2.md\" to \"2 Oblasti/Finance/Měsíční rozpočet v2.md\"\n- Move \"Dějiny architektury/Gotické klenby.md\" to \"3 Zdroje/Architektura/Gotické klenby.md\"\n- Move \"Lucie Malá.md\" to \"2 Oblasti/Domácnost/Lucie Malá.md\"\n- Move \"Finance/Brigáda v kavárně.md\" to \"2 Oblasti/Finance/Brigáda v kavárně.md\"\n- Move \"Zdraví/Cviky na záda.md\" to \"2 Oblasti/Zdraví/Cviky na záda.md\"\n- Move \"Dějiny architektury/Článek - Přestavby továren na kulturní centra.md\" to \"3 Zdroje/Architektura/Článek - Přestavby továren na kulturní centra.md\"\n- Move \"Funkcionalismus v Brně.md\" to \"3 Zdroje/Architektura/Funkcionalismus v Brně.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
+              "content": "Method: PARA\nOperations: new folders: 7, moves: 69, property renames: 9, tag renames: 7, empty folders to remove: 14\nNotes per destination: 1 Projekty: 26, 2 Oblasti: 15, 3 Zdroje: 23, 4 Archiv: 1\nExamples:\n- Move \"Koncept diplomky.md\" to \"3 Zdroje/Architektura/Koncept diplomky.md\"\n- Move \"Různé/Měsíční rozpočet v2.md\" to \"2 Oblasti/Finance/Měsíční rozpočet v2.md\"\n- Remove empty folder \"Různé\"\n- Move \"Dějiny architektury/Gotické klenby.md\" to \"3 Zdroje/Architektura/Gotické klenby.md\"\n- Remove empty folder \"Dějiny architektury\"\n- Move \"Lucie Malá.md\" to \"2 Oblasti/Domácnost/Lucie Malá.md\"\n- Move \"Finance/Brigáda v kavárně.md\" to \"2 Oblasti/Finance/Brigáda v kavárně.md\"\n- Remove empty folder \"Finance\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
             }
           ],
           "stream": false,
@@ -8334,7 +8334,7 @@
         "headers": {
           "content-type": "application/json"
         },
-        "text": "{\"id\":\"chatcmpl-43\",\"object\":\"chat.completion\",\"created\":1791300511,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"Plán přerozdělí osobní znalostní bázi do nových složek, přesune 69 položek, přejmenuje 9 vlastností a 7 tagů. Změny jsou zaměřeny na uspořádání podle projektů, oblastí, zdrojů a archivu.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Zkontroluj přesuny do složky '3 Zdroje/Architektura' – mnoho architektonických dokumentů se tam přesouvá\\\",\\n    \\\"Zkontroluj přesuny do '2 Oblasti/Finance' – několik finančních dokumentů se přesouvá tam\\\",\\n    \\\"Zkontroluj přejmenování tagů – 7 tagů bude mít nové názvy\\\",\\n    \\\"Zkontroluj přejmenování vlastností – 9 vlastností bude změněno\\\",\\n    \\\"Zkontroluj počty položek v jednotlivých cílových složkách – např. 26 položek do '1 Projekty'\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":490,\"prompt_tokens_details\":{\"cached_tokens\":4},\"completion_tokens\":280,\"total_tokens\":770}}\n"
+        "text": "{\"id\":\"chatcmpl-841\",\"object\":\"chat.completion\",\"created\":1791457616,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"Plán přerozdělí a přejmenuje složky a tagy v osobním znalostním základu, přesunuje 69 položek, přejmenuje 16 vlastností a tagů a odstraní 14 prázdných složek.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Přesunout 'Koncept diplomky.md' do '3 Zdroje/Architektura/'\\\",\\n    \\\"Odstranit prázdnou složku 'Různé'\\\",\\n    \\\"Přesunout 'Dějiny architektury/Gotické klenby.md' do '3 Zdroje/Architektura/'\\\",\\n    \\\"Odstranit prázdnou složku 'Dějiny architektury'\\\",\\n    \\\"Přesunout 'Lucie Malá.md' do '2 Oblasti/Domácnost/'\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":392,\"prompt_tokens_details\":{\"cached_tokens\":27},\"completion_tokens\":222,\"total_tokens\":614}}\n"
       }
     }
   ]
