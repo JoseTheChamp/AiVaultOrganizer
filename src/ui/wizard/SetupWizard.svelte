@@ -5,7 +5,7 @@
   import type { Charter } from '../../core/charter/schema';
   import { type IconSetter, provideIcons } from '../icons';
   import AdjustStep from './AdjustStep.svelte';
-  import { charterFit } from './charter-tree';
+  import { charterFit, folderContents } from './charter-tree';
   import ChooseStep from './ChooseStep.svelte';
   import CreateStep from './CreateStep.svelte';
   import { baseCharter, type Choice, choiceOptions, initialChanges, recommendedChoice, STEPS, type WizardInput, type WizardStep } from './wizard-state';
@@ -109,7 +109,7 @@
         {/if}
       </ChooseStep>
     {:else if step === 'adjust'}
-      <AdjustStep {base} {changes} {problems} {fit} />
+      <AdjustStep {base} {changes} {problems} {fit} contents={(path) => folderContents(input.snapshot, path)} />
     {:else if charter}
       <CreateStep
         path={input.charterPath}

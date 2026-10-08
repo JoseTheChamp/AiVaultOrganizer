@@ -103,8 +103,14 @@ appears at the top of the list as **Suggested by AI**.
 
 ### 2. Adjust
 
-Rename folders or untick the ones you do not want. The tree on the right updates as you type. If two
-folders get the same name, you see why and cannot continue until it is fixed.
+Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Rename folders
+or untick the ones you do not want. The tree on the right updates as you type. If two folders get the same
+name, you see why and cannot continue until it is fixed.
+
+Typing the name of a folder you already have reuses that folder, with the notes in it, and the row says
+what is there (*Your folder already holds 12 notes: Bread, Leek soup, Tea and 9 more*). If those notes are not the
+kind the folder is for, pick another name: the plugin files notes by what the folder is for, not by its
+name.
 
 **More options** holds:
 

@@ -54,6 +54,18 @@ describe('SetupWizard', () => {
     expect(planNow).toBe(false);
   });
 
+  it('says what each folder is for, and what a folder it reuses already holds', async () => {
+    render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
+    await next();
+    const resources = screen.getByRole('textbox', { name: 'Folder for resources' });
+    const row = within(resources.closest('.avo-destination') as HTMLElement);
+    expect(row.getByText(/reference material/)).toBeTruthy();
+    expect(row.getByText('Your folder already holds 1 note: Bread.')).toBeTruthy();
+    // Naming a folder the vault does not have shows nothing about it.
+    await fireEvent.input(resources, { target: { value: 'Library' } });
+    expect(row.queryByText(/already holds/)).toBeNull();
+  });
+
   it('blocks the next step while the changes do not make a charter', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();

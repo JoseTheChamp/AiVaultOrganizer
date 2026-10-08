@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Charter } from '../../core/charter/schema';
+  import { plural } from '../../core/model/text';
   import CharterTree from './CharterTree.svelte';
-  import type { CharterFit } from './charter-tree';
+  import type { CharterFit, FolderContents } from './charter-tree';
   import type { WizardChanges } from './wizard-state';
 
   interface Props {
@@ -12,9 +13,11 @@
     problems: string[];
     /** The adjusted charter in this vault; null while the changes do not make a charter. */
     fit: CharterFit | null;
+    /** What a vault folder of this name already holds, or null when there is none. */
+    contents: (path: string) => FolderContents | null;
   }
 
-  let { base, changes, problems, fit }: Props = $props();
+  let { base, changes, problems, fit, contents }: Props = $props();
 
   const included = (id: string) => !changes.removed.includes(id);
   function toggle(id: string, on: boolean): void {
@@ -24,7 +27,10 @@
 
 <div class="avo-choose">
   <div class="avo-adjust">
-    <p class="avo-muted">Rename folders or leave some out. Folders that already exist under these names are used as they are.</p>
+    <p class="avo-muted">
+      Each folder holds the kind of note described under it. Rename it or leave it out; the name of a folder you already have reuses that folder, with the
+      notes in it.
+    </p>
     <div class="avo-destinations">
       {#each base.destinations as destination (destination.id)}
         <div class="avo-destination">
@@ -34,11 +40,22 @@
             aria-label={`Use ${destination.path ?? destination.category ?? destination.id}`}
             onchange={(event) => toggle(destination.id, event.currentTarget.checked)}
           />
-          {#if destination.path !== undefined}
-            <input type="text" bind:value={changes.paths[destination.id]} disabled={!included(destination.id)} aria-label={`Folder for ${destination.id}`} spellcheck="false" />
-          {:else}
-            <span>{destination.category}</span>
-          {/if}
+          <div class="avo-destination-body">
+            {#if destination.path !== undefined}
+              <input type="text" bind:value={changes.paths[destination.id]} disabled={!included(destination.id)} aria-label={`Folder for ${destination.id}`} spellcheck="false" />
+            {:else}
+              <span>{destination.category}</span>
+            {/if}
+            <span class="avo-muted">{destination.description}</span>
+            {#if destination.path !== undefined && included(destination.id)}
+              {@const existing = contents(changes.paths[destination.id] ?? '')}
+              {#if existing && existing.notes > 0}
+                <span class="avo-destination-existing">
+                  Your folder already holds {plural(existing.notes, 'note')}: {existing.examples.join(', ')}{existing.notes > existing.examples.length ? ` and ${existing.notes - existing.examples.length} more` : ''}.
+                </span>
+              {/if}
+            {/if}
+          </div>
         </div>
       {/each}
     </div>

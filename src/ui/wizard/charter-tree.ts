@@ -1,7 +1,7 @@
 import type { Charter } from '../../core/charter/schema';
 import { RuleEngine } from '../../core/drift/rules';
 import type { VaultSnapshot } from '../../core/model/note';
-import { isInFolder } from '../../core/model/paths';
+import { baseName, isInFolder } from '../../core/model/paths';
 
 /** One folder of a charter as it would look in this vault. */
 export interface TreeNode {
@@ -28,6 +28,21 @@ export interface CharterFit {
 }
 
 const SHOWN_SUBFOLDERS = 4;
+const SHOWN_EXAMPLES = 3;
+
+/** What an existing folder holds: a few of its notes, to show what reusing it for a destination means. */
+export interface FolderContents {
+  notes: number;
+  examples: string[];
+}
+
+/** The notes in a vault folder (and below), or null when the vault has no such folder. */
+export function folderContents(snapshot: VaultSnapshot, path: string): FolderContents | null {
+  const folder = path.trim().replace(/^\/+|\/+$/g, '').toLowerCase();
+  if (folder === '' || !snapshot.folders.some((existing) => existing.toLowerCase() === folder)) return null;
+  const notes = snapshot.notes.filter((note) => note.path.toLowerCase().startsWith(`${folder}/`));
+  return { notes: notes.length, examples: notes.slice(0, SHOWN_EXAMPLES).map((note) => baseName(note.path)) };
+}
 
 /**
  * A charter's folders as a tree fitted to the vault, each with the notes its rules would put there.

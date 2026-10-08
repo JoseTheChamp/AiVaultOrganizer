@@ -601,8 +601,23 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--size-4-2);
-  align-items: center;
+  align-items: start;
   font-size: var(--font-ui-small);
+}
+
+.avo-destination > input[type='checkbox'] {
+  margin-top: var(--size-4-2);
+}
+
+.avo-destination-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2-1);
+}
+
+.avo-destination-existing {
+  color: var(--text-normal);
+  font-size: var(--font-ui-smaller);
 }
 
 .avo-charter-preview {

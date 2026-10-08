@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { presetCharter } from '../../core/charter/presets/index';
 import { InMemoryVault } from '../../core/testing/in-memory-vault';
-import { charterFit } from './charter-tree';
+import { charterFit, folderContents } from './charter-tree';
 
 async function snapshot(files: Record<string, string>) {
   return InMemoryVault.from(files).snapshot();
@@ -51,5 +51,14 @@ describe('charterFit', () => {
       ['Daily', 0],
     ]);
     expect(fit.open).toBe(0);
+  });
+});
+
+describe('folderContents', () => {
+  it('counts the notes in a folder and below, matching its name in any case', async () => {
+    const vault = await snapshot({ 'Recipes/Bread.md': '', 'Recipes/Soups/Leek.md': '', 'Recipes/Tea.md': '', 'Recipes/Waffles.md': '', 'Other.md': '' });
+    expect(folderContents(vault, ' recipes/ ')).toEqual({ notes: 4, examples: ['Bread', 'Leek', 'Tea'] });
+    expect(folderContents(vault, 'Library')).toBeNull();
+    expect(folderContents(vault, '')).toBeNull();
   });
 });
