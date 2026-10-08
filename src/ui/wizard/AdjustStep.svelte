@@ -1,9 +1,10 @@
 <script lang="ts">
-  import type { Charter } from '../../core/charter/schema';
+  import type { Charter, Destination } from '../../core/charter/schema';
   import { plural } from '../../core/model/text';
+  import Icon from '../components/Icon.svelte';
   import CharterTree from './CharterTree.svelte';
   import type { CharterFit, FolderContents } from './charter-tree';
-  import type { WizardChanges } from './wizard-state';
+  import { newFolderExample, type WizardChanges } from './wizard-state';
 
   interface Props {
     /** The charter before changes: which destinations exist and what they are for. */
@@ -19,44 +20,65 @@
 
   let { base, changes, problems, fit, contents }: Props = $props();
 
-  const included = (id: string) => !changes.removed.includes(id);
-  function toggle(id: string, on: boolean): void {
-    changes.removed = on ? changes.removed.filter((other) => other !== id) : [...changes.removed, id];
+  const kept = $derived(base.destinations.filter((destination) => !changes.removed.includes(destination.id)));
+  const removed = $derived(base.destinations.filter((destination) => changes.removed.includes(destination.id)));
+  const nameOf = (destination: Destination) => (destination.path !== undefined ? changes.paths[destination.id] || destination.path : (destination.category ?? destination.id));
+
+  function add(): void {
+    const key = Math.max(0, ...changes.added.map((folder) => folder.key)) + 1;
+    changes.added = [...changes.added, { key, path: '', description: '' }];
   }
 </script>
+
+{#snippet existing(path: string)}
+  {@const held = contents(path)}
+  {#if held && held.notes > 0}
+    <span class="avo-destination-existing">
+      Your folder already holds {plural(held.notes, 'note')}: {held.examples.join(', ')}{held.notes > held.examples.length ? ` and ${held.notes - held.examples.length} more` : ''}.
+    </span>
+  {/if}
+{/snippet}
 
 <div class="avo-choose">
   <div class="avo-adjust">
     <p class="avo-muted">
-      Each folder holds the kind of note described under it. Rename it or leave it out; the name of a folder you already have reuses that folder, with the
+      Each folder holds the kind of note described under it. Rename, remove or add folders; the name of a folder you already have reuses that folder, with the
       notes in it.
     </p>
     <div class="avo-destinations">
-      {#each base.destinations as destination (destination.id)}
+      {#each kept as destination (destination.id)}
         <div class="avo-destination">
-          <input
-            type="checkbox"
-            checked={included(destination.id)}
-            aria-label={`Use ${destination.path ?? destination.category ?? destination.id}`}
-            onchange={(event) => toggle(destination.id, event.currentTarget.checked)}
-          />
           <div class="avo-destination-body">
             {#if destination.path !== undefined}
-              <input type="text" bind:value={changes.paths[destination.id]} disabled={!included(destination.id)} aria-label={`Folder for ${destination.id}`} spellcheck="false" />
+              <input type="text" bind:value={changes.paths[destination.id]} aria-label={`Folder for ${destination.id}`} spellcheck="false" />
             {:else}
               <span>{destination.category}</span>
             {/if}
             <span class="avo-muted">{destination.description}</span>
-            {#if destination.path !== undefined && included(destination.id)}
-              {@const existing = contents(changes.paths[destination.id] ?? '')}
-              {#if existing && existing.notes > 0}
-                <span class="avo-destination-existing">
-                  Your folder already holds {plural(existing.notes, 'note')}: {existing.examples.join(', ')}{existing.notes > existing.examples.length ? ` and ${existing.notes - existing.examples.length} more` : ''}.
-                </span>
-              {/if}
-            {/if}
+            {#if destination.path !== undefined}{@render existing(changes.paths[destination.id] ?? '')}{/if}
           </div>
+          <button type="button" class="clickable-icon" aria-label={`Remove ${nameOf(destination)}`} onclick={() => (changes.removed = [...changes.removed, destination.id])}>
+            <Icon name="x" />
+          </button>
         </div>
+      {/each}
+      {#each changes.added as folder (folder.key)}
+        <div class="avo-destination">
+          <div class="avo-destination-body">
+            <input type="text" bind:value={folder.path} placeholder={newFolderExample(base)} aria-label="New folder" spellcheck="false" />
+            <input type="text" bind:value={folder.description} placeholder="What goes here, e.g. running, races and training plans" aria-label={`What goes into ${folder.path || 'the new folder'}`} />
+            {@render existing(folder.path)}
+          </div>
+          <button type="button" class="clickable-icon" aria-label={`Remove ${folder.path || 'the new folder'}`} onclick={() => (changes.added = changes.added.filter((other) => other.key !== folder.key))}>
+            <Icon name="x" />
+          </button>
+        </div>
+      {/each}
+    </div>
+    <div class="avo-adjust-actions">
+      <button type="button" onclick={add}><Icon name="plus" /> Add a folder</button>
+      {#each removed as destination (destination.id)}
+        <button type="button" class="avo-link" onclick={() => (changes.removed = changes.removed.filter((id) => id !== destination.id))}>Add back {nameOf(destination)}</button>
       {/each}
     </div>
 

@@ -1,6 +1,7 @@
-import { normalizeVaultPath } from '../model/paths';
+import { fileName, normalizeVaultPath } from '../model/paths';
 import { err, ok, type Result } from '../model/result';
-import { type Charter, type CharterInput, charterSchema } from './schema';
+import { slug } from './infer';
+import { type Charter, type CharterInput, charterSchema, type DestinationInput } from './schema';
 import { formatCharterIssues } from './summary';
 
 /** What the setup wizard lets a user change before the charter is written (PLAN §2.1 step 3). */
@@ -9,6 +10,8 @@ export interface CharterChanges {
   paths?: Record<string, string>;
   /** Destinations left out of the charter. */
   removed?: readonly string[];
+  /** Folders of the user's own, after the method's (ADR 0010). */
+  added?: readonly NewFolder[];
   /** Inbox folder; an empty string removes the inbox. */
   inbox?: string;
   tagStyle?: 'keep' | 'lowercase-kebab';
@@ -19,6 +22,15 @@ export interface CharterChanges {
   ignore?: readonly string[];
 }
 
+/** A folder the user adds: where, and what goes in it (the classifier reads only this text). */
+export interface NewFolder {
+  path: string;
+  description: string;
+}
+
+/** A Johnny.Decimal category folder: "30-39 Learning/33 Photography". */
+const JD_CATEGORY_PATH = /^(\d{2})-(\d{2}) ([^/]+)\/(\d{2}) ([^/]+)$/;
+
 /**
  * Applies the wizard's changes to a charter and validates the result as the charter note would be
  * validated. Returns readable problems instead of a charter when the changes do not make one: no
@@ -26,15 +38,32 @@ export interface CharterChanges {
  */
 export function customizeCharter(base: Charter, changes: CharterChanges): Result<Charter, string[]> {
   const removed = new Set(changes.removed ?? []);
-  const destinations = base.destinations
+  const problems: string[] = [];
+  const destinations: DestinationInput[] = base.destinations
     .filter((destination) => !removed.has(destination.id))
     .map((destination) => {
       const path = changes.paths?.[destination.id];
       return destination.path !== undefined && path !== undefined ? { ...destination, path: cleanFolder(path) } : destination;
     });
+  const ids = new Set(destinations.map((destination) => destination.id));
+  for (const folder of changes.added ?? []) {
+    const path = cleanFolder(folder.path);
+    const description = folder.description.trim();
+    if (path === '') {
+      problems.push('A new folder needs a name.');
+      continue;
+    }
+    if (description === '') problems.push(`Say what goes into "${path}": AI files notes by that description.`);
+    const id = uniqueId(slug(fileName(path)), ids);
+    ids.add(id);
+    // In Johnny.Decimal, a note named with the category's ID (33.01) belongs there, as in the method's own folders.
+    const category = base.jd ? JD_CATEGORY_PATH.exec(path)?.[4] : undefined;
+    destinations.push({ id, path, description, ...(category ? { match: [{ filename: `^${category}\\.\\d{2}(?:\\s|$)` }] } : {}) });
+  }
   const input: CharterInput = {
     ...base,
     destinations,
+    ...(base.jd ? { jd: jdIndex(destinations, base.jd) } : {}),
     ignore: changes.ignore ? changes.ignore.map((glob) => glob.trim()).filter((glob) => glob !== '') : base.ignore,
     conventions: {
       ...base.conventions,
@@ -49,7 +78,6 @@ export function customizeCharter(base: Charter, changes: CharterChanges): Result
   }
   if (changes.mocs !== undefined) input.mocs = { ...(base.mocs ?? { perDestination: true }), enabled: changes.mocs };
 
-  const problems: string[] = [];
   if (destinations.length === 0) problems.push('Keep at least one destination.');
   const seen = new Map<string, string>();
   for (const destination of destinations) {
@@ -71,6 +99,29 @@ export function customizeCharter(base: Charter, changes: CharterChanges): Result
     }
   }
   return problems.length > 0 || !parsed.success ? err([...new Set(problems)]) : ok(parsed.data);
+}
+
+/** `base`, or `base-2`, `base-3`… when taken. */
+function uniqueId(base: string, taken: ReadonlySet<string>): string {
+  let id = base;
+  for (let n = 2; taken.has(id); n++) id = `${base}-${n}`;
+  return id;
+}
+
+/**
+ * The Johnny.Decimal index of the folders as they now are: renamed, left out or added categories
+ * show up in it. Folders that do not follow the numbering keep the index as it was.
+ */
+function jdIndex(destinations: readonly DestinationInput[], previous: NonNullable<Charter['jd']>): NonNullable<Charter['jd']> {
+  const areas: NonNullable<Charter['jd']>['areas'] = [];
+  for (const destination of destinations) {
+    const [, low, high, areaName, id, name] = JD_CATEGORY_PATH.exec(destination.path ?? '') ?? [];
+    if (!low || !high || !areaName || !id || !name) continue;
+    let area = areas.find((candidate) => candidate.id === `${low}-${high}`);
+    if (!area) areas.push((area = { id: `${low}-${high}`, name: areaName, categories: [] }));
+    if (!area.categories.some((category) => category.id === id)) area.categories.push({ id, name });
+  }
+  return areas.length > 0 ? { areas: areas.sort((a, b) => a.id.localeCompare(b.id)) } : previous;
 }
 
 /** Folder names as people type them: surrounding spaces and slashes removed. */

@@ -103,9 +103,13 @@ appears at the top of the list as **Suggested by AI**.
 
 ### 2. Adjust
 
-Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Rename folders
-or untick the ones you do not want. The tree on the right updates as you type. If two folders get the same
-name, you see why and cannot continue until it is fixed.
+Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Rename folders,
+remove the ones you do not want (**×**; **Add back** brings them back), and **Add a folder** for subjects
+the method does not cover. A new folder needs a name and a sentence on what goes in it, such as *Running,
+races and training plans*: AI files notes by that sentence, not by the name. In Johnny.Decimal, name it
+with its numbers, such as `10-19 Life admin/14 Sport`; notes named `14.01 …` then go there automatically,
+and the index lists it. The tree on the right updates as you type. If two folders get the same name, or a
+new folder has no description, you see why and cannot continue until it is fixed.
 
 Typing the name of a folder you already have reuses that folder, with the notes in it, and the row says
 what is there (*Your folder already holds 12 notes: Bread, Leek soup, Tea and 9 more*). If those notes are not the

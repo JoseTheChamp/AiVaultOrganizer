@@ -41,7 +41,7 @@ describe('SetupWizard', () => {
     render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
     await next();
     await fireEvent.input(screen.getByRole('textbox', { name: 'Folder for resources' }), { target: { value: 'Library' } });
-    await fireEvent.click(screen.getByRole('checkbox', { name: 'Use 4 Archive' }));
+    await fireEvent.click(screen.getByRole('button', { name: 'Remove 4 Archive' }));
     expect(within(preview()).getByText('Library')).toBeTruthy();
     expect(within(preview()).queryByText('4 Archive')).toBeNull();
 
@@ -64,6 +64,33 @@ describe('SetupWizard', () => {
     // Naming a folder the vault does not have shows nothing about it.
     await fireEvent.input(resources, { target: { value: 'Library' } });
     expect(row.queryByText(/already holds/)).toBeNull();
+  });
+
+  it('adds folders of your own and takes back removed ones', async () => {
+    const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
+    render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
+    await fireEvent.click(screen.getByRole('radio', { name: /^Johnny\.Decimal/ }));
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Add a folder' }));
+    const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
+    // The example uses the first free category number of an area.
+    expect(folder.placeholder).toBe('e.g. 10-19 Life admin/14 Hobbies');
+    await fireEvent.input(folder, { target: { value: '10-19 Life admin/14 Sport' } });
+    // A folder without a description gives AI nothing to go on.
+    expect(screen.getByRole('alert').textContent).toContain('Say what goes into "10-19 Life admin/14 Sport"');
+    await fireEvent.input(screen.getByRole('textbox', { name: 'What goes into 10-19 Life admin/14 Sport' }), { target: { value: 'Running, races and training plans.' } });
+    expect(within(preview()).getByText('14 Sport')).toBeTruthy();
+
+    await fireEvent.click(screen.getByRole('button', { name: 'Remove 30-39 Learning/32 Books' }));
+    expect(within(preview()).queryByText('32 Books')).toBeNull();
+    await fireEvent.click(screen.getByRole('button', { name: 'Add back 30-39 Learning/32 Books' }));
+    expect(within(preview()).getByText('32 Books')).toBeTruthy();
+
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
+    const [charter] = submit.mock.calls[0] ?? [];
+    expect(charter?.destinations.find((d) => d.path === '10-19 Life admin/14 Sport')).toMatchObject({ id: '14-sport', description: 'Running, races and training plans.', match: [{ filename: '^14\\.\\d{2}(?:\\s|$)' }] });
+    expect(charter?.jd?.areas.find((area) => area.id === '10-19')?.categories.map((c) => c.id)).toEqual(['11', '12', '13', '14']);
   });
 
   it('blocks the next step while the changes do not make a charter', async () => {

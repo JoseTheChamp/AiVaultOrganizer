@@ -1,5 +1,5 @@
 import type { VaultAnalysis } from '../../core/analysis/analyze';
-import type { CharterChanges } from '../../core/charter/customize';
+import type { CharterChanges, NewFolder } from '../../core/charter/customize';
 import { adaptPresetToVault, inferCharter } from '../../core/charter/infer';
 import { METHOD_ABOUT, type MethodAbout } from '../../core/charter/presets/about';
 import { type Lang, PRESET_ORDER, presetCharter } from '../../core/charter/presets/index';
@@ -101,10 +101,16 @@ function draftAbout(draft: Charter): MethodAbout {
   };
 }
 
+/** A folder added in the Adjust step; the key keeps its row in place while others come and go. */
+export interface AddedFolder extends NewFolder {
+  key: number;
+}
+
 /** The Customize step's form: every change the wizard offers, always filled in. */
 export interface WizardChanges extends Required<CharterChanges> {
   paths: Record<string, string>;
   removed: string[];
+  added: AddedFolder[];
   ignore: string[];
 }
 
@@ -113,10 +119,26 @@ export function initialChanges(charter: Charter): WizardChanges {
   return {
     paths: Object.fromEntries(charter.destinations.filter((d) => d.path !== undefined).map((d) => [d.id, d.path as string])),
     removed: [],
+    added: [],
     inbox: charter.inbox ?? '',
     tagStyle: charter.conventions.tags?.style ?? 'keep',
     relatedHeading: charter.conventions.links?.relatedHeading ?? '## Related',
     mocs: charter.mocs?.enabled ?? false,
     ignore: [...charter.ignore],
   };
+}
+
+/**
+ * An example name for a new folder, in the charter's own naming: in Johnny.Decimal the first free
+ * category number of an area ("10-19 Life admin/14 Hobbies"), elsewhere a plain name.
+ */
+export function newFolderExample(charter: Charter): string {
+  for (const area of charter.jd?.areas ?? []) {
+    const [low = 0, high = 0] = area.id.split('-').map(Number);
+    // The system area holds the index and the inbox, not topics.
+    if (low === 0) continue;
+    const used = new Set(area.categories.map((category) => Number(category.id)));
+    for (let id = low + 1; id <= high; id++) if (!used.has(id)) return `e.g. ${area.id} ${area.name}/${String(id).padStart(2, '0')} Hobbies`;
+  }
+  return charter.jd ? 'e.g. 40-49 Hobbies/41 Sport' : 'e.g. Hobbies';
 }

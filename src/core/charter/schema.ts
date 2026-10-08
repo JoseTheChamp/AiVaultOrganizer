@@ -64,6 +64,8 @@ export const destinationSchema = z
   })
   .strict();
 export type Destination = z.infer<typeof destinationSchema>;
+/** Input shape of a destination (defaults optional). */
+export type DestinationInput = z.input<typeof destinationSchema>;
 
 const jdCategory = z.object({ id: z.string().regex(/^\d{2}$/), name: z.string().min(1) }).strict();
 const jdArea = z

@@ -599,14 +599,23 @@
 
 .avo-destination {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--size-4-2);
   align-items: start;
   font-size: var(--font-ui-small);
 }
 
-.avo-destination > input[type='checkbox'] {
-  margin-top: var(--size-4-2);
+.avo-adjust-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-4-2);
+}
+
+.avo-adjust-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-2-2);
 }
 
 .avo-destination-body {
