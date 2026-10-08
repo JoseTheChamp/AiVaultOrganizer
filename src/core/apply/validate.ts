@@ -22,6 +22,8 @@ export type ValidationCode =
   | 'dependency-cycle'
   | 'dependency-order'
   | 'folder-exists'
+  | 'folder-not-empty'
+  | 'charter-folder'
   | 'stale-precondition';
 
 export interface ValidationIssue {
@@ -124,6 +126,11 @@ function checkPaths(op: Operation, context: ValidationContext, add: Add): void {
     add('outside-destinations', `"${created}" is outside every destination of the charter.`, op.id);
   }
 
+  // The charter's own folders and their parents stay, even when nothing is in them yet.
+  if (op.kind === 'removeEmptyFolder' && context.allowedRoots?.some((root) => isInFolder(root, op.path))) {
+    add('charter-folder', `"${op.path}" is one of the charter's folders; it stays.`, op.id);
+  }
+
   if (op.kind === 'move') {
     // v1 moves notes only; attachments stay where they are.
     if (extension(op.from) !== 'md' || extension(op.to) !== 'md') add('not-markdown', 'Only Markdown notes can be moved.', op.id);
@@ -220,6 +227,20 @@ function simulate(ordered: Operation[], snapshot: VaultSnapshot, add: Add): void
           addFolders(op.path);
         }
         break;
+      case 'removeEmptyFolder': {
+        const folder = op.path.toLowerCase();
+        if (!folders.has(folder)) {
+          add('missing-source', `Folder "${op.path}" does not exist.`, op.id, 'warning');
+          break;
+        }
+        const inside = (path: string) => path.startsWith(`${folder}/`);
+        if ([...files.keys()].some(inside) || [...folders].some(inside)) {
+          add('folder-not-empty', `Something stays in "${op.path}" after this plan, so the folder is kept.`, op.id, 'warning');
+        } else {
+          folders.delete(folder);
+        }
+        break;
+      }
       case 'flag':
         break;
     }

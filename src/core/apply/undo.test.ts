@@ -45,6 +45,25 @@ describe('UndoService', () => {
     expect(vault.trash.map((t) => t.path)).toEqual(['Maps/Projects.md']);
   });
 
+  it('brings back the folders a run removed before moving the notes back into them', async () => {
+    const { vault, executor, undo } = setup({ 'Old/Sub/Idea.md': 'idea [[Home]]', 'Home.md': '[[Idea]]' }, ['Old/Empty']);
+    const before = vault.contents();
+    const folders = vault.folderPaths();
+    await executor.apply(
+      planOf([
+        acceptedOp({ kind: 'move', from: 'Old/Sub/Idea.md', to: 'Notes/Idea.md' }),
+        acceptedOp({ kind: 'removeEmptyFolder', path: 'Old/Sub' }),
+        acceptedOp({ kind: 'removeEmptyFolder', path: 'Old/Empty' }),
+        acceptedOp({ kind: 'removeEmptyFolder', path: 'Old' }),
+      ]),
+    );
+    expect(vault.folderPaths()).toEqual(['Notes']);
+
+    expect(await undo.undoLast()).toMatchObject({ status: 'completed', conflicts: [] });
+    expect(vault.contents()).toEqual(before);
+    expect(vault.folderPaths()).toEqual(folders);
+  });
+
   it('never overwrites edits made after the run and reports them', async () => {
     const { vault, executor, undo } = setup(files);
     await executor.apply(fullPlan());

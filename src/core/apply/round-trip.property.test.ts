@@ -15,6 +15,8 @@ const NAMES = ['Alpha', 'Beta', 'Plan', 'Notes', 'Žluťoučký kůň'];
 const FOLDERS = ['', 'A', 'A/B', 'C'];
 const TARGET_FOLDERS = ['', 'A', 'New', 'New/Deep', 'C'];
 const TAGS = ['x', 'Y', 'proj/web', 'Proj'];
+/** Folders a plan may try to remove: emptied, still full, created in the same run, or missing. */
+const REMOVABLE = ['A/B', 'A', 'C', 'Empty', 'New/Deep', 'New', 'C/Extra 1'];
 
 const noteArb = fc.record({
   folder: fc.constantFrom(...FOLDERS),
@@ -37,7 +39,7 @@ const vaultArb = fc.uniqueArray(noteArb, {
 });
 
 const seedArb = fc.record({
-  kind: fc.constantFrom('move', 'setProperty', 'addTags', 'replaceTag', 'addRelatedLinks', 'createNote', 'createFolder'),
+  kind: fc.constantFrom('move', 'setProperty', 'addTags', 'replaceTag', 'addRelatedLinks', 'createNote', 'createFolder', 'removeEmptyFolder'),
   a: fc.nat(50),
   b: fc.nat(50),
   c: fc.nat(50),
@@ -115,6 +117,9 @@ function buildPlan(paths: string[], seeds: { kind: string; a: number; b: number;
         break;
       case 'createFolder':
         ops.push(acceptedOp({ kind: 'createFolder', path: joinPath(TARGET_FOLDERS[seed.a % TARGET_FOLDERS.length] ?? '', `Extra ${seed.b % 3}`) }));
+        break;
+      case 'removeEmptyFolder':
+        ops.push(acceptedOp({ kind: 'removeEmptyFolder', path: REMOVABLE[seed.a % REMOVABLE.length] ?? 'Empty' }));
         break;
     }
   }

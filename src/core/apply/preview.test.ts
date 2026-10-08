@@ -40,5 +40,6 @@ describe('previewOperation', () => {
   it('passes moves, folders, new notes and flags through', async () => {
     expect(await previewOperation(createOperation({ kind: 'move', from: 'Plan.md', to: 'P/Plan.md' }), deps)).toEqual({ kind: 'move', from: 'Plan.md', to: 'P/Plan.md' });
     expect(await previewOperation(createOperation({ kind: 'createNote', path: 'M.md', role: 'moc', content: 'Map' }), deps)).toEqual({ kind: 'create', path: 'M.md', content: 'Map' });
+    expect(await previewOperation(createOperation({ kind: 'removeEmptyFolder', path: 'Old' }), deps)).toEqual({ kind: 'remove-folder', path: 'Old' });
   });
 });

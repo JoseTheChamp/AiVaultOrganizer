@@ -1,3 +1,4 @@
+import { ancestorFolders } from '../model/paths';
 import type { Hasher, Logger, VaultReader, VaultWriter } from '../ports';
 import type { InverseAction, Journal, JournalRun } from './journal';
 
@@ -87,6 +88,13 @@ export class UndoService {
         if (!(await reader.exists(inverse.path))) return null;
         const removed = await writer.removeEmptyFolder(inverse.path);
         return removed ? null : { path: inverse.path, reason: 'Kept: the folder is not empty.' };
+      }
+      case 'recreateFolder': {
+        // Folders were removed deepest first, so undo meets the parents first; create any missing.
+        for (const folder of ancestorFolders(`${inverse.path}/x`)) {
+          if (!(await reader.exists(folder))) await writer.createFolder(folder);
+        }
+        return null;
       }
       case 'moveBack':
         return this.moveBack(inverse);

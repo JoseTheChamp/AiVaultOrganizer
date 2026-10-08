@@ -5,6 +5,8 @@ export function describeOperation(op: Operation): string {
   switch (op.kind) {
     case 'createFolder':
       return `Create folder "${op.path}"`;
+    case 'removeEmptyFolder':
+      return `Remove empty folder "${op.path}"`;
     case 'move':
       return `Move "${op.from}" to "${op.to}"`;
     case 'setProperty':
@@ -30,6 +32,7 @@ export function describeOperation(op: Operation): string {
 
 export const KIND_LABELS: Record<OperationKind, string> = {
   createFolder: 'New folders',
+  removeEmptyFolder: 'Empty folders to remove',
   move: 'Moves',
   setProperty: 'Properties',
   renameProperty: 'Property renames',

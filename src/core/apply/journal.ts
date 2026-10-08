@@ -33,6 +33,8 @@ export const inverseSchema = z.discriminatedUnion('type', [
     redirected: z.array(z.object({ path, afterHash: z.string() })).default([]),
   }),
   z.object({ type: z.literal('removeFolder'), path }),
+  /** A folder the run removed because its moves left it empty (ADR 0009). */
+  z.object({ type: z.literal('recreateFolder'), path }),
   z.object({ type: z.literal('trashCreated'), path, afterHash: z.string() }),
 ]);
 

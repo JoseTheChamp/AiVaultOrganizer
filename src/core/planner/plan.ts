@@ -186,6 +186,7 @@ export function followMoves(operations: readonly Operation[], moves: readonly Ex
       // point at where a note is now.
       case 'move':
       case 'createFolder':
+      case 'removeEmptyFolder':
       case 'createNote':
       case 'updateCharterRules':
       case 'flag':

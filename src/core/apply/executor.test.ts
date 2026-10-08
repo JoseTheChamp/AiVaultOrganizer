@@ -46,6 +46,26 @@ describe('ApplyExecutor', () => {
     expect(run.end).toMatchObject({ status: 'completed', applied: 7 });
   });
 
+  it('removes a folder its moves emptied, and keeps one that still holds something', async () => {
+    const { vault, journal, executor } = applyHarness({ 'Old/Idea.md': 'idea', 'Busy/Kept.md': 'kept', 'Busy/Gone.md': 'gone' }, ['Old/Empty']);
+    const plan = planOf([
+      acceptedOp({ kind: 'removeEmptyFolder', path: 'Old/Empty' }),
+      acceptedOp({ kind: 'removeEmptyFolder', path: 'Old' }),
+      acceptedOp({ kind: 'removeEmptyFolder', path: 'Busy' }),
+      acceptedOp({ kind: 'move', from: 'Old/Idea.md', to: 'Notes/Idea.md' }),
+      acceptedOp({ kind: 'move', from: 'Busy/Gone.md', to: 'Notes/Gone.md' }),
+    ]);
+
+    const report = await executor.apply(plan, { runId: 'r' });
+
+    // A folder that is not empty is kept, and the run goes on.
+    expect(report).toMatchObject({ status: 'completed', applied: 4, skipped: 1 });
+    expect(report.results.find((result) => result.status === 'skipped')).toMatchObject({ reason: 'Kept "Busy": something is still in it.' });
+    expect(vault.folderPaths()).toEqual(['Busy', 'Notes']);
+    const removals = (await journal.read('r')).ops.filter((op) => op.kind === 'removeEmptyFolder');
+    expect(removals.map((op) => op.inverses)).toEqual([[{ type: 'recreateFolder', path: 'Old/Empty' }], [{ type: 'recreateFolder', path: 'Old' }]]);
+  });
+
   it('records the notes whose links a move rewrote', async () => {
     const { journal, executor } = applyHarness({ 'A/Note.md': '', 'B/Other.md': '', 'Home.md': '[[Other]]' });
     await executor.apply(planOf([acceptedOp({ kind: 'move', from: 'B/Other.md', to: 'B/Note.md' })]), { runId: 'r' });

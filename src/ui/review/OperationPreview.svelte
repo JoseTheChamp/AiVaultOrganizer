@@ -19,6 +19,11 @@
     <p class="avo-muted">Obsidian updates links to the note when it moves.</p>
   {:else if preview.kind === 'folder'}
     <p>Creates the folder <span class="avo-path">{preview.path}</span>.</p>
+  {:else if preview.kind === 'remove-folder'}
+    <p>
+      Removes the folder <span class="avo-path">{preview.path}</span>: this plan's moves leave it empty. It goes to the trash, it is kept if anything is
+      still in it, and undo brings it back.
+    </p>
   {:else if preview.kind === 'create'}
     <p>Creates <span class="avo-path">{preview.path}</span>:</p>
     <pre class="avo-diff">{preview.content}</pre>

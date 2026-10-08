@@ -12,6 +12,7 @@ import { renameProperty } from './executor';
 export type OperationPreview =
   | { kind: 'move'; from: string; to: string }
   | { kind: 'folder'; path: string }
+  | { kind: 'remove-folder'; path: string }
   | { kind: 'edit'; path: string; lines: DiffLine[] }
   | { kind: 'create'; path: string; content: string }
   | { kind: 'flag'; path: string; related: string[] }
@@ -33,6 +34,8 @@ export async function previewOperation(op: Operation, deps: PreviewDeps): Promis
   switch (op.kind) {
     case 'createFolder':
       return { kind: 'folder', path: op.path };
+    case 'removeEmptyFolder':
+      return { kind: 'remove-folder', path: op.path };
     case 'move':
       return { kind: 'move', from: op.from, to: op.to };
     case 'createNote':

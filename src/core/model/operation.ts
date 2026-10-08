@@ -5,7 +5,8 @@ import { stableHash } from './stable-hash';
  * Operations are the only way the plugin changes a vault (invariant 2). They are plain data,
  * produced by rules, kNN, an LLM or the user, reviewed by the user and executed by the apply
  * executor. There is deliberately no delete operation (invariant 1): "removing" a note means
- * moving it to an archive destination.
+ * moving it to an archive destination. The one removal is of a folder the plan's own moves leave
+ * empty, which holds no content (ADR 0009).
  */
 
 export const OPERATION_SOURCES = ['rule', 'knn', 'llm', 'user'] as const;
@@ -31,6 +32,8 @@ const base = {
 
 export const operationSchema = z.discriminatedUnion('kind', [
   z.object({ ...base, kind: z.literal('createFolder'), path: vaultPath }),
+  /** Removes a folder only if it is empty when applied; undo recreates it (ADR 0009). */
+  z.object({ ...base, kind: z.literal('removeEmptyFolder'), path: vaultPath }),
   z.object({ ...base, kind: z.literal('move'), from: vaultPath, to: vaultPath }),
   z.object({ ...base, kind: z.literal('setProperty'), path: vaultPath, key: z.string().min(1), value: z.json() }),
   /** Renames a property key, keeping its value and position (e.g. Type to type). */
@@ -82,7 +85,8 @@ export type OperationMeta = Partial<Pick<Operation, Exclude<MetaKey, 'id'>>>;
 
 /**
  * Execution phases (§5.5): folders exist before moves, moves happen before frontmatter edits,
- * links are added once targets are in place, generated notes come last. `flag` never executes.
+ * links are added once targets are in place, generated notes come next, and the folders the moves
+ * emptied go last, deepest first. `flag` never executes.
  */
 export const PHASE: Record<OperationKind, number> = {
   createFolder: 0,
@@ -95,7 +99,8 @@ export const PHASE: Record<OperationKind, number> = {
   createNote: 4,
   updateGeneratedSection: 4,
   updateCharterRules: 4,
-  flag: 5,
+  removeEmptyFolder: 5,
+  flag: 6,
 };
 
 /** Deterministic id from the operation's intent, independent of rationale or confidence. */
@@ -131,6 +136,7 @@ export function touchedPaths(op: Operation): string[] {
     case 'flag':
       return [op.path, ...(op.related ?? [])];
     case 'createFolder':
+    case 'removeEmptyFolder':
     case 'setProperty':
     case 'renameProperty':
     case 'addTags':

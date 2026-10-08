@@ -56,6 +56,9 @@ export interface RunReport {
 /** Thrown by an operation that cannot run as planned; reported as a failure, never retried. */
 class OperationError extends Error {}
 
+/** Thrown by an operation that should not run in the vault as it is now; skipped, and the run goes on. */
+class OperationSkipped extends Error {}
+
 /**
  * Executes the accepted operations of a validated plan (§5.5): preconditions first, then phase by
  * phase in batches. Every change is journaled with its inverse before the next one starts, so a run
@@ -115,6 +118,10 @@ export class ApplyExecutor {
             if (op.kind === 'move') moves.set(op.from, op.to);
           }
         } catch (error) {
+          if (error instanceof OperationSkipped) {
+            results.set(op.id, { opId: op.id, status: 'skipped', reason: error.message });
+            continue;
+          }
           const text = error instanceof Error ? error.message : String(error);
           logger.error(`Operation ${op.id} failed`, text);
           results.set(op.id, { opId: op.id, status: 'failed', reason: text });
@@ -160,6 +167,8 @@ export class ApplyExecutor {
     switch (op.kind) {
       case 'createFolder':
         return this.createFolder(op);
+      case 'removeEmptyFolder':
+        return this.removeEmptyFolder(op);
       case 'move':
         return this.move(op);
       case 'setProperty':
@@ -201,6 +210,13 @@ export class ApplyExecutor {
   private async createFolder(op: OperationOf<'createFolder'>): Promise<InverseAction[] | null> {
     if (await this.deps.reader.exists(op.path)) return null;
     return this.ensureFolder(op.path);
+  }
+
+  /** Removes a folder the plan's moves emptied, only if nothing is in it now (ADR 0009). */
+  private async removeEmptyFolder(op: OperationOf<'removeEmptyFolder'>): Promise<InverseAction[] | null> {
+    if (!(await this.deps.reader.exists(op.path))) return null;
+    if (!(await this.deps.writer.removeEmptyFolder(op.path))) throw new OperationSkipped(`Kept "${op.path}": something is still in it.`);
+    return [{ type: 'recreateFolder', path: op.path }];
   }
 
   /** Creates a folder and any missing ancestors, returning inverses that remove what was created. */

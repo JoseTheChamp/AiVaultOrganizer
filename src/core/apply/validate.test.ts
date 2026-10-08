@@ -113,6 +113,16 @@ describe('validatePlan', () => {
     ]);
   });
 
+  it("removes a folder only when the plan leaves it empty, and never the charter's own", async () => {
+    const ctx = await context({ allowedRoots: ['Projects', 'Archive'] });
+    const moveOut = (name: string) => accepted({ kind: 'move', from: `Inbox/${name}.md`, to: `Projects/${name}.md` });
+    expect(codes([moveOut('Idea'), moveOut('Plan'), accepted({ kind: 'removeEmptyFolder', path: 'Inbox' })], ctx)).toEqual([]);
+    // One note stays: the review says the folder will be kept.
+    expect(codes([moveOut('Idea'), accepted({ kind: 'removeEmptyFolder', path: 'Inbox' })], ctx)).toEqual(['folder-not-empty']);
+    expect(codes([accepted({ kind: 'removeEmptyFolder', path: 'Projects' })], ctx)).toContain('charter-folder');
+    expect(codes([accepted({ kind: 'removeEmptyFolder', path: 'Nowhere' })], ctx)).toEqual(['missing-source']);
+  });
+
   it('rejects malformed paths, non-Markdown moves and no-op moves', async () => {
     const ctx = await context();
     expect(codes([accepted({ kind: 'move', from: 'Inbox/Idea.md', to: '../outside.md' })], ctx)).toContain('invalid-path');
