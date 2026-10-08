@@ -114,9 +114,14 @@ export interface Classification {
   targets: Target[];
 }
 
-/** The destinations a note can be classified into, plus `root` in properties mode. */
+/**
+ * The destinations a note can be classified into, plus `root` in properties mode. The fallback is
+ * not one: it is where notes wait when nothing else fits, never a choice (ADR 0010).
+ */
 export function classificationTargets(charter: Charter): Target[] {
-  const targets: Target[] = charter.destinations.map((d) => ({ id: d.id, description: d.description, path: d.path ?? null, layout: d.layout }));
+  const targets: Target[] = charter.destinations
+    .filter((d) => !d.fallback)
+    .map((d) => ({ id: d.id, description: d.description, path: d.path ?? null, layout: d.layout }));
   if (charter.mode === 'properties') {
     targets.push({ id: ROOT, description: 'Your own notes about your own life, work and ideas: they stay in the vault root.', path: '', layout: 'flat' });
   }
@@ -156,6 +161,11 @@ export async function classifyNotes(input: CascadeInput, knn: KnnOptions = DEFAU
         break;
       }
       case 'placed': {
+        // Notes waiting in the fallback get another chance: a folder may fit them now.
+        if (placement.destination?.fallback) {
+          pending.push(note);
+          break;
+        }
         const id = placement.destination?.id ?? ROOT;
         const subfolder = placement.destination ? subfolderOf(note, placement.destination) : null;
         placements.set(note.path, decided(note, id, subfolder, 'rule', 'Already where the charter puts it.', { inPlace: true }));

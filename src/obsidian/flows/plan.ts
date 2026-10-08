@@ -70,7 +70,11 @@ export async function planRealignment(plugin: AiVaultOrganizerPlugin): Promise<v
       plugin.settings.modelPace = { ...plugin.settings.modelPace, [paceKey(plugin.settings.ai.chat)]: pace.msPerUnit };
       await plugin.saveSettings();
     }
-    if (stopped) new Notice('Stopped. Notes the AI did not get to are flagged for you; the rest of the plan is ready to review.', 8000);
+    if (stopped) {
+      const fallback = loaded.charter.destinations.find((d) => d.fallback);
+      const left = fallback ? `wait in ${fallback.path ?? fallback.category ?? fallback.id} until you organize again` : 'are flagged for you';
+      new Notice(`Stopped. Notes the AI did not get to ${left}; the rest of the plan is ready to review.`, 8000);
+    }
     if (stats && stats.classification.failures > 0) {
       new Notice(`The model could not answer for ${plural(stats.classification.failures, 'batch', 'batches')} of notes; those notes are flagged for you to place.`, 10_000);
     }

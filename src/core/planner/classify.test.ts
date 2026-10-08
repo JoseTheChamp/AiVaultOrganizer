@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ApplyRunService } from '../apply/run';
 import { presetCharter } from '../charter/presets';
+import type { Charter } from '../charter/schema';
 import type { Neighbor } from '../embeddings/top-k';
 import { createPlan } from '../model/plan';
 import { applyHarness } from '../testing/apply-harness';
@@ -133,6 +134,59 @@ describe('placementOperations', () => {
     const outcome = await new ApplyRunService({ ...deps, storage, clock }).run(plan, { pluginVersion: 'test', ignore: charter.ignore, allowedRoots: [...charterRoots(charter), 'Vault Charter.md'] });
     expect(outcome.kind === 'ran' && outcome.report).toMatchObject({ status: 'completed', applied: 3, failed: 0 });
     expect(await vault.exists('1 Projects/Website relaunch/Website plan.md')).toBe(true);
+  });
+});
+
+describe('the fallback destination', () => {
+  const withOther = (charter: Charter): Charter => ({
+    ...charter,
+    destinations: [...charter.destinations, { id: 'other', path: 'Other', fallback: true, description: 'Notes that fit no other folder.', layout: 'flat', priority: 0, match: [], examples: [] }],
+  });
+
+  async function fallbackSetup(answers: Map<string, { destination: string | null; subfolder: string | null; confidence: number; rationale: string }>) {
+    const harness = applyHarness({ ...files, 'Other/Waiting.md': 'Still nothing fits.' }, ['Old', 'Inbox', 'Templates', '1 Projects', '2 Areas', 'Other']);
+    const charter = withOther(presetCharter('para', 'en'));
+    const asked: string[] = [];
+    const llm: LlmStage = async (notes, context) => {
+      asked.push(...notes.map((n) => n.path));
+      // "Other" is where notes wait, never a choice.
+      expect(context.targets.map((t) => t.id)).not.toContain('other');
+      return answers;
+    };
+    const snapshot = await harness.vault.snapshot();
+    const classification = await classifyNotes({ snapshot, charter, charterPath: 'Vault Charter.md', neighbors, llm });
+    return { charter, snapshot, classification, asked };
+  }
+
+  it('is never offered to the model, and the notes waiting in it are classified again', async () => {
+    const { asked } = await fallbackSetup(new Map());
+    expect(asked).toContain('Other/Waiting.md');
+  });
+
+  it('takes what nothing places and the guesses the model is unsure of, keeping the guess as the reason', async () => {
+    const { charter, snapshot, classification } = await fallbackSetup(
+      new Map([
+        ['CMS notes.md', { destination: 'resources', subfolder: null, confidence: 0.3, rationale: 'Maybe reference.' }],
+        ['Inbox/Random thought.md', { destination: 'areas', subfolder: 'Health', confidence: 0.9, rationale: 'About health.' }],
+      ]),
+    );
+    const { operations, warnings } = placementOperations(classification, snapshot, charter);
+    const moves = operations.flatMap((op) => (op.kind === 'move' ? [`${op.from} → ${op.to}`] : []));
+    expect(moves).toEqual([
+      'CMS notes.md → Other/CMS notes.md',
+      'Inbox/Mystery.md → Other/Mystery.md',
+      'Inbox/Random thought.md → 2 Areas/Health/Random thought.md',
+      'Old/2026-01-05.md → Daily/2026-01-05.md',
+      'Website plan.md → 1 Projects/Website relaunch/Website plan.md',
+    ]);
+    const cms = operations.find((op) => op.kind === 'move' && op.from === 'CMS notes.md');
+    expect(cms).toMatchObject({ source: 'rule', confidence: 1 });
+    expect(cms?.rationale).toMatch(/^No folder fits for sure \(best guess: 3 Resources, \d+ %\)\. → "Other"$/);
+    expect(operations.find((op) => op.kind === 'move' && op.from === 'Inbox/Mystery.md')?.rationale).toBe('No folder fits for sure. → "Other"');
+    // Nothing is left for the user to place by hand; a note already waiting in Other stays.
+    expect(operations.filter((op) => op.kind === 'flag' && op.issue === 'ambiguous')).toEqual([]);
+    expect(operations.some((op) => (op.kind === 'move' ? op.from : op.path) === 'Other/Waiting.md')).toBe(false);
+    expect(warnings).toEqual([expect.objectContaining({ code: 'fallback', message: expect.stringContaining('3 notes fit no folder for sure') as string })]);
   });
 });
 
