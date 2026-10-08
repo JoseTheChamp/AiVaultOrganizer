@@ -14,5 +14,6 @@ Add one whenever a decision is non-trivial, affects user data, the invariants or
 | [0007](0007-planner.md) | Planner: classification cascade, normalization and the drafting agent | Accepted |
 | [0008](0008-ui-architecture.md) | UI architecture: Svelte 5 components in thin Obsidian views | Accepted |
 | [0009](0009-remove-emptied-folders.md) | Remove the folders a plan leaves empty | Accepted |
+| [0010](0010-fallback-destination.md) | A fallback destination, and folders of your own in the wizard | Accepted |
 
 Copy [`template.md`](template.md) to `NNNN-short-title.md` to start a new record.
