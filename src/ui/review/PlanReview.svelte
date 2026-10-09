@@ -47,8 +47,14 @@
   const rows: Record<string, HTMLButtonElement> = {};
 
   const shown = $derived(model.items.filter((item) => matches(item, decisions.get(item.op.id) ?? 'pending', filters)));
-  const groups = $derived(groupItems(shown));
-  const order = $derived(groups.flatMap((group) => (showAll.has(group.title) ? group.items : group.items.slice(0, PAGE))));
+  // Rejected changes leave their groups for a folded section at the end, where a decision can still be
+  // undone; filtering by "rejected" shows them in their groups instead.
+  const apart = $derived(filters.status !== 'rejected');
+  const isRejected = (item: ReviewItem) => decisions.get(item.op.id) === 'rejected';
+  const groups = $derived(groupItems(apart ? shown.filter((item) => !isRejected(item)) : shown));
+  const rejected = $derived(apart ? shown.filter(isRejected) : []);
+  let rejectedOpen = $state(false);
+  const order = $derived([...groups.flatMap((group) => (showAll.has(group.title) ? group.items : group.items.slice(0, PAGE))), ...(rejectedOpen ? rejected : [])]);
   const counts = $derived(decisionCounts(model.items, decisions));
   const destinations = $derived(destinationsOf(model.items));
   const bulkCount = $derived(shown.filter((item) => item.decidable && decisions.get(item.op.id) === 'pending' && item.op.confidence >= threshold).length);
@@ -181,25 +187,29 @@
     <p class="avo-muted">No proposed change matches these filters.</p>
   {/if}
 
+  {#snippet row(item: ReviewItem)}
+    <ReviewRow
+      {item}
+      decision={decisions.get(item.op.id) ?? 'pending'}
+      expanded={expanded.has(item.op.id)}
+      preview={previews.get(item.op.id) ?? null}
+      toggle={() => void toggle(item)}
+      decide={(decision) => decideOne(item, decision)}
+      openNote={actions.openNote}
+      onkeydown={(event) => onKey(event, order.indexOf(item), item)}
+      register={(element) => {
+        if (element) rows[item.op.id] = element;
+        else delete rows[item.op.id];
+      }}
+    />
+  {/snippet}
+
   {#each groups as group (group.title)}
     <section class="avo-review-group" aria-label={group.title}>
       <h4 class="avo-dash-title">{group.title} ({group.items.length})</h4>
       <ul class="avo-rows">
         {#each showAll.has(group.title) ? group.items : group.items.slice(0, PAGE) as item (item.op.id)}
-          <ReviewRow
-            {item}
-            decision={decisions.get(item.op.id) ?? 'pending'}
-            expanded={expanded.has(item.op.id)}
-            preview={previews.get(item.op.id) ?? null}
-            toggle={() => void toggle(item)}
-            decide={(decision) => decideOne(item, decision)}
-            openNote={actions.openNote}
-            onkeydown={(event) => onKey(event, order.indexOf(item), item)}
-            register={(element) => {
-              if (element) rows[item.op.id] = element;
-              else delete rows[item.op.id];
-            }}
-          />
+          {@render row(item)}
         {/each}
       </ul>
       {#if group.items.length > PAGE && !showAll.has(group.title)}
@@ -207,6 +217,17 @@
       {/if}
     </section>
   {/each}
+
+  {#if rejected.length > 0}
+    <details class="avo-details avo-review-rejected" bind:open={rejectedOpen}>
+      <summary>Rejected ({rejected.length}): nothing happens to these</summary>
+      <ul class="avo-rows">
+        {#each rejected as item (item.op.id)}
+          {@render row(item)}
+        {/each}
+      </ul>
+    </details>
+  {/if}
 
   <footer class="avo-review-footer">
     {#if hasMoves && model.linksAutoUpdateOff}

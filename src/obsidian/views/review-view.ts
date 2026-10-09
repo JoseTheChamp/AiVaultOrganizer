@@ -115,11 +115,16 @@ export class ReviewView extends ItemView {
       aiReady: this.plugin.services.ai.chat() !== null,
       apply: this.model?.apply ?? null,
     };
-    if (this.model) {
+    // A plan is finished when nothing is left to decide or apply; rejected changes do not keep it open.
+    const finished = !open.operations.some((op) => op.status === 'pending' || op.status === 'accepted');
+    if (this.model && !(finished && !this.model.apply)) {
       Object.assign(this.model, fields);
       return;
     }
-    if (open.operations.length === 0) {
+    if (finished) {
+      this.component?.destroy();
+      this.component = null;
+      this.model = null;
       this.contentEl.empty();
       this.contentEl.createEl('p', { cls: 'avo-muted', text: 'Every change in this plan has been applied or dropped. Organize again to see what is left.' });
       return;

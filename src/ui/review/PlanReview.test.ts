@@ -79,6 +79,26 @@ describe('PlanReview', () => {
     expect(saved?.operations.find((op) => op.id === rename.id)?.status).toBe('rejected');
   });
 
+  it('folds rejected changes away at the end, where they can still be taken back', async () => {
+    setup();
+    await fireEvent.click(within(screen.getByRole('region', { name: 'Moves into 4 Archive' })).getByRole('button', { name: 'Reject' }));
+    // The group is gone; the change waits, folded, in the rejected section.
+    expect(screen.queryByRole('region', { name: 'Moves into 4 Archive' })).toBeNull();
+    const folded = screen.getByText(/^Rejected \(1\)/).closest('details') as HTMLElement;
+    expect(folded.hasAttribute('open')).toBe(false);
+    await fireEvent.click(within(folded).getByRole('button', { name: 'Reject' }));
+    expect(screen.getByRole('region', { name: 'Moves into 4 Archive' })).toBeTruthy();
+    expect(screen.queryByText(/^Rejected \(/)).toBeNull();
+  });
+
+  it('shows rejected changes in their groups when filtered for them', async () => {
+    setup();
+    await fireEvent.click(within(screen.getByRole('region', { name: 'Moves into 4 Archive' })).getByRole('button', { name: 'Reject' }));
+    await fireEvent.change(screen.getByRole('combobox', { name: 'Status' }), { target: { value: 'rejected' } });
+    expect(screen.getAllByRole('region').map((region) => region.getAttribute('aria-label'))).toEqual(['Moves into 4 Archive']);
+    expect(screen.queryByText(/^Rejected \(/)).toBeNull();
+  });
+
   it('loads a preview when a row opens', async () => {
     const { actions } = setup();
     const row = screen.getByRole('region', { name: 'Moves into 1 Projects' });

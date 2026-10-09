@@ -25,6 +25,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   the folder is still empty, goes to the trash and is undone with the run.
 - Applying shows its progress and can be cancelled; the run report lists what was skipped or failed and
   why, the health score before and after, and offers to undo the run.
+- Accept is green and Reject red in the review. Rejected changes fold into a section at the end, where
+  they can be taken back, and no longer keep a plan open.
 - `Learn from my decisions` in the review: places you accepted or rejected re-score the undecided changes
   and can propose a place for flagged notes, without asking any model.
 - `Undo last run` command: restores notes byte for byte; notes edited after the run are left alone and listed.

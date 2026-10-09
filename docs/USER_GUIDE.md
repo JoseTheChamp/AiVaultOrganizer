@@ -241,13 +241,19 @@ of the time there. Click a row to see **why** and **exactly what changes**:
 
 **Deciding.**
 
-- **Accept** and **Reject** on each row. Click again to undecide.
+- **Accept** (green) and **Reject** (red) on each row. Click again to undecide. Rejected changes leave
+  their group for a folded **Rejected** section at the end; open it to take one back. Nothing happens to
+  them, and they do not keep the plan open: once everything else is applied, the plan is finished.
 - **Accept N changes** accepts every shown, undecided change at or above the confidence you pick in the
   menu next to it.
 - Decisions keep related changes together. Accepting a property fix of a note that also moves accepts the
   move; rejecting the move rejects its fixes.
-- **Learn from my decisions** uses what you accepted and rejected to re-score the undecided changes. It
-  may also propose places for flagged notes. No AI is asked.
+- **Learn from my decisions** uses what you accepted and rejected to re-score the undecided changes. Each
+  note you accepted moving becomes an example of where notes like it belong, and each rejected move rules
+  that folder out for its note. The plugin then lets similar notes vote again for every undecided change:
+  a change your examples agree with gains confidence, one they contradict loses it, and the reason says
+  what changed. Flagged notes may get a proposed place. No AI is asked. Useful after deciding a handful of
+  rows by hand: then accept the rest by confidence.
 
 **Finding things.** Type in **Find**, or open **Filters**: who decided (rules, similar notes, AI, you),
 destination, status, minimum confidence.
