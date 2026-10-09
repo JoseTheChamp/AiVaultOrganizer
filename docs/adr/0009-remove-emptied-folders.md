@@ -1,6 +1,6 @@
 # 0009. Remove the folders a plan leaves empty
 
-- Status: Accepted
+- Status: Accepted, amended 2026-10-09 (empty folders outside the charter)
 - Date: 2026-10-08
 
 ## Context
@@ -21,9 +21,10 @@ like any other: `removeEmptyFolder { path }`.
 
 - *Which folders:* those whose subtree held at least one file before the plan and holds none after its
   moves (notes and other files, including notes the plan creates), together with the empty folders
-  inside them. Folders that were already empty are left alone: they may be placeholders someone made
-  on purpose. Never proposed for the charter's folders and their parents, the inbox, the system
-  folders (attachments, templates, daily notes) or ignored paths.
+  inside them. Also, since the amendment below, folders that hold nothing and lie outside the
+  charter's folders. Empty folders inside a charter folder that the plan does not empty are left alone:
+  they may be placeholders someone made on purpose. Never proposed for the charter's folders and their
+  parents, the inbox, the system folders (attachments, templates, daily notes) or ignored paths.
 - *When:* in the last phase, after moves and generated notes, deepest folder first.
 - *Safety at apply time:* the folder must still be empty, as Obsidian sees it. If it is not (a move
   out of it was rejected, a note was added since), the operation is skipped with the reason and the
@@ -54,6 +55,16 @@ CLAUDE.md invariant 1 now reads that there is no deletion of *content*, and name
   clutter, and v1 moves notes, not folders.
 - **Only list the empty folders** in the review and run report, for the user to delete. Safe, but it
   leaves the main complaint in place and makes people do by hand what the plugin could do reversibly.
-- **Also remove folders that were empty before the plan.** Cleaner still, but such a folder may be
-  intended (a placeholder for next year's project). Analyze vault already reports them; a later,
-  separate decision can offer them.
+- **Also remove folders that were empty before the plan, everywhere.** Cleaner still, but inside the
+  charter's folders such a folder may be intended (a placeholder for next year's project). Adopted for
+  folders outside the charter only; see the amendment.
+
+## Amendment (2026-10-09)
+
+After organizing the synthetic vault into Johnny.Decimal, `Archive old`, `New folder` and `Temp` were
+still there: empty before the plan, so this decision left them alone, and the user read them as unfinished
+work. A folder that is empty and no part of the charter is neither content nor structure the user chose to
+keep; it is what reorganizing is meant to clear. Plans now also propose removing those, with the same
+safety (reviewed, empty at apply time, trash, undo). Empty folders inside the charter's folders still stay
+unless the plan empties them. The PARA plan tasks of both eval fixtures remove three more folders, and
+their recorded plan summaries were re-recorded.
