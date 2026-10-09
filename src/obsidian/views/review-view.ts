@@ -6,7 +6,7 @@ import { loadCharter } from '../../core/charter/load';
 import { plural } from '../../core/model/text';
 import { DEFAULT_KNN, WORD_KNN } from '../../core/planner/classify';
 import { rerankFromDecisions } from '../../core/planner/rerank';
-import type { Plan } from '../../core/model/plan';
+import { type Plan, uniqueOperations } from '../../core/model/plan';
 import { type MountedComponent, mountComponent } from '../../ui/mount';
 import { reactive } from '../../ui/reactive.svelte';
 import PlanReview from '../../ui/review/PlanReview.svelte';
@@ -99,8 +99,10 @@ export class ReviewView extends ItemView {
       this.contentEl.createEl('p', { cls: 'avo-error', text: `The plan could not be read: ${loaded.error.join('; ')}` });
       return;
     }
-    this.plan = loaded.value;
-    const open: Plan = { ...loaded.value, operations: loaded.value.operations.filter((op) => OPEN.has(op.status)) };
+    // Plans saved before the planner dropped repeated operations may hold one twice; the review lists
+    // operations by id, and applying would fail validation, so each is kept once.
+    this.plan = { ...loaded.value, operations: uniqueOperations(loaded.value.operations) };
+    const open: Plan = { ...this.plan, operations: this.plan.operations.filter((op) => OPEN.has(op.status)) };
     const charter = await loadCharter(reader, hasher, this.plugin.settings.charterPath);
     const validation = validatePlan(open, { snapshot: await reader.snapshot(), include: () => true, ...(await charterConstraints(this.plugin)) });
     const fields: ReviewModel = {
@@ -124,7 +126,15 @@ export class ReviewView extends ItemView {
     }
     this.model = reactive(fields);
     this.contentEl.empty();
-    this.component = mountComponent(PlanReview, this.contentEl, { model: this.model, actions: this.actions() });
+    try {
+      this.component = mountComponent(PlanReview, this.contentEl, { model: this.model, actions: this.actions() });
+    } catch (error) {
+      // A review that cannot be drawn must say so, not stay blank.
+      this.plugin.services.logger.error('The review could not be shown', error);
+      this.model = null;
+      this.contentEl.empty();
+      this.contentEl.createEl('p', { cls: 'avo-error', text: 'The review could not be shown. Enable debug logging and check the developer console for details.' });
+    }
   }
 
   private actions(): ReviewActions {
