@@ -34,7 +34,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   codifies your current folders.
 - Setup wizard (`Set up charter`): every method shown as the folder tree it would give your vault, with
   how many notes fit each folder and what the method is good and not so good for; folder names you can
-  change, remove or add with a live preview, each with what it is for and, when you name a folder you
+  change, remove or add (inside an area or another folder, too) with a live preview, each with what it is for and, when you name a folder you
   already have, what that folder holds (in Johnny.Decimal, added categories get their ID rule and an index
   entry); and the charter note before anything is written. AI can suggest a system
   from samples of your notes.

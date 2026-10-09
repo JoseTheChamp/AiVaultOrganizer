@@ -97,6 +97,30 @@ describe('SetupWizard', () => {
     expect(charter?.jd?.areas.find((area) => area.id === '10-19')?.categories.map((c) => c.id)).toEqual(['11', '12', '13', '14']);
   });
 
+  it('adds a folder inside an area or another folder, its path already started', async () => {
+    const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
+    render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
+    await fireEvent.click(screen.getByRole('radio', { name: /^Johnny\.Decimal/ }));
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Add a folder in 10-19 Life admin' }));
+    const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
+    expect(folder.value).toBe('10-19 Life admin/14 ');
+    expect(document.activeElement).toBe(folder);
+    await fireEvent.input(folder, { target: { value: '10-19 Life admin/14 Sport' } });
+    await fireEvent.input(screen.getByRole('textbox', { name: 'What goes into 10-19 Life admin/14 Sport' }), { target: { value: 'Running and races.' } });
+
+    await fireEvent.click(screen.getByRole('button', { name: 'Add a subfolder to 20-29 Work/21 Projects' }));
+    const inner = screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' }).find((input) => input.value.startsWith('20-29'));
+    expect(inner?.value).toBe('20-29 Work/21 Projects/');
+    await fireEvent.click(screen.getByRole('button', { name: 'Remove 20-29 Work/21 Projects/' }));
+
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
+    const [charter] = submit.mock.calls[0] ?? [];
+    expect(charter?.destinations.map((d) => d.path)).toContain('10-19 Life admin/14 Sport');
+    expect(charter?.destinations.some((d) => d.path?.startsWith('20-29 Work/21 Projects/'))).toBe(false);
+  });
+
   it('blocks the next step while the changes do not make a charter', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();

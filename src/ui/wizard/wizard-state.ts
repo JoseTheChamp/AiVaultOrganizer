@@ -112,6 +112,8 @@ function draftAbout(draft: Charter): MethodAbout {
 /** A folder added in the Adjust step; the key keeps its row in place while others come and go. */
 export interface AddedFolder extends NewFolder {
   key: number;
+  /** The folder it was added in ('' for the top level): its row stays there while its path is typed. */
+  group: string;
 }
 
 /** The Customize step's form: every change the wizard offers, always filled in. */

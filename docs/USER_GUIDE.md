@@ -103,12 +103,18 @@ appears at the top of the list as **Suggested by AI**.
 
 ### 2. Adjust
 
-Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Rename folders,
-remove the ones you do not want (**×**; **Add back** brings them back), and **Add a folder** for subjects
-the method does not cover. A new folder needs a name and a sentence on what goes in it, such as *Running,
-races and training plans*: AI files notes by that sentence, not by the name. In Johnny.Decimal, name it
-with its numbers, such as `10-19 Life admin/14 Sport`; notes named `14.01 …` then go there automatically,
-and the index lists it. The tree on the right updates as you type. If two folders get the same name, or a
+Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Folders are
+grouped under the folder they are in, such as a Johnny.Decimal area. Rename folders, remove the ones you do
+not want (**×**; **Add back** brings them back), and add folders for subjects the method does not cover:
+
+- **Add a folder here**, next to a group, adds one inside it. In Johnny.Decimal the name starts with the
+  area's next free number (`10-19 Life admin/14 `), so you only type the rest.
+- The folder-plus button on a folder adds a subfolder inside that folder (`2 Areas/`).
+- **Add a folder** at the bottom adds one at the top level.
+
+A new folder needs a name and a sentence on what goes in it, such as *Running, races and training plans*:
+AI files notes by that sentence, not by the name. In Johnny.Decimal, notes named `14.01 …` then go to
+`14 Sport` automatically, and the index lists it. The tree on the right updates as you type. If two folders get the same name, or a
 new folder has no description, you see why and cannot continue until it is fixed.
 
 Typing the name of a folder you already have reuses that folder, with the notes in it, and the row says

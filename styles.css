@@ -605,6 +605,31 @@
   font-size: var(--font-ui-small);
 }
 
+.avo-adjust-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-4-2);
+  font-size: var(--font-ui-small);
+}
+
+.avo-adjust-group-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-2-2);
+  font-weight: var(--font-semibold);
+}
+
+.avo-destinations-nested {
+  padding-left: var(--size-4-4);
+  border-left: var(--border-width) solid var(--background-modifier-border);
+}
+
+.avo-destination-buttons {
+  display: flex;
+  gap: var(--size-2-1);
+}
+
 .avo-adjust-actions {
   display: flex;
   flex-wrap: wrap;
