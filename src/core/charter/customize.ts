@@ -12,6 +12,11 @@ export interface CharterChanges {
   removed?: readonly string[];
   /** Folders of the user's own, after the method's (ADR 0010). */
   added?: readonly NewFolder[];
+  /**
+   * The order of the destinations, by key: `d:<id>` for the charter's own, `a:<key>` for an added
+   * folder. Destinations not listed keep their place after the listed ones.
+   */
+  order?: readonly string[];
   /** Inbox folder; an empty string removes the inbox. */
   inbox?: string;
   tagStyle?: 'keep' | 'lowercase-kebab';
@@ -26,6 +31,8 @@ export interface CharterChanges {
 export interface NewFolder {
   path: string;
   description: string;
+  /** Names the folder in `order`. */
+  key?: number;
 }
 
 /** A Johnny.Decimal category folder: "30-39 Learning/33 Photography". */
@@ -46,10 +53,11 @@ export function customizeCharter(base: Charter, changes: CharterChanges): Result
       return destination.path !== undefined && path !== undefined ? { ...destination, path: cleanFolder(path) } : destination;
     });
   const ids = new Set(destinations.map((destination) => destination.id));
-  const added = (changes.added ?? []).map((folder) => ({ path: cleanFolder(folder.path), description: folder.description.trim() }));
+  const added = (changes.added ?? []).map((folder) => ({ key: folder.key, path: cleanFolder(folder.path), description: folder.description.trim() }));
+  const keys = new Map<DestinationInput, string>(destinations.map((destination) => [destination, `d:${destination.id}`]));
   const paths = [...destinations.map((destination) => destination.path ?? ''), ...added.map((folder) => folder.path)].filter((path) => path !== '');
   const holdsFolders = (path: string) => paths.some((other) => other.toLowerCase().startsWith(`${path.toLowerCase()}/`));
-  for (const { path, description } of added) {
+  for (const { key, path, description } of added) {
     if (path === '') {
       problems.push('A new folder needs a name.');
       continue;
@@ -61,7 +69,15 @@ export function customizeCharter(base: Charter, changes: CharterChanges): Result
     ids.add(id);
     // In Johnny.Decimal, a note named with the category's ID (33.01) belongs there, as in the method's own folders.
     const category = base.jd ? JD_CATEGORY_PATH.exec(path)?.[4] : undefined;
-    destinations.push({ id, path, description, ...(category ? { match: [{ filename: `^${category}\\.\\d{2}(?:\\s|$)` }] } : {}) });
+    const destination: DestinationInput = { id, path, description, ...(category ? { match: [{ filename: `^${category}\\.\\d{2}(?:\\s|$)` }] } : {}) };
+    destinations.push(destination);
+    if (key !== undefined) keys.set(destination, `a:${key}`);
+  }
+  if (changes.order) {
+    // The order the user arranged in the wizard: the charter lists folders, and breaks rule ties, by it.
+    const rank = new Map(changes.order.map((entry, index) => [entry, index]));
+    const at = (destination: DestinationInput) => rank.get(keys.get(destination) ?? '') ?? Number.MAX_SAFE_INTEGER;
+    destinations.sort((a, b) => at(a) - at(b));
   }
   const input: CharterInput = {
     ...base,

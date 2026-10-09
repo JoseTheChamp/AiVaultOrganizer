@@ -1,5 +1,5 @@
 import type { VaultAnalysis } from '../../core/analysis/analyze';
-import type { CharterChanges, NewFolder } from '../../core/charter/customize';
+import type { CharterChanges } from '../../core/charter/customize';
 import { withFallback } from '../../core/charter/fallback';
 import { adaptPresetToVault, inferCharter } from '../../core/charter/infer';
 import { METHOD_ABOUT, type MethodAbout } from '../../core/charter/presets/about';
@@ -7,6 +7,7 @@ import { type Lang, PRESET_ORDER, presetCharter } from '../../core/charter/prese
 import type { Charter } from '../../core/charter/schema';
 import { METHOD_LABELS, type MethodId } from '../../core/model/methods';
 import type { VaultSnapshot } from '../../core/model/note';
+import { fileName, parentFolder } from '../../core/model/paths';
 
 /** The wizard's steps before the charter is written (PLAN §2.1, steps 1–4). */
 export const STEPS = [
@@ -115,17 +116,26 @@ function draftAbout(draft: Charter): MethodAbout {
 }
 
 /** A folder added in the Adjust step; the key keeps its row in place while others come and go. */
-export interface AddedFolder extends NewFolder {
+export interface AddedFolder {
   key: number;
-  /** The folder it was added in ('' for the top level): its row stays there while its path is typed. */
-  group: string;
+  /**
+   * What it is inside: '' (the top level), 'd:<id>' (a charter folder), 'a:<key>' (another new folder)
+   * or 'g:<path>' (a folder that only groups others, such as a Johnny.Decimal area). Renaming the
+   * parent carries the folder along.
+   */
+  parent: string;
+  /** Its own name. At the top level it may hold a path ("40-49 Hobbies/41 Sport"). */
+  name: string;
+  description: string;
 }
 
 /** The Customize step's form: every change the wizard offers, always filled in. */
-export interface WizardChanges extends Required<CharterChanges> {
+export interface WizardChanges extends Required<Omit<CharterChanges, 'added' | 'order'>> {
   paths: Record<string, string>;
   removed: string[];
   added: AddedFolder[];
+  /** Rows in the order the user dragged them into ('d:<id>', 'a:<key>', 'g:<path>'); empty keeps the charter's. */
+  order: string[];
   ignore: string[];
 }
 
@@ -135,6 +145,7 @@ export function initialChanges(charter: Charter): WizardChanges {
     paths: Object.fromEntries(charter.destinations.filter((d) => d.path !== undefined).map((d) => [d.id, d.path as string])),
     removed: [],
     added: [],
+    order: [],
     inbox: charter.inbox ?? '',
     tagStyle: charter.conventions.tags?.style ?? 'keep',
     relatedHeading: charter.conventions.links?.relatedHeading ?? '## Related',
@@ -143,24 +154,24 @@ export function initialChanges(charter: Charter): WizardChanges {
   };
 }
 
-/** A folder found in the vault, ready to join the charter: its description starts from its name. */
-export function foundFolder(path: string, key: number): AddedFolder {
+/** A folder found in the vault, ready to join the charter: inside its parent, described from its name. */
+export function foundFolder(path: string, key: number, charter: Charter): AddedFolder {
+  const parent = parentFolder(path);
+  const holder = charter.destinations.find((d) => d.path?.toLowerCase() === parent.toLowerCase());
+  const name = fileName(path);
   // "15 Travel" in Johnny.Decimal is about travel.
-  const name = (path.split('/').pop() ?? path).replace(/^\d{2}\s+/, '');
-  return { key, group: path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '', path, description: `Notes about ${name}.` };
+  const subject = name.replace(/^\d{2}\s+/, '');
+  return { key, parent: parent === '' ? '' : holder ? `d:${holder.id}` : `g:${parent}`, name, description: `Notes about ${subject}.` };
 }
 
 /**
- * An example name for a new folder, in the charter's own naming: in Johnny.Decimal the first free
- * category number of an area ("10-19 Life admin/14 Hobbies"), elsewhere a plain name.
+ * An example name for a new top-level folder, in the charter's own naming: in Johnny.Decimal a new
+ * area with its first category ("40-49 Hobbies/41 Sport"), elsewhere a plain name.
  */
 export function newFolderExample(charter: Charter): string {
-  for (const area of charter.jd?.areas ?? []) {
-    const [low = 0, high = 0] = area.id.split('-').map(Number);
-    // The system area holds the index and the inbox, not topics.
-    if (low === 0) continue;
-    const used = new Set(area.categories.map((category) => Number(category.id)));
-    for (let id = low + 1; id <= high; id++) if (!used.has(id)) return `e.g. ${area.id} ${area.name}/${String(id).padStart(2, '0')} Hobbies`;
-  }
-  return charter.jd ? 'e.g. 40-49 Hobbies/41 Sport' : 'e.g. Hobbies';
+  if (!charter.jd) return 'e.g. Hobbies';
+  const used = new Set(charter.jd.areas.map((area) => area.id.slice(0, 2)));
+  const free = ['10', '20', '30', '40', '50', '60', '70', '80'].find((low) => !used.has(low)) ?? '80';
+  const area = `${free}-${String(Number(free) + 9)}`;
+  return `e.g. ${area} Hobbies/${String(Number(free) + 1)} Sport`;
 }

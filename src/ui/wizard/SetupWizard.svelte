@@ -4,6 +4,7 @@
   import { type Lang, toLang } from '../../core/charter/presets/index';
   import type { Charter } from '../../core/charter/schema';
   import { type IconSetter, provideIcons } from '../icons';
+  import { charterChanges } from './adjust-tree';
   import AdjustStep from './AdjustStep.svelte';
   import { charterFit, folderContents } from './charter-tree';
   import ChooseStep from './ChooseStep.svelte';
@@ -32,8 +33,9 @@
     // Folders found in the vault join the current charter: start at Adjust with them added.
     const found = input.existing ? (input.found ?? []) : [];
     const choice: Choice = found.length > 0 ? 'existing' : recommendedChoice(input);
-    const changes = initialChanges(baseCharter(input, choice, lang));
-    changes.added = found.map((path, i) => foundFolder(path, i + 1));
+    const first = baseCharter(input, choice, lang);
+    const changes = initialChanges(first);
+    changes.added = found.map((path, i) => foundFolder(path, i + 1, first));
     return { lang, choice, changes, step: (found.length > 0 ? 'adjust' : 'choose') as WizardStep, found: found.length };
   })();
 
@@ -49,7 +51,7 @@
   const options = $derived(choiceOptions(input, draft));
   const base = $derived(baseCharter(input, choice, lang, draft));
   const baseFit = $derived(charterFit(base, input.snapshot, input.charterPath));
-  const result = $derived(customizeCharter(base, changes));
+  const result = $derived(customizeCharter(base, charterChanges(base, changes)));
   const charter = $derived(result.ok ? result.value : null);
   const problems = $derived(result.ok ? [] : result.error);
   const fit = $derived(charter ? charterFit(charter, input.snapshot, input.charterPath) : null);

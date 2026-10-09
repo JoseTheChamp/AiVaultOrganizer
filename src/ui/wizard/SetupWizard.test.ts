@@ -70,13 +70,13 @@ describe('SetupWizard', () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();
     const resources = screen.getByRole('textbox', { name: 'Folder for resources' });
-    const row = within(resources.closest('.avo-destination') as HTMLElement);
+    const row = within(resources.closest('.avo-folder') as HTMLElement);
     expect(row.getByText(/reference material/)).toBeTruthy();
     expect(row.getByText('Your folder already holds 1 note: Bread.')).toBeTruthy();
     // Every method comes with Other, for notes nothing else fits.
     const other = screen.getByRole<HTMLInputElement>('textbox', { name: 'Folder for other' });
     expect(other.value).toBe('Other');
-    expect(within(other.closest('.avo-destination') as HTMLElement).getByText(/fit no other folder/)).toBeTruthy();
+    expect(within(other.closest('.avo-folder') as HTMLElement).getByText(/fit no other folder/)).toBeTruthy();
     // Naming a folder the vault does not have shows nothing about it.
     await fireEvent.input(resources, { target: { value: 'Library' } });
     expect(row.queryByText(/already holds/)).toBeNull();
@@ -89,8 +89,8 @@ describe('SetupWizard', () => {
     await next();
     await fireEvent.click(screen.getByRole('button', { name: 'Add a folder' }));
     const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
-    // The example uses the first free category number of an area.
-    expect(folder.placeholder).toBe('e.g. 10-19 Life admin/14 Hobbies');
+    // At the top level the example is a new area with its first category; a path is fine there.
+    expect(folder.placeholder).toBe('e.g. 40-49 Hobbies/41 Sport');
     await fireEvent.input(folder, { target: { value: '10-19 Life admin/14 Sport' } });
     // A folder without a description gives AI nothing to go on.
     expect(screen.getByRole('alert').textContent).toContain('Say what goes into "10-19 Life admin/14 Sport"');
@@ -116,15 +116,15 @@ describe('SetupWizard', () => {
     await next();
     await fireEvent.click(screen.getByRole('button', { name: 'Add a folder in 10-19 Life admin' }));
     const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
-    expect(folder.value).toBe('10-19 Life admin/14 ');
+    // Only the name is edited; the tree shows where the folder is.
+    expect(folder.value).toBe('14 ');
     expect(document.activeElement).toBe(folder);
-    await fireEvent.input(folder, { target: { value: '10-19 Life admin/14 Sport' } });
+    await fireEvent.input(folder, { target: { value: '14 Sport' } });
     await fireEvent.input(screen.getByRole('textbox', { name: 'What goes into 10-19 Life admin/14 Sport' }), { target: { value: 'Running and races.' } });
 
     await fireEvent.click(screen.getByRole('button', { name: 'Add a subfolder to 20-29 Work/21 Projects' }));
-    const inner = screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' }).find((input) => input.value.startsWith('20-29'));
-    expect(inner?.value).toBe('20-29 Work/21 Projects/');
-    await fireEvent.click(screen.getByRole('button', { name: 'Remove 20-29 Work/21 Projects/' }));
+    expect(screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' }).map((input) => input.value)).toEqual(['14 Sport', '']);
+    await fireEvent.click(screen.getByRole('button', { name: 'Remove the new folder in 20-29 Work/21 Projects' }));
 
     await next();
     await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
@@ -140,10 +140,10 @@ describe('SetupWizard', () => {
     await fireEvent.click(screen.getByRole('button', { name: 'Add a folder' }));
     await fireEvent.input(screen.getByRole('textbox', { name: 'New folder' }), { target: { value: 'Hobbies' } });
     await fireEvent.click(screen.getByRole('button', { name: 'Add a subfolder to Hobbies' }));
-    const inner = screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' }).find((field) => field.value.startsWith('Hobbies/'));
-    expect(inner?.value).toBe('Hobbies/');
+    const inner = screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' })[1];
+    expect(inner?.value).toBe('');
     if (!inner) return;
-    await fireEvent.input(inner, { target: { value: 'Hobbies/Running' } });
+    await fireEvent.input(inner, { target: { value: 'Running' } });
     await fireEvent.input(screen.getByRole('textbox', { name: 'What goes into Hobbies/Running' }), { target: { value: 'Running, races and training plans.' } });
     // Hobbies only holds Running now: its own description is optional.
     expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'What goes into Hobbies' }).placeholder).toMatch(/^Optional/);
@@ -162,7 +162,7 @@ describe('SetupWizard', () => {
     render(SetupWizard, { input: { ...(await input()), existing, found: ['10-19 Life admin/15 Travel'] }, submit, cancel: vi.fn() });
     expect(screen.getByRole('status').textContent).toContain('Found a new folder in your vault');
     const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
-    expect(folder.value).toBe('10-19 Life admin/15 Travel');
+    expect(folder.value).toBe('15 Travel');
     expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'What goes into 10-19 Life admin/15 Travel' }).value).toBe('Notes about Travel.');
 
     await next();
@@ -170,6 +170,27 @@ describe('SetupWizard', () => {
     const [charter, planNow] = submit.mock.calls[0] ?? [];
     expect(charter?.destinations.find((d) => d.path === '10-19 Life admin/15 Travel')).toMatchObject({ match: [{ filename: '^15\\.\\d{2}(?:\\s|$)' }] });
     expect(planNow).toBe(true);
+  });
+
+  it('reorders folders among their siblings, with the arrow keys or by dragging', async () => {
+    const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
+    render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
+    await next();
+    const archive = screen.getByRole('button', { name: 'Move 4 Archive' });
+    archive.focus();
+    await fireEvent.keyDown(archive, { key: 'ArrowUp' });
+    // The handle keeps the focus, so the folder can travel further.
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Move 4 Archive' }));
+
+    const transfer = { setData: vi.fn(), setDragImage: vi.fn(), effectAllowed: '' };
+    await fireEvent.dragStart(screen.getByRole('button', { name: 'Move Other' }), { dataTransfer: transfer });
+    const projects = screen.getByRole('textbox', { name: 'Folder for projects' }).closest('.avo-folder') as HTMLElement;
+    await fireEvent.dragOver(projects, { clientY: -1, dataTransfer: transfer });
+    await fireEvent.drop(projects, { dataTransfer: transfer });
+
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
+    expect(submit.mock.calls[0]?.[0].destinations.map((d) => d.path)).toEqual(['Other', '1 Projects', '2 Areas', '4 Archive', '3 Resources']);
   });
 
   it('blocks the next step while the changes do not make a charter', async () => {

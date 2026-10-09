@@ -115,17 +115,22 @@ appears at the top of the list as **Suggested by AI**.
 
 ### 2. Adjust
 
-Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Folders are
-shown as a tree: each under the folder it is in (such as a Johnny.Decimal area), and every new subfolder
-right under the folder you added it to. Rename folders, remove the ones you do
-not want (**×**; **Add back** brings them back), and add folders for subjects the method does not cover:
+Folders are shown as a tree: each under the folder it is in (such as a Johnny.Decimal area), with its
+name and, below it, what kind of note it holds (*Atomic notes: one idea each*). Click a name to rename
+it; renaming a folder carries the new folders inside it along. Remove folders you do not want (**×**;
+**Add back** brings them back), and add folders for subjects the method does not cover:
 
-- **Add a folder here**, next to a group, adds one inside it. In Johnny.Decimal the name starts with the
-  area's next free number (`10-19 Life admin/14 `), so you only type the rest.
-- The folder-plus button on any folder, one you added included, adds a subfolder inside it (`2 Areas/`,
-  `Hobbies/`). A new folder that only holds subfolders needs no description: notes go into the
-  subfolders.
-- **Add a folder** at the bottom adds one at the top level.
+- **Add folder**, on a group such as an area, adds one inside it. In Johnny.Decimal the name starts with
+  the area's next free number (`14 `), so you only type the rest.
+- The folder-plus button on any folder, one you added included, adds a subfolder inside it. A new folder
+  that only holds subfolders needs no description: notes go into the subfolders.
+- **Add a folder** at the bottom adds one at the top level; there a whole path is fine
+  (`40-49 Hobbies/41 Sport`).
+
+**Order.** Drag a folder by its handle (the dots on the left) to move it among the folders next to it,
+or focus the handle and press the up and down arrow keys. An area moves with all its categories. The
+order is the order of the charter's list, and when two folders' rules both match a note, the first one
+wins. Folders only move among their neighbours: to put one inside another folder, rename it.
 
 A new folder needs a name and a sentence on what goes in it, such as *Running, races and training plans*:
 AI files notes by that sentence, not by the name. In Johnny.Decimal, notes named `14.01 …` then go to
