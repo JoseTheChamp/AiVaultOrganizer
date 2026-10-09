@@ -792,11 +792,11 @@
 }
 
 .avo-row.is-accepted {
-  box-shadow: inset 3px 0 0 var(--interactive-accent);
+  box-shadow: inset 3px 0 0 var(--color-green);
 }
 
 .avo-row.is-rejected {
-  box-shadow: inset 3px 0 0 var(--background-modifier-border);
+  box-shadow: inset 3px 0 0 var(--color-red);
 }
 
 .avo-row.is-rejected .avo-row-title {

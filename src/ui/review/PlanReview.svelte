@@ -47,12 +47,15 @@
   const rows: Record<string, HTMLButtonElement> = {};
 
   const shown = $derived(model.items.filter((item) => matches(item, decisions.get(item.op.id) ?? 'pending', filters)));
-  // Rejected changes leave their groups for a folded section at the end, where a decision can still be
-  // undone; filtering by "rejected" shows them in their groups instead.
+  // Changes rejected before the review opened wait in a folded section at the end, where a decision can
+  // still be undone. A change rejected now stays where it is, struck through, so the reviewer sees what
+  // happened; it folds away the next time the review opens. Filtering by "rejected" shows all in place.
+  // svelte-ignore state_referenced_locally
+  const folded = new SvelteSet(model.plan.operations.filter((op) => op.status === 'rejected').map((op) => op.id));
   const apart = $derived(filters.status !== 'rejected');
-  const isRejected = (item: ReviewItem) => decisions.get(item.op.id) === 'rejected';
-  const groups = $derived(groupItems(apart ? shown.filter((item) => !isRejected(item)) : shown));
-  const rejected = $derived(apart ? shown.filter(isRejected) : []);
+  const isFolded = (item: ReviewItem) => folded.has(item.op.id) && decisions.get(item.op.id) === 'rejected';
+  const groups = $derived(groupItems(apart ? shown.filter((item) => !isFolded(item)) : shown));
+  const rejected = $derived(apart ? shown.filter(isFolded) : []);
   let rejectedOpen = $state(false);
   const order = $derived([...groups.flatMap((group) => (showAll.has(group.title) ? group.items : group.items.slice(0, PAGE))), ...(rejectedOpen ? rejected : [])]);
   const counts = $derived(decisionCounts(model.items, decisions));
@@ -73,6 +76,8 @@
 
   function update(next: Map<string, Decision>): void {
     decisions = next;
+    // A change taken back from the folded section returns to its group for good.
+    for (const id of folded) if (next.get(id) !== 'rejected') folded.delete(id);
     actions.save(decidedPlan(model.plan, next));
   }
   function decideOne(item: ReviewItem, decision: Decision): void {

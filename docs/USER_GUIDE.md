@@ -241,9 +241,10 @@ of the time there. Click a row to see **why** and **exactly what changes**:
 
 **Deciding.**
 
-- **Accept** (green) and **Reject** (red) on each row. Click again to undecide. Rejected changes leave
-  their group for a folded **Rejected** section at the end; open it to take one back. Nothing happens to
-  them, and they do not keep the plan open: once everything else is applied, the plan is finished.
+- **Accept** (green) and **Reject** (red) on each row. Click again to undecide. A change you reject stays
+  where it is, struck through; the next time the review opens, rejected changes wait in a folded
+  **Rejected** section at the end, where you can take one back. Nothing happens to them, and they do not
+  keep the plan open: once everything else is applied, the plan is finished.
 - **Accept N changes** accepts every shown, undecided change at or above the confidence you pick in the
   menu next to it.
 - Decisions keep related changes together. Accepting a property fix of a note that also moves accepts the

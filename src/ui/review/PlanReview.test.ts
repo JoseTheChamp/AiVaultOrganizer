@@ -79,10 +79,16 @@ describe('PlanReview', () => {
     expect(saved?.operations.find((op) => op.id === rename.id)?.status).toBe('rejected');
   });
 
-  it('folds rejected changes away at the end, where they can still be taken back', async () => {
+  it('keeps a change rejected now in place, so the reviewer sees what happened', async () => {
     setup();
     await fireEvent.click(within(screen.getByRole('region', { name: 'Moves into 4 Archive' })).getByRole('button', { name: 'Reject' }));
-    // The group is gone; the change waits, folded, in the rejected section.
+    expect(screen.getByRole('region', { name: 'Moves into 4 Archive' })).toBeTruthy();
+    expect(screen.queryByText(/^Rejected \(/)).toBeNull();
+  });
+
+  it('shows changes rejected earlier folded at the end, where they can still be taken back', async () => {
+    const earlier = { ...plan, operations: plan.operations.map((op) => (op.id === unsure.id ? { ...op, status: 'rejected' as const } : op)) };
+    setup({ plan: earlier, items: reviewItems(earlier, { ok: true, issues: [], staleOpIds: [] }, presetCharter('para', 'en')) });
     expect(screen.queryByRole('region', { name: 'Moves into 4 Archive' })).toBeNull();
     const folded = screen.getByText(/^Rejected \(1\)/).closest('details') as HTMLElement;
     expect(folded.hasAttribute('open')).toBe(false);
