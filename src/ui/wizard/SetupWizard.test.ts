@@ -133,6 +133,29 @@ describe('SetupWizard', () => {
     expect(charter?.destinations.some((d) => d.path?.startsWith('20-29 Work/21 Projects/'))).toBe(false);
   });
 
+  it('adds subfolders to folders of your own, which then need no description', async () => {
+    const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
+    render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Add a folder' }));
+    await fireEvent.input(screen.getByRole('textbox', { name: 'New folder' }), { target: { value: 'Hobbies' } });
+    await fireEvent.click(screen.getByRole('button', { name: 'Add a subfolder to Hobbies' }));
+    const inner = screen.getAllByRole<HTMLInputElement>('textbox', { name: 'New folder' }).find((field) => field.value.startsWith('Hobbies/'));
+    expect(inner?.value).toBe('Hobbies/');
+    if (!inner) return;
+    await fireEvent.input(inner, { target: { value: 'Hobbies/Running' } });
+    await fireEvent.input(screen.getByRole('textbox', { name: 'What goes into Hobbies/Running' }), { target: { value: 'Running, races and training plans.' } });
+    // Hobbies only holds Running now: its own description is optional.
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'What goes into Hobbies' }).placeholder).toMatch(/^Optional/);
+    expect(screen.queryByRole('alert')).toBeNull();
+
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Create charter' }));
+    const paths = submit.mock.calls[0]?.[0].destinations.map((d) => d.path);
+    expect(paths).toContain('Hobbies/Running');
+    expect(paths).not.toContain('Hobbies');
+  });
+
   it('blocks the next step while the changes do not make a charter', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();

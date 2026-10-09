@@ -112,7 +112,9 @@ not want (**×**; **Add back** brings them back), and add folders for subjects t
 
 - **Add a folder here**, next to a group, adds one inside it. In Johnny.Decimal the name starts with the
   area's next free number (`10-19 Life admin/14 `), so you only type the rest.
-- The folder-plus button on a folder adds a subfolder inside that folder (`2 Areas/`).
+- The folder-plus button on any folder, one you added included, adds a subfolder inside it (`2 Areas/`,
+  `Hobbies/`). A new folder that only holds subfolders needs no description: notes go into the
+  subfolders.
 - **Add a folder** at the bottom adds one at the top level.
 
 A new folder needs a name and a sentence on what goes in it, such as *Running, races and training plans*:

@@ -44,6 +44,21 @@ describe('customizeCharter', () => {
     ]);
   });
 
+  it('treats a new folder without a description that only holds other new folders as a group', () => {
+    const result = customizeCharter(para, {
+      added: [
+        { path: 'Hobbies', description: '' },
+        { path: 'Hobbies/Running', description: 'Running, races and training plans.' },
+      ],
+    });
+    if (!result.ok) throw new Error(result.error.join(' '));
+    const paths = result.value.destinations.map((d) => d.path);
+    expect(paths).toContain('Hobbies/Running');
+    expect(paths).not.toContain('Hobbies');
+    // With nothing inside it, the same folder needs a description again.
+    expect(customizeCharter(para, { added: [{ path: 'Hobbies', description: '' }] }).ok).toBe(false);
+  });
+
   it('keeps the Johnny.Decimal index in step with the folders', () => {
     const jd = presetCharter('johnny-decimal', 'en');
     const result = customizeCharter(jd, {

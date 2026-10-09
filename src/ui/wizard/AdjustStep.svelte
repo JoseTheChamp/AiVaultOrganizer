@@ -26,6 +26,11 @@
   const pathOf = (destination: Destination) => changes.paths[destination.id] || destination.path || '';
   const nameOf = (destination: Destination) => (destination.path !== undefined ? pathOf(destination) : (destination.category ?? destination.id));
 
+  /** A folder path as typed, without surrounding spaces or slashes. */
+  const clean = (path: string) => path.trim().replace(/^\/+|\/+$/g, '');
+  /** Whether other folders are being added inside `path`: then it needs no description of its own. */
+  const holdsFolders = (path: string) => clean(path) !== '' && changes.added.some((other) => clean(other.path).toLowerCase().startsWith(`${clean(path).toLowerCase()}/`));
+
   /** The new row whose path field takes the cursor once it appears. */
   let focusKey: number | null = null;
 
@@ -98,12 +103,21 @@
               <input
                 type="text"
                 bind:value={folder.description}
-                placeholder="What goes here, e.g. running, races and training plans"
+                placeholder={holdsFolders(folder.path) ? 'Optional: it only holds the folders inside it' : 'What goes here, e.g. running, races and training plans'}
                 aria-label={`What goes into ${folder.path || 'the new folder'}`}
               />
               {@render existing(folder.path)}
             </div>
             <div class="avo-destination-buttons">
+              <button
+                type="button"
+                class="clickable-icon"
+                aria-label={`Add a subfolder to ${clean(folder.path) || 'the new folder'}`}
+                disabled={clean(folder.path) === ''}
+                onclick={() => add(clean(folder.path))}
+              >
+                <Icon name="folder-plus" />
+              </button>
               <button
                 type="button"
                 class="clickable-icon"

@@ -46,13 +46,16 @@ export function customizeCharter(base: Charter, changes: CharterChanges): Result
       return destination.path !== undefined && path !== undefined ? { ...destination, path: cleanFolder(path) } : destination;
     });
   const ids = new Set(destinations.map((destination) => destination.id));
-  for (const folder of changes.added ?? []) {
-    const path = cleanFolder(folder.path);
-    const description = folder.description.trim();
+  const added = (changes.added ?? []).map((folder) => ({ path: cleanFolder(folder.path), description: folder.description.trim() }));
+  const paths = [...destinations.map((destination) => destination.path ?? ''), ...added.map((folder) => folder.path)].filter((path) => path !== '');
+  const holdsFolders = (path: string) => paths.some((other) => other.toLowerCase().startsWith(`${path.toLowerCase()}/`));
+  for (const { path, description } of added) {
     if (path === '') {
       problems.push('A new folder needs a name.');
       continue;
     }
+    // A folder that only holds other folders (a new area) is no destination; applying creates it with them.
+    if (description === '' && holdsFolders(path)) continue;
     if (description === '') problems.push(`Say what goes into "${path}": AI files notes by that description.`);
     const id = uniqueId(slug(fileName(path)), ids);
     ids.add(id);
