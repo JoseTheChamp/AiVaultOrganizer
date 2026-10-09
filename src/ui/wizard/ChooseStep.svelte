@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { VaultAnalysis } from '../../core/analysis/analyze';
-  import type { Lang } from '../../core/charter/presets/index';
   import { percent } from '../format';
   import CharterTree from './CharterTree.svelte';
   import type { CharterFit } from './charter-tree';
@@ -14,16 +13,12 @@
     choice: Choice;
     /** The chosen system as it would look in this vault. */
     fit: CharterFit;
-    lang: Lang;
-    /** Language is fixed while editing an existing charter or a draft. */
-    langLocked: boolean;
     choose: (choice: Choice) => void;
-    setLang: (lang: Lang) => void;
     /** The AI suggestion controls (or a way to set AI up). */
     children?: Snippet;
   }
 
-  let { analysis, options, choice, fit, lang, langLocked, choose, setLang, children }: Props = $props();
+  let { analysis, options, choice, fit, choose, children }: Props = $props();
   const selected = $derived(options.find((option) => option.choice === choice) ?? options[0]);
 </script>
 
@@ -67,13 +62,6 @@
           <ul class="avo-issues">{#each selected.about.notFor as item (item)}<li>{item}</li>{/each}</ul>
         {/if}
       </details>
-      <label class="avo-field avo-field-inline avo-muted">
-        <span>Folder names in</span>
-        <select class="dropdown" value={lang} disabled={langLocked} onchange={(event) => setLang(event.currentTarget.value === 'cs' ? 'cs' : 'en')}>
-          <option value="en">English</option>
-          <option value="cs">Čeština</option>
-        </select>
-      </label>
     </section>
   {/if}
 </div>

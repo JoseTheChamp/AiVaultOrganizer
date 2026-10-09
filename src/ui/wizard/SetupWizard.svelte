@@ -25,6 +25,8 @@
   provideIcons(icons);
 
   // The wizard owns its working copy of the choices; the input it was opened with does not change.
+  // Folder names follow the vault's language where the presets have it (English, Czech) and are English
+  // otherwise; any name can be changed in the Adjust step, and the model reads notes in any language.
   const start = (() => {
     const lang: Lang = input.existing ? toLang(input.existing.language) : input.analysis.stats.language.language;
     const choice = recommendedChoice(input);
@@ -49,14 +51,10 @@
   const fit = $derived(charter ? charterFit(charter, input.snapshot, input.charterPath) : null);
   const index = $derived(STEPS.findIndex((candidate) => candidate.id === step));
 
-  // A new system or language starts the adjustments over from that charter.
+  // A new system starts the adjustments over from that charter.
   function choose(next: Choice): void {
     choice = next;
     changes = initialChanges(baseCharter(input, next, lang, draft));
-  }
-  function setLang(next: Lang): void {
-    lang = next;
-    changes = initialChanges(baseCharter(input, choice, next, draft));
   }
   async function askForDraft(): Promise<void> {
     if (!requestDraft || drafting) return;
@@ -99,7 +97,7 @@
   <div class="avo-wizard-body">
     <h3 class="avo-step-title avo-visually-hidden" tabindex="-1" bind:this={heading}>Step {index + 1} of {STEPS.length}: {STEPS[index]?.label}</h3>
     {#if step === 'choose'}
-      <ChooseStep analysis={input.analysis} {options} {choice} fit={baseFit} {lang} langLocked={choice === 'existing' || choice === 'draft'} {choose} {setLang}>
+      <ChooseStep analysis={input.analysis} {options} {choice} fit={baseFit} {choose}>
         {#if requestDraft}
           <div class="avo-draft">
             <span class="avo-muted">Not sure? Let AI read samples of your notes and suggest a system.</span>

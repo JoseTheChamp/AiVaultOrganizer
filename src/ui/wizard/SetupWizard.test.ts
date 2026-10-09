@@ -36,6 +36,18 @@ describe('SetupWizard', () => {
     expect(within(preview()).getByText('Atlas')).toBeTruthy();
   });
 
+  it("names folders in the vault's language, without asking", async () => {
+    const snapshot = await InMemoryVault.from({
+      'Poznámky k projektu.md': 'Je to plán, který se týká rekonstrukce a stěhování do bytu.',
+      'Nápady na víkend.md': 'Výlet na hory, nebo do lázní? Ještě není jasné, kdy pojedeme.',
+    }).snapshot();
+    const czech: WizardInput = { snapshot, analysis: analyzeVault(snapshot, { now: Date.UTC(2026, 9, 7) }), existing: null, replacesInvalid: false, charterPath: 'Vault Charter.md' };
+    render(SetupWizard, { input: czech, submit: vi.fn(), cancel: vi.fn() });
+    await fireEvent.click(screen.getByRole('radio', { name: /^PARA/ }));
+    expect(within(preview()).getByText('1 Projekty')).toBeTruthy();
+    expect(screen.queryByRole('combobox', { name: /Folder names/ })).toBeNull();
+  });
+
   it('adjusts folders with a live preview and hands the charter back', async () => {
     const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
     render(SetupWizard, { input: await input(), submit, cancel: vi.fn() });

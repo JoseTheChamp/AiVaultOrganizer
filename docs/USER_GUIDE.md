@@ -97,6 +97,9 @@ On the right, the selected method appears as the **folder tree it would give you
 
 **About** opens what the method is, what it is good for, and what it is not so good for.
 
+Folder names follow the language of your vault where the methods come translated (English and Czech),
+and are English otherwise; rename any of them in the next step. AI reads notes in any language either way.
+
 **Suggest a system** asks AI to read samples of your notes and propose a system. You can add a wish such
 as "keep courses apart". Without AI set up, it opens [Set up AI](#setting-up-ai) first. The suggestion
 appears at the top of the list as **Suggested by AI**.
