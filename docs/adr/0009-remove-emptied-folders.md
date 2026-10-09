@@ -66,5 +66,6 @@ still there: empty before the plan, so this decision left them alone, and the us
 work. A folder that is empty and no part of the charter is neither content nor structure the user chose to
 keep; it is what reorganizing is meant to clear. Plans now also propose removing those, with the same
 safety (reviewed, empty at apply time, trash, undo). Empty folders inside the charter's folders still stay
-unless the plan empties them. The PARA plan tasks of both eval fixtures remove three more folders, and
+unless the plan empties them, and so do empty folders next to them in the same parent, such as a new
+category the user made in a Johnny.Decimal area before adding it to the charter. The PARA plan tasks of both eval fixtures remove three more folders, and
 their recorded plan summaries were re-recorded.

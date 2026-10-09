@@ -2,6 +2,7 @@ import type { Charter } from '../charter/schema';
 import { matchesAnyGlob } from '../model/glob';
 import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation } from '../model/operation';
+import { parentFolder } from '../model/paths';
 import { charterRoots } from './charter-roots';
 
 /**
@@ -28,7 +29,12 @@ export function emptiedFolderOperations(snapshot: VaultSnapshot, charter: Charte
 
   const kept = [...charterRoots(charter), charter.system.attachments, charter.system.templates].filter((path): path is string => Boolean(path));
   const protectedFolder = (folder: string) => kept.some((root) => inside(root, folder)) || matchesAnyGlob(`${folder}/x`, charter.ignore);
-  const inCharter = (folder: string) => kept.some((root) => inside(folder, root));
+  // Inside a charter folder, above one (an area), or next to them in the same parent (a new category in
+  // a Johnny.Decimal area, made by the user and not in the charter yet): part of the system's structure.
+  const inCharter = (folder: string) => {
+    const parent = parentFolder(folder);
+    return kept.some((root) => inside(folder, root) || inside(root, folder) || (parent !== '' && inside(root, parent)));
+  };
 
   const emptied = snapshot.folders.filter((folder) => holds(before, folder) && !holds(after, folder));
   const strays = snapshot.folders.filter((folder) => !holds(before, folder) && !holds(after, folder) && !inCharter(folder));

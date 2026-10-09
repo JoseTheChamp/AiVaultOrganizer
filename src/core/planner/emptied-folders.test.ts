@@ -40,6 +40,11 @@ describe('emptiedFolderOperations', () => {
     ]);
   });
 
+  it('keeps an empty folder made next to the charter folders, such as a new category in an area', async () => {
+    const jd = presetCharter('johnny-decimal', 'en');
+    expect(await removals({ 'Notes/a.md': '' }, ['10-19 Life admin/15 Travel', 'Temp'], [], jd)).toEqual([['Temp', 1]]);
+  });
+
   it("keeps the charter's folders, their parents, the system folders and ignored ones", async () => {
     const jd = presetCharter('johnny-decimal', 'en');
     const files = { '00-09 System/01 Inbox/a.md': '', 'Templates/t.md': '', 'Private/p.md': '', 'Stray/s.md': '' };
