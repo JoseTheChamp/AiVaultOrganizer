@@ -5,7 +5,7 @@ ever deleted, and every change can be undone.
 
 > **Status:** early development, not yet released. See [`docs/PLAN.md`](docs/PLAN.md) for the roadmap.
 
-**New here?** Read the [user guide](docs/USER_GUIDE.md).
+**New here?** Read the [user guide](docs/USER_GUIDE.md). How it works inside, the AI included: [how it works](docs/HOW_IT_WORKS.md).
 
 ## Why
 
