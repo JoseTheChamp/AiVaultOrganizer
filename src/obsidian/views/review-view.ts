@@ -126,7 +126,7 @@ export class ReviewView extends ItemView {
       this.component = null;
       this.model = null;
       this.contentEl.empty();
-      this.contentEl.createEl('p', { cls: 'avo-muted', text: 'Every change in this plan has been applied or dropped. Organize again to see what is left.' });
+      this.contentEl.createEl('p', { cls: 'avo-muted', text: 'Every change in this plan has been applied or dropped. Scan and organize to see what is left.' });
       return;
     }
     this.model = reactive(fields);

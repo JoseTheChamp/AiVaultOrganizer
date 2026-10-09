@@ -92,7 +92,7 @@ describe('Dashboard', () => {
     expect(next().getByText(/^15 Travel, 16 Cars: say what goes in them/)).toBeTruthy();
     await fireEvent.click(next().getByRole('button', { name: 'Add and organize' }));
     // Always at hand too, for new notes as much as new folders.
-    await fireEvent.click(screen.getByRole('button', { name: 'Organize again' }));
+    await fireEvent.click(screen.getByRole('button', { name: 'Scan and organize' }));
     expect(wired.organizeAgain).toHaveBeenCalledTimes(2);
   });
 

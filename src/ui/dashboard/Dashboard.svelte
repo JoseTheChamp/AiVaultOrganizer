@@ -56,7 +56,7 @@
         return {
           title: `${plural(next.notes, 'note')} ${verb(next.notes, 'is', 'are')} out of place`,
           detail: aiOn ? 'Plan where they belong; you approve every change.' : 'Without AI, only notes your rules or similar notes recognize get placed.',
-          action: { label: 'Organize', run: actions.plan },
+          action: { label: 'Organize', run: actions.organizeAgain },
           ...(withoutAi ? { alternative: withoutAi } : {}),
         };
       case 'new-folders': {
@@ -128,6 +128,13 @@
       </section>
     {/if}
 
+    {#if current.charter.status === 'ok'}
+      <div class="avo-scan">
+        <button type="button" disabled={busy} onclick={actions.organizeAgain}>Scan and organize</button>
+        <span class="avo-muted">Finds new notes and folders, and puts the vault back in order by your charter.</span>
+      </div>
+    {/if}
+
     <dl class="avo-status">
       <dt>System</dt>
       <dd>
@@ -168,9 +175,6 @@
     </dl>
 
     <div class="avo-dash-footer">
-      {#if current.charter.status === 'ok'}
-        <button type="button" class="avo-link" disabled={busy} onclick={actions.organizeAgain}>Organize again</button>
-      {/if}
       <button type="button" class="avo-link" onclick={actions.analyze}>Full diagnosis</button>
       <button type="button" class="avo-link" onclick={actions.refresh}>Refresh</button>
     </div>

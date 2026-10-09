@@ -28,7 +28,7 @@ export interface WizardInput {
   replacesInvalid: boolean;
   charterPath: string;
   /**
-   * Folders the user made in the vault that the charter does not know yet ("Organize again"): the
+   * Folders the user made in the vault that the charter does not know yet ("Scan and organize"): the
    * wizard opens at Adjust, on the current charter, with them added.
    */
   found?: readonly string[];

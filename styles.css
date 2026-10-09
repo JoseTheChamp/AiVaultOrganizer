@@ -305,6 +305,15 @@
   margin-top: 0;
 }
 
+.avo-scan {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-2-2) var(--size-4-2);
+  margin: var(--size-4-2) 0;
+  font-size: var(--font-ui-small);
+}
+
 .avo-status {
   display: grid;
   grid-template-columns: max-content 1fr;

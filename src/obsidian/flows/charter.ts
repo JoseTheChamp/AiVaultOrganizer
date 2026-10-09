@@ -6,6 +6,7 @@ import { newFolders } from '../../core/charter/new-folders';
 import type { Lang } from '../../core/charter/presets';
 import type { Charter } from '../../core/charter/schema';
 import { computeDrift } from '../../core/drift/drift';
+import { plural } from '../../core/model/text';
 import type AiVaultOrganizerPlugin from '../main';
 import { SetupWizardModal } from '../views/setup-wizard-modal';
 import { DriftModal } from '../views/drift-modal';
@@ -16,14 +17,19 @@ import { requireCharter } from './require-charter';
 import { runPlan, showRunReport } from './review';
 
 /**
- * "Organize again": reads the vault anew and plans it. Folders the user made in the system's
- * structure join the charter first (the wizard opens with them added), because notes are only filed
- * into the charter's folders; saving the charter then plans the vault.
+ * "Scan and organize": reads the vault anew, says what it found (notes out of place, folders the user
+ * made), and puts the vault back in order by the charter. New folders in the system's structure join
+ * the charter first (the wizard opens with them added), because notes are only filed into the charter's
+ * folders; saving the charter then plans the vault. Notes waiting in Other are always placed again.
  */
 export async function organizeAgain(plugin: AiVaultOrganizerPlugin): Promise<void> {
   const loaded = await requireCharter(plugin);
   if (!loaded) return;
-  const found = newFolders(await plugin.services.reader.snapshot(), loaded.charter);
+  const snapshot = await plugin.services.reader.snapshot();
+  const found = newFolders(snapshot, loaded.charter);
+  const outOfPlace = computeDrift(snapshot, loaded.charter, { charterPath: loaded.path, now: Date.now() }).offCharter;
+  const parts = [...(outOfPlace > 0 ? [`${plural(outOfPlace, 'note')} out of place`] : []), ...(found.length > 0 ? [plural(found.length, 'new folder')] : [])];
+  new Notice(parts.length > 0 ? `Scan found ${parts.join(' and ')}.` : 'Scan found nothing new; checking the rest of the vault.', 6000);
   if (found.length > 0) await setUpCharter(plugin, { found });
   else await planRealignment(plugin);
 }

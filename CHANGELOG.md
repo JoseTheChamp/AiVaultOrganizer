@@ -43,7 +43,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - `Set up AI`: one dialog to run AI on this computer or with your API key (stored in Obsidian's keychain),
   with a connection test that names a missing local model.
 - Charter rules render as a summary card in reading view, or as a list of problems with line numbers.
-- `Check drift` and `Organize vault`: see where the vault departs from its charter, and get a plan for
+- `Check drift` and `Scan and organize`: see where the vault departs from its charter, and get a plan for
   the whole vault. Rules decide first; notes no rule covers follow the placed notes they resemble; a
   language model proposes places for the rest. Properties and tags are normalized, maps of content and
   category notes updated, and queries the moves would change are flagged.
@@ -52,7 +52,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   prices set, what it costs.
 - Dashboard in the sidebar (ribbon icon or `Open dashboard`): the vault's health, the one next step
   (choose a system, review, organize), and the system, AI and last change at a glance.
-- **Organize again** on the dashboard: reads new notes and new folders and plans the vault again. Folders
+- **Scan and organize** on the dashboard (always there) and as a command: says what it found (notes out of
+  place, new folders), then plans the vault back into order by the charter. Folders
   made inside the system's structure (a new Johnny.Decimal category, a folder in a flat folder) join the
   charter first, through the wizard, so notes can be filed into them; the dashboard also points them out.
 - Long tasks (organizing, indexing, a suggested system) show in a notice and on the dashboard what they

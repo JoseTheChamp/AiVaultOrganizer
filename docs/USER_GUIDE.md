@@ -68,8 +68,11 @@ The dashboard sits in the right sidebar.
   the dashboard opens and once a minute, with a free request that lists models (no tokens).
 - **Last change**: the last run, with **Undo**.
 
-**Organize again** at the bottom reads the vault anew, with your new notes and folders, and plans it
-again. Folders you made inside your system (a new category such as `10-19 Life admin/15 Travel`, or a
+**Scan and organize**, under the next step and always there, reads the vault anew and puts it back in
+order by your charter: after you added notes anywhere, moved things around, or made new folders. It first
+says what it found ("Scan found 5 notes out of place and 1 new folder"), then plans; you review as always.
+Notes in the root, the inbox, folders outside your system and Other are placed again; a note you put into
+one of your system's folders yourself counts as filed there and is left alone. Folders you made inside your system (a new category such as `10-19 Life admin/15 Travel`, or a
 folder inside a flat folder such as the archive) are not part of the charter yet, and notes only go into
 the charter's folders. So the wizard opens first, with them added and a starting description ("Notes
 about Travel."); adjust what goes in each, update the charter, and organizing starts. Without new folders,
@@ -193,7 +196,7 @@ not running, the key is wrong, or the model is not installed (with the models th
 
 ## Organizing your notes
 
-**Organize** on the dashboard (or the **Organize vault** command) builds a plan for the whole vault:
+**Organize** on the dashboard (or the **Scan and organize** command) builds a plan for the whole vault:
 
 1. **Rules** place what they can. They are never wrong.
 2. **Similar notes** place notes that closely resemble notes already in the right folder.
@@ -367,7 +370,7 @@ Close Obsidian, extract the zip and copy the contents of `vault/` over your vaul
 | Open dashboard | The sidebar dashboard. |
 | Set up AI | Connect a language model. |
 | Set up charter | The wizard: choose and adjust a system. |
-| Organize vault | Plan where notes belong (the dashboard's *Organize*). |
+| Scan and organize | Find new notes and folders, and plan where notes belong. |
 | Review pending plan | Reopen the last plan. |
 | Check drift | Where the vault departs from the charter. |
 | Undo last run | Restore the vault as it was before the last run. |

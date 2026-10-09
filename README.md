@@ -57,7 +57,7 @@ your notes), lets you rename folders, and shows the charter note before anything
 explains your system in plain language (English or Czech) and ends with a ```charter YAML block holding
 the rules. Edit either part; the plugin only regenerates the marked sections and never touches your own text.
 
-**Check drift** shows where the vault departs from its charter. **Organize vault** builds a plan for the
+**Check drift** shows where the vault departs from its charter. **Scan and organize** builds a plan for the
 whole vault:
 
 - rules decide first, and are never wrong;
@@ -161,7 +161,7 @@ also enter prices per million tokens to see cost estimates; no prices are built 
     (without frontmatter or code) to the embedding endpoint, once per note and again only after a note
     changes. For a provider that is not on this computer, it first asks, showing how many notes would go
     to which host.
-  - **Organize vault with a language model** sends a *note card* for each note that rules and similar
+  - **Scan and organize with a language model** sends a *note card* for each note that rules and similar
     notes could not place: title, folder, tags, a few properties (such as type and status), headings,
     outgoing links, how recently it changed and the first few hundred characters of text. It also sends
     the plan's counts and a few one-line descriptions of changes for the summary. A dialog shows this,
