@@ -6,7 +6,7 @@ import { toLang } from '../charter/presets';
 import type { Charter } from '../charter/schema';
 import type { VaultSnapshot } from '../model/note';
 import { createOperation, type Operation, type OperationIntent } from '../model/operation';
-import { createPlan, type Plan } from '../model/plan';
+import { createPlan, type Plan, uniqueOperations } from '../model/plan';
 import { buildCard, type NoteCard } from './cards';
 import { charterRoots } from './charter-roots';
 import { type Classification, classifyNotes, type KnnOptions, type NeighborLookup } from './classify';
@@ -126,7 +126,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     id: `plan-${stamp}`,
     createdAt: input.now.toISOString(),
     charterRevision: charter.revision,
-    operations: [...sofar, ...mocs, ...queries, ...emptied],
+    operations: uniqueOperations([...sofar, ...mocs, ...queries, ...emptied]),
     warnings: placed.warnings,
     promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV1].map((prompt) => [prompt.id, prompt.version])) : {},
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},

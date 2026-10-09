@@ -43,6 +43,16 @@ export function createPlan(input: PlanInput): Plan {
   return planSchema.parse({ version: 1, charterRevision: 0, ...input });
 }
 
+/**
+ * Each operation once, the first of any repeats kept. Ids come from what an operation does, so two
+ * parts of the planner proposing the same change (a folder both the charter and its category notes
+ * need) give the same id; the review lists operations by id and the validator rejects a repeated one.
+ */
+export function uniqueOperations<T extends Pick<Operation, 'id'>>(operations: readonly T[]): T[] {
+  const seen = new Set<string>();
+  return operations.filter((op) => !seen.has(op.id) && Boolean(seen.add(op.id)));
+}
+
 /** Parses a stored or hand-written plan; never throws on bad input. */
 export function parsePlan(json: unknown): Result<Plan, string[]> {
   const parsed = planSchema.safeParse(json);

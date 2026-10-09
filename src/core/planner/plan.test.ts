@@ -167,6 +167,16 @@ describe('buildPlan without neighbours or a model', () => {
     expect(report.issues).toEqual([]);
   });
 
+  it('creates a folder once when the charter and its category notes both need it', async () => {
+    const flat = presetCharter('flat-categories', 'en');
+    const charter = { ...flat, mocs: { enabled: true, perDestination: false, folder: 'Categories' } };
+    // No Categories folder yet, and notes that refer to categories without a note of their own.
+    const plan = await rulesOnly(charter, { 'Bread.md': '---\ncategories: ["[[Recipes]]"]\n---\n', 'Tea.md': '---\ncategories: ["[[Recipes]]"]\n---\n' }, [], true);
+    expect(plan.operations.filter((op) => op.kind === 'createFolder' && op.path === 'Categories')).toHaveLength(1);
+    expect(plan.operations.find((op) => op.kind === 'createNote')).toMatchObject({ path: 'Categories/Recipes.md' });
+    expect(new Set(plan.operations.map((op) => op.id)).size).toBe(plan.operations.length);
+  });
+
   it('adds the category link of a category destination, after the move when there is one', async () => {
     const flat = presetCharter('flat-categories', 'en');
     const recipes = { id: 'recipes', category: '[[Recipes]]', description: '', layout: 'flat' as const, priority: 0, match: [{ property: 'type', equals: 'recipe' }], examples: [] };

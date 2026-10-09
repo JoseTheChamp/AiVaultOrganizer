@@ -82,7 +82,9 @@ async function categoryOperations(input: MocInput): Promise<Operation[]> {
     }
   }
   const operations: Operation[] = [];
-  const folders = new Set(snapshot.folders.map((f) => f.toLowerCase()));
+  // Folders the plan already creates count as existing: the charter's own Categories folder is one.
+  const planned = input.operations.flatMap((op) => (op.kind === 'createFolder' ? [op.path] : []));
+  const folders = new Set([...snapshot.folders, ...planned].map((f) => f.toLowerCase()));
   for (const category of [...categories].sort()) {
     if (existingTitles.has(category.toLowerCase())) continue;
     const path = joinPath(folder, `${category}.md`);
@@ -105,7 +107,7 @@ async function upsert(input: MocInput, path: string, role: 'moc' | 'category', s
   const note = input.snapshot.notes.find((n) => n.path.toLowerCase() === path.toLowerCase());
   if (!note) {
     const folder = parentFolder(path);
-    const needsFolder = folder !== '' && !input.snapshot.folders.some((f) => f.toLowerCase() === folder.toLowerCase()) && !input.operations.some((op) => op.kind === 'createFolder' && op.path === folder);
+    const needsFolder = folder !== '' && !input.snapshot.folders.some((f) => f.toLowerCase() === folder.toLowerCase()) && !input.operations.some((op) => op.kind === 'createFolder' && op.path.toLowerCase() === folder.toLowerCase());
     return [
       ...(needsFolder ? [createOperation({ kind: 'createFolder', path: folder }, { source: 'rule', confidence: 1, rationale: 'Holds the map of content.' })] : []),
       createOperation({ kind: 'createNote', path, role, content }, { source: 'rule', confidence: 1, rationale: 'The charter asks for a map of content here.' }),
