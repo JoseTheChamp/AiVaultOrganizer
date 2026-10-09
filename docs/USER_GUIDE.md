@@ -107,7 +107,8 @@ appears at the top of the list as **Suggested by AI**.
 ### 2. Adjust
 
 Each folder shows what kind of note it holds, for example *Atomic notes: one idea each*. Folders are
-grouped under the folder they are in, such as a Johnny.Decimal area. Rename folders, remove the ones you do
+shown as a tree: each under the folder it is in (such as a Johnny.Decimal area), and every new subfolder
+right under the folder you added it to. Rename folders, remove the ones you do
 not want (**×**; **Add back** brings them back), and add folders for subjects the method does not cover:
 
 - **Add a folder here**, next to a group, adds one inside it. In Johnny.Decimal the name starts with the
