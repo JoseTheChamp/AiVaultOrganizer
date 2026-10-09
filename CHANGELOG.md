@@ -20,8 +20,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - An **Other** folder in every method, added by the setup wizard (removable): notes no rule, similar note
   or AI places for sure go there instead of being left behind, with the AI's best guess as the reason, and
   are placed again each time you organize.
-- Plans propose removing the folders their moves leave empty, so a reorganized vault shows its new
-  structure instead of a trail of empty folders. Each removal is reviewed like a move, happens only if
+- Plans propose removing the folders their moves leave empty, and empty folders that are no part of the
+  charter, so a reorganized vault shows its new structure instead of a trail of empty folders. Each removal is reviewed like a move, happens only if
   the folder is still empty, goes to the trash and is undone with the run.
 - Applying shows its progress and can be cancelled; the run report lists what was skipped or failed and
   why, the health score before and after, and offers to undo the run.

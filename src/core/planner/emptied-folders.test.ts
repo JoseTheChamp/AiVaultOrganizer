@@ -15,19 +15,28 @@ async function removals(files: Record<string, string>, folders: string[], operat
 describe('emptiedFolderOperations', () => {
   it('removes the folders the moves empty, deepest first, as confident as the least sure move out', async () => {
     const files = { 'Old/Sub/a.md': '', 'Old/b.md': '', 'Busy/c.md': '', 'Busy/d.md': '', 'Pics/p.png': '', '2 Areas/Health/f.md': '' };
-    const result = await removals(files, ['Old/Empty', 'Placeholder'], [
+    const result = await removals(files, ['Old/Empty', '1 Projects/Next year'], [
       move('Old/Sub/a.md', '3 Resources/a.md', 0.7),
       move('Old/b.md', '3 Resources/b.md'),
       move('Busy/c.md', '3 Resources/c.md'),
       move('2 Areas/Health/f.md', '4 Archive/f.md'),
     ]);
-    // Busy keeps a note, Pics an image, and Placeholder was empty before: they stay. An item folder
-    // inside a charter folder goes; the charter folder itself stays.
+    // Busy keeps a note and Pics an image. An item folder the moves empty goes, but an empty one that
+    // was left in a charter folder on purpose (a placeholder for a project) stays, as do charter folders.
     expect(result).toEqual([
       ['2 Areas/Health', 0.9],
       ['Old/Empty', 1],
       ['Old/Sub', 0.7],
       ['Old', 0.7],
+    ]);
+  });
+
+  it('removes empty folders that are no part of the system, whole', async () => {
+    const result = await removals({ 'Notes/a.md': '' }, ['New folder', 'Temp/Sub', '3 Resources/Later'], []);
+    expect(result).toEqual([
+      ['Temp/Sub', 1],
+      ['New folder', 1],
+      ['Temp', 1],
     ]);
   });
 

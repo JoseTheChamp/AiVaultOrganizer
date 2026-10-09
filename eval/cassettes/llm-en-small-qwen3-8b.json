@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "llm-en-small-qwen3-8b",
-  "recordedAt": "2026-10-08T11:06:47.454Z",
+  "recordedAt": "2026-10-09T08:40:51.142Z",
   "interactions": [
     {
       "key": "ce4c60053eb637e900e05f48414887597f34057562ccf15230f289d0d116af09",
@@ -8364,7 +8364,7 @@
       }
     },
     {
-      "key": "d35c49fe2d3444f1f7009583b0efd1173b0c6f208f456bd4fc1871893ced65ba",
+      "key": "0db8d1f22287c962f537da6f914ba04fccb121a9242f4aaf518eda4df6d7fe56",
       "request": {
         "method": "POST",
         "url": "http://localhost:11434/v1/chat/completions",
@@ -8377,7 +8377,7 @@
             },
             {
               "role": "user",
-              "content": "Method: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 12\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nExamples:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\"\n- Remove empty folder \"Inbox\"\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\"\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\"\n- Remove empty folder \"Home office setup\"\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\"\n- Remove empty folder \"API migration\"\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
+              "content": "Method: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nExamples:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\"\n- Remove empty folder \"Inbox\"\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\"\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\"\n- Remove empty folder \"Home office setup\"\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\"\n- Remove empty folder \"API migration\"\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
             }
           ],
           "stream": false,
@@ -8423,7 +8423,7 @@
         "headers": {
           "content-type": "application/json"
         },
-        "text": "{\"id\":\"chatcmpl-124\",\"object\":\"chat.completion\",\"created\":1791457606,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes your knowledge base by creating new folders, moving items, renaming properties and tags, and removing empty folders. Review the highlights to ensure the changes align with your structure and naming conventions.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Confirm all 71 moves are correctly mapped to their new locations\\\",\\n    \\\"Verify that 11 new folders are appropriately named and placed\\\",\\n    \\\"Check that 16 property renames match your intended terminology\\\",\\n    \\\"Ensure 5 tag renames reflect accurate categorization\\\",\\n    \\\"Validate that 12 empty folders are indeed no longer needed\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":326,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens\":131,\"total_tokens\":457}}\n"
+        "text": "{\"id\":\"chatcmpl-284\",\"object\":\"chat.completion\",\"created\":1791535250,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes your knowledge base by creating new folders, moving items, renaming properties and tags, and removing empty folders. Review the highlights to ensure accuracy and completeness.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Verify all 71 moves are correctly mapped to their new locations\\\",\\n    \\\"Confirm 11 new folders are appropriately named and placed\\\",\\n    \\\"Check that 16 property renames align with your naming conventions\\\",\\n    \\\"Ensure 5 tag renames reflect the correct meaning and usage\\\",\\n    \\\"Confirm 15 empty folders are indeed unused and safe to remove\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":326,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens\":128,\"total_tokens\":454}}\n"
       }
     }
   ]

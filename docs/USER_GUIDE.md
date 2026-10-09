@@ -204,8 +204,9 @@ warnings.
 - *Needs your attention* comes first: notes nobody could place, possible duplicates, and queries that
   would change. **Open note** opens the note.
 - *New folders*, *Moves into …*, *Property renames*, *Tags* and so on follow.
-- *Empty folders to remove* comes last: folders this plan's moves would leave empty, so the old structure
-  does not linger. A folder goes to the trash only if it is still empty when the plan runs (otherwise it
+- *Empty folders to remove* comes last: folders this plan's moves would leave empty, and empty folders
+  that are no part of your system (a stray *New folder*), so the old structure does not linger. Empty
+  folders inside your system's folders stay unless the plan empties them: they may be placeholders. A folder goes to the trash only if it is still empty when the plan runs (otherwise it
   is kept, and the run report says why), and undo brings it back. Its confidence is that of the least
   certain move out of it, so accepting by confidence never removes a folder whose notes stay.
 

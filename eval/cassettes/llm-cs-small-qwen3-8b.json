@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "llm-cs-small-qwen3-8b",
-  "recordedAt": "2026-10-08T11:06:56.915Z",
+  "recordedAt": "2026-10-09T08:40:58.071Z",
   "interactions": [
     {
       "key": "d8891e3cd62f10014384205740cbb2198f614a5b754d16313472b7f01ffa845a",
@@ -8275,7 +8275,7 @@
       }
     },
     {
-      "key": "7b844c8a773624217ebaf1467cbab4a4afe141e1fda0c74556c2036601316068",
+      "key": "dccb87f4878fe8ab02ba3e6d4b8b44d37d6ddbe26bae3ab1544a0d10010a33d4",
       "request": {
         "method": "POST",
         "url": "http://localhost:11434/v1/chat/completions",
@@ -8288,7 +8288,7 @@
             },
             {
               "role": "user",
-              "content": "Method: PARA\nOperations: new folders: 7, moves: 69, property renames: 9, tag renames: 7, empty folders to remove: 14\nNotes per destination: 1 Projekty: 26, 2 Oblasti: 15, 3 Zdroje: 23, 4 Archiv: 1\nExamples:\n- Move \"Koncept diplomky.md\" to \"3 Zdroje/Architektura/Koncept diplomky.md\"\n- Move \"Různé/Měsíční rozpočet v2.md\" to \"2 Oblasti/Finance/Měsíční rozpočet v2.md\"\n- Remove empty folder \"Různé\"\n- Move \"Dějiny architektury/Gotické klenby.md\" to \"3 Zdroje/Architektura/Gotické klenby.md\"\n- Remove empty folder \"Dějiny architektury\"\n- Move \"Lucie Malá.md\" to \"2 Oblasti/Domácnost/Lucie Malá.md\"\n- Move \"Finance/Brigáda v kavárně.md\" to \"2 Oblasti/Finance/Brigáda v kavárně.md\"\n- Remove empty folder \"Finance\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
+              "content": "Method: PARA\nOperations: new folders: 7, moves: 69, property renames: 9, tag renames: 7, empty folders to remove: 17\nNotes per destination: 1 Projekty: 26, 2 Oblasti: 15, 3 Zdroje: 23, 4 Archiv: 1\nExamples:\n- Move \"Koncept diplomky.md\" to \"3 Zdroje/Architektura/Koncept diplomky.md\"\n- Move \"Různé/Měsíční rozpočet v2.md\" to \"2 Oblasti/Finance/Měsíční rozpočet v2.md\"\n- Remove empty folder \"Různé\"\n- Move \"Dějiny architektury/Gotické klenby.md\" to \"3 Zdroje/Architektura/Gotické klenby.md\"\n- Remove empty folder \"Dějiny architektury\"\n- Move \"Lucie Malá.md\" to \"2 Oblasti/Domácnost/Lucie Malá.md\"\n- Move \"Finance/Brigáda v kavárně.md\" to \"2 Oblasti/Finance/Brigáda v kavárně.md\"\n- Remove empty folder \"Finance\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
             }
           ],
           "stream": false,
@@ -8334,7 +8334,7 @@
         "headers": {
           "content-type": "application/json"
         },
-        "text": "{\"id\":\"chatcmpl-841\",\"object\":\"chat.completion\",\"created\":1791457616,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"Plán přerozdělí a přejmenuje složky a tagy v osobním znalostním základu, přesunuje 69 položek, přejmenuje 16 vlastností a tagů a odstraní 14 prázdných složek.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Přesunout 'Koncept diplomky.md' do '3 Zdroje/Architektura/'\\\",\\n    \\\"Odstranit prázdnou složku 'Různé'\\\",\\n    \\\"Přesunout 'Dějiny architektury/Gotické klenby.md' do '3 Zdroje/Architektura/'\\\",\\n    \\\"Odstranit prázdnou složku 'Dějiny architektury'\\\",\\n    \\\"Přesunout 'Lucie Malá.md' do '2 Oblasti/Domácnost/'\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":392,\"prompt_tokens_details\":{\"cached_tokens\":27},\"completion_tokens\":222,\"total_tokens\":614}}\n"
+        "text": "{\"id\":\"chatcmpl-172\",\"object\":\"chat.completion\",\"created\":1791535257,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"Plán přerozdělí a přejmenuje složky a tagy v osobním znalostním základu, přesunuje 69 položek a odstraňuje 17 prázdných složek. Změny zahrnují přejmenování vlastností a tagů, přesuny do nových složek a odstranění nepoužívaných složek.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Přesunutí 'Koncept diplomky.md' do '3 Zdroje/Architektura/'\\\",\\n    \\\"Odstranění prázdné složky 'Různé'\\\",\\n    \\\"Přesunutí 'Lucie Malá.md' do '2 Oblasti/Domácnost/'\\\",\\n    \\\"Přejmenování 9 vlastností a 7 tagů\\\",\\n    \\\"Odstranění prázdné složky 'Dějiny architektury'\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":392,\"prompt_tokens_details\":{\"cached_tokens\":27},\"completion_tokens\":241,\"total_tokens\":633}}\n"
       }
     }
   ]

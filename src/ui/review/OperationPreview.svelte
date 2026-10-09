@@ -21,8 +21,8 @@
     <p>Creates the folder <span class="avo-path">{preview.path}</span>.</p>
   {:else if preview.kind === 'remove-folder'}
     <p>
-      Removes the folder <span class="avo-path">{preview.path}</span>: this plan's moves leave it empty. It goes to the trash, it is kept if anything is
-      still in it, and undo brings it back.
+      Removes the empty folder <span class="avo-path">{preview.path}</span>. It goes to the trash, it is kept if anything is in it when the plan runs, and
+      undo brings it back.
     </p>
   {:else if preview.kind === 'create'}
     <p>Creates <span class="avo-path">{preview.path}</span>:</p>
