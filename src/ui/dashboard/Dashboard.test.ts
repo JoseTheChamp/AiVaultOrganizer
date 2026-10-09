@@ -19,7 +19,7 @@ const state: DashboardState = {
 };
 
 function actions(): DashboardActions {
-  return { refresh: vi.fn(), analyze: vi.fn(), setUp: vi.fn(), openCharter: vi.fn(), plan: vi.fn(), review: vi.fn(), undo: vi.fn(), setUpAi: vi.fn(), stop: vi.fn() };
+  return { refresh: vi.fn(), analyze: vi.fn(), setUp: vi.fn(), openCharter: vi.fn(), plan: vi.fn(), review: vi.fn(), undo: vi.fn(), setUpAi: vi.fn(), organizeAgain: vi.fn(), stop: vi.fn() };
 }
 
 function model(patch: Partial<DashboardModel> = {}): DashboardModel {
@@ -83,6 +83,17 @@ describe('Dashboard', () => {
     await fireEvent.click(next().getByRole('button', { name: 'Organize' }));
     expect(wired.setUp).toHaveBeenCalledOnce();
     expect(wired.plan).toHaveBeenCalledOnce();
+  });
+
+  it('organizes again, adding the folders the user made first', async () => {
+    const wired = actions();
+    render(Dashboard, { model: model({ state: { ...state, next: { kind: 'new-folders', folders: ['10-19 Life admin/15 Travel', '10-19 Life admin/16 Cars'] }, pending: null } }), actions: wired });
+    expect(next().getByText('2 new folders in your system')).toBeTruthy();
+    expect(next().getByText(/^15 Travel, 16 Cars: say what goes in them/)).toBeTruthy();
+    await fireEvent.click(next().getByRole('button', { name: 'Add and organize' }));
+    // Always at hand too, for new notes as much as new folders.
+    await fireEvent.click(screen.getByRole('button', { name: 'Organize again' }));
+    expect(wired.organizeAgain).toHaveBeenCalledTimes(2);
   });
 
   it("lights the model's status and says how to fix it", () => {

@@ -156,6 +156,22 @@ describe('SetupWizard', () => {
     expect(paths).not.toContain('Hobbies');
   });
 
+  it('opens on the current charter with folders found in the vault added, ready to organize', async () => {
+    const submit = vi.fn<(charter: Charter, planNow: boolean) => void>();
+    const existing = presetCharter('johnny-decimal', 'en');
+    render(SetupWizard, { input: { ...(await input()), existing, found: ['10-19 Life admin/15 Travel'] }, submit, cancel: vi.fn() });
+    expect(screen.getByRole('status').textContent).toContain('Found a new folder in your vault');
+    const folder = screen.getByRole<HTMLInputElement>('textbox', { name: 'New folder' });
+    expect(folder.value).toBe('10-19 Life admin/15 Travel');
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'What goes into 10-19 Life admin/15 Travel' }).value).toBe('Notes about Travel.');
+
+    await next();
+    await fireEvent.click(screen.getByRole('button', { name: 'Update charter' }));
+    const [charter, planNow] = submit.mock.calls[0] ?? [];
+    expect(charter?.destinations.find((d) => d.path === '10-19 Life admin/15 Travel')).toMatchObject({ match: [{ filename: '^15\\.\\d{2}(?:\\s|$)' }] });
+    expect(planNow).toBe(true);
+  });
+
   it('blocks the next step while the changes do not make a charter', async () => {
     render(SetupWizard, { input: await input(), submit: vi.fn(), cancel: vi.fn() });
     await next();

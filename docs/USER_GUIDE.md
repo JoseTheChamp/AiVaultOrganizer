@@ -58,7 +58,8 @@ The dashboard sits in the right sidebar.
   folder depth.
 - **Next step**: the one thing to do now. A new vault starts with *Set up AI* (or *Continue without
   AI*), then *Choose a system*; later it is *Review* a waiting plan, *Organize* notes that are out of
-  place, *Add folders* for notes waiting in Other, or nothing when everything is in place.
+  place, *Add and organize* for folders you made in your system, *Add folders* for notes waiting in
+  Other, or nothing when everything is in place.
 - **In progress**: while the plugin organizes or indexes, this card shows the step, how many notes are
   done, a progress bar, a clock and, once the pace is known, how long is left, with **Stop**.
 - **System**: your method, with **Open** (the charter note) and **Change** (the wizard again).
@@ -66,6 +67,14 @@ The dashboard sits in the right sidebar.
   not installed, red when it is offline or blocked by local-only mode, with what to do. It is checked when
   the dashboard opens and once a minute, with a free request that lists models (no tokens).
 - **Last change**: the last run, with **Undo**.
+
+**Organize again** at the bottom reads the vault anew, with your new notes and folders, and plans it
+again. Folders you made inside your system (a new category such as `10-19 Life admin/15 Travel`, or a
+folder inside a flat folder such as the archive) are not part of the charter yet, and notes only go into
+the charter's folders. So the wizard opens first, with them added and a starting description ("Notes
+about Travel."); adjust what goes in each, update the charter, and organizing starts. Without new folders,
+organizing starts right away. New folders at the top level of the vault are not picked up this way, since
+they cannot be told from old ones: add those in the wizard.
 
 **Full diagnosis** at the bottom opens the detailed analysis of the vault.
 

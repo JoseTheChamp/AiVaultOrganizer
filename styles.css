@@ -605,6 +605,15 @@
   font-size: var(--font-ui-small);
 }
 
+.avo-wizard-note {
+  margin: 0 0 var(--size-4-3);
+  padding: var(--size-4-2) var(--size-4-3);
+  border-left: 3px solid var(--interactive-accent);
+  border-radius: var(--radius-s);
+  background-color: var(--background-secondary);
+  font-size: var(--font-ui-small);
+}
+
 .avo-adjust-group {
   display: flex;
   align-items: center;

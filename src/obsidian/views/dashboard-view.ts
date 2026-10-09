@@ -6,7 +6,7 @@ import { type MountedComponent, mountComponent } from '../../ui/mount';
 import { reactive } from '../../ui/reactive.svelte';
 import { analyze } from '../flows/analyze';
 import { confirmUndo } from '../flows/backup-undo';
-import { setUpCharter } from '../flows/charter';
+import { organizeAgain, setUpCharter } from '../flows/charter';
 import { planRealignment } from '../flows/plan';
 import { reviewPendingPlan } from '../flows/review';
 import type AiVaultOrganizerPlugin from '../main';
@@ -53,6 +53,7 @@ export class DashboardView extends ItemView {
       setUp: () => void setUpCharter(plugin),
       openCharter: () => void this.app.workspace.openLinkText(plugin.settings.charterPath, '', false),
       plan: () => void planRealignment(plugin),
+      organizeAgain: () => void organizeAgain(plugin),
       review: () => void reviewPendingPlan(plugin),
       undo: () => void confirmUndo(plugin),
       setUpAi: () => void plugin.openAiSetup(),

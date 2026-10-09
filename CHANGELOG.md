@@ -50,6 +50,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   prices set, what it costs.
 - Dashboard in the sidebar (ribbon icon or `Open dashboard`): the vault's health, the one next step
   (choose a system, review, organize), and the system, AI and last change at a glance.
+- **Organize again** on the dashboard: reads new notes and new folders and plans the vault again. Folders
+  made inside the system's structure (a new Johnny.Decimal category, a folder in a flat folder) join the
+  charter first, through the wizard, so notes can be filed into them; the dashboard also points them out.
 - Long tasks (organizing, indexing, a suggested system) show in a notice and on the dashboard what they
   are doing, how many notes are done, how long they have run and, once the pace is known, how long is
   left. They can be stopped from either place.

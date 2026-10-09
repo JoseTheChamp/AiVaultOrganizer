@@ -26,6 +26,11 @@ export interface WizardInput {
   /** The existing charter's rules are invalid and will be replaced. */
   replacesInvalid: boolean;
   charterPath: string;
+  /**
+   * Folders the user made in the vault that the charter does not know yet ("Organize again"): the
+   * wizard opens at Adjust, on the current charter, with them added.
+   */
+  found?: readonly string[];
 }
 
 export interface ChoiceOption {
@@ -136,6 +141,13 @@ export function initialChanges(charter: Charter): WizardChanges {
     mocs: charter.mocs?.enabled ?? false,
     ignore: [...charter.ignore],
   };
+}
+
+/** A folder found in the vault, ready to join the charter: its description starts from its name. */
+export function foundFolder(path: string, key: number): AddedFolder {
+  // "15 Travel" in Johnny.Decimal is about travel.
+  const name = (path.split('/').pop() ?? path).replace(/^\d{2}\s+/, '');
+  return { key, group: path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '', path, description: `Notes about ${name}.` };
 }
 
 /**

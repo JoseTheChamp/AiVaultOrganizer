@@ -6,6 +6,7 @@ import { analyzeVault } from '../../core/analysis/analyze';
 import type { JournalRun, RunStatus } from '../../core/apply/journal';
 import { waitingInFallback } from '../../core/charter/fallback';
 import type { CharterLoad } from '../../core/charter/load';
+import { newFolders } from '../../core/charter/new-folders';
 import { computeDrift } from '../../core/drift/drift';
 import { METHOD_LABELS } from '../../core/model/methods';
 import type { VaultSnapshot } from '../../core/model/note';
@@ -42,6 +43,8 @@ export type NextStep =
   | { kind: 'set-up-ai' }
   | { kind: 'set-up-charter' }
   | { kind: 'fix-charter' }
+  /** Folders the user made in the system's structure: they join the charter before the next plan. */
+  | { kind: 'new-folders'; folders: string[] }
   | { kind: 'review'; changes: number }
   | { kind: 'organize'; notes: number }
   /** Everything is filed, but some notes only in the fallback: they need folders of their own. */
@@ -85,6 +88,8 @@ export interface DashboardActions {
   review: () => void;
   undo: () => void;
   setUpAi: () => void;
+  /** Plans the vault again, after adding the folders the user made to the charter. */
+  organizeAgain: () => void;
   /** Stops the task in progress. */
   stop: () => void;
 }
@@ -99,8 +104,9 @@ export function dashboardState(input: DashboardInput): DashboardState {
   const run = input.lastRun;
   const pending = input.pendingPlan && open > 0 ? { planId: input.pendingPlan.id, open } : null;
   const waiting = valid ? waitingInFallback(snapshot, valid) : null;
+  const found = valid ? newFolders(snapshot, valid) : [];
   return {
-    next: nextStep(charter.status, pending, drift?.offCharter ?? 0, waiting, input.ai.chat.enabled && input.ai.chat.model !== ''),
+    next: nextStep(charter.status, pending, drift?.offCharter ?? 0, waiting, found, input.ai.chat.enabled && input.ai.chat.model !== ''),
     health: { score: analysis.health.score, grade: analysis.health.grade, notes: snapshot.notes.length },
     charter: charterStatus(charter),
     drift: drift ? { offCharter: drift.offCharter, notes: drift.noteCount, missingFolders: drift.missingFolders.length } : null,
@@ -112,10 +118,19 @@ export function dashboardState(input: DashboardInput): DashboardState {
   };
 }
 
-function nextStep(charter: CharterLoad['status'], pending: DashboardState['pending'], offCharter: number, waiting: { notes: number; where: string } | null, aiOn: boolean): NextStep {
+function nextStep(
+  charter: CharterLoad['status'],
+  pending: DashboardState['pending'],
+  offCharter: number,
+  waiting: { notes: number; where: string } | null,
+  found: string[],
+  aiOn: boolean,
+): NextStep {
   // AI makes organizing a messy vault possible, so a new vault starts by connecting it (skippable).
   if (charter === 'missing') return aiOn ? { kind: 'set-up-charter' } : { kind: 'set-up-ai' };
   if (charter !== 'ok') return { kind: 'fix-charter' };
+  // New folders change where notes go, so they come before reviewing a plan made without them.
+  if (found.length > 0) return { kind: 'new-folders', folders: found };
   if (pending) return { kind: 'review', changes: pending.open };
   if (offCharter > 0) return { kind: 'organize', notes: offCharter };
   // A vault whose leftovers all wait in Other looks finished, but those notes still need a home.

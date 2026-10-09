@@ -59,6 +59,15 @@
           action: { label: 'Organize', run: actions.plan },
           ...(withoutAi ? { alternative: withoutAi } : {}),
         };
+      case 'new-folders': {
+        const count = next.folders.length;
+        const names = next.folders.map((path) => path.split('/').pop() ?? path).join(', ');
+        return {
+          title: `${plural(count, 'new folder')} in your system`,
+          detail: `${names}: say what goes in ${count === 1 ? 'it' : 'them'}, and organize again to fill ${count === 1 ? 'it' : 'them'}.`,
+          action: { label: 'Add and organize', run: actions.organizeAgain },
+        };
+      }
       case 'waiting':
         return {
           title: `${plural(next.notes, 'note')} ${verb(next.notes, 'waits', 'wait')} in ${next.where}`,
@@ -159,6 +168,9 @@
     </dl>
 
     <div class="avo-dash-footer">
+      {#if current.charter.status === 'ok'}
+        <button type="button" class="avo-link" disabled={busy} onclick={actions.organizeAgain}>Organize again</button>
+      {/if}
       <button type="button" class="avo-link" onclick={actions.analyze}>Full diagnosis</button>
       <button type="button" class="avo-link" onclick={actions.refresh}>Refresh</button>
     </div>

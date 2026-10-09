@@ -51,6 +51,13 @@ describe('dashboardState', () => {
     expect(result.next).toEqual({ kind: 'waiting', notes: 2, where: 'Other' });
   });
 
+  it('asks to add folders the user made in the system before reviewing a plan made without them', async () => {
+    const charter = ['---', 'charter: true', '---', '```charter', 'version: 1', 'preset: custom', 'destinations:', '  - { id: finance, path: Life/Finance }', '```'].join('\n');
+    const plan = createPlan({ id: 'p1', createdAt: '2026-10-07T00:00:00.000Z', operations: [createOperation({ kind: 'createFolder', path: 'X' }, { status: 'pending' })] });
+    const result = await state({ [CHARTER]: charter, 'Life/Finance/Budget.md': '', 'Life/Travel/Japan.md': '' }, { pendingPlan: plan });
+    expect(result.next).toEqual({ kind: 'new-folders', folders: ['Life/Travel'] });
+  });
+
   it('counts open operations of a pending plan, and describes the last run and the models', async () => {
     const plan = createPlan({
       id: 'p1',

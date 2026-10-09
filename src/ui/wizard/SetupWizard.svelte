@@ -8,7 +8,7 @@
   import { charterFit, folderContents } from './charter-tree';
   import ChooseStep from './ChooseStep.svelte';
   import CreateStep from './CreateStep.svelte';
-  import { baseCharter, type Choice, choiceOptions, initialChanges, recommendedChoice, STEPS, type WizardInput, type WizardStep } from './wizard-state';
+  import { baseCharter, type Choice, choiceOptions, foundFolder, initialChanges, recommendedChoice, STEPS, type WizardInput, type WizardStep } from './wizard-state';
 
   interface Props {
     input: WizardInput;
@@ -29,11 +29,15 @@
   // otherwise; any name can be changed in the Adjust step, and the model reads notes in any language.
   const start = (() => {
     const lang: Lang = input.existing ? toLang(input.existing.language) : input.analysis.stats.language.language;
-    const choice = recommendedChoice(input);
-    return { lang, choice, changes: initialChanges(baseCharter(input, choice, lang)) };
+    // Folders found in the vault join the current charter: start at Adjust with them added.
+    const found = input.existing ? (input.found ?? []) : [];
+    const choice: Choice = found.length > 0 ? 'existing' : recommendedChoice(input);
+    const changes = initialChanges(baseCharter(input, choice, lang));
+    changes.added = found.map((path, i) => foundFolder(path, i + 1));
+    return { lang, choice, changes, step: (found.length > 0 ? 'adjust' : 'choose') as WizardStep, found: found.length };
   })();
 
-  let step = $state<WizardStep>('choose');
+  let step = $state<WizardStep>(start.step);
   let lang = $state(start.lang);
   let choice = $state<Choice>(start.choice);
   let changes = $state(start.changes);
@@ -107,6 +111,12 @@
         {/if}
       </ChooseStep>
     {:else if step === 'adjust'}
+      {#if start.found > 0}
+        <p class="avo-wizard-note" role="status">
+          Found {start.found === 1 ? 'a new folder' : `${start.found} new folders`} in your vault. Say what goes in {start.found === 1 ? 'it' : 'each'}: AI files notes by that
+          sentence. Then update the charter to organize again.
+        </p>
+      {/if}
       <AdjustStep {base} {changes} {problems} {fit} contents={(path) => folderContents(input.snapshot, path)} />
     {:else if charter}
       <CreateStep

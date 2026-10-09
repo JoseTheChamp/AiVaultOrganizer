@@ -2,6 +2,7 @@ import { Notice } from 'obsidian';
 import { analyzeVault } from '../../core/analysis/analyze';
 import { charterPlan } from '../../core/charter/charter-note';
 import { type CharterLoad, loadCharter } from '../../core/charter/load';
+import { newFolders } from '../../core/charter/new-folders';
 import type { Lang } from '../../core/charter/presets';
 import type { Charter } from '../../core/charter/schema';
 import { computeDrift } from '../../core/drift/drift';
@@ -14,8 +15,21 @@ import { planRealignment } from './plan';
 import { requireCharter } from './require-charter';
 import { runPlan, showRunReport } from './review';
 
+/**
+ * "Organize again": reads the vault anew and plans it. Folders the user made in the system's
+ * structure join the charter first (the wizard opens with them added), because notes are only filed
+ * into the charter's folders; saving the charter then plans the vault.
+ */
+export async function organizeAgain(plugin: AiVaultOrganizerPlugin): Promise<void> {
+  const loaded = await requireCharter(plugin);
+  if (!loaded) return;
+  const found = newFolders(await plugin.services.reader.snapshot(), loaded.charter);
+  if (found.length > 0) await setUpCharter(plugin, { found });
+  else await planRealignment(plugin);
+}
+
 /** `Set up charter`: the setup wizard, then the charter written through the apply path, then (optionally) a plan for the vault. */
-export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void> {
+export async function setUpCharter(plugin: AiVaultOrganizerPlugin, options: { found?: readonly string[] } = {}): Promise<void> {
   const { reader, hasher } = plugin.services;
   const path = plugin.settings.charterPath;
   const notice = new Notice('Analyzing vault…', 0);
@@ -29,7 +43,14 @@ export async function setUpCharter(plugin: AiVaultOrganizerPlugin): Promise<void
     const snapshot = await reader.snapshot();
     const analysis = analyzeVault(snapshot, { now: Date.now() });
     const current = load;
-    const input = { snapshot, analysis, existing: current.status === 'ok' ? current.charter : null, replacesInvalid: current.status === 'invalid', charterPath: path };
+    const input = {
+      snapshot,
+      analysis,
+      existing: current.status === 'ok' ? current.charter : null,
+      replacesInvalid: current.status === 'invalid',
+      charterPath: path,
+      ...(options.found ? { found: options.found } : {}),
+    };
     new SetupWizardModal(plugin.app, {
       ...input,
       requestDraft: (lang: Lang, wish: string) => draftCharterWithAI(plugin, input, lang, wish),
