@@ -844,8 +844,32 @@
   box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
 }
 
-.avo-decide.is-active {
-  background-color: var(--interactive-accent);
+/* Accept in green, reject in red: tinted until chosen, filled once chosen. */
+.avo-accept {
+  background-color: rgba(var(--color-green-rgb), 0.12);
+  color: var(--color-green);
+}
+
+.avo-reject {
+  background-color: rgba(var(--color-red-rgb), 0.12);
+  color: var(--color-red);
+}
+
+.avo-accept:hover {
+  background-color: rgba(var(--color-green-rgb), 0.24);
+}
+
+.avo-reject:hover {
+  background-color: rgba(var(--color-red-rgb), 0.24);
+}
+
+.avo-accept.is-active {
+  background-color: var(--color-green);
+  color: var(--text-on-accent);
+}
+
+.avo-reject.is-active {
+  background-color: var(--color-red);
   color: var(--text-on-accent);
 }
 

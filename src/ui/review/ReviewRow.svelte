@@ -37,8 +37,8 @@
     {#if item.decidable}
       <ConfidenceBadge confidence={item.op.confidence} source={SOURCE[item.op.source]} />
       <div class="avo-row-actions" role="group" aria-label="Decision">
-        <button type="button" class={['avo-decide', decision === 'accepted' && 'is-active']} aria-pressed={decision === 'accepted'} onclick={() => decide(decision === 'accepted' ? 'pending' : 'accepted')}>Accept</button>
-        <button type="button" class={['avo-decide', decision === 'rejected' && 'is-active']} aria-pressed={decision === 'rejected'} onclick={() => decide(decision === 'rejected' ? 'pending' : 'rejected')}>Reject</button>
+        <button type="button" class={['avo-decide', 'avo-accept', decision === 'accepted' && 'is-active']} aria-pressed={decision === 'accepted'} onclick={() => decide(decision === 'accepted' ? 'pending' : 'accepted')}>Accept</button>
+        <button type="button" class={['avo-decide', 'avo-reject', decision === 'rejected' && 'is-active']} aria-pressed={decision === 'rejected'} onclick={() => decide(decision === 'rejected' ? 'pending' : 'rejected')}>Reject</button>
       </div>
     {:else}
       <button type="button" class="avo-link" onclick={() => openNote(notePath)}>Open note</button>
