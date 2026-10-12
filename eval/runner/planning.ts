@@ -1,3 +1,4 @@
+import type { PlanSummaryInput } from '../../src/core/ai/prompts/plan-summary.v2';
 import type { ChatProvider } from '../../src/core/ai/types';
 import { ApplyRunService } from '../../src/core/apply/run';
 import { UndoService } from '../../src/core/apply/undo';
@@ -10,6 +11,7 @@ import { buildCard, type NoteCard } from '../../src/core/planner/cards';
 import { classifyNotes, DEFAULT_KNN, type KnnOptions, WORD_KNN } from '../../src/core/planner/classify';
 import { createLlmStage, type LlmStageStats, SECOND_SAMPLE } from '../../src/core/planner/llm-stage';
 import { buildPlan } from '../../src/core/planner/plan';
+import { type PlanSummary, planFacts } from '../../src/core/planner/summary';
 import { charterRoots } from '../../src/core/planner/charter-roots';
 import { folderKey, reconcileSubfolders } from '../../src/core/planner/subfolders';
 import { applyHarness } from '../../src/core/testing/apply-harness';
@@ -23,6 +25,8 @@ export type Stage = (typeof STAGES)[number];
 export interface StageMetrics extends ClassificationMetrics {
   /** Of the notes placed in the right destination that belong in a subfolder, the share in the right one; null when none do. */
   subfolderAccuracy: number | null;
+  /** How the model behaved, at the llm stage: requests, repaired and failed batches, tokens. */
+  model?: LlmStageStats;
 }
 
 export type ClassificationResults = Record<FixtureMethod, Partial<Record<Stage, StageMetrics>>>;
@@ -45,7 +49,7 @@ const DECIDER: Record<string, Decider> = { rule: 'rules', knn: 'knn', llm: 'llm'
  * over word statistics, kNN over embeddings, and finally the language model on top. Each run is
  * calibrated as the planner would, so ECE measures the confidences the review will show.
  */
-export async function classificationTask(input: ClassificationInput, onStats?: (stats: LlmStageStats) => void): Promise<ClassificationResults> {
+export async function classificationTask(input: ClassificationInput): Promise<ClassificationResults> {
   const { snapshot, truth } = input;
   const cards = new Map<string, NoteCard>();
   if (input.chat) {
@@ -69,7 +73,6 @@ export async function classificationTask(input: ClassificationInput, onStats?: (
       const model = useModel && input.chat ? createLlmStage({ provider: input.chat, cards, folders: snapshot.folders, secondSample: SECOND_SAMPLE }) : null;
       const classification = await classifyNotes({ snapshot, charter, charterPath: null, neighbors, ...(model ? { llm: model.stage } : {}) }, knn);
       await reconcileSubfolders(classification, charter, snapshot.folders);
-      if (model) onStats?.(model.stats);
       const predictions: Prediction[] = [...classification.placements.values()].map((p) => ({
         path: p.path,
         destination: p.destination,
@@ -85,7 +88,11 @@ export async function classificationTask(input: ClassificationInput, onStats?: (
         withSubfolder++;
         if (placement.subfolder && folderKey(placement.subfolder) === folderKey(target.subfolder)) rightSubfolder++;
       }
-      results[method][stage] = { ...classificationMetrics(predictions, expected), subfolderAccuracy: withSubfolder > 0 ? ratio(rightSubfolder, withSubfolder) : null };
+      results[method][stage] = {
+        ...classificationMetrics(predictions, expected),
+        subfolderAccuracy: withSubfolder > 0 ? ratio(rightSubfolder, withSubfolder) : null,
+        ...(model ? { model: { ...model.stats } } : {}),
+      };
     }
   }
   return results;
@@ -104,6 +111,13 @@ export interface PlanMetrics {
   summarySource: 'model' | 'rules';
 }
 
+/** The plan's metrics, and its summary with the facts it was written from, for judging. */
+export interface PlanRun {
+  metrics: PlanMetrics;
+  summary: PlanSummary;
+  facts: PlanSummaryInput;
+}
+
 export interface PlanInput {
   snapshot: VaultSnapshot;
   truth: GroundTruth;
@@ -120,7 +134,7 @@ export interface PlanInput {
  * same similarity and model, its classification requests are the PARA ones of the classification
  * task, so one recording serves both.
  */
-export async function planTask({ snapshot, truth, contents, neighbors, knn, chat }: PlanInput): Promise<PlanMetrics> {
+export async function planTask({ snapshot, truth, contents, neighbors, knn, chat }: PlanInput): Promise<PlanRun> {
   const charter = presetCharter('para', truth.language);
   const harness = applyHarness(Object.fromEntries(contents), snapshot.folders);
   const { vault, deps, storage, clock } = harness;
@@ -146,7 +160,7 @@ export async function planTask({ snapshot, truth, contents, neighbors, knn, chat
   await new UndoService(deps).undoLast();
   const operations: Record<string, number> = {};
   for (const op of plan.operations) operations[op.kind === 'flag' ? `flag:${op.issue}` : op.kind] = (operations[op.kind === 'flag' ? `flag:${op.issue}` : op.kind] ?? 0) + 1;
-  return {
+  const metrics: PlanMetrics = {
     operations,
     errors,
     applied: report?.applied ?? 0,
@@ -155,4 +169,5 @@ export async function planTask({ snapshot, truth, contents, neighbors, knn, chat
     undoExact: JSON.stringify(vault.contents()) === JSON.stringify(original.contents) && JSON.stringify(vault.folderPaths()) === JSON.stringify(original.folders),
     summarySource: summary.source,
   };
+  return { metrics, summary, facts: planFacts(plan, charter) };
 }

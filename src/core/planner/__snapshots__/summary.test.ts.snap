@@ -3,18 +3,19 @@
 exports[`summarizePlan > renders a stable prompt with no note contents 1`] = `
 [
   {
-    "content": "You summarize a plan that reorganizes a personal knowledge base, for its owner to review before anything changes. Write in Czech, plainly and without hype. The summary is two or three sentences: what the plan does overall, and what deserves a careful look. Highlights are up to five short points the owner should check, most important first.",
+    "content": "You summarize a plan that reorganizes a personal knowledge base, for its owner to review before anything changes. Write in Czech, plainly and without hype. The summary is two or three sentences: what the plan does overall, and which changes deserve a careful look. Highlights are up to five short points, most important first: the least certain changes and the warnings, each naming its note or folder. Say what to look at instead of asking the owner to review everything, and use only numbers given in the facts.",
     "role": "system",
   },
   {
     "content": "Method: PARA
 Operations: new folders: 1, moves: 2, flags for you to look at: 2
 Notes per destination: 1 Projekty: 1, 3 Zdroje: 1
-Examples:
+Less certain changes (below 80 %): 1
+Least certain changes first:
 - Flag "Nevím.md" as ambiguous
 - Flag "Dashboard.md" as query breakage
-- Move "Kvásek.md" to "3 Zdroje/Vaření/Kvásek.md"
-- Move "Koncept.md" to "1 Projekty/Diplomová práce/Koncept.md"
+- Move "Kvásek.md" to "3 Zdroje/Vaření/Kvásek.md" (60 %)
+- Move "Koncept.md" to "1 Projekty/Diplomová práce/Koncept.md" (90 %)
 - Create folder "1 Projekty/Diplomová práce"
 Warnings:
 - 1 note could not be placed.

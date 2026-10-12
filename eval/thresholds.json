@@ -203,20 +203,71 @@
       "safety.undoExact": {
         "min": 1
       },
+      "summary.judge.supported": {
+        "min": 1
+      },
+      "summary.caught": {
+        "min": 1
+      },
       "classification.para.llm.ece": {
         "max": 0.091
+      },
+      "classification.para.llm.modelEce": {
+        "max": 0.118
+      },
+      "classification.para.llm.modelBrier": {
+        "max": 0.162
       },
       "classification.ace.llm.ece": {
         "max": 0.115
       },
+      "classification.ace.llm.modelEce": {
+        "max": 0.159
+      },
+      "classification.ace.llm.modelBrier": {
+        "max": 0.215
+      },
       "classification.jd.llm.ece": {
         "max": 0.125
+      },
+      "classification.jd.llm.modelEce": {
+        "max": 0.138
+      },
+      "classification.jd.llm.modelBrier": {
+        "max": 0.121
       },
       "classification.flat.llm.ece": {
         "max": 0.043
       },
+      "classification.flat.llm.modelEce": {
+        "max": 0.088
+      },
+      "classification.flat.llm.modelBrier": {
+        "max": 0.01
+      },
       "classification.topics.llm.ece": {
         "max": 0.103
+      },
+      "classification.topics.llm.modelEce": {
+        "max": 0.115
+      },
+      "classification.topics.llm.modelBrier": {
+        "max": 0.014
+      },
+      "classification.para.llm.model.failures": {
+        "max": 0
+      },
+      "classification.ace.llm.model.failures": {
+        "max": 0
+      },
+      "classification.jd.llm.model.failures": {
+        "max": 0
+      },
+      "classification.flat.llm.model.failures": {
+        "max": 0
+      },
+      "classification.topics.llm.model.failures": {
+        "max": 0
       },
       "plan.errors": {
         "max": 0
@@ -234,6 +285,9 @@
         "max": 0
       },
       "labels.failures": {
+        "max": 0
+      },
+      "summary.unsupportedNumbers": {
         "max": 0
       }
     },
@@ -439,20 +493,71 @@
       "safety.undoExact": {
         "min": 1
       },
+      "summary.judge.supported": {
+        "min": 1
+      },
+      "summary.caught": {
+        "min": 1
+      },
       "classification.para.llm.ece": {
         "max": 0.132
+      },
+      "classification.para.llm.modelEce": {
+        "max": 0.184
+      },
+      "classification.para.llm.modelBrier": {
+        "max": 0.173
       },
       "classification.ace.llm.ece": {
         "max": 0.111
       },
+      "classification.ace.llm.modelEce": {
+        "max": 0.149
+      },
+      "classification.ace.llm.modelBrier": {
+        "max": 0.152
+      },
       "classification.jd.llm.ece": {
         "max": 0.09
+      },
+      "classification.jd.llm.modelEce": {
+        "max": 0.1
+      },
+      "classification.jd.llm.modelBrier": {
+        "max": 0.141
       },
       "classification.flat.llm.ece": {
         "max": 0.048
       },
+      "classification.flat.llm.modelEce": {
+        "max": 0.106
+      },
+      "classification.flat.llm.modelBrier": {
+        "max": 0.017
+      },
       "classification.topics.llm.ece": {
         "max": 0.108
+      },
+      "classification.topics.llm.modelEce": {
+        "max": 0.119
+      },
+      "classification.topics.llm.modelBrier": {
+        "max": 0.015
+      },
+      "classification.para.llm.model.failures": {
+        "max": 0
+      },
+      "classification.ace.llm.model.failures": {
+        "max": 0
+      },
+      "classification.jd.llm.model.failures": {
+        "max": 0
+      },
+      "classification.flat.llm.model.failures": {
+        "max": 0
+      },
+      "classification.topics.llm.model.failures": {
+        "max": 0
       },
       "plan.errors": {
         "max": 0
@@ -470,6 +575,9 @@
         "max": 0
       },
       "labels.failures": {
+        "max": 0
+      },
+      "summary.unsupportedNumbers": {
         "max": 0
       }
     }

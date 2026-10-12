@@ -1,5 +1,5 @@
 import { classifyNotesV2 } from '../ai/prompts/classify-notes.v2';
-import { planSummaryV1 } from '../ai/prompts/plan-summary.v1';
+import { planSummaryV2 } from '../ai/prompts/plan-summary.v2';
 import { subfolderNamingV1 } from '../ai/prompts/subfolder-naming.v1';
 import type { ChatProvider } from '../ai/types';
 import { toLang } from '../charter/presets';
@@ -128,7 +128,7 @@ export async function buildPlan(input: PlannerInput): Promise<PlannerResult> {
     charterRevision: charter.revision,
     operations: uniqueOperations([...sofar, ...mocs, ...queries, ...emptied]),
     warnings: placed.warnings,
-    promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV1].map((prompt) => [prompt.id, prompt.version])) : {},
+    promptVersions: input.model ? Object.fromEntries([classifyNotesV2, subfolderNamingV1, planSummaryV2].map((prompt) => [prompt.id, prompt.version])) : {},
     models: input.model ? { chat: input.model.name, ...(input.model.embedding ? { embedding: input.model.embedding } : {}) } : {},
   });
   if (input.model && !stopped) report({ step: 'summarizing' });

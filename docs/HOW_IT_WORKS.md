@@ -276,7 +276,7 @@ data that goes through review.
 |---|---|---|---|
 | `classify-notes` v2 | Organize, for notes rules and kNN could not place | Note **cards**, the destinations and their descriptions, example notes, subfolders in use | Per note: reason, destination id **from the list or "abstain"**, subfolder, confidence |
 | `subfolder-naming` v1 | Organize, when new project or topic folders would be created | The proposed names and the existing folders | One clean name per group, reusing existing folders |
-| `plan-summary` v1 | End of Organize | Counts of changes, notes per destination; **no note content** | Two or three sentences and up to five highlights |
+| `plan-summary` v2 | End of Organize | Counts of changes, notes per destination, the least certain changes as one line each with their confidence; **no note content** | Two or three sentences and up to five highlights naming what to look at |
 | `charter-agent` v1 | "Suggest a system" in the wizard | Only what its read-only tools return | A complete charter, which must pass validation |
 | `cluster-label` v1 | Evaluations only, not yet in the app | Keywords and a few short samples per group | A short name per group, in the vault's language |
 | `verify-links` v1 | Evaluations only, not yet in the app | Pairs of short excerpts | Which pairs a careful author would actually link, with a reason |
@@ -420,6 +420,8 @@ Real vaults are private, so the test vaults are generated:
 | Area | Metrics |
 |---|---|
 | Classification | Accuracy, macro-F1, **ECE**, share and accuracy of answers at 80 % or more, subfolder accuracy, who decided (rules / kNN / model) |
+| Calibration and mistakes | ECE and Brier score of the uncertain decisions alone, a reliability table per confidence band, the most frequent mistakes, failed and repaired model batches |
+| Plan summary | Numbers not in the plan and whether it names notes to check (code); claims backed by the plan, judged by a model that is itself tested with planted errors |
 | Links | Precision of the top three suggestions, relevance, recall of removed links |
 | Clusters | ARI (agreement with the true projects and topics) |
 | Duplicates | Precision and recall |
@@ -444,7 +446,11 @@ Real vaults are private, so the test vaults are generated:
 4. **kNN only helps where anchors exist.** Great for a vault already half in PARA, little for a vault
    switching to a new system.
 5. **Thinking models need thinking off** for short structured answers.
-6. **Honest limits:** the vaults are small (82 notes, so one note is about 1.2 points) and built from
+6. **A judge model must be tested before it is believed.** Asked for a 1–5 score, the summary judge
+   approved everything, planted errors included. Splitting the summary in code, asking for a quote from
+   the facts per statement and checking the quotes in code made it catch every planted error, and showed
+   the summary prompt was generic, which led to `plan-summary` v2.
+7. **Honest limits:** the vaults are small (82 notes, so one note is about 1.2 points) and built from
    templated sentences, which flatters word statistics. Compare methods and versions with each other, not
    with real-world expectations.
 

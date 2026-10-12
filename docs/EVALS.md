@@ -97,11 +97,29 @@ show. Subfolders are reconciled with existing folders as in the planner, without
 | ECE | Calibration gap over 10 confidence bins (rules claim 1.0). |
 | Confident | Share of notes decided with confidence ≥ 0.8, and how many of those are right. This is what "accept everything above 0.8" in the review would accept. |
 | Subfolders | Of the notes in the right destination that belong in a subfolder, the share in the right one. |
+| Model ECE | ECE over the decisions that can be uncertain (similar notes and the model) only. Rules claim 1.0 and are always right, so in ECE they dilute the error. |
+| Brier | Mean squared gap between confidence and outcome over the same decisions; 0 is perfect, 0.25 is a coin flip at 50 %. Unlike ECE it also rewards confidences that separate right from wrong. |
+| Reliability | The same decisions per confidence band (0–0.5, 0.5–0.7, 0.7–0.8, 0.8–0.9, 0.9–1): how many, the confidence they claim and how often they are right. A reliability diagram in numbers. |
+| Most frequent mistakes | The three most common expected → predicted destination pairs: where descriptions or the prompt need work. |
+| Model calls | At the llm stage: requests, of which repaired after an invalid answer, and batches that failed. A model that stops following the answer format fails whole batches. |
 
 **Full plan.** `buildPlan` runs on the fixture with the PARA charter and the best similarity of the
 tier (and the language model at Tier 2): placement, normalization, MOCs, query checks and the
 summary. Every operation is accepted, validated and applied through the executor. Then every link
 must still resolve, and undo must restore the vault byte for byte.
+
+**Plan summary** (ADR 0011). The summary the full plan's review would show, checked against the facts
+it was written from (counts, notes per destination, the least certain changes, warnings):
+
+| Check | By | Meaning |
+|---|---|---|
+| Unsupported numbers | code | Numbers in the summary and highlights that are not in the facts, nor a total of their counts. |
+| Specific | code | Names a particular note or folder from the facts' examples, not only counts. |
+| Claims backed | judge | Code splits the summary into sentences and highlights; the model quotes the facts behind each and says whether they agree; code checks the quote is in the facts and holds the statement's numbers. Advice ("review carefully") is left out. |
+| Planted errors caught | judge | Two copies of the summary carry a planted error: a wrong count, and an action no plan takes. Caught when the judge flags that statement. A judge that misses them cannot be trusted with the real summary. |
+
+The judge is `summary-judge` v1 on the same chat model. It runs at Tier 2 only, its cost is reported on
+its own, and it is never part of the plugin.
 
 **Link suggestions** (PLAN §7.5, ADR 0006). For each note, the pipeline produces candidates that are
 similar, not yet linked, and ranked with shared tags and shared link neighbours. The search is
@@ -191,6 +209,35 @@ decided every remaining note; it never abstained.
 How the first run of the model stage compares (en-small, accuracy): PARA 85.4 %, ACE 64.6 %,
 Johnny.Decimal 43.9 %, Flat 79.3 %, Topic folders 100 %. ECE was up to 0.33 and subfolder accuracy
 13–19 %. Findings 9–12 explain what changed.
+
+### Calibration of the uncertain decisions (Tier 2)
+
+Measured on 2026-10-09 from the same recordings. Model ECE and Brier leave out the rules; the reliability
+columns show the lowest and highest band.
+
+| Method | Fixture | ECE | Model ECE | Brier | Below 0.5: notes, claimed → right | 0.9 and above: notes, claimed → right | Most frequent mistake |
+|---|---|---:|---:|---:|---:|---:|---|
+| PARA | en-small | 0.090 | 0.117 | 0.161 | 9, 31 → 78 % | 23, 95 → 91 % | projects → resources ×4 |
+| | cs-small | 0.132 | 0.183 | 0.172 | 2, 27 → 50 % | 28, 94 → 71 % | archive → projects ×4 |
+| ACE | en-small | 0.114 | 0.159 | 0.215 | 14, 24 → 43 % | 11, 95 → 100 % | efforts-ongoing → atlas-notes ×10 |
+| | cs-small | 0.111 | 0.149 | 0.151 | 13, 31 → 85 % | 19, 95 → 95 % | atlas-notes → efforts-simmering ×2 |
+| Johnny.Decimal | en-small | 0.124 | 0.138 | 0.120 | 18, 39 → 78 % | none | jd-23 → jd-32 ×3 |
+| | cs-small | 0.090 | 0.100 | 0.140 | 26, 38 → 58 % | none | jd-23 → jd-32 ×3 |
+
+Flat + categories and Topic folders are near-perfect (Brier 0.010–0.016). No classification batch was
+repaired or failed on either fixture: with schema-constrained decoding, qwen3:8b always answered in
+format.
+
+### Plan summary (Tier 2)
+
+`plan-summary` v2, judged by `summary-judge` v1 on qwen3:8b.
+
+| Fixture | Unsupported numbers | Specific | Claims backed | Planted errors caught | Judge cost |
+|---|---:|---|---:|---:|---|
+| en-small | 0 | yes | 7 of 7 | 2 of 2 | 3 calls, 2.2k / 1.1k tokens |
+| cs-small | 0 | yes | 7 of 7 | 2 of 2 | 3 calls, 2.6k / 1.1k tokens |
+
+With `plan-summary` v1, en-small was faithful but generic: every claim backed, nothing named to look at.
 
 ### Full plan
 
@@ -318,6 +365,31 @@ Cluster labels (Tier 2):
       94–100 % of the time for nine of the ten preset–fixture pairs. The exception is PARA on
       cs-small, at 85.5 %.
     - The model never abstains, so ambiguity shows only as low confidence.
+13. **ECE flattered the model; the reliability bands show where.**
+    - Without the rules, ECE rises by 0.01–0.06 per method (PARA cs-small 0.132 → 0.183).
+    - Low confidence is too low. Below 0.5 the model's placements were right 78 % of the time for PARA
+      and Johnny.Decimal on en-small, and 85 % for ACE on cs-small, at a claimed 31–39 %. Those are the
+      notes the planner sends to Other instead of proposing the move.
+    - High confidence is mostly earned, except PARA on cs-small: 28 notes at 0.9 and above were right
+      71 % of the time, the known exception from finding 12.
+    - These point to E1 in [AI and evals](AI_AND_EVALS.md) (the second-sample penalty), not yet changed:
+      the bands are 2–26 notes each.
+14. **ACE's errors are one confusion.** On en-small, 14 of ACE's 21 errors are notes of an effort filed
+    as Atlas notes (`efforts-ongoing`/`efforts-on` → `atlas-notes`). The destination descriptions do not
+    say that notes about an ongoing effort belong to the effort even when they read like reference.
+15. **A judge model needs a test of its own.** The first `summary-judge` draft asked for a 1–5 score and
+    approved everything: 5 / 5 for both summaries, 1 of 4 planted errors caught. It explained a wrong
+    count away as a total and called an invented action part of the facts. Asked to find the claims
+    itself, it restated the facts instead. What worked (ADR 0011): code splits the summary, the model
+    quotes the facts per statement, code checks the quotes. Planted errors caught: 4 of 4. The wrong
+    count is caught by the quote check (the model approved "99 moves" quoting "moves: 71"); the invented
+    action by the model itself.
+16. **The summary prompt was generic because its facts were.** `plan-summary` v1 saw the least certain
+    changes first but was not told so, nor how many changes were uncertain; on en-small it asked the user
+    to "verify all 71 moves". v2 states the number of less certain changes, labels the examples as the
+    least certain with their confidence, and asks for them to be named. Both summaries now name the notes
+    to check (for example "Inbox/Office lighting plan.md, 21 %"), with every claim still backed and no
+    unsupported number.
 
 ## Limitations
 
@@ -338,3 +410,7 @@ Cluster labels (Tier 2):
   made after reading en-small's mistakes. cs-small, whose answers were not inspected, scores in the
   same range (83–100 % per method). But both fixtures come from the same generator, whose labels
   the descriptions now match more closely. Real vaults will score lower.
+- **The summary judge is the summary's own model.** qwen3:8b writes and judges, so a preference for
+  its own wording is not ruled out; the planted errors measure whether the judge notices mistakes, not
+  whether it is fair. Two summaries per run and two kinds of planted error make it a regression check
+  for this one output, not a measure of writing quality.

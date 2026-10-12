@@ -26,6 +26,9 @@ export function summarize(result: EvalResult): string {
   const { plan, safety } = result;
   const operations = Object.values(plan.operations).reduce((sum, count) => sum + count, 0);
   lines.push(`  plan (PARA): ${operations} operations, ${plan.errors} invalid, ${plan.applied} applied, ${plan.failed} failed, ${plan.brokenLinks} broken links, undo ${plan.undoExact ? 'exact' : 'NOT exact'}`);
+  const { summary } = result;
+  const judged = summary.judge ? `, judge: ${pct(summary.judge.supported)} of ${summary.judge.claims} claims backed, caught ${(summary.controls ?? []).filter((c) => c.caught).length}/${(summary.controls ?? []).length} planted errors` : '';
+  lines.push(`  summary (${summary.source}): ${summary.unsupportedNumbers.length} unsupported numbers, ${summary.specific ? 'specific' : 'generic'}${judged}`);
   lines.push(`  safety: ${safety.applied}/${safety.operations} applied, ${safety.brokenLinks} broken links, undo ${safety.undoExact ? 'exact' : 'NOT exact'}`);
   for (const notice of result.notices) lines.push(`  note: ${notice}`);
   return `${lines.join('\n')}\n`;

@@ -3,7 +3,8 @@ import path from 'node:path';
 import { METHOD_LABELS } from '../../src/core/model/methods';
 import { FIXTURE_METHOD_KEYS, FIXTURE_METHODS } from '../fixture/ground-truth';
 import { per100Notes } from '../metrics/cost';
-import { type EvalResult, STAGES } from './run-eval';
+import type { ReliabilityBand } from '../metrics/classification';
+import { type EvalResult, STAGES, type StageMetrics } from './run-eval';
 
 const pct = (value: number): string => `${(value * 100).toFixed(1)} %`;
 const num = (value: number): string => value.toFixed(3);
@@ -33,6 +34,20 @@ export function formatReport(result: EvalResult): string {
           return [[METHOD_LABELS[FIXTURE_METHODS[method]], stage, pct(m.coverage), pct(m.precision), pct(m.accuracy), num(m.macroF1), num(m.ece), `${pct(m.confident.share)} / ${pct(m.confident.accuracy)}`, m.subfolderAccuracy === null ? 'n/a' : pct(m.subfolderAccuracy), `${m.decidedBy.rules} / ${m.decidedBy.knn} / ${m.decidedBy.llm}`]];
         }),
       ),
+    ),
+    '',
+    '### Calibration and mistakes',
+    '',
+    'The last stage per method. Calibration counts only the decisions that can be uncertain (similar notes and the model), since rules claim 100 % and are always right. Reliability: per confidence band, notes, the confidence they claim and how often they are right. Model calls: requests, of which repaired after an invalid answer, and batches that failed.',
+    '',
+    ...table(
+      ['Method', 'Model ECE', 'Brier', 'Reliability (claimed → right)', 'Most frequent mistakes', 'Model calls (repaired / failed)'],
+      FIXTURE_METHOD_KEYS.flatMap((method) => {
+        const stage = [...STAGES].reverse().find((s) => result.classification[method][s]);
+        const m = stage ? result.classification[method][stage] : undefined;
+        if (!m) return [];
+        return [[`${METHOD_LABELS[FIXTURE_METHODS[method]]} (${stage})`, num(m.modelEce), num(m.modelBrier), reliability(m.reliability), mistakes(m), m.model ? `${m.model.calls} (${m.model.repaired} / ${m.model.failures})` : 'n/a']];
+      }),
     ),
     '',
     '## Link suggestions',
@@ -75,7 +90,7 @@ export function formatReport(result: EvalResult): string {
       ),
     );
   }
-  const { plan } = result;
+  const { plan, summary } = result;
   lines.push(
     '',
     '## Full plan (PARA)',
@@ -86,6 +101,17 @@ export function formatReport(result: EvalResult): string {
       ['Operations', 'Validation errors', 'Applied', 'Failed', 'Broken links', 'Undo exact'],
       [[Object.entries(plan.operations).map(([kind, count]) => `${kind} ${count}`).join(', ') || 'none', String(plan.errors), String(plan.applied), String(plan.failed), String(plan.brokenLinks), plan.undoExact ? 'yes' : '**no**']],
     ),
+    '',
+    '## Plan summary',
+    '',
+    `Written by ${summary.source === 'model' ? 'the language model' : 'rules'}. Checked by code: numbers the plan facts do not contain: ${summary.unsupportedNumbers.length === 0 ? 'none' : summary.unsupportedNumbers.join(', ')}; ${summary.specific ? 'names particular notes or folders to look at' : 'generic: names no particular note or folder'}.`,
+    ...(summary.judge
+      ? [
+          '',
+          `Judge (${result.chatModel ?? 'model'}, summary-judge v1): ${summary.judge.claims} claims, ${pct(summary.judge.supported)} backed by a quote from the facts${summary.judge.overruled > 0 ? ` (${summary.judge.overruled} approved by the model with a quote that does not back them, overruled)` : ''}. Planted errors flagged: ${(summary.controls ?? []).map((c) => `${c.kind} ${c.caught ? 'yes' : '**no**'}`).join(', ') || 'none planted'}.`,
+          ...(summary.judge.unsupported.length > 0 ? ['', 'Unsupported claims:', '', ...summary.judge.unsupported.map((claim) => `- ${claim}`)] : []),
+        ]
+      : []),
     '',
     '## Safety',
     '',
@@ -108,6 +134,14 @@ export function formatReport(result: EvalResult): string {
   );
   if (result.notices.length > 0) lines.push('', '## Notes', '', ...result.notices.map((notice) => `- ${notice}`));
   return `${lines.join('\n')}\n`;
+}
+
+function reliability(bands: readonly ReliabilityBand[]): string {
+  return bands.map((band) => `${band.from}–${band.to}: ${band.notes} (${Math.round(band.confidence * 100)} → ${Math.round(band.accuracy * 100)} %)`).join('; ') || 'n/a';
+}
+
+function mistakes(metrics: StageMetrics): string {
+  return metrics.confusions.map((c) => `${c.expected} → ${c.predicted} ×${c.count}`).join(', ') || 'none';
 }
 
 /** File name stem: `<date>-<fixture>-t<tier>-<model>`, as PLAN §8.3 describes. */

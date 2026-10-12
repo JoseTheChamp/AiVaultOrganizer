@@ -542,6 +542,7 @@ budget; the result is a *draft* shown in the wizard, never written without the u
 | `charter-prose` | Human-readable charter sections in the vault language | `{ sections: [{ id, markdown }] }` |
 | `plan-summary` | Short explanation of a plan for the review header | `{ summary, highlights[] }` |
 | `charter-agent` | System prompt for the drafting agent | tool calls |
+| `summary-judge` | Eval only: check each statement of a plan summary against the plan's facts (ADR 0011) | `[{ id (enum), evidence, verdict }]` |
 
 Each prompt is versioned (`classify-notes.v1.ts`); plans record prompt versions used. Snapshot tests pin
 rendered prompts; any change requires a version bump and an eval run.

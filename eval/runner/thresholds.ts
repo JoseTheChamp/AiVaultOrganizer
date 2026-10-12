@@ -38,23 +38,30 @@ const PINNED = [
   'stubs.recall',
   'plan.undoExact',
   'safety.undoExact',
+  // The summary judge: claims backed by the facts, and that it still notices planted errors (else its verdict means nothing).
+  'summary.judge.supported',
+  'summary.caught',
 ];
 const CEILINGS = [
   // Calibration: the confidences the review shows must keep meaning what they say.
-  ...FIXTURE_METHOD_KEYS.map((method) => `classification.${method}.llm.ece`),
+  ...FIXTURE_METHOD_KEYS.flatMap((method) => [`classification.${method}.llm.ece`, `classification.${method}.llm.modelEce`, `classification.${method}.llm.modelBrier`]),
+  // A model that stops following the answer format fails whole batches of notes.
+  ...FIXTURE_METHOD_KEYS.map((method) => `classification.${method}.llm.model.failures`),
   'plan.errors',
   'plan.failed',
   'plan.brokenLinks',
   'safety.brokenLinks',
   'safety.failed',
   'labels.failures',
+  'summary.unsupportedNumbers',
 ];
 
-/** A metric by its dotted path; booleans count as 1 and 0. Undefined when the task did not run. */
+/** A metric by its dotted path; booleans count as 1 and 0, lists as their length. Undefined when the task did not run. */
 export function metricAt(result: EvalResult, path: string): number | undefined {
   let value: unknown = result;
   for (const key of path.split('.')) value = typeof value === 'object' && value !== null ? (value as Record<string, unknown>)[key] : undefined;
   if (typeof value === 'boolean') return value ? 1 : 0;
+  if (Array.isArray(value)) return value.length;
   return typeof value === 'number' ? value : undefined;
 }
 

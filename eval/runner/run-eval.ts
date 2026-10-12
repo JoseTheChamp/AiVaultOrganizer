@@ -26,6 +26,7 @@ import { type Cost, NO_COST } from '../metrics/cost';
 import { type DuplicateMetrics, duplicateMetrics } from '../metrics/duplicates';
 import { type LinkMetrics, linkMetrics } from '../metrics/links';
 import { type NeighborQuality, neighborQuality } from '../metrics/neighbors';
+import { checkSummary, judgeSummary, type SummaryQuality } from './judge';
 import { type ClassificationResults, classificationTask, type PlanMetrics, planTask } from './planning';
 import { type EvalChat, evalChat, evalEmbeddings, Meter } from './providers';
 import { applyAndUndo, type SafetyMetrics } from './safety';
@@ -33,6 +34,7 @@ import { applyAndUndo, type SafetyMetrics } from './safety';
 export { STAGES } from './planning';
 export type { ClassificationResults, PlanMetrics, Stage, StageMetrics } from './planning';
 export type { SafetyMetrics } from './safety';
+export type { SummaryQuality } from './judge';
 export type Tier = 0 | 1 | 2;
 export type SimilarityMethod = 'words' | 'embeddings';
 
@@ -79,6 +81,8 @@ export interface EvalResult {
   labels?: LabelQuality;
   /** The whole planner with a PARA charter, applied and undone. */
   plan: PlanMetrics;
+  /** The plan's summary: its numbers checked by code and, at Tier 2, graded by a model judge. */
+  summary: SummaryQuality;
   safety: SafetyMetrics;
   cost: Record<string, Cost>;
   /** What was skipped and why. */
@@ -213,10 +217,24 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
   // A stage that ran without its recorded answers measures nothing; leave it out.
   if (!classified.recorded) for (const stages of Object.values(classification)) delete stages.llm;
   const planInput = { snapshot, truth, contents, neighbors: neighbors(best), knn: best.name === 'embeddings' ? DEFAULT_KNN : WORD_KNN };
-  let plan = (await withModel('plan', () => planTask({ ...planInput, ...(chat ? { chat: chat.provider } : {}) }))).value;
-  if (unrecorded.includes('plan')) plan = await planTask(planInput);
+  let planned = (await withModel('plan', () => planTask({ ...planInput, ...(chat ? { chat: chat.provider } : {}) }))).value;
+  if (unrecorded.includes('plan')) planned = await planTask(planInput);
+  const plan = planned.metrics;
   if (chat) {
+    // What the user pays for; the judge below is the eval's own cost, reported on its own.
     cost.chat = { calls: meter.calls, inputTokens: meter.inputTokens, outputTokens: meter.outputTokens, ms: ['cluster labels', 'verified links', 'classification', 'plan'].reduce((sum, task) => sum + (cost[task]?.ms ?? 0), 0) };
+  }
+  let summary = checkSummary(planned.summary, planned.facts);
+  if (chat && !unrecorded.includes('plan')) {
+    const provider = chat.provider;
+    const missing = meter.missing;
+    try {
+      const judged = await withModel('summary judge', () => judgeSummary(provider, planned.summary, planned.facts));
+      if (judged.recorded) summary = { ...summary, ...judged.value };
+    } catch (error) {
+      if (!(error instanceof ProviderError) || meter.missing === missing) throw error;
+      unrecorded.push('summary judge');
+    }
   }
   if (unrecorded.length > 0) {
     notices.push(`Tier 2 incomplete for ${truth.fixture}: no recorded ${options.chatModel} answers for ${unrecorded.join(', ')}; run with --record against a local Ollama.`);
@@ -238,6 +256,7 @@ export async function runEval(fixture: LoadedFixture, options: EvalOptions): Pro
     stubs,
     ...(labels ? { labels } : {}),
     plan,
+    summary,
     safety,
     cost,
     notices,

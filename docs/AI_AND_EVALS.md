@@ -16,7 +16,7 @@ history, see [EVALS.md](EVALS.md).
 | **Organize**: placing notes | Chat model (`classify-notes` v2) | Picks a destination (or abstains) for notes rules and similar notes could not place, with a reason, a subfolder and a confidence | Note cards: title, folder, tags, a few properties, headings, links, age, first 400 characters |
 | **Organize**: second opinion | Same chat model | Asked again, in a different batch order, about answers it was unsure of; agreement raises confidence, disagreement lowers it | The same cards |
 | **Organize**: new folder names | Chat model (`subfolder-naming` v1) | Cleans up names for new project and topic folders, reusing existing folders | Proposed names and existing folders |
-| **Organize**: plan summary | Chat model (`plan-summary` v1) | Two or three sentences on what the plan does | Counts only, never note contents |
+| **Organize**: plan summary | Chat model (`plan-summary` v2) | Two or three sentences on what the plan does, naming the least certain changes to look at | Counts and a few one-line changes with their confidence, never note contents |
 | **Suggest a system** (wizard) | Chat model as an agent (`charter-agent` v1) | Explores the vault through read-only tools and proposes a charter | Only what its tools return: overview, method scores, clusters, samples |
 | **Organize** and **Find similar notes** | Embedding model (for example bge-m3) | Turns notes into vectors so similar notes can be found by meaning | Note text, in chunks |
 
@@ -90,6 +90,8 @@ replay, so any change to a prompt or its input shows up and has to be re-recorde
 | Task | Metrics |
 |---|---|
 | Classification, per method and per stage (rules, words, embeddings, LLM) | Coverage (share decided), precision, accuracy, macro-F1, **ECE** (calibration error), share and accuracy of placements at 80 % or more, subfolder accuracy, who decided |
+| Calibration and mistakes, per method | ECE and **Brier score** of the uncertain decisions only (rules left out), a **reliability table** (per confidence band: notes, claimed confidence, how often right), the three **most frequent mistakes**, and model calls with repaired and failed batches |
+| Plan summary | Numbers not in the plan's facts and whether it names particular notes (code); claims backed by the facts, and planted errors caught (**an LLM judge**, section 3) |
 | Related links | Precision of the top three, relevance, recall of removed links; with and without LLM verification |
 | Clusters | ARI against the true projects and topics |
 | Duplicates | Precision and recall |
@@ -120,11 +122,30 @@ with real-world expectations.
 
 ## 3. Do we validate with an LLM?
 
-**No LLM judges the results.** Every metric is computed in code against the generator's ground truth,
+**Once: the plan summary.** Everything else is computed in code against the generator's ground truth,
 which is exact: the generator knows where each note belongs. A judge model would be slower, cost money
-and need its own calibration, and it would be the least reliable part of the measurement.
+and need its own checking, so it is used only where there is no single right answer to compare with.
 
-Where a model does check something, it is a step of the product, not of the measurement:
+**The summary judge** (`summary-judge` v1, [ADR 0011](adr/0011-summary-judge.md)) checks the summary the
+review shows against the facts it was written from:
+
+1. Code splits the summary into its sentences and highlights.
+2. For each one, the model quotes the shortest words of the facts that back it and says "supported",
+   "unsupported" or "advice".
+3. Code checks every quote: it must really be in the facts and hold the statement's numbers. An approval
+   with a quote that fails is overruled.
+4. **The judge is tested on every run.** Two copies of the summary carry a planted error: a wrong count,
+   and an action no plan takes ("It also merges 4 pairs of duplicate notes"). The judge must flag exactly
+   those statements. The share it catches is pinned in CI, like any metric.
+
+The test mattered. A first draft that gave a 1–5 score approved everything: 5 / 5 for both summaries, and
+1 of 4 planted errors caught. It explained a wrong count away as "a total" and called the invented action
+"part of the plan facts". With the steps above it catches 4 of 4, and it showed that `plan-summary` v1
+wrote faithful but generic summaries ("verify all 71 moves"), which led to v2. Two things the judge does
+not do: it is the same model that wrote the summary, so it may favour its own wording, and two summaries
+per run are a regression check, not a measure of writing quality.
+
+Where a model checks something in the product, outside the measurement:
 
 - **The second opinion** (self-consistency): the same model asked again about uncertain answers. Its
   value was measured: answers it confirmed were right 92 % of the time, those it contradicted 34 %.
@@ -132,10 +153,8 @@ Where a model does check something, it is a step of the product, not of the meas
   held-out links, so the filter is evaluated, not trusted.
 - **The charter agent**: its drafts are checked by the charter's schema in code, not by another model.
 
-**Where an LLM judge would make sense:** outputs without a single right answer, such as the plan summary
-(is it faithful to the plan?), cluster labels (do they name the group?) and link reasons. Today these are
-checked only for producing valid output, and read by a person in the report. That gap is a good
-experiment (E6 below).
+**Where another judge would make sense:** cluster labels (do they name the group?) and link reasons. Today
+these are checked only for producing valid output, and read by a person in the report (E7 below).
 
 ---
 
@@ -164,8 +183,12 @@ re-recording (`--record`), about 15–30 minutes per fixture on a GPU.
   notes at the same accuracy?
 - **Setting:** `DEFAULT_CALIBRATION` in `src/core/planner/calibrate.ts`: `llmTrust` 0.6, `sampleBonus`
   0.15, `samplePenalty` 0.35, `agreementBonus` 0.1, `disagreementPenalty` 0.2, `ceiling` 0.95.
-- **Measure:** ECE, and "at ≥ 80 %: share / accuracy" per method and fixture. Change one weight at a time
-  and keep a small table of runs.
+- **Measure:** model ECE, Brier and "at ≥ 80 %: share / accuracy" per method and fixture, and the
+  reliability table in the report. Change one weight at a time and keep a small table of runs.
+- **Where to start:** the reliability table shows low confidence is too low. Below 0.5, placements were
+  right 78 % of the time for PARA and Johnny.Decimal on en-small and 85 % for ACE on cs-small, at a claimed
+  31–39 % (EVALS finding 13). Those notes go to Other. `samplePenalty` is the likely cause; watch the
+  0.9-and-above band of PARA on cs-small, which is already too confident.
 - **Watch out:** with 82 notes you can overfit the fixtures. Prefer changes that help both languages, and
   explain why in the finding.
 - **Commit:** `feat(planner): retune calibration weights from the evals`
@@ -207,21 +230,31 @@ re-recording (`--record`), about 15–30 minutes per fixture on a GPU.
 - **How:** pull a model in Ollama (for example a Llama, Gemma or Mistral of similar size), then
   `npm run eval -- --fixture=en-small,cs-small --tier=2 --record --chat-model=<name>`. Each model gets its
   own cassette, so the comparison is repeatable.
-- **Measure:** accuracy, ECE and time per request. How well a model follows the answer schema matters
-  too: the model stage already counts repaired and failed batches (`LlmStageStats`), but the report only
-  shows them for cluster labels, so adding them to the classification report is a good first step.
+- **Measure:** accuracy, model ECE, Brier and time per request, and how well the model follows the answer
+  schema: the report's "Model calls (repaired / failed)" column. qwen3:8b has 0 / 0 on both fixtures.
+  The summary judge runs on the same model, so check its planted-errors score too before trusting its
+  verdict for another model.
 - **Commit:** `docs(eval): compare local chat models on note classification`
 
-### E6. Add an LLM judge for the plan summary (a new eval task)
+### E6. Fix ACE's Efforts and Atlas confusion (needs re-recording)
 
-- **Question:** is the summary faithful to the plan, and does it point at what matters?
-- **How:** add a task in `eval/runner/` that sends the plan's counts and the summary to a judge prompt
-  with a fixed rubric (faithful numbers, no invented claims, mentions what needs attention), scored 1–5.
-  Check the judge first on a few summaries you rate yourself, and report how often you and the judge
-  agree.
-- **Measure:** the average score per fixture, plus your agreement with the judge, so the judge itself is
-  measured.
-- **Commit:** `feat(eval): judge plan summaries with a rubric`
+- **Question:** can ACE on en-small reach the other methods' accuracy (74 % against 89–92 %)?
+- **Evidence:** the report's "Most frequent mistakes": 14 of ACE's 21 errors on en-small are notes of an
+  effort filed as Atlas notes (EVALS finding 14).
+- **Setting:** the ACE destination descriptions in the preset charter (`src/core/charter/presets/ace.ts`).
+  Say that notes about an ongoing effort belong to it even when they read like reference.
+- **Measure:** ACE accuracy and its mistakes on both fixtures, and that the other methods do not move
+  (their requests are unchanged, so their cassettes still replay).
+- **Commit:** `feat(charter): tell Efforts from Atlas in the ACE descriptions`
+
+### E7. A judge for cluster labels (a new eval task)
+
+- **Question:** do the labels name what the notes in a cluster share?
+- **How:** follow the summary judge (`eval/runner/judge.ts`, ADR 0011): give the model a label and the
+  titles of its cluster's notes, ask for a verdict per label with the titles that back it, check those
+  titles in code, and plant errors (a label swapped with another cluster's) that the judge must catch.
+- **Measure:** the share of labels judged right, and the planted errors caught.
+- **Commit:** `feat(eval): judge cluster labels against their notes`
 
 ### Writing the finding
 

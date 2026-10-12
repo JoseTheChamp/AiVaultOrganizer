@@ -49,6 +49,13 @@ describe('PlanReview', () => {
     expect(applyButton().disabled).toBe(true);
   });
 
+  it('shows a highlight that repeats a warning once, instead of failing to render', () => {
+    const warning = '16 notes fit no folder for sure, so they go to Other.';
+    const repeated = { ...plan, warnings: [{ code: 'fallback', message: warning, opIds: [] }], summary: { summary: 'This plan moves 2 notes.', highlights: [warning], source: 'model' as const } };
+    setup({ plan: repeated, items: reviewItems(repeated, { ok: true, issues: [], staleOpIds: [] }, presetCharter('para', 'en')) });
+    expect(screen.getAllByText(warning)).toHaveLength(1);
+  });
+
   it('bulk-accepts at the threshold, saves, and applies the decided plan', async () => {
     const { actions } = setup();
     await fireEvent.click(screen.getByRole('button', { name: 'Accept 2 changes' }));

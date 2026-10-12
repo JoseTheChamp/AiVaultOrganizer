@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { GroundTruth, NoteTruth } from '../fixture/ground-truth';
-import { classificationMetrics, expectedCalibrationError, type Prediction } from './classification';
+import { brierScore, classificationMetrics, expectedCalibrationError, type Prediction, reliabilityBands } from './classification';
 import { adjustedRandIndex, clusterMetrics, normalizedMutualInformation } from './clusters';
 import { per100Notes } from './cost';
 import { duplicateMetrics } from './duplicates';
@@ -42,6 +42,42 @@ describe('classificationMetrics', () => {
     expect(expectedCalibrationError(items)).toBeCloseTo(0.1, 10);
     expect(expectedCalibrationError([])).toBe(0);
     expect(expectedCalibrationError([{ confidence: 1, correct: true }])).toBe(0);
+  });
+
+  it('scores calibration on the uncertain decisions only, so rules do not flatter it', () => {
+    const many: Prediction[] = [
+      ...Array.from({ length: 8 }, (_, i) => ({ path: `r${i}`, destination: 'projects', confidence: 1, decidedBy: 'rules' as const })),
+      { path: 'k', destination: 'areas', confidence: 0.9, decidedBy: 'knn' },
+      { path: 'l', destination: 'projects', confidence: 0.9, decidedBy: 'llm' },
+    ];
+    const manyTruth = new Map(many.map((p): [string, string] => [p.path, 'projects']));
+    const metrics = classificationMetrics(many, manyTruth);
+    // Both uncertain decisions claim 0.9; one is wrong.
+    expect(metrics.modelEce).toBeCloseTo(0.4, 10);
+    expect(metrics.ece).toBeCloseTo(0.08, 10);
+    expect(metrics.modelBrier).toBeCloseTo((0.01 + 0.81) / 2, 10);
+    expect(metrics.reliability).toEqual([{ from: 0.8, to: 0.9, notes: 2, confidence: 0.9, accuracy: 0.5 }]);
+  });
+
+  it('counts the most frequent mistakes', () => {
+    expect(classificationMetrics(predictions, truth).confusions).toEqual([{ expected: 'projects', predicted: 'areas', count: 1 }]);
+  });
+});
+
+describe('reliability and Brier', () => {
+  it('bands confidences and scores them', () => {
+    const items = [
+      { confidence: 0, correct: false },
+      { confidence: 0.5, correct: true },
+      { confidence: 0.95, correct: true },
+      { confidence: 1, correct: true },
+    ];
+    expect(reliabilityBands(items).map((band) => [band.from, band.notes, band.accuracy])).toEqual([
+      [0, 2, 0.5],
+      [0.9, 2, 1],
+    ]);
+    expect(brierScore(items)).toBeCloseTo((0 + 0.25 + 0.0025 + 0) / 4, 10);
+    expect(brierScore([])).toBe(0);
   });
 });
 

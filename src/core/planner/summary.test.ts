@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { planSummaryV1 } from '../ai/prompts/plan-summary.v1';
+import { planSummaryV2 } from '../ai/prompts/plan-summary.v2';
 import { presetCharter } from '../charter/presets';
 import { createOperation } from '../model/operation';
 import { createPlan } from '../model/plan';
@@ -23,12 +23,12 @@ const plan = createPlan({
 describe('planFacts', () => {
   it('counts operations, notes per destination, and leads with what needs review', () => {
     const facts = planFacts(plan, charter);
-    expect(facts).toMatchObject({ language: 'cs', method: 'PARA', destinations: ['1 Projekty: 1', '3 Zdroje: 1'], warnings: ['1 note could not be placed.'] });
+    expect(facts).toMatchObject({ language: 'cs', method: 'PARA', destinations: ['1 Projekty: 1', '3 Zdroje: 1'], uncertain: 1, warnings: ['1 note could not be placed.'] });
     expect(facts.counts).toEqual(['new folders: 1', 'moves: 2', 'flags for you to look at: 2']);
     expect(facts.examples.slice(0, 3)).toEqual([
       'Flag "Nevím.md" as ambiguous',
       'Flag "Dashboard.md" as query breakage',
-      'Move "Kvásek.md" to "3 Zdroje/Vaření/Kvásek.md"',
+      'Move "Kvásek.md" to "3 Zdroje/Vaření/Kvásek.md" (60 %)',
     ]);
   });
 });
@@ -52,7 +52,7 @@ describe('summarizePlan', () => {
   });
 
   it('renders a stable prompt with no note contents', () => {
-    const messages = planSummaryV1.build(planFacts(plan, charter));
+    const messages = planSummaryV2.build(planFacts(plan, charter));
     expect(messages).toMatchSnapshot();
     expect(JSON.stringify(messages)).not.toContain('Recept.');
   });

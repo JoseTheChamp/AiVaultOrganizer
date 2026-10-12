@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "llm-en-small-qwen3-8b",
-  "recordedAt": "2026-10-09T08:40:51.142Z",
+  "recordedAt": "2026-10-09T13:36:59.573Z",
   "interactions": [
     {
       "key": "ce4c60053eb637e900e05f48414887597f34057562ccf15230f289d0d116af09",
@@ -8364,7 +8364,7 @@
       }
     },
     {
-      "key": "0db8d1f22287c962f537da6f914ba04fccb121a9242f4aaf518eda4df6d7fe56",
+      "key": "9145c855a82307f0cf0d654768fdad37d1a711e7cbf8ade3b01926d69d4c003d",
       "request": {
         "method": "POST",
         "url": "http://localhost:11434/v1/chat/completions",
@@ -8373,11 +8373,11 @@
           "messages": [
             {
               "role": "system",
-              "content": "You summarize a plan that reorganizes a personal knowledge base, for its owner to review before anything changes. Write in English, plainly and without hype. The summary is two or three sentences: what the plan does overall, and what deserves a careful look. Highlights are up to five short points the owner should check, most important first."
+              "content": "You summarize a plan that reorganizes a personal knowledge base, for its owner to review before anything changes. Write in English, plainly and without hype. The summary is two or three sentences: what the plan does overall, and which changes deserve a careful look. Highlights are up to five short points, most important first: the least certain changes and the warnings, each naming its note or folder. Say what to look at instead of asking the owner to review everything, and use only numbers given in the facts."
             },
             {
               "role": "user",
-              "content": "Method: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nExamples:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\"\n- Remove empty folder \"Inbox\"\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\"\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\"\n- Remove empty folder \"Home office setup\"\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\"\n- Remove empty folder \"API migration\"\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\"\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
+              "content": "Method: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nLess certain changes (below 80 %): 49\nLeast certain changes first:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\" (21 %)\n- Remove empty folder \"Inbox\" (21 %)\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\" (26 %)\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\" (26 %)\n- Remove empty folder \"Home office setup\" (26 %)\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\" (27 %)\n- Remove empty folder \"API migration\" (27 %)\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\" (28 %)\n\nAnswer with JSON: {\"summary\": \"...\", \"highlights\": [\"...\"]}"
             }
           ],
           "stream": false,
@@ -8423,7 +8423,266 @@
         "headers": {
           "content-type": "application/json"
         },
-        "text": "{\"id\":\"chatcmpl-284\",\"object\":\"chat.completion\",\"created\":1791535250,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes your knowledge base by creating new folders, moving items, renaming properties and tags, and removing empty folders. Review the highlights to ensure accuracy and completeness.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Verify all 71 moves are correctly mapped to their new locations\\\",\\n    \\\"Confirm 11 new folders are appropriately named and placed\\\",\\n    \\\"Check that 16 property renames align with your naming conventions\\\",\\n    \\\"Ensure 5 tag renames reflect the correct meaning and usage\\\",\\n    \\\"Confirm 15 empty folders are indeed unused and safe to remove\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":326,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens\":128,\"total_tokens\":454}}\n"
+        "text": "{\"id\":\"chatcmpl-232\",\"object\":\"chat.completion\",\"created\":1791552993,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"summary\\\": \\\"This plan reorganizes the personal knowledge base by creating 11 new folders, moving 71 items, renaming 16 properties and 5 tags, and removing 15 empty folders. The most uncertain changes involve moving or removing items with confidence levels below 80%.\\\",\\n  \\\"highlights\\\": [\\n    \\\"Move 'Inbox/Office lighting plan.md' to '1 Projects/Home Office Setup/Office lighting plan.md' (21%)\\\",\\n    \\\"Remove empty folder 'Inbox' (21%)\\\",\\n    \\\"Move 'Inbox/Office furniture budget.md' to '1 Projects/Home Office Setup/Office furniture budget.md' (26%)\\\",\\n    \\\"Move 'Home office setup/Standing desk options.md' to '1 Projects/Home Office Setup/Standing desk options.md' (26%)\\\",\\n    \\\"Remove empty folder 'Home office setup' (26%)\\\"\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":418,\"prompt_tokens_details\":{\"cached_tokens\":4},\"completion_tokens\":195,\"total_tokens\":613}}\n"
+      }
+    },
+    {
+      "key": "b2f005445b91e18613fb8e6706e14a358595154b4d818b5da62a9b4bd31d0f3b",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You check a summary of a plan that reorganizes a personal knowledge base against the plan's facts. Its owner reads the summary before approving the plan, so what it says about the plan must be backed by the facts. You get the summary as numbered statements. For each statement give: evidence: the shortest parts of the facts that back it, copied character for character (for example \"moves: 12\"), several parts joined with \" … \", or an empty string when nothing in the facts backs it; verdict: \"supported\" when the evidence says the same thing with the same numbers; \"unsupported\" when the statement says something the facts do not, including an action the facts never mention, however plausible it sounds; \"advice\" when it only tells the owner what to do and says nothing about the plan. Statements may be in another language than the facts: compare meanings, but copy the evidence from the facts as they are written."
+            },
+            {
+              "role": "user",
+              "content": "# Plan facts\nMethod: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nLess certain changes (below 80 %): 49\nLeast certain changes first:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\" (21 %)\n- Remove empty folder \"Inbox\" (21 %)\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\" (26 %)\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\" (26 %)\n- Remove empty folder \"Home office setup\" (26 %)\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\" (27 %)\n- Remove empty folder \"API migration\" (27 %)\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\" (28 %)\n\n# Statements\ns1: This plan reorganizes the personal knowledge base by creating 11 new folders, moving 71 items, renaming 16 properties and 5 tags, and removing 15 empty folders.\ns2: The most uncertain changes involve moving or removing items with confidence levels below 80%.\ns3: Move 'Inbox/Office lighting plan.md' to '1 Projects/Home Office Setup/Office lighting plan.md' (21%)\ns4: Remove empty folder 'Inbox' (21%)\ns5: Move 'Inbox/Office furniture budget.md' to '1 Projects/Home Office Setup/Office furniture budget.md' (26%)\ns6: Move 'Home office setup/Standing desk options.md' to '1 Projects/Home Office Setup/Standing desk options.md' (26%)\ns7: Remove empty folder 'Home office setup' (26%)\n\nAnswer with JSON: {\"statements\": [{\"id\": \"s1\", \"evidence\": \"...\", \"verdict\": \"supported\"}]}, one entry for each statement."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 1000,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "summary_judge",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "statements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "s1",
+                            "s2",
+                            "s3",
+                            "s4",
+                            "s5",
+                            "s6",
+                            "s7"
+                          ]
+                        },
+                        "evidence": {
+                          "type": "string",
+                          "maxLength": 400
+                        },
+                        "verdict": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "unsupported",
+                            "advice"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "evidence",
+                        "verdict"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "statements"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-924\",\"object\":\"chat.completion\",\"created\":1791553002,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"statements\\\": [\\n    {\\n      \\\"id\\\": \\\"s1\\\",\\n      \\\"evidence\\\": \\\"Operations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s2\\\",\\n      \\\"evidence\\\": \\\"Less certain changes (below 80 %): 49\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s3\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office lighting plan.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office lighting plan.md\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s4\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Inbox\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s5\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office furniture budget.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office furniture budget.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s6\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Home office setup/Standing desk options.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Standing desk options.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s7\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Home office setup\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":720,\"prompt_tokens_details\":{\"cached_tokens\":281},\"completion_tokens\":355,\"total_tokens\":1075}}\n"
+      }
+    },
+    {
+      "key": "941cf13e5514c774476831dd9b6fb7548a8f5435b3830a52a9dcb9f7aad8b949",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You check a summary of a plan that reorganizes a personal knowledge base against the plan's facts. Its owner reads the summary before approving the plan, so what it says about the plan must be backed by the facts. You get the summary as numbered statements. For each statement give: evidence: the shortest parts of the facts that back it, copied character for character (for example \"moves: 12\"), several parts joined with \" … \", or an empty string when nothing in the facts backs it; verdict: \"supported\" when the evidence says the same thing with the same numbers; \"unsupported\" when the statement says something the facts do not, including an action the facts never mention, however plausible it sounds; \"advice\" when it only tells the owner what to do and says nothing about the plan. Statements may be in another language than the facts: compare meanings, but copy the evidence from the facts as they are written."
+            },
+            {
+              "role": "user",
+              "content": "# Plan facts\nMethod: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nLess certain changes (below 80 %): 49\nLeast certain changes first:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\" (21 %)\n- Remove empty folder \"Inbox\" (21 %)\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\" (26 %)\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\" (26 %)\n- Remove empty folder \"Home office setup\" (26 %)\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\" (27 %)\n- Remove empty folder \"API migration\" (27 %)\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\" (28 %)\n\n# Statements\ns1: This plan reorganizes the personal knowledge base by creating 17 new folders, moving 71 items, renaming 16 properties and 5 tags, and removing 15 empty folders.\ns2: The most uncertain changes involve moving or removing items with confidence levels below 80%.\ns3: Move 'Inbox/Office lighting plan.md' to '1 Projects/Home Office Setup/Office lighting plan.md' (21%)\ns4: Remove empty folder 'Inbox' (21%)\ns5: Move 'Inbox/Office furniture budget.md' to '1 Projects/Home Office Setup/Office furniture budget.md' (26%)\ns6: Move 'Home office setup/Standing desk options.md' to '1 Projects/Home Office Setup/Standing desk options.md' (26%)\ns7: Remove empty folder 'Home office setup' (26%)\n\nAnswer with JSON: {\"statements\": [{\"id\": \"s1\", \"evidence\": \"...\", \"verdict\": \"supported\"}]}, one entry for each statement."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 1000,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "summary_judge",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "statements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "s1",
+                            "s2",
+                            "s3",
+                            "s4",
+                            "s5",
+                            "s6",
+                            "s7"
+                          ]
+                        },
+                        "evidence": {
+                          "type": "string",
+                          "maxLength": 400
+                        },
+                        "verdict": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "unsupported",
+                            "advice"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "evidence",
+                        "verdict"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "statements"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-630\",\"object\":\"chat.completion\",\"created\":1791553010,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"statements\\\": [\\n    {\\n      \\\"id\\\": \\\"s1\\\",\\n      \\\"evidence\\\": \\\"new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s2\\\",\\n      \\\"evidence\\\": \\\"Less certain changes (below 80 %): 49\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s3\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office lighting plan.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office lighting plan.md\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s4\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Inbox\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s5\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office furniture budget.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office furniture budget.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s6\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Home office setup/Standing desk options.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Standing desk options.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s7\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Home office setup\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":720,\"prompt_tokens_details\":{\"cached_tokens\":500},\"completion_tokens\":353,\"total_tokens\":1073}}\n"
+      }
+    },
+    {
+      "key": "063c754c08fe41652f352fd9810e3cb671e48e489c761d3eb8c129abe0ef0c11",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/v1/chat/completions",
+        "body": {
+          "model": "qwen3:8b",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You check a summary of a plan that reorganizes a personal knowledge base against the plan's facts. Its owner reads the summary before approving the plan, so what it says about the plan must be backed by the facts. You get the summary as numbered statements. For each statement give: evidence: the shortest parts of the facts that back it, copied character for character (for example \"moves: 12\"), several parts joined with \" … \", or an empty string when nothing in the facts backs it; verdict: \"supported\" when the evidence says the same thing with the same numbers; \"unsupported\" when the statement says something the facts do not, including an action the facts never mention, however plausible it sounds; \"advice\" when it only tells the owner what to do and says nothing about the plan. Statements may be in another language than the facts: compare meanings, but copy the evidence from the facts as they are written."
+            },
+            {
+              "role": "user",
+              "content": "# Plan facts\nMethod: PARA\nOperations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\nNotes per destination: 1 Projects: 18, 2 Areas: 19, 3 Resources: 28, 4 Archive: 3\nLess certain changes (below 80 %): 49\nLeast certain changes first:\n- Move \"Inbox/Office lighting plan.md\" to \"1 Projects/Home Office Setup/Office lighting plan.md\" (21 %)\n- Remove empty folder \"Inbox\" (21 %)\n- Move \"Inbox/Office furniture budget.md\" to \"1 Projects/Home Office Setup/Office furniture budget.md\" (26 %)\n- Move \"Home office setup/Standing desk options.md\" to \"1 Projects/Home Office Setup/Standing desk options.md\" (26 %)\n- Remove empty folder \"Home office setup\" (26 %)\n- Move \"API migration/Migration retrospective.md\" to \"4 Archive/Migration retrospective.md\" (27 %)\n- Remove empty folder \"API migration\" (27 %)\n- Move \"Cooking/Meal prep ideas.md\" to \"3 Resources/Cooking/Meal prep ideas.md\" (28 %)\n\n# Statements\ns1: This plan reorganizes the personal knowledge base by creating 11 new folders, moving 71 items, renaming 16 properties and 5 tags, and removing 15 empty folders.\ns2: The most uncertain changes involve moving or removing items with confidence levels below 80%.\ns3: It also merges 4 pairs of duplicate notes.\ns4: Move 'Inbox/Office lighting plan.md' to '1 Projects/Home Office Setup/Office lighting plan.md' (21%)\ns5: Remove empty folder 'Inbox' (21%)\ns6: Move 'Inbox/Office furniture budget.md' to '1 Projects/Home Office Setup/Office furniture budget.md' (26%)\ns7: Move 'Home office setup/Standing desk options.md' to '1 Projects/Home Office Setup/Standing desk options.md' (26%)\ns8: Remove empty folder 'Home office setup' (26%)\n\nAnswer with JSON: {\"statements\": [{\"id\": \"s1\", \"evidence\": \"...\", \"verdict\": \"supported\"}]}, one entry for each statement."
+            }
+          ],
+          "stream": false,
+          "temperature": 0,
+          "max_tokens": 1100,
+          "reasoning_effort": "none",
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "summary_judge",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "statements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "s1",
+                            "s2",
+                            "s3",
+                            "s4",
+                            "s5",
+                            "s6",
+                            "s7",
+                            "s8"
+                          ]
+                        },
+                        "evidence": {
+                          "type": "string",
+                          "maxLength": 400
+                        },
+                        "verdict": {
+                          "type": "string",
+                          "enum": [
+                            "supported",
+                            "unsupported",
+                            "advice"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "evidence",
+                        "verdict"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "statements"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "text": "{\"id\":\"chatcmpl-715\",\"object\":\"chat.completion\",\"created\":1791553019,\"model\":\"qwen3:8b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"statements\\\": [\\n    {\\n      \\\"id\\\": \\\"s1\\\",\\n      \\\"evidence\\\": \\\"Operations: new folders: 11, moves: 71, property renames: 16, tag renames: 5, empty folders to remove: 15\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s2\\\",\\n      \\\"evidence\\\": \\\"Less certain changes (below 80 %): 49\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s3\\\",\\n      \\\"evidence\\\": \\\"\\\",\\n      \\\"verdict\\\": \\\"unsupported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s4\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office lighting plan.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office lighting plan.md\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s5\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Inbox\\\\\\\" (21 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s6\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Inbox/Office furniture budget.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Office furniture budget.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s7\\\",\\n      \\\"evidence\\\": \\\"Move \\\\\\\"Home office setup/Standing desk options.md\\\\\\\" to \\\\\\\"1 Projects/Home Office Setup/Standing desk options.md\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"s8\\\",\\n      \\\"evidence\\\": \\\"Remove empty folder \\\\\\\"Home office setup\\\\\\\" (26 %)\\\",\\n      \\\"verdict\\\": \\\"supported\\\"\\n    }\\n  ]\\n}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":733,\"prompt_tokens_details\":{\"cached_tokens\":552},\"completion_tokens\":381,\"total_tokens\":1114}}\n"
       }
     }
   ]

@@ -19,7 +19,7 @@ describe('formatReport', () => {
   const markdown = formatReport(result);
 
   it('has a table per area with every method', () => {
-    for (const heading of ['## Classification', '## Full plan (PARA)', '## Link suggestions', '## Similarity, duplicates and stubs', '## Clusters', '## Safety', '## Cost per 100 notes']) expect(markdown).toContain(heading);
+    for (const heading of ['## Classification', '### Calibration and mistakes', '## Full plan (PARA)', '## Plan summary', '## Link suggestions', '## Similarity, duplicates and stubs', '## Clusters', '## Safety', '## Cost per 100 notes']) expect(markdown).toContain(heading);
     for (const method of ['PARA', 'ACE', 'Johnny.Decimal', 'Flat + categories', 'Topic folders']) expect(markdown).toMatch(new RegExp(`^\\| ${method.replace('.', '\\.').replace('+', '\\+')} \\|`, 'm'));
     expect(markdown).toMatch(/^\| words \| /m);
     expect(markdown).toMatch(/^\| embeddings \| /m);

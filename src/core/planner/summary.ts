@@ -1,4 +1,4 @@
-import { type PlanSummaryInput, planSummaryV1 } from '../ai/prompts/plan-summary.v1';
+import { type PlanSummaryInput, planSummaryV2 } from '../ai/prompts/plan-summary.v2';
 import { runPrompt } from '../ai/prompts/types';
 import type { ChatProvider } from '../ai/types';
 import { toLang } from '../charter/presets';
@@ -17,6 +17,9 @@ export interface PlanSummary {
   source: 'model' | 'rules';
 }
 
+/** Below this, a change is "less certain": the review's bulk accept starts above it. */
+const UNCERTAIN_BELOW = 0.8;
+
 /** The plan in numbers and examples, the same for the rule-based and the model summary. */
 export function planFacts(plan: Plan, charter: Charter): PlanSummaryInput {
   const byKind = new Map<string, number>();
@@ -27,16 +30,17 @@ export function planFacts(plan: Plan, charter: Charter): PlanSummaryInput {
     .map((d) => ({ label: d.path as string, count: plan.operations.filter((op) => op.kind === 'move' && isInFolder(op.to, d.path as string)).length }))
     .filter((d) => d.count > 0)
     .map((d) => `${d.label}: ${d.count}`);
-  // Low-confidence decisions and flags matter most to a reviewer, so they come first.
+  // Low-confidence decisions and flags matter most to a reviewer, so they come first, and say how sure they are.
   const examples = [...plan.operations]
     .sort((a, b) => Number(b.kind === 'flag') - Number(a.kind === 'flag') || a.confidence - b.confidence)
     .slice(0, 8)
-    .map(describeOperation);
+    .map((op) => (op.kind !== 'flag' && op.confidence < 1 ? `${describeOperation(op)} (${Math.round(op.confidence * 100)} %)` : describeOperation(op)));
   return {
     language: toLang(charter.language),
     method: charter.preset === 'custom' ? 'a custom system' : METHOD_LABELS[charter.preset],
     counts,
     destinations,
+    uncertain: plan.operations.filter((op) => op.kind !== 'flag' && op.confidence < UNCERTAIN_BELOW).length,
     examples,
     warnings: plan.warnings.map((w) => w.message),
   };
@@ -46,8 +50,8 @@ export function planFacts(plan: Plan, charter: Charter): PlanSummaryInput {
 export function describePlan(plan: Plan, charter: Charter): PlanSummary {
   const moves = plan.operations.filter((op) => op.kind === 'move').length;
   const flags = plan.operations.filter((op) => op.kind === 'flag');
-  const unsure = plan.operations.filter((op) => op.kind !== 'flag' && op.confidence < 0.8).length;
   const facts = planFacts(plan, charter);
+  const unsure = facts.uncertain;
   const sentences = [
     moves > 0 ? `This plan moves ${plural(moves, 'note')} into the structure of your charter (${facts.method}).` : 'This plan moves no notes.',
     plan.operations.length > moves + flags.length ? `It also makes ${plural(plan.operations.length - moves - flags.length, 'other change')}.` : '',
@@ -70,7 +74,7 @@ export function describePlan(plan: Plan, charter: Charter): PlanSummary {
  */
 export async function summarizePlan(plan: Plan, charter: Charter, provider?: ChatProvider): Promise<PlanSummary> {
   if (!provider || plan.operations.length === 0) return describePlan(plan, charter);
-  const result = await runPrompt(provider, planSummaryV1, planFacts(plan, charter));
+  const result = await runPrompt(provider, planSummaryV2, planFacts(plan, charter));
   if (!result.ok) return describePlan(plan, charter);
   return { ...result.value.value, source: 'model' };
 }

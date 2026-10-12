@@ -31,6 +31,8 @@ describe('runEval on en-small', { timeout: 120_000 }, () => {
     }
     expect(result.plan).toMatchObject({ errors: 0, failed: 0, brokenLinks: 0, undoExact: true, summarySource: 'rules' });
     expect(result.plan.operations.move).toBeGreaterThan(0);
+    // Without a model only code checks the summary.
+    expect(result.summary).toEqual({ source: 'rules', unsupportedNumbers: [], specific: false });
     expect(result.stubs.recall).toBe(1);
     expect(result.safety).toMatchObject({ brokenLinks: 0, undoExact: true, failed: 0 });
     expect(result.safety.applied).toBe(result.safety.operations);
@@ -45,6 +47,10 @@ describe('runEval on en-small', { timeout: 120_000 }, () => {
     expect(result.cost.chat?.calls).toBeGreaterThan(0);
     for (const method of FIXTURE_METHOD_KEYS) expect(result.classification[method].llm?.decidedBy.llm).toBeGreaterThan(0);
     expect(result.plan).toMatchObject({ errors: 0, failed: 0, brokenLinks: 0, undoExact: true, summarySource: 'model' });
+    for (const method of FIXTURE_METHOD_KEYS) expect(result.classification[method].llm?.model).toMatchObject({ failures: 0 });
+    // The judge is checked before it is believed: every planted error flagged.
+    expect(result.summary).toMatchObject({ source: 'model', unsupportedNumbers: [], judge: { faithful: true }, caught: 1, failures: 0 });
+    expect(result.cost['summary judge']?.calls).toBe(3);
   });
 
   it('skips tiers with a notice when nothing was recorded for the models', async () => {

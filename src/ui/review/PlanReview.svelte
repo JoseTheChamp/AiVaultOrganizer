@@ -65,11 +65,14 @@
   const blocking = $derived(model.validation.issues.filter((issue) => issue.severity === 'error' && (!issue.opId || decisions.get(issue.opId) === 'accepted')));
   const general = $derived(model.validation.issues.filter((issue) => !issue.opId));
   const needsAck = $derived(hasMoves && model.linksAutoUpdateOff && !acknowledged);
-  const notes = $derived([
-    ...(model.plan.summary?.highlights ?? []).map((text) => ({ text, tone: 'info' })),
-    ...model.plan.warnings.map((warning) => ({ text: warning.message, tone: 'warning' })),
-    ...general.map((issue) => ({ text: issue.message, tone: issue.severity })),
-  ]);
+  // The model's highlights may repeat a warning word for word (it is asked to point at them); show it once.
+  const notes = $derived(
+    [
+      ...(model.plan.summary?.highlights ?? []).map((text) => ({ text, tone: 'info' })),
+      ...model.plan.warnings.map((warning) => ({ text: warning.message, tone: 'warning' })),
+      ...general.map((issue) => ({ text: issue.message, tone: issue.severity })),
+    ].filter((note, index, all) => all.findIndex((other) => other.text === note.text) === index),
+  );
   const flagged = $derived(model.items.filter((item) => item.op.kind === 'flag' && item.op.issue === 'ambiguous').length);
   const filtering = $derived(filters.source !== 'all' || filters.destination !== 'all' || filters.status !== 'all' || filters.minConfidence > 0);
   const canApply = $derived(counts.accepted > 0 && blocking.length === 0 && !model.busy && !needsAck);
@@ -241,7 +244,7 @@
         <span>Obsidian is set not to update links when notes move, so moved notes would leave broken links. Apply anyway (the run stops and can be undone if links break).</span>
       </label>
     {/if}
-    {#each blocking as issue (issue.message)}
+    {#each blocking as issue, index (index)}
       <p class="avo-error">{issue.message}</p>
     {/each}
     <span class="avo-muted">{counts.accepted} accepted, {counts.rejected} rejected, {counts.pending} undecided</span>

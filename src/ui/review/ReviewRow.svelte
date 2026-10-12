@@ -44,7 +44,7 @@
       <button type="button" class="avo-link" onclick={() => openNote(notePath)}>Open note</button>
     {/if}
   </div>
-  {#each item.issues as issue (issue.message)}
+  {#each item.issues as issue, index (index)}
     <p class={issue.severity === 'error' ? 'avo-error' : 'avo-warning'}>{issue.message}</p>
   {/each}
   {#if expanded}

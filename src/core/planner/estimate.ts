@@ -1,4 +1,4 @@
-import { planSummaryV1 } from '../ai/prompts/plan-summary.v1';
+import { planSummaryV2 } from '../ai/prompts/plan-summary.v2';
 import { subfolderNamingV1 } from '../ai/prompts/subfolder-naming.v1';
 import { estimatePrompt } from '../ai/prompts/types';
 import { toLang } from '../charter/presets';
@@ -35,7 +35,8 @@ const SUMMARY_SAMPLE = {
   method: 'PARA',
   counts: ['new folders: 12', 'moves: 140', 'property renames: 30', 'flags for you to look at: 9'],
   destinations: ['1 Projects: 40', '2 Areas: 35', '3 Resources: 60', '4 Archive: 5'],
-  examples: Array.from({ length: 8 }, () => 'Move "A note title.md" to "1 Projects/A project/A note title.md"'),
+  uncertain: 20,
+  examples: Array.from({ length: 8 }, () => 'Move "A note title.md" to "1 Projects/A project/A note title.md" (62 %)'),
   warnings: ['9 notes could not be placed with confidence.'],
 };
 
@@ -58,7 +59,7 @@ export function estimatePlanRun(input: PlanRunInput): PlanRunEstimate {
 
   const language = toLang(charter.language);
   const naming = estimatePrompt(subfolderNamingV1, { language, ...NAMING_SAMPLE });
-  const summary = estimatePrompt(planSummaryV1, { language, ...SUMMARY_SAMPLE });
+  const summary = estimatePrompt(planSummaryV2, { language, ...SUMMARY_SAMPLE });
   const namingCalls = charter.destinations.filter((destination) => destination.path && destination.layout !== 'flat').length;
   const extra = { calls: namingCalls + 1, input: namingCalls * naming.input + summary.input, output: namingCalls * naming.output + summary.output };
   return {

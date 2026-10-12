@@ -47,6 +47,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   the whole vault. Rules decide first; notes no rule covers follow the placed notes they resemble; a
   language model proposes places for the rest. Properties and tags are normalized, maps of content and
   category notes updated, and queries the moves would change are flagged.
+- The review opens with a short summary of the plan in your vault's language. Written by the language model
+  when one is set up, it names the least certain changes to look at first, with their confidence; without
+  one, it is composed from the plan's numbers.
 - Before any note goes to a language model, a dialog shows which model and host, exactly what is sent,
   how many requests and tokens it takes, how long it may take at the pace of the last run and, with
   prices set, what it costs.
